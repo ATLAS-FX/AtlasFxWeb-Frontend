@@ -21,7 +21,7 @@ const CardForLogin: React.FC<ICardForLogin> = ({
   footer
 }) => {
   return (
-    <Card className="w-[350px]">
+    <Card className="flex w-[884px] min-h-[520px] flex-col items-center gap-10 rounded-lg bg-white px-20 py-12 shadow-md transition-all sm:w-full sm:px-8">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{subtitle}</CardDescription>

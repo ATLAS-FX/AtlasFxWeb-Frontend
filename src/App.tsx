@@ -4,7 +4,7 @@ import { AuthRoutes } from './routes/AuthRoutes'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
-  console.log(isAuthenticated)
+
   return (
     <>
       {isAuthenticated === true && <Routes />}
