@@ -44,10 +44,9 @@
     height: 100%;
     font-family: 'Poppins', sans-serif;
     background-image: url('../assets/bg_atlas.png');
-    background-repeat: no-repeat;
+    background-repeat: repeat-x;
     background-position: top;
-    background-size: cover;
-    background-color: #fff;
+    background-size: contain;
   }
 
   input {
@@ -62,6 +61,6 @@
 
   body {
     @apply bg-background text-foreground;
-    background-color: #f0f1f5;
+    background-color: #FFFFFF;
   }
 }

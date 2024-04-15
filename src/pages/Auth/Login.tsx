@@ -41,7 +41,7 @@ const Login: React.FC = () => {
   return (
     <div>
       {isLoading ? (
-        <Skeleton className="w-100 h-96 rounded-md" />
+        <Skeleton className="h-[540px] w-[884px] rounded-2xl" />
       ) : (
         <>
           {currentStepEmail.step <= 1 ? (
@@ -97,7 +97,7 @@ const Login: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="flex h-fit justify-center rounded-md bg-white p-6 shadow-md transition-all mt-[-3.2rem]">
+                  <div className="mt-[-3.2rem] flex h-fit justify-center rounded-md bg-white p-6 shadow-md transition-all">
                     <QRCode value="https://google.com" size={180} />
                   </div>
                 </div>
