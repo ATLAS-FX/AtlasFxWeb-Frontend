@@ -116,7 +116,7 @@ const Login: React.FC = () => {
               </div>
               <div
                 className={cn(
-                  'relative mt-[-3.2rem] flex h-fit justify-center rounded-md bg-white p-6 shadow-md transition-all'
+                  'relative mt-[-7rem] flex h-fit justify-center rounded-md bg-white p-6 shadow-md transition-all'
                 )}
               >
                 {genQRCode && (
