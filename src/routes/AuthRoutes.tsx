@@ -10,8 +10,8 @@ export const AuthRoutes: React.FC = () => {
   }
 
   return (
-    <div className="flex w-screen relative flex-col items-center justify-start gap-14 overflow-x-hidden p-16 lg:gap-10">
-      <div className="h-80 w-screen absolute top-0 right-0 left-0 z-[-10] inset-0" style={StyleAuth}></div>
+    <div className="flex w-screen relative flex-col items-center justify-start gap-6 overflow-x-hidden p-14">
+      <div className="h-72 w-screen absolute top-0 right-0 left-0 z-[-10] inset-0" style={StyleAuth}></div>
       <img
         className="object-contain"
         src={Atlas_Logo}
