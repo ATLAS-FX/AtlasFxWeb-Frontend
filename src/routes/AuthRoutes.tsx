@@ -4,9 +4,20 @@ import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
 import Atlas_Logo from '../assets/atlas_logo.png'
 
 export const AuthRoutes: React.FC = () => {
+  const StyleAuth = {
+    background: 'linear-gradient(358deg, #242F5F 0%, #425EA8 100%)',
+    backgroundPosition: 'top'
+  }
+
   return (
-    <div className="flex flex-col items-center justify-start gap-14 lg:gap-10 overflow-x-hidden p-16">
-      <img src={Atlas_Logo} alt="logo_atlas" width={200} />
+    <div className="flex w-screen relative flex-col items-center justify-start gap-14 overflow-x-hidden p-16 lg:gap-10">
+      <div className="h-80 w-screen absolute top-0 right-0 left-0 z-[-10] inset-0" style={StyleAuth}></div>
+      <img
+        className="object-contain"
+        src={Atlas_Logo}
+        alt="logo_atlas"
+        height={72}
+      />
       <ReactRoutes>
         <Route path="/" Component={Login} />
         <Route path="/login" Component={Login} />

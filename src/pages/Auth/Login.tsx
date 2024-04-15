@@ -6,18 +6,23 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { ToastAction } from '@/components/ui/toast'
 import { toast } from '@/components/ui/use-toast'
 import { useAdm } from '@/contexts/UserContext'
+import { cn } from '@/lib/utils'
 import AuthApi from '@/services/AuthApi'
+import { RotateCw } from 'lucide-react'
 import QRCode from 'qrcode.react'
-import { useEffect } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 
 const Login: React.FC = () => {
   const { currentStepEmail } = useAdm()
+  const [inputPassword, setInputPassword] = useState<string>('')
+  const [genQRCode, setGenQRCode] = useState<boolean>(false)
 
   const {
     data: qrcode,
     isLoading,
-    isError
+    isError,
+    refetch
   } = useQuery({
     queryKey: 'get-qrcode',
     queryFn: async () => {
@@ -26,9 +31,29 @@ const Login: React.FC = () => {
     }
   })
 
-  console.log(qrcode)
+  const { data: checkHash, refetch: refreshCheckHash } = useQuery({
+    queryKey: 'check-hash',
+    queryFn: async () => {
+      const res = await AuthApi.checkHash({ hash: qrcode ? qrcode?.hash : '' })
+      return res
+    }
+  })
+
+  const generateNewQRCode = () => {
+    refetch()
+    setGenQRCode(false)
+    refreshCheckHash()
+  }
+
+  console.log(checkHash)
 
   useEffect(() => {
+    if (!genQRCode) {
+      setTimeout(() => {
+        setGenQRCode(!genQRCode)
+      }, 8000)
+      // }, 120000)
+    }
     if (isError) {
       toast({
         title: 'Falha ao carregar dados de usuários.',
@@ -36,93 +61,129 @@ const Login: React.FC = () => {
         action: <ToastAction altText="Try again">Try again</ToastAction>
       })
     }
-  }, [isError])
+  }, [isError, genQRCode])
 
   return (
     <div>
-      {isLoading ? (
-        <Skeleton className="h-[540px] w-[884px] rounded-2xl" />
-      ) : (
-        <>
-          {currentStepEmail.step <= 1 ? (
-            <CardForLogin
-              title="Acesse"
-              subtitle="Sua Conta"
-              option="Portal PJ"
-              content={
-                <div className="flex items-center justify-between gap-10">
-                  <div>
-                    <Separator className="bg-colorSecondary-500" />
-                    <p className="py-4 text-colorPrimary-500">
-                      Para fazer o login, informe seu número de conta e dígito
-                    </p>
-                    <Separator className="mb-4 bg-colorSecondary-500" />
-                    <div className="text-justify text-xs text-colorPrimary-500">
-                      <p className="py-2">
-                        <strong>
-                          1. Acesse a conta da sua empresa através do celular
-                        </strong>
-                        : Abra o aplicativo no seu celular e faça login na sua conta
-                        empresarial.
-                      </p>
-                      <p className="py-2">
-                        <strong>2. Toque em Meu Perfil</strong>: Dentro do
-                        aplicativo, localize a seção "Meu Perfil" no menu principal e
-                        toque nela.
-                      </p>
-                      <p className="py-2">
-                        <strong>3. Toque em Acessar Portal PJ</strong>: Dentro da
-                        página do seu perfil, você encontrará a opção "Acessar Portal
-                        PJ". Toque nesta opção para prosseguir.
-                      </p>
-                      <p className="py-2">
-                        <strong>
-                          4. Aponte seu celular para esta tela para escanear o QR
-                          Code
-                        </strong>
-                        : Agora, segure seu celular na frente da tela do seu
-                        computador ou dispositivo onde você está visualizando esta
-                        mensagem. O aplicativo do banco abrirá automaticamente a
-                        câmera para escanear o QR Code exibido na tela.
-                      </p>
-                      <p className="py-2">
-                        <strong>
-                          5. Digite o token com 8 dígitos que aparecerá em seu
-                          celular
-                        </strong>
-                        : Após escanear o QR Code, seu celular exibirá uma chave de
-                        segurança de 8 dígitos. Digite este token no local indicado
-                        na tela do seu computador ou dispositivo para concluir o
-                        acesso ao Portal PJ.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="mt-[-3.2rem] flex h-fit justify-center rounded-md bg-white p-6 shadow-md transition-all">
-                    <QRCode value="https://google.com" size={180} />
-                  </div>
+      {currentStepEmail.step <= 1 ? (
+        <CardForLogin
+          title="Acesse"
+          subtitle="Sua Conta"
+          option="Portal PJ"
+          content={
+            <div className="flex items-center justify-between gap-10">
+              <div>
+                <p className="py-4 pt-0 text-colorPrimary-500">
+                  Para fazer o login, informe seu número de conta e dígito
+                </p>
+                <Separator className="mb-4 bg-colorSecondary-500" />
+                <div className="text-justify text-xs text-colorPrimary-500">
+                  <p className="py-2">
+                    <strong>
+                      1. Acesse a conta da sua empresa através do celular
+                    </strong>
+                    : Abra o aplicativo no seu celular e faça login na sua conta
+                    empresarial.
+                  </p>
+                  <p className="py-2">
+                    <strong>2. Toque em Meu Perfil</strong>: Dentro do aplicativo,
+                    localize a seção "Meu Perfil" no menu principal e toque nela.
+                  </p>
+                  <p className="py-2">
+                    <strong>3. Toque em Acessar Portal PJ</strong>: Dentro da página
+                    do seu perfil, você encontrará a opção "Acessar Portal PJ". Toque
+                    nesta opção para prosseguir.
+                  </p>
+                  <p className="py-2">
+                    <strong>
+                      4. Aponte seu celular para esta tela para escanear o QR Code
+                    </strong>
+                    : Agora, segure seu celular na frente da tela do seu computador
+                    ou dispositivo onde você está visualizando esta mensagem. O
+                    aplicativo do banco abrirá automaticamente a câmera para escanear
+                    o QR Code exibido na tela.
+                  </p>
+                  <p className="py-2">
+                    <strong>
+                      5. Digite o token com 8 dígitos que aparecerá em seu celular
+                    </strong>
+                    : Após escanear o QR Code, seu celular exibirá uma chave de
+                    segurança de 8 dígitos. Digite este token no local indicado na
+                    tela do seu computador ou dispositivo para concluir o acesso ao
+                    Portal PJ.
+                  </p>
                 </div>
-              }
-              footer={<></>}
-            />
-          ) : (
-            <CardForLogin
-              title="Acesse"
-              subtitle="Sua Conta"
-              option="Portal PJ"
-              content={
-                <>
-                  <Separator className="bg-colorSecondary-500" />
-                  <label className="text-sm text-colorPrimary-500">
-                    Digite o a Chave de Segurança de 8 dígitos
-                  </label>
-                  <Input />
-                  <Button>Enviar agora</Button>
-                </>
-              }
-              footer={<></>}
-            />
-          )}
-        </>
+              </div>
+              <div
+                className={cn(
+                  'relative mt-[-3.2rem] flex h-fit justify-center rounded-md bg-white p-6 shadow-md transition-all'
+                )}
+              >
+                {genQRCode && (
+                  <div className="absolute bottom-0 left-0 right-0 top-0 z-10 bg-background/80 backdrop-blur-[3px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div>
+                )}
+                {isLoading ? (
+                  <Skeleton className="h-[180px] w-[180px] rounded-md bg-primary/20" />
+                ) : (
+                  <>
+                    {genQRCode && (
+                      <button
+                        className="absolute bottom-auto left-auto right-auto top-auto z-20 flex h-48 w-48 flex-col items-center justify-center gap-4 rounded-[50%] bg-colorPrimary-500 text-white"
+                        onClick={generateNewQRCode}
+                      >
+                        <RotateCw size={42} />
+                        <span className="w-10/12 text-center">
+                          Clique para recarregar o QRCode
+                        </span>
+                      </button>
+                    )}
+                    <QRCode value={qrcode ? qrcode?.hash : ''} size={180} />
+                  </>
+                )}
+              </div>
+            </div>
+          }
+          footer={<></>}
+        />
+      ) : (
+        <CardForLogin
+          title="Acesse"
+          subtitle="Sua Conta"
+          option="Portal PJ"
+          content={
+            <div className="flex flex-col gap-4">
+              <label className="text-sm text-colorPrimary-500">
+                Digite o a Chave de Segurança de 8 dígitos
+              </label>
+              <Input
+                className={cn(
+                  'flex h-16 w-full justify-center rounded-lg border-2 pt-[2.5%] text-center align-baseline text-5xl font-bold text-colorPrimary-500',
+                  inputPassword.length < 8
+                    ? 'border-colorPrimary-500'
+                    : 'border-[#008000]'
+                )}
+                value={inputPassword.replace(/./g, '*')}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setInputPassword(e.target.value)
+                }
+                maxLength={8}
+                type="text"
+              />
+              <div className="flex justify-end">
+                <Button
+                  className={cn(
+                    'h-12 w-5/12 rounded-lg bg-colorSecondary-500 text-base font-bold text-colorPrimary-500',
+                    inputPassword.length < 8 ? 'bg-[#BEBEBE] text-[#7E7E7E]' : ''
+                  )}
+                  disabled={inputPassword.length < 8}
+                >
+                  Enviar agora
+                </Button>
+              </div>
+            </div>
+          }
+          footer={<></>}
+        />
       )}
     </div>
   )
