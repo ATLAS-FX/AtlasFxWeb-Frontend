@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from '../ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card'
 
 interface ICardForLogin {
   title: string
@@ -22,31 +16,29 @@ const CardForLogin: React.FC<ICardForLogin> = ({
   footer
 }) => {
   return (
-    <Card className="flex min-h-[520px] w-[884px] flex-col items-center gap-10 rounded-2xl bg-white px-12 py-8 shadow-md transition-all sm:w-full sm:px-8">
+    <Card className="flex min-h-[520px] w-[884px] flex-col items-center rounded-2xl bg-white px-8 py-4 shadow-md transition-all sm:w-full sm:px-8">
       <CardHeader>
         <CardTitle className="flex justify-between">
-          {/* <div className="flex justify-between w-full"> */}
           <div className="flex flex-col">
             <h3
-              className="text-2xl font-extralight"
-              style={{ textShadow: 'rgba(0, 0, 0, 0.4) 0px 4px 3px' }}
+              className="text-2xl font-light text-colorPrimary-500"
+              style={{ textShadow: 'rgba(0, 0, 0, 0.4) 0px 4px 4px' }}
             >
               {title}
             </h3>
             <h2
-              className="text-4xl font-semibold"
-              style={{ textShadow: 'rgba(0, 0, 0, 0.4) 0px 4px 3px' }}
+              className="text-[40px] font-semibold text-colorPrimary-500"
+              style={{ textShadow: 'rgba(0, 0, 0, 0.4) 0px 4px 5px' }}
             >
               {subtitle}
             </h2>
           </div>
-          <h4
-            className="text-3xl font-extralight"
-            style={{ textShadow: 'rgba(0, 0, 0, 0.4) 0px 4px 3px' }}
+          <span
+            className="text-3xl font-light text-colorPrimary-500"
+            style={{ textShadow: 'rgba(0, 0, 0, 0.4) 0px 4px 4px' }}
           >
             {option}
-          </h4>
-          {/* </div> */}
+          </span>
         </CardTitle>
       </CardHeader>
       <CardContent>{content}</CardContent>
