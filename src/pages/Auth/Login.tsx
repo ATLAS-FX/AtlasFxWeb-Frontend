@@ -97,8 +97,8 @@ const Login: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="flex h-fit justify-center rounded-md bg-white p-6 shadow-md transition-all sm:w-full">
-                    <QRCode value="https://google.com" size={200} />
+                  <div className="flex h-fit justify-center rounded-md bg-white p-6 shadow-md transition-all mt-[-3.2rem]">
+                    <QRCode value="https://google.com" size={180} />
                   </div>
                 </div>
               }

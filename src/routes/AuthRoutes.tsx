@@ -5,7 +5,7 @@ import Atlas_Logo from '../assets/atlas_logo.png'
 
 export const AuthRoutes: React.FC = () => {
   return (
-    <div className="flex flex-col items-center justify-start gap-10 overflow-x-hidden p-16">
+    <div className="flex flex-col items-center justify-start gap-14 lg:gap-10 overflow-x-hidden p-16">
       <img src={Atlas_Logo} alt="logo_atlas" width={200} />
       <ReactRoutes>
         <Route path="/" Component={Login} />
