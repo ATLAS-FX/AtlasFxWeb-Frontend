@@ -38,7 +38,8 @@ const Login: React.FC = () => {
   }
 
   const checkValidate = async () => {
-    await AuthApi.checkHash({ hash: qrcode ? qrcode : { hash: '' } })
+    const id_key = Number(inputRef)
+    await AuthApi.getKey({ id: id_key })
       .then((res) => {
         console.log('sucess ->', res)
         toast({
@@ -47,7 +48,7 @@ const Login: React.FC = () => {
           description: ''
         })
         setTimeout(() => {
-          signIn(qrcode ? qrcode?.hash : '')
+          signIn(res.key)
           // navigate('/welcome')
         }, 1200)
       })

@@ -1,4 +1,4 @@
-import Login from '@/pages/Auth/Login'
+import Login from '@/pages/Auth/'
 import React from 'react'
 import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
 import Atlas_Logo from '../assets/atlas_logo.png'

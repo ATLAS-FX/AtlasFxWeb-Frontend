@@ -1,8 +1,8 @@
 import { api } from './api'
 
 class UserApi {
-  public async getInfo(params: { hash: string }) {
-    const res = await api.post('/portal/get_info', params)
+  public async getInfo() {
+    const res = await api.get('/portal/get_info')
     return res.data
   }
 }

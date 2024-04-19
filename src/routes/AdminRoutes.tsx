@@ -1,7 +1,8 @@
-import { Aside } from '@/components/layout/Aside/Aside'
-import { Header } from '@/components/layout/Header/Header'
-import { Sidebar } from '@/components/layout/Sidebar/Sidebar'
-import Home from '@/pages/Home/Home'
+import { Aside } from '@/components/layout/Aside'
+import { Header } from '@/components/layout/Header'
+import { Sidebar } from '@/components/layout/Sidebar'
+import Home from '@/pages/Home'
+import Profile from '@/pages/Profile'
 import React from 'react'
 import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
 
@@ -19,11 +20,12 @@ export const AdminRoutes: React.FC = () => {
       ></div>
       <div className="flex max-w-[1440px] flex-col items-center justify-around gap-8">
         <Header />
-        <div className="grid grid-cols-[96px_minmax(500px,_1fr)_368px] gap-8 justify-center items-start">
+        <div className="grid grid-cols-[96px_minmax(500px,_1fr)_368px] items-start justify-center gap-10">
           <Sidebar />
-          <div className="flex max-h-[76vh] overflow-y-auto px-8">
+          <div className="flex h-[76vh] overflow-y-auto w-[842px]">
             <ReactRoutes>
               <Route path="/welcome" Component={Home} />
+              <Route path="/profile" Component={Profile} />
               <Route path="*" element={<Navigate to="/welcome" />} />
             </ReactRoutes>
           </div>

@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'PostNoBillsColombo-Bold';
+  src: url('../assets/PostNoBillsColombo-Bold.woff') format(truetype);
+  font-weight: normal;
+}
+
 @layer base {
   :root {
     --background: 150, 29%, 97%;

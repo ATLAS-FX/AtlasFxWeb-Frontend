@@ -7,7 +7,7 @@ export const navbarItems = [
     id: 1,
     title: 'Meu Perfil',
     icon: IconUserCircle,
-    path: '/pix',
+    path: '/profile',
     exit: false
   },
   {

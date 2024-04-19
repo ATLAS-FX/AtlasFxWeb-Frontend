@@ -1,6 +1,6 @@
 import Atlas_Logo from '@/assets/atlas_logo.png'
 import { Separator } from '@/components/ui/separator'
-import { Navbar } from '../Footer/Navbar'
+import { Navbar } from '../Navbar'
 
 export const Header: React.FC = () => {
   return (

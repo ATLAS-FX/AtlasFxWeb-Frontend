@@ -6,6 +6,11 @@ class AuthApi {
     return res.data
   }
 
+  public async getKey(params: { id: number }) {
+    const res = await api.post('/portal/get_key', params)
+    return res.data
+  }
+
   public async checkHash(params: { hash: { hash: string } }) {
     const res = await api.post('/actions/check_hash', params)
     return res.data

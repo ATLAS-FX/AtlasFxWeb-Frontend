@@ -17,12 +17,10 @@ import { BlockPad } from './BlockPad'
 import { Movements } from './Movements'
 
 export const Aside: React.FC = () => {
-  const localToken = localStorage.getItem('atlas_token')
-
   const { data: infoUser } = useQuery({
     queryKey: 'get-info-user',
     queryFn: async () => {
-      const res = await UserApi.getInfo({ hash: localToken ? localToken : '' })
+      const res = await UserApi.getInfo()
       return res
     }
   })
@@ -30,7 +28,7 @@ export const Aside: React.FC = () => {
   console.log(infoUser)
 
   return (
-    <div className="flex flex-col h-[80vh] overflow-y-auto">
+    <div className="flex h-[80vh] flex-col overflow-y-auto">
       <ul>
         <BlockPad
           className="items-center bg-[#FFFFFF40]"

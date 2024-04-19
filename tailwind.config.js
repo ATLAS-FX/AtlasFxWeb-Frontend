@@ -9,7 +9,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      Poppins: ['Poppins']
+      Poppins: ['Poppins'],
+      Bills_Bold: ['PostNoBillsColombo-Bold']
     },
     screens: {
       '3xl': { max: '1540px' },
@@ -69,7 +70,7 @@ module.exports = {
           foreground: 'hsl(var(--card-foreground))'
         }
       },
-      boxShadow:{
+      boxShadow: {
         shadowP: '#00000033 0px 3px 4px;'
       },
       borderRadius: {
