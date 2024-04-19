@@ -1,39 +1,34 @@
-import { cn } from '@/lib/utils'
+import { Aside } from '@/components/layout/Aside/Aside'
+import { Header } from '@/components/layout/Header/Header'
+import { Sidebar } from '@/components/layout/Sidebar/Sidebar'
+import Home from '@/pages/Home/Home'
 import React from 'react'
+import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
 
 export const AdminRoutes: React.FC = () => {
-  // const { setIsCustomizeCheckout, isCustomizeCheckout } = useAdm()
-  // const location = useLocation()
-
-  // useEffect(() => {
-  //   if (location.pathname === '/checkout/personalizar') {
-  //     setIsCustomizeCheckout(true)
-  //   } else {
-  //     setIsCustomizeCheckout(false)
-  //   }
-  // }, [location.pathname])
+  const StyleAuth = {
+    background: 'linear-gradient(358deg, #242F5F 0%, #425EA8 100%)',
+    backgroundPosition: 'top'
+  }
 
   return (
-    <div className={cn('grid-areas font-fontTheme relative overflow-x-hidden')}>
-      {/* <>
-        <Header />
-        <Sidebar />
-      </> */}
+    <div className="relative flex h-screen w-screen items-start justify-center overflow-x-hidden p-8 xl:p-4">
       <div
-        className="font-fontTheme relative overflow-y-hidden"
-        style={{ gridArea: 'content' }}
-      >
-        {/* <ReactRoutes> */}
-        {/* <Route path="/inicio" Component={Home} />
-          <Route path="*" element={<Navigate to="/metricas" />} />
-          <Route path="/usuarios" Component={Users} />
-          <Route path="/metricas" Component={Metrics} />
-          <Route path="/empresas" Component={Company} /> */}
-        {/* <Route path="vendas">
-            <Route index Component={Order} />
-            <Route path="detalhes/:id" Component={OrderDetail} />
-          </Route> */}
-        {/* </ReactRoutes> */}
+        className="absolute inset-0 left-0 right-0 top-0 z-[-10] w-screen"
+        style={StyleAuth}
+      ></div>
+      <div className="flex max-w-[1440px] flex-col items-center justify-around gap-8">
+        <Header />
+        <div className="grid grid-cols-[96px_minmax(500px,_1fr)_368px] gap-8 justify-center items-start">
+          <Sidebar />
+          <div className="flex max-h-[76vh] overflow-y-auto px-8">
+            <ReactRoutes>
+              <Route path="/welcome" Component={Home} />
+              <Route path="*" element={<Navigate to="/welcome" />} />
+            </ReactRoutes>
+          </div>
+          <Aside />
+        </div>
       </div>
     </div>
   )

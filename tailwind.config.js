@@ -12,12 +12,13 @@ module.exports = {
       Poppins: ['Poppins']
     },
     screens: {
-      '2xl': { max: '1535px' },
-      xl: { max: '1279px' },
-      lg: { max: '1023px' },
-      md: { max: '767px' },
-      sm: { max: '639px' },
-      xs: { max: '430px' }
+      '3xl': { max: '1540px' },
+      '2xl': { max: '1441px' },
+      xl: { max: '1281px' },
+      lg: { max: '1025px' },
+      md: { max: '769px' },
+      sm: { max: '641px' },
+      xs: { max: '432px' }
     },
     container: {
       center: true,
@@ -67,6 +68,9 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
         }
+      },
+      boxShadow:{
+        shadowP: '#00000033 0px 3px 4px;'
       },
       borderRadius: {
         lg: 'var(--radius)',

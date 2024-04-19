@@ -1,11 +1,9 @@
-import { useState } from 'react'
+import { useAdm } from './contexts/UserContext'
 import { Routes } from './routes'
 import { AuthRoutes } from './routes/AuthRoutes'
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
-
-  console.log(setIsAuthenticated)
+  const { isAuthenticated } = useAdm()
 
   return (
     <>

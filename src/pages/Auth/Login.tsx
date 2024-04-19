@@ -1,4 +1,4 @@
-import CardForLogin from '@/components/layout/Card'
+import { CardForLogin } from '@/components/layout/Card/CardForLogin'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
@@ -8,14 +8,15 @@ import { toast } from '@/components/ui/use-toast'
 import { useAdm } from '@/contexts/UserContext'
 import { cn } from '@/lib/utils'
 import AuthApi from '@/services/AuthApi'
-import { RotateCw } from 'lucide-react'
+import { CheckCircle2, RotateCw } from 'lucide-react'
 import QRCode from 'qrcode.react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 
 const Login: React.FC = () => {
-  const { currentStepEmail } = useAdm()
+  const { currentStepEmail, signIn } = useAdm()
   const [inputPassword, setInputPassword] = useState<string>('')
+  const [inputRef, setInputRef] = useState<string>('')
   const [genQRCode, setGenQRCode] = useState<boolean>(false)
 
   const {
@@ -31,21 +32,34 @@ const Login: React.FC = () => {
     }
   })
 
-  const { data: checkHash, refetch: refreshCheckHash } = useQuery({
-    queryKey: 'check-hash',
-    queryFn: async () => {
-      const res = await AuthApi.checkHash({ hash: qrcode ? qrcode?.hash : '' })
-      return res
-    }
-  })
-
   const generateNewQRCode = () => {
     refetch()
     setGenQRCode(false)
-    refreshCheckHash()
   }
 
-  console.log(checkHash)
+  const checkValidate = async () => {
+    await AuthApi.checkHash({ hash: qrcode ? qrcode : { hash: '' } })
+      .then((res) => {
+        console.log('sucess ->', res)
+        toast({
+          variant: 'success',
+          title: 'Sucesso ao acessar sua conta PJ.',
+          description: ''
+        })
+        setTimeout(() => {
+          signIn(qrcode ? qrcode?.hash : '')
+          // navigate('/welcome')
+        }, 1200)
+      })
+      .catch((e: Error) => {
+        console.log('error ->', e)
+        toast({
+          variant: 'destructive',
+          title: 'Falha ao acessar sua conta PJ.',
+          description: e.message
+        })
+      })
+  }
 
   useEffect(() => {
     if (!genQRCode) {
@@ -71,30 +85,30 @@ const Login: React.FC = () => {
           subtitle="Sua Conta"
           option="Portal PJ"
           content={
-            <div className="flex items-center justify-between gap-10">
+            <div className="flex items-center justify-between gap-8">
               <div>
-                <p className="py-4 pt-0 text-colorPrimary-500">
+                <p className="py-2 pt-0 text-colorPrimary-500">
                   Para fazer o login, informe seu número de conta e dígito
                 </p>
                 <Separator className="mb-4 bg-colorSecondary-500" />
                 <div className="text-justify text-xs text-colorPrimary-500">
-                  <p className="py-2">
+                  <p className="py-1">
                     <strong>
                       1. Acesse a conta da sua empresa através do celular
                     </strong>
                     : Abra o aplicativo no seu celular e faça login na sua conta
                     empresarial.
                   </p>
-                  <p className="py-2">
+                  <p className="py-1">
                     <strong>2. Toque em Meu Perfil</strong>: Dentro do aplicativo,
                     localize a seção "Meu Perfil" no menu principal e toque nela.
                   </p>
-                  <p className="py-2">
+                  <p className="py-1">
                     <strong>3. Toque em Acessar Portal PJ</strong>: Dentro da página
                     do seu perfil, você encontrará a opção "Acessar Portal PJ". Toque
                     nesta opção para prosseguir.
                   </p>
-                  <p className="py-2">
+                  <p className="py-1">
                     <strong>
                       4. Aponte seu celular para esta tela para escanear o QR Code
                     </strong>
@@ -103,7 +117,7 @@ const Login: React.FC = () => {
                     aplicativo do banco abrirá automaticamente a câmera para escanear
                     o QR Code exibido na tela.
                   </p>
-                  <p className="py-2">
+                  <p className="py-1">
                     <strong>
                       5. Digite o token com 8 dígitos que aparecerá em seu celular
                     </strong>
@@ -185,6 +199,31 @@ const Login: React.FC = () => {
           footer={<></>}
         />
       )}
+      <div className="justify-star mt-2 flex items-center justify-end gap-1 text-colorPrimary-500">
+        <div className="flex cursor-pointer items-center gap-2">
+          <span className="text-xs italic text-colorPrimary-500">
+            Digita seu código:
+          </span>
+          <Input
+            className="w-12"
+            value={inputRef}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setInputRef(e.target.value)
+            }}
+          />
+          <span className="text-xs italic text-colorPrimary-500">
+            clique para validar:
+          </span>
+          <Button
+            variant="ghost"
+            className="w-fit p-0 hover:text-colorSecondary-500"
+            disabled={inputRef.length < 1}
+            onClick={checkValidate}
+          >
+            <CheckCircle2 size={32} />
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }

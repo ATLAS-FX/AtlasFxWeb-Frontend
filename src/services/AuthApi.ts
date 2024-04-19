@@ -6,7 +6,7 @@ class AuthApi {
     return res.data
   }
 
-  public async checkHash(params: { hash: string }) {
+  public async checkHash(params: { hash: { hash: string } }) {
     const res = await api.post('/actions/check_hash', params)
     return res.data
   }

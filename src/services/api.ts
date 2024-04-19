@@ -8,7 +8,7 @@ export const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const accessToken = localStorage.getItem('atlas_pj')
+    const accessToken = localStorage.getItem('atlas_token')
 
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`
@@ -27,7 +27,7 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response.data.error === 'access denied') {
-      localStorage.removeItem('atlas_pj')
+      localStorage.removeItem('atlas_token')
       toast({
         variant: 'destructive',
         title: 'Você foi desconectado.',

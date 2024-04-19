@@ -1,5 +1,11 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card'
-import { Separator } from '../ui/separator'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 
 interface ICardForLogin {
   title: string
@@ -9,7 +15,7 @@ interface ICardForLogin {
   footer: React.ReactNode
 }
 
-const CardForLogin: React.FC<ICardForLogin> = ({
+export const CardForLogin: React.FC<ICardForLogin> = ({
   title,
   subtitle,
   option,
@@ -17,9 +23,9 @@ const CardForLogin: React.FC<ICardForLogin> = ({
   footer
 }) => {
   return (
-    <Card className="flex min-h-[520px] w-[884px] flex-col items-center rounded-2xl bg-white px-8 py-4 shadow-md transition-all sm:w-full sm:px-8">
+    <Card className="flex min-h-[520px] w-[884px] flex-col items-center rounded-2xl bg-white px-4 py-2 shadow-md transition-all">
       <CardHeader>
-        <CardTitle className="flex justify-between mb-2">
+        <CardTitle className="mb-2 flex justify-between">
           <div className="flex flex-col">
             <h3
               className="text-2xl font-light text-colorPrimary-500"
@@ -41,12 +47,10 @@ const CardForLogin: React.FC<ICardForLogin> = ({
             {option}
           </span>
         </CardTitle>
-      <Separator className="bg-colorSecondary-500 w-[502px] mb-0" />
+        <Separator className="mb-0 w-[502px] bg-colorSecondary-500" />
       </CardHeader>
       <CardContent>{content}</CardContent>
       <CardFooter className="flex justify-between">{footer}</CardFooter>
     </Card>
   )
 }
-
-export default CardForLogin
