@@ -23,7 +23,7 @@ export const Item: React.FC<ItemProps> = ({
     <li className="flex flex-col items-center justify-center">
       <Link
         className={cn(
-          'flex h-[70px] w-[76px] xl:h-[56px] xl:w-[64px] flex-col items-center justify-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 text-center text-[9px] xl:text-[8px] font-bold text-colorPrimary-500 transition-all ease-in-out hover:bg-colorPrimary-500 hover:fill-colorSecondary-500 hover:text-colorSecondary-500',
+          'flex h-fit w-20 py-2 xl:h-[56px] xl:w-[64px] flex-col items-center justify-center gap-1 rounded-lg border-2 border-colorPrimary-500 fill-colorPrimary-500 text-center text-[9px] xl:text-[8px] font-bold text-colorPrimary-500 transition-all ease-in-out hover:bg-colorPrimary-500 hover:fill-colorSecondary-500 hover:text-colorSecondary-500',
           pathname === path ? 'bg-colorTheme-10' : 'bg-transparent',
           comming &&
             'border-[#C8D753] bg-[#C8D753] text-colorPrimary-500 shadow-shadowP',

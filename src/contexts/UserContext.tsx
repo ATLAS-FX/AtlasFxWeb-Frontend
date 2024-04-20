@@ -9,6 +9,8 @@ import {
 import { useNavigate } from 'react-router-dom'
 
 interface UserContextData {
+  user: App.UserProps
+  setUser: Dispatch<SetStateAction<App.UserProps>>
   currentStepEmail: {
     step: number
     type: string
@@ -39,7 +41,15 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     type: string
   }>({ step: 1, type: '' })
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState<string>('')
+  const [user, setUser] = useState<App.UserProps>({
+    id: 0,
+    account: '',
+    agency: '',
+    amount: '',
+    name: '',
+    releases: []
+  })
 
   const signIn = (token: string) => {
     setIsAuthenticated(true)
@@ -67,6 +77,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   return (
     <UserContext.Provider
       value={{
+        user,
+        setUser,
         currentStepEmail,
         setCurrentStepEmail,
         isAuthenticated,

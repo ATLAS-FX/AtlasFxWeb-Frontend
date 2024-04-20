@@ -57,7 +57,7 @@ export const checkoutItems = [
     comming: true
   },
   {
-    id: 5,
+    id: 7,
     title: 'Investimentos',
     icon: IconInvestment,
     path: '/',
@@ -65,7 +65,7 @@ export const checkoutItems = [
     comming: true
   },
   {
-    id: 5,
+    id: 8,
     title: 'Cartões',
     icon: IconCard,
     path: '/',

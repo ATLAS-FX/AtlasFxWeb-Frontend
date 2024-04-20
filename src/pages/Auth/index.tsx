@@ -12,8 +12,10 @@ import { CheckCircle2, RotateCw } from 'lucide-react'
 import QRCode from 'qrcode.react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
+import { useNavigate } from 'react-router-dom'
 
 const Login: React.FC = () => {
+  const navigate = useNavigate()
   const { currentStepEmail, signIn } = useAdm()
   const [inputPassword, setInputPassword] = useState<string>('')
   const [inputRef, setInputRef] = useState<string>('')
@@ -41,16 +43,8 @@ const Login: React.FC = () => {
     const id_key = Number(inputRef)
     await AuthApi.getKey({ id: id_key })
       .then((res) => {
-        console.log('sucess ->', res)
-        toast({
-          variant: 'success',
-          title: 'Sucesso ao acessar sua conta PJ.',
-          description: ''
-        })
-        setTimeout(() => {
-          signIn(res.key)
-          // navigate('/welcome')
-        }, 1200)
+        signIn(res.key)
+        navigate('/')
       })
       .catch((e: Error) => {
         console.log('error ->', e)
@@ -91,7 +85,7 @@ const Login: React.FC = () => {
                 <p className="py-2 pt-0 text-colorPrimary-500">
                   Para fazer o login, informe seu número de conta e dígito
                 </p>
-                <Separator className="mb-4 bg-colorSecondary-500" />
+                <Separator className="bg-colorSecondary-500 mb-4" />
                 <div className="text-justify text-xs text-colorPrimary-500">
                   <p className="py-1">
                     <strong>
@@ -187,7 +181,7 @@ const Login: React.FC = () => {
               <div className="flex justify-end">
                 <Button
                   className={cn(
-                    'h-12 w-5/12 rounded-lg bg-colorSecondary-500 text-base font-bold text-colorPrimary-500',
+                    'bg-colorSecondary-500 h-12 w-5/12 rounded-lg text-base font-bold text-colorPrimary-500',
                     inputPassword.length < 8 ? 'bg-[#BEBEBE] text-[#7E7E7E]' : ''
                   )}
                   disabled={inputPassword.length < 8}
@@ -217,7 +211,7 @@ const Login: React.FC = () => {
           </span>
           <Button
             variant="ghost"
-            className="w-fit p-0 hover:text-colorSecondary-500"
+            className="hover:text-colorSecondary-500 w-fit p-0"
             disabled={inputRef.length < 1}
             onClick={checkValidate}
           >
