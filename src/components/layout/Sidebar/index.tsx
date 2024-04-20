@@ -5,7 +5,7 @@ import { checkoutItems } from './checkoutItems'
 
 export const Sidebar: React.FC = () => {
   return (
-    <ul className="flex p-4 flex-col items-center justify-start gap-2 rounded-lg border-0 bg-[#EFEFEF]">
+    <ul className="flex w-[84px] flex-col items-center justify-start gap-2 rounded-lg border-0 bg-[#EFEFEF] p-2">
       {checkoutItems
         .filter((item) => !item.comming)
         .map((item) => (
@@ -19,7 +19,7 @@ export const Sidebar: React.FC = () => {
           />
         ))}
       <Separator className="h-[2px] w-10/12 bg-colorPrimary-500" />
-      <span className="text-center text-xs font-semibold text-colorPrimary-500">
+      <span className="text-center text-xs font-semibold text-colorPrimary-500 xl:text-[10px]">
         Em Breve
       </span>
       {checkoutItems

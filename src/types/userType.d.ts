@@ -15,4 +15,18 @@ declare namespace App {
     amount: number
     created: string
   }
+  export interface ProfileProps {
+    name: string
+    email: string
+    account: string
+    agency: string
+    street: string
+    st_comp: string
+    district: string
+    city: string
+    state: string
+    zip: string
+    uf: string
+    email_white_label: string
+  }
 }

@@ -22,7 +22,7 @@ export const BaseBoard: React.FC<ItemProps> = ({ icon: Icon, path, title }) => {
       <Button
         className={cn(
           'flex h-14 w-16 flex-col items-center justify-center gap-1 rounded-xl border-2 border-white bg-transparent fill-white text-center text-[9px] font-bold text-white transition-all ease-in-out hover:bg-colorPrimary-500 hover:fill-colorSecondary-500 hover:text-colorSecondary-500 xl:h-14 xl:w-16',
-          pathname === path && 'bg-white fill-colorPrimary-500 text-colorPrimary-500'
+          pathname === path && 'bg-white fill-colorPrimary-500 text-colorPrimary-500 pointer-events-none'
         )}
         onClick={() => (path.length > 0 ? navigate(path) : signOut())}
       >

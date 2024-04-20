@@ -23,7 +23,7 @@ export const CardForLogin: React.FC<ICardForLogin> = ({
   footer
 }) => {
   return (
-    <Card className="flex min-h-[520px] w-[884px] flex-col items-center rounded-2xl bg-white px-4 py-2 shadow-md transition-all">
+    <Card className="flex max-w-[884px] flex-col items-center rounded-2xl bg-white px-4 py-2 shadow-md transition-all">
       <CardHeader>
         <CardTitle className="mb-2 flex justify-between">
           <div className="flex flex-col">

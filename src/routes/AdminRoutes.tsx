@@ -3,6 +3,7 @@ import { Header } from '@/components/layout/Header'
 import { Sidebar } from '@/components/layout/Sidebar'
 import Home from '@/pages/Home'
 import Profile from '@/pages/Profile'
+import Registration from '@/pages/Profile/Registration'
 import React from 'react'
 import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
 
@@ -25,7 +26,10 @@ export const AdminRoutes: React.FC = () => {
           <div className="flex h-[76vh] overflow-y-auto">
             <ReactRoutes>
               <Route path="/welcome" Component={Home} />
-              <Route path="/profile" Component={Profile} />
+              <Route path="profile">
+                <Route index Component={Profile} />
+                <Route path="registration" Component={Registration} />
+              </Route>
               <Route path="*" element={<Navigate to="/welcome" />} />
             </ReactRoutes>
           </div>

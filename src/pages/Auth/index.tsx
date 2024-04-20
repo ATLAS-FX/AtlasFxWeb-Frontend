@@ -74,7 +74,7 @@ const Login: React.FC = () => {
 
   return (
     <div>
-      {currentStepEmail.step <= 1 ? (
+      {currentStepEmail < 1 ? (
         <CardForLogin
           title="Acesse"
           subtitle="Sua Conta"

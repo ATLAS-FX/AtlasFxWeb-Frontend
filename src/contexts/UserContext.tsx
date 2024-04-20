@@ -11,16 +11,10 @@ import { useNavigate } from 'react-router-dom'
 interface UserContextData {
   user: App.UserProps
   setUser: Dispatch<SetStateAction<App.UserProps>>
-  currentStepEmail: {
-    step: number
-    type: string
-  }
-  setCurrentStepEmail: Dispatch<
-    SetStateAction<{
-      step: number
-      type: string
-    }>
-  >
+  currentStepEmail: number
+  setCurrentStepEmail: Dispatch<SetStateAction<number>>
+  currentStepProfile: number
+  setCurrentStepProfile: Dispatch<SetStateAction<number>>
   isAuthenticated: boolean
   token: string
   signIn: (token: string) => void
@@ -36,10 +30,8 @@ export const UserContext = createContext({} as UserContextData)
 
 export const UserProvider = ({ children }: UserProviderProps) => {
   const navigate = useNavigate()
-  const [currentStepEmail, setCurrentStepEmail] = useState<{
-    step: number
-    type: string
-  }>({ step: 1, type: '' })
+  const [currentStepEmail, setCurrentStepEmail] = useState<number>(0)
+  const [currentStepProfile, setCurrentStepProfile] = useState<number>(0)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [token, setToken] = useState<string>('')
   const [user, setUser] = useState<App.UserProps>({
@@ -81,6 +73,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         setUser,
         currentStepEmail,
         setCurrentStepEmail,
+        currentStepProfile,
+        setCurrentStepProfile,
         isAuthenticated,
         signIn,
         signOut,
