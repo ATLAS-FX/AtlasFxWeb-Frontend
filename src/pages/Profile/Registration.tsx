@@ -1,3 +1,4 @@
+import RoboSucess from '@/assets/robo.png'
 import { IconAddress } from '@/components/icons/Address'
 import { IconEmail } from '@/components/icons/Email'
 import { IconMovingCar } from '@/components/icons/MovingCar'
@@ -13,10 +14,12 @@ import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import UserApi from '@/services/UserApi'
 import { maskOfCep, maskOfEmail } from '@/utils/masksFunctions'
+import { CircleCheck } from 'lucide-react'
 import md5 from 'md5'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
+import { SucessForm } from './SuccessForm'
 
 const Registration: React.FC = () => {
   const navigate = useNavigate()
@@ -46,7 +49,8 @@ const Registration: React.FC = () => {
   const {
     data: profile,
     isLoading,
-    isError
+    isError,
+    refetch
   } = useQuery({
     queryKey: 'get-profile',
     queryFn: async () => {
@@ -114,8 +118,9 @@ const Registration: React.FC = () => {
           title: 'Seu código foi confirmado com sucesso!',
           description: ''
         })
+        refetch()
         setOpenModalPwd(false)
-        setChangeAddressStep(0)
+        setChangeAddressStep(3)
       })
       .catch((e: Error) => {
         console.log('error ->', e)
@@ -164,20 +169,21 @@ const Registration: React.FC = () => {
                 : () => setChangeAddressStep((prevState) => prevState - 1)
             }
           />
-          {changeAddressStep !== 2 && (
-            <>
-              <div>
-                <h2 className="text-base font-bold">{profile?.name}</h2>
-                <h4 className="text-sm">Banco: -</h4>
-                <h4 className="text-sm">
-                  Agência {profile?.agency} Conta: {profile?.account}
-                </h4>
-              </div>
-              <div className="flex flex-row-reverse">
-                <Separator className="w-[52%] bg-colorSecondary-500" />
-              </div>
-            </>
-          )}
+          {changeAddressStep === 0 ||
+            (changeAddressStep === 1 && (
+              <>
+                <div>
+                  <h2 className="text-base font-bold">{profile?.name}</h2>
+                  <h4 className="text-sm">Banco: -</h4>
+                  <h4 className="text-sm">
+                    Agência {profile?.agency} Conta: {profile?.account}
+                  </h4>
+                </div>
+                <div className="flex flex-row-reverse">
+                  <Separator className="w-[52%] bg-colorSecondary-500" />
+                </div>
+              </>
+            ))}
           {changeAddressStep === 0 ? (
             <>
               <div className="flex items-center justify-around">
@@ -349,7 +355,7 @@ const Registration: React.FC = () => {
               </div>
             </>
           ) : (
-            <></>
+            changeAddressStep === 3 && <SucessForm />
           )}
         </AdminContainer>
       )}
