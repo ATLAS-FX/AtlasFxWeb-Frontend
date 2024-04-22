@@ -21,7 +21,7 @@ export const AdminRoutes: React.FC = () => {
       ></div>
       <div className="flex max-h-[100vh] max-w-[1440px] flex-col items-center justify-around gap-8">
         <Header />
-        <div className="grid grid-cols-[7vw,60vw,25vw] items-start justify-center gap-8">
+        <div className="grid grid-cols-[7%,60%,25%] items-start justify-center gap-8">
           <Sidebar />
           <div className="flex max-h-[80vh] overflow-y-auto">
             <ReactRoutes>
