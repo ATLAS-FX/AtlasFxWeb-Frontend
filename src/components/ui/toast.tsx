@@ -14,7 +14,7 @@ const ToastViewport = React.forwardRef<
   <ToastPrimitives.Viewport
     ref={ref}
     className={cn(
-      'fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 md:max-w-[420px] sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col',
+      'fixed bottom-4 right-4 z-[100] flex max-h-screen w-[300px] flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col',
       className
     )}
     {...props}
@@ -28,7 +28,7 @@ const toastVariants = cva(
     variants: {
       variant: {
         default: 'border bg-background text-foreground',
-        success: 'bg-secondPrimary-500 text-white group',
+        success: 'bg-colorSecondary-500 text-black group',
         destructive:
           'destructive group border-destructive bg-destructive text-destructive-foreground'
       }
@@ -82,7 +82,7 @@ const ToastClose = React.forwardRef<
     toast-close=""
     {...props}
   >
-    <X className="h-4 w-4" />
+    <X className="h-6 w-6" />
   </ToastPrimitives.Close>
 ))
 ToastClose.displayName = ToastPrimitives.Close.displayName

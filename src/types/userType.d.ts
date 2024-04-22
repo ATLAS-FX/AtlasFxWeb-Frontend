@@ -22,6 +22,7 @@ declare namespace App {
     agency: string
     street: string
     st_comp: string
+    st_number: string
     district: string
     city: string
     state: string

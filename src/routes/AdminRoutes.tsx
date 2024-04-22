@@ -19,11 +19,11 @@ export const AdminRoutes: React.FC = () => {
         className="absolute inset-0 left-0 right-0 top-0 z-[-10] w-screen"
         style={StyleAuth}
       ></div>
-      <div className="flex max-w-[1440px] flex-col items-center justify-around gap-8">
+      <div className="flex max-h-[100vh] max-w-[1440px] flex-col items-center justify-around gap-8">
         <Header />
         <div className="grid grid-cols-[7vw,60vw,25vw] items-start justify-center gap-8">
           <Sidebar />
-          <div className="flex h-[76vh] overflow-y-auto">
+          <div className="flex max-h-[80vh] overflow-y-auto">
             <ReactRoutes>
               <Route path="/welcome" Component={Home} />
               <Route path="profile">

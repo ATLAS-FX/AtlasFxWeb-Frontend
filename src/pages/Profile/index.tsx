@@ -29,8 +29,9 @@ const Profile: React.FC = () => {
   return (
     <div className="flex w-full flex-col gap-4 rounded-2xl bg-white p-8 text-sm font-light text-colorPrimary-500 xl:text-xs">
       <Title text="Meu Perfil" back={() => navigate(-1)} />
-      {listLinks.map(({ title, icon: Icon, path }) => (
+      {listLinks.map(({ title, icon: Icon, path }, number) => (
         <Link
+          key={number}
           to={path}
           className="flex w-full items-center gap-2 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 p-2 text-base font-medium text-colorPrimary-500"
         >
