@@ -1,7 +1,7 @@
 import RoboSucess from '@/assets/robo.png'
 import { CircleCheck } from 'lucide-react'
 
-export const SucessForm: React.FC = () => {
+export const RegistratrionSucess: React.FC = () => {
   return (
     <>
       <h4 className="flex items-center gap-2 text-sm font-semibold">

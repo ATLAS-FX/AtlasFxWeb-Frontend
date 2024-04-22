@@ -47,7 +47,6 @@ const Login: React.FC = () => {
         navigate('/')
       })
       .catch((e: Error) => {
-        console.log('error ->', e)
         toast({
           variant: 'destructive',
           title: 'Falha ao acessar sua conta PJ.',
@@ -85,7 +84,7 @@ const Login: React.FC = () => {
                 <p className="py-2 pt-0 text-colorPrimary-500">
                   Para fazer o login, informe seu número de conta e dígito
                 </p>
-                <Separator className="bg-colorSecondary-500 mb-4" />
+                <Separator className="mb-4 bg-colorSecondary-500" />
                 <div className="text-justify text-xs text-colorPrimary-500">
                   <p className="py-1">
                     <strong>
@@ -181,7 +180,7 @@ const Login: React.FC = () => {
               <div className="flex justify-end">
                 <Button
                   className={cn(
-                    'bg-colorSecondary-500 h-12 w-5/12 rounded-lg text-base font-bold text-colorPrimary-500',
+                    'h-12 w-5/12 rounded-lg bg-colorSecondary-500 text-base font-bold text-colorPrimary-500',
                     inputPassword.length < 8 ? 'bg-[#BEBEBE] text-[#7E7E7E]' : ''
                   )}
                   disabled={inputPassword.length < 8}
@@ -211,7 +210,7 @@ const Login: React.FC = () => {
           </span>
           <Button
             variant="ghost"
-            className="hover:text-colorSecondary-500 w-fit p-0"
+            className="w-fit p-0 hover:text-colorSecondary-500"
             disabled={inputRef.length < 1}
             onClick={checkValidate}
           >
