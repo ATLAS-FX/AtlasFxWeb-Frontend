@@ -1,6 +1,7 @@
 import { IconAddress } from '@/components/icons/Address'
 import { IconEmail } from '@/components/icons/Email'
 import { IconMovingCar } from '@/components/icons/MovingCar'
+import { AdminContainer } from '@/components/layout/Container'
 import TwoFactorAuthValidator from '@/components/layout/Input/TwoFactorAuthValidator'
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Title } from '@/components/layout/Text/Title'
@@ -59,7 +60,7 @@ const Registration: React.FC = () => {
       .then((res) => {
         console.log('sucess ->', res.success)
         setGetCodeAddress(res.success.match(/:\s*(\w+)/)?.[1])
-        setOpenModalValidation(false)
+        setOpenModalValidation(!openModalValidation)
       })
       .catch((e: Error) => {
         console.log('error ->', e)
@@ -154,7 +155,7 @@ const Registration: React.FC = () => {
       {isLoading ? (
         <Skeleton className="h-full w-full rounded-lg" />
       ) : (
-        <div className="flex w-full flex-col gap-4 rounded-2xl bg-white p-8 text-sm font-light text-colorPrimary-500 xl:text-xs">
+        <AdminContainer>
           <Title
             text={changeAddressStep < 1 ? 'Dados cadastrais' : 'Alterar endereço'}
             back={
@@ -350,7 +351,7 @@ const Registration: React.FC = () => {
           ) : (
             <></>
           )}
-        </div>
+        </AdminContainer>
       )}
     </>
   )

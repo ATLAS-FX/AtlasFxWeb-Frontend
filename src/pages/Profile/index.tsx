@@ -1,6 +1,7 @@
 import { IconClose } from '@/components/icons/Close'
 import { IconPadLock } from '@/components/icons/PadLock'
 import { IconRegistration } from '@/components/icons/Registration'
+import { AdminContainer } from '@/components/layout/Container'
 import { Title } from '@/components/layout/Text/Title'
 import { Separator } from '@/components/ui/separator'
 import { Link, useNavigate } from 'react-router-dom'
@@ -27,7 +28,7 @@ const Profile: React.FC = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="flex w-full flex-col gap-4 rounded-2xl bg-white p-8 text-sm font-light text-colorPrimary-500 xl:text-xs">
+    <AdminContainer>
       <Title text="Meu Perfil" back={() => navigate(-1)} />
       {listLinks.map(({ title, icon: Icon, path }, number) => (
         <Link
@@ -42,7 +43,7 @@ const Profile: React.FC = () => {
       <div className="flex flex-row-reverse">
         <Separator className="w-[52%] bg-colorSecondary-500" />
       </div>
-    </div>
+    </AdminContainer>
   )
 }
 
