@@ -3,37 +3,53 @@ import { Separator } from '@/components/ui/separator'
 
 const Home: React.FC = () => {
   return (
-    <div className="flex h-full flex-col gap-4 text-sm font-light text-white xl:text-xs">
-      <h4 className="text-base font-semibold xl:text-sm">Seja bem-vindo!</h4>
-      <p>
-        Onde quer que você esteja, estamos aqui para simplificar suas finanças. Com
-        nosso Portal PJ, você tem o poder de gerenciar as contas da sua empresa,
-        pagar contas, transferir dinheiro e muito mais, tudo com facilidade e
-        segurança.
-      </p>
-      <p>
-        Explore nossos recursos intuitivos e aproveite a conveniência de realizar
-        suas transações financeiras da forma que precisar.
-      </p>
-      <p>
-        Junte-se a nós em nossa jornada para simplificar a vida financeira e
-        experimente o futuro dos serviços bancários hoje mesmo.
-      </p>
-      <p>
-        Estamos aqui para ajudar você a alcançar seus objetivos financeiros, cada
-        passo do caminho.
-      </p>
-      <p>
-        Sua segurança é nossa prioridade, e nossas medidas robustas garantem que suas
-        informações permaneçam protegidas em cada transação.
-      </p>
-      <Separator className="m-auto mt-2 w-10/12 bg-colorSecondary-500" />
-      <p className="m-auto w-8/12 text-justify">
-        Sua segurança é nossa prioridade, e nossas medidas robustas garantem que suas
-        informações permaneçam protegidas em cada transação.
-      </p>
+    <div className="flex h-[calc(100vh-164px)] flex-col items-center gap-4 text-xs text-white">
+      <div className="flex flex-col gap-2">
+        <h4
+          className="text-base font-semibold xl:text-sm"
+          style={{
+            textShadow: 'rgba(0, 0, 0, 0.4) 0px 3px 3px'
+          }}
+        >
+          Seja bem-vindo!
+        </h4>
+        <p>
+          Onde quer que você esteja, estamos aqui para simplificar suas finanças. Com
+          nosso Portal PJ, você tem o poder de gerenciar as contas da sua empresa,
+          pagar contas, transferir dinheiro e muito mais, tudo com facilidade e
+          segurança.
+        </p>
+        <p>
+          Explore nossos recursos intuitivos e aproveite a conveniência de realizar
+          suas transações financeiras da forma que precisar.
+        </p>
+        <p>
+          Junte-se a nós em nossa jornada para simplificar a vida financeira e
+          experimente o futuro dos serviços bancários hoje mesmo.
+        </p>
+        <p>
+          Estamos aqui para ajudar você a alcançar seus objetivos financeiros, cada
+          passo do caminho.
+        </p>
+        <p>
+          Sua segurança é nossa prioridade, e nossas medidas robustas garantem que
+          suas informações permaneçam protegidas em cada transação.
+        </p>
+      </div>
+      <Separator className="my-3 w-8/12 bg-colorSecondary-500" />
+      <div className="flex flex-col gap-2">
+        <p className="text-justify">
+          Sua segurança é nossa prioridade, e nossas medidas robustas garantem que
+          suas informações permaneçam protegidas em cada transação.
+        </p>
+      </div>
       <div className="flex flex-col justify-center gap-4">
-        <h4 className="text-center text-xs font-medium">
+        <h4
+          className="text-center text-sm font-medium text-white"
+          style={{
+            textShadow: 'rgba(0, 0, 0, 0.4) 0px 3px 3px'
+          }}
+        >
           Maior Segurança para Contas PJ com Acesso Limitado por IP Fixo
         </h4>
         <div className="flex items-start justify-between gap-2">

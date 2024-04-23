@@ -9,6 +9,7 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import { Separator } from '@/components/ui/separator'
+import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { useAdm } from '@/contexts/UserContext'
 import UserApi from '@/services/UserApi'
@@ -18,7 +19,6 @@ import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { BlockPad } from './BlockPad'
 import { Movements } from './Movements'
-import { Skeleton } from '@/components/ui/skeleton'
 
 export const Aside: React.FC = () => {
   const { user, setUser } = useAdm()
@@ -51,9 +51,9 @@ export const Aside: React.FC = () => {
   return (
     <>
       {isLoading ? (
-        <Skeleton className="h-[50vh] w-full rounded-lg" />
+        <Skeleton className="h-[70vh] w-full rounded-lg" />
       ) : (
-        <div className="flex h-[80vh] flex-col overflow-y-auto">
+        <div className="flex h-[calc(100vh-164px)] flex-col overflow-y-auto overflow-x-hidden">
           <ul>
             <BlockPad
               className="items-start bg-[#FFFFFF40]"

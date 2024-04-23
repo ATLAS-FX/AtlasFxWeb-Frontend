@@ -21,7 +21,7 @@ export const Title: React.FC<ITitle> = ({ text, back }) => {
         <h1
           className="font-Bills_Bold text-3xl uppercase"
           style={{
-            textShadow: 'rgba(0, 0, 0, 0.) 0px 3px 3px'
+            textShadow: 'rgba(0, 0, 0, 0.4) 0px 3px 3px'
           }}
         >
           {text}

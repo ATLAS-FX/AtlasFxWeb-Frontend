@@ -42,7 +42,7 @@ const RegistrationStep: React.FC = () => {
   return (
     <>
       {isLoading ? (
-        <Skeleton className="h-full w-full rounded-lg" />
+        <Skeleton className="h-[calc(100vh-164px)] w-full rounded-lg" />
       ) : (
         <AdminContainer>
           <Title
