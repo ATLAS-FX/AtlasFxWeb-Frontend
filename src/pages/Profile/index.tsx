@@ -15,12 +15,12 @@ const listLinks = [
   {
     title: 'Alterar senha',
     icon: IconPadLock,
-    path: '/'
+    path: '/profile/password' 
   },
   {
     title: 'Encerrar minha conta',
     icon: IconClose,
-    path: '/'
+    path: '/profile/close-account'
   }
 ]
 
