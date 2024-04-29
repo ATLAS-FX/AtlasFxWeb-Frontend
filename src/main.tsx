@@ -16,16 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <UserProvider>
-          <Suspense
-            fallback={
-              <iframe
-                src="https://giphy.com/embed/l0GRk3KHYv2W6hmJG"
-                width="480"
-                height="480"
-                allowFullScreen
-              />
-            }
-          >
+          <Suspense fallback={<span>Loading...</span>}>
             <App />
             <Toaster />
           </Suspense>

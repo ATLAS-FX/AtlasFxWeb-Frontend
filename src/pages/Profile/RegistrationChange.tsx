@@ -1,5 +1,5 @@
 import { IconAddress } from '@/components/icons/Address'
-import { IconEmail } from '@/components/icons/Email'
+import { IconEmailCircle } from '@/components/icons/EmailCircle'
 import { IconMovingCar } from '@/components/icons/MovingCar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -49,7 +49,7 @@ export const RegistratrionChange: React.FC<IRegistratrionChange> = ({
       <div className="flex items-center justify-around">
         <div className="flex flex-col gap-4">
           <h2 className="flex items-center gap-2 text-sm">
-            <IconEmail className="w-6 fill-colorPrimary-500" />
+            <IconEmailCircle className="w-6 fill-colorPrimary-500" />
             {email}
           </h2>
           <h2 className="flex items-start gap-2 text-sm">

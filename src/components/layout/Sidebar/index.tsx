@@ -5,7 +5,10 @@ import { checkoutItems } from './checkoutItems'
 
 export const Sidebar: React.FC = () => {
   return (
-    <ul className="flex h-[calc(100vh-164px)] w-[84px] flex-col items-center justify-start gap-2 overflow-y-auto rounded-lg border-0 bg-[#EFEFEF] py-2">
+    <ul
+      className="flex max-h-[calc(100vh-164px)] w-[84px] flex-col items-center justify-start gap-2 overflow-y-auto rounded-lg border-0 bg-[#EFEFEF] py-2"
+      id="sidebar"
+    >
       {checkoutItems
         .filter((item) => !item.comming)
         .map((item) => (

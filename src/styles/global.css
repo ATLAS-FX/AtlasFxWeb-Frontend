@@ -56,8 +56,11 @@
       border-radius: 50%;
     }
     ::-webkit-scrollbar-thumb {
-      background: #C8D753;
+      background: #c8d753;
       border-radius: 16px;
+    }
+    #sidebar::-webkit-scrollbar {
+      display: none;
     }
   }
 

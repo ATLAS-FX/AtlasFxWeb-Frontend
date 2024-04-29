@@ -1,6 +1,11 @@
 import { FC } from 'react'
 
-export const IconEmail: FC<App.IconProps> = ({ size, color, fill, className }) => {
+export const IconEmailCircle: FC<App.IconProps> = ({
+  size,
+  color,
+  fill,
+  className
+}) => {
   return (
     <svg
       width={size}

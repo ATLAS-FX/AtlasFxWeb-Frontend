@@ -3,6 +3,10 @@ import { Header } from '@/components/layout/Header'
 import { Sidebar } from '@/components/layout/Sidebar'
 import Home from '@/pages/Home'
 import Pix from '@/pages/Pix'
+import PixContacts from '@/pages/Pix/PixContacts'
+import PixDeposit from '@/pages/Pix/PixDeposit'
+import PixKeys from '@/pages/Pix/PixKeys'
+import PixStep from '@/pages/Pix/transaction/PixStep'
 import Profile from '@/pages/Profile'
 import RegistrationStep from '@/pages/Profile/RegistrationStep'
 import React from 'react'
@@ -27,7 +31,14 @@ export const AdminRoutes: React.FC = () => {
           <div className="max-h-[calc(100vh-164px)] overflow-y-auto overflow-x-hidden pr-4">
             <ReactRoutes>
               <Route path="/welcome" Component={Home} />
-              <Route path="/pix" Component={Pix} />
+              <Route path="pix" Component={Pix} />
+              <Route path="pix">
+                <Route index Component={Pix} />
+                <Route path=":id" Component={PixStep} />
+                <Route path="my-keys" Component={PixKeys} />
+                <Route path="my-contacts" Component={PixContacts} />
+                <Route path="my-deposits" Component={PixDeposit} />
+              </Route>
               <Route path="profile">
                 <Route index Component={Profile} />
                 <Route path="registration" Component={RegistrationStep} />

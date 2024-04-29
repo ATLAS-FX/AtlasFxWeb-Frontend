@@ -21,7 +21,7 @@ export const navbarItems = [
     id: 3,
     title: 'Sair',
     icon: IconExit,
-    path: '',
+    path: 'exit',
     exit: true
   }
 ]
