@@ -8,6 +8,8 @@ import PixDeposit from '@/pages/Pix/Deposits/PixDeposit'
 import PixKeys from '@/pages/Pix/KeysLists/PixKeys'
 import PixStep from '@/pages/Pix/Transactions/PixStep'
 import Profile from '@/pages/Profile'
+import Password from '@/pages/Profile/Password'
+import CloseAccount from '@/pages/Profile/CloseAccount'
 import RegistrationStep from '@/pages/Profile/Registration/RegistrationStep'
 import React from 'react'
 import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
@@ -42,6 +44,8 @@ export const AdminRoutes: React.FC = () => {
               <Route path="profile">
                 <Route index Component={Profile} />
                 <Route path="registration" Component={RegistrationStep} />
+                <Route path="password" Component={Password} />
+                <Route path="close-account" Component={CloseAccount}/>
               </Route>
               <Route path="*" element={<Navigate to="/welcome" />} />
             </ReactRoutes>
