@@ -9,9 +9,9 @@ const Password: React.FC = () => {
   return (
     <AdminContainer>
       <Title text="alterar Senha" back={() => navigate(-1)} />
-      <div className="flex flex-col gap-2 text-justify text-[9px]">
+      <div className="mb-2 flex flex-col gap-2 text-justify text-sm font-normal">
         <h4
-          className="text-xs font-semibold"
+          className="text-lg font-semibold"
           style={{
             textShadow: 'rgba(0, 0, 0, 0.4) 0px 3px 3px'
           }}
@@ -46,9 +46,9 @@ const Password: React.FC = () => {
       <div className="flex flex-row-reverse">
         <Separator className="w-[52%] bg-colorSecondary-500" />
       </div>
-      <div className="flex flex-col gap-2 text-justify text-[9px]">
+      <div className="flex flex-col gap-2 text-justify text-sm font-normal">
         <h4
-          className="text-xs font-semibold"
+          className="text-lg font-semibold"
           style={{
             textShadow: 'rgba(0, 0, 0, 0.4) 0px 3px 3px'
           }}
