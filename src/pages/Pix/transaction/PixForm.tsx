@@ -1,3 +1,4 @@
+import { IconAlert } from '@/components/icons/Alert'
 import TwoFactorAuthValidator from '@/components/layout/Input/TwoFactorAuthValidator'
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Button } from '@/components/ui/button'
@@ -6,6 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import PixApi from '@/services/PixApi'
 import { formatDoc } from '@/utils/formatDoc'
+import { formatedPrice } from '@/utils/formatedPrice'
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 
 interface IPixForm {
@@ -22,16 +24,18 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
   const [pwdCode, setPwdCode] = useState<string>('')
   const [formSendPix, setFormSendPix] = useState<{
-    amount: number | null
-    desc: string | null
+    amount: string
+    desc: string
     save: number
-  }>({ amount: null, desc: null, save: 0 })
+  }>({ amount: '', desc: '', save: 0 })
 
-  const isFormValid = Object.values(formSendPix).every((value) => value !== null)
+  const isFormValid = Object.values(formSendPix.amount).every(
+    (value) => value.trim() !== ''
+  )
 
   const handleSendPix = async () => {
     await PixApi.sendPix({
-      amount: formSendPix.amount || 0,
+      amount: Number(formSendPix.amount) || 0,
       desc: formSendPix.desc || '',
       key: keyPix,
       save: formSendPix.save
@@ -53,9 +57,8 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
           description: e.message
         })
       })
+    console.log(pwdCode)
   }
-
-  console.log(pwdCode)
 
   return (
     <>
@@ -78,17 +81,20 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
         <h1 className="w-[45%] font-Bills_Bold text-3xl uppercase">
           Defina o valor*:
         </h1>
-        <div className='text-colorPrimary-500" flex w-full items-center gap-2 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium'>
+        <div className='text-colorPrimary-500" flex w-full items-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium'>
           <label>R$</label>
           <Input
             className="border-none p-0 text-lg shadow-none"
-            type="number"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            type="string"
+            value={formSendPix.amount}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              const format = formatedPrice(e.target.value) || ''
+              console.log(format)
               setFormSendPix((prevState) => ({
                 ...prevState,
-                amount: Number(e.target.value)
+                amount: format
               }))
-            }
+            }}
           />
         </div>
       </div>
@@ -121,10 +127,15 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
         title="Para seguir, verifique e confirme as informações."
         body={
           <>
-            <h4>
-              Antes de finalizar a operação, confirme as informações cuidadosamente,
-              uma vez que o débito realizado não poderá ser revertido.
-            </h4>
+            <Separator className="bg-colorPrimary-500" />
+            <div className="flex items-center justify-between gap-2">
+              <IconAlert className="w-32" />
+              <h4 className="text-xs">
+                Antes de finalizar a operação, confirme as informações
+                cuidadosamente, uma vez que o débito realizado não poderá ser
+                revertido.
+              </h4>
+            </div>
             <Separator className="bg-colorPrimary-500" />
             <div className="text-sm font-normal">
               <div className="flex items-center gap-2">
@@ -143,11 +154,12 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
                 <label>Chave pix:</label>
                 <h4 className="text-base font-semibold">{keyPix}</h4>
               </div>
-              <h4 className="text-center text-base font-semibold">
+              <h4 className="mb-2 mt-4 pl-[10%] text-lg font-semibold">
                 R$ {formSendPix.amount}
               </h4>
-              <label>{new Date().toLocaleDateString()}</label>
+              <label>Data: {new Date().toLocaleDateString()}</label>
             </div>
+            <Separator className="bg-colorPrimary-500" />
           </>
         }
         openModal={stateModalPix}

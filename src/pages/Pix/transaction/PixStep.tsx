@@ -1,11 +1,13 @@
 import { AdminContainer } from '@/components/layout/Container'
 import { Title } from '@/components/layout/Text/Title'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import PixApi from '@/services/PixApi'
 import { formatDoc } from '@/utils/formatDoc'
+import { CheckCircle2 } from 'lucide-react'
 import { ChangeEvent, useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PixForm from './PixForm'
@@ -46,18 +48,30 @@ const PixStep: React.FC = () => {
           <label className="text-base font-medium">
             Insira os dados da Chave Pix
           </label>
-          <Input
+          <div
             className={cn(
-              'h-12 rounded-xl border-2  p-2 text-lg font-semibold shadow-none',
+              'flex h-12 w-full  items-center gap-2 rounded-xl border-2 p-2 px-2 py-1 text-lg font-semibold shadow-none transition-transform duration-300',
               stepPix > 0 ? 'border-[#008000]' : 'border-colorPrimary-500'
             )}
-            type="text"
-            value={getKeyInput}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              setGetKeyInput(e.target.value)
-              CheckKeyInputPix()
-            }}
-          />
+          >
+            <Input
+              className="border-none p-0 text-lg shadow-none"
+              type="text"
+              value={getKeyInput}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                setGetKeyInput(e.target.value)
+              }}
+            />
+            <Button
+              variant="ghost"
+              className="w-fit p-0 hover:text-colorSecondary-500"
+              disabled={getKeyInput.length <= 0}
+              onClick={CheckKeyInputPix}
+            >
+              <CheckCircle2 size={32} />
+            </Button>
+          </div>
+
           <div className={cn('flex', stepPix > 0 ? 'flex-row' : 'flex-row-reverse')}>
             <Separator className="w-[52%] bg-colorSecondary-500" />
           </div>
