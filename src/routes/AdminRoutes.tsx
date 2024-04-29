@@ -8,7 +8,7 @@ import PixDeposit from '@/pages/Pix/Deposits/PixDeposit'
 import PixKeys from '@/pages/Pix/KeysLists/PixKeys'
 import PixStep from '@/pages/Pix/Transactions/PixStep'
 import Profile from '@/pages/Profile'
-import RegistrationStep from '@/pages/Profile/RegistrationStep'
+import RegistrationStep from '@/pages/Profile/Registration/RegistrationStep'
 import React from 'react'
 import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
 
