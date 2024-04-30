@@ -71,7 +71,6 @@ const PixStep: React.FC = () => {
               <CheckCircle2 size={32} />
             </Button>
           </div>
-
           <div className={cn('flex', stepPix > 0 ? 'flex-row' : 'flex-row-reverse')}>
             <Separator className="w-[52%] bg-colorSecondary-500" />
           </div>

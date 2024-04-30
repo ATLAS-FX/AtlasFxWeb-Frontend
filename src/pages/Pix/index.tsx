@@ -1,12 +1,6 @@
-import { IconBuilding } from '@/components/icons/Building'
-import { IconCoding } from '@/components/icons/Coding'
-import { IconCopyPaste } from '@/components/icons/CopyPaste'
 import { IconDepositCoin } from '@/components/icons/DepositCoin'
-import { IconEmailSquare } from '@/components/icons/EmailSquare'
 import { IconGroupUser } from '@/components/icons/GroupUser'
 import { IconKey } from '@/components/icons/Key'
-import { IconSmartphone } from '@/components/icons/Smartphone'
-import { IconUserSquare } from '@/components/icons/UserSquare'
 import { AdminContainer } from '@/components/layout/Container'
 import { Title } from '@/components/layout/Text/Title'
 import {
@@ -16,38 +10,12 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import { Separator } from '@/components/ui/separator'
+import { listPixButton } from '@/utils/PixListButtons'
 import { ChevronDown } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 
 const Pix: React.FC = () => {
   const navigate = useNavigate()
-
-  const listPixButton = [
-    {
-      icon: IconUserSquare,
-      name: 'CPF'
-    },
-    {
-      icon: IconBuilding,
-      name: 'CNPJ'
-    },
-    {
-      icon: IconSmartphone,
-      name: 'Celular'
-    },
-    {
-      icon: IconEmailSquare,
-      name: 'E-mail'
-    },
-    {
-      icon: IconCoding,
-      name: 'Chave aleatória'
-    },
-    {
-      icon: IconCopyPaste,
-      name: 'Copia e Cola'
-    }
-  ]
 
   const listPixActions = [
     {
@@ -75,14 +43,14 @@ const Pix: React.FC = () => {
         <p className="text-sm font-medium">
           Escolha a chave para identificar quem vai receber
         </p>
-        <div className="flex w-full items-center justify-between py-4">
+        <div className="flex w-full items-center justify-between gap-2 py-4">
           {listPixButton.map(({ name, icon: Icon }, number) => (
             <Link
-              className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-colorPrimary-500 bg-transparent fill-colorPrimary-500 text-colorPrimary-500 transition-all duration-300 ease-out hover:bg-colorPrimary-500 hover:fill-white hover:text-white"
+              className="flex h-20 w-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-colorPrimary-500 bg-transparent fill-colorPrimary-500 text-colorPrimary-500 transition-all duration-300 ease-out hover:bg-colorPrimary-500 hover:fill-white hover:text-white"
               key={number}
               to={`/pix/${name}`}
             >
-              <Icon size={number === 4 ? 30 : 40} stroke={2} />
+              <Icon size={number === 4 ? 28 : 32} />
               <span className="text-center text-xs font-medium">{name}</span>
             </Link>
           ))}

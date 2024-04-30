@@ -42,6 +42,7 @@ export const Aside: React.FC = () => {
     }
     if (isError) {
       toast({
+        variant: 'destructive',
         title: 'Falha ao carregar dados da conta.',
         description: 'Por favor tente mais tarde!'
       })

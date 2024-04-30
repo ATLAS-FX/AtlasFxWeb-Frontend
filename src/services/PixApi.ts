@@ -6,7 +6,7 @@ class UserApi {
     return res.data
   }
 
-  public async listPixKeys() {
+  public async listPixKeys(): Promise<App.KeyPixProps[]> {
     const res = await api.get('portal/pix/my_keys')
     return res.data
   }

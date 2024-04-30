@@ -64,6 +64,7 @@ const Login: React.FC = () => {
     }
     if (isError) {
       toast({
+        variant: 'destructive',
         title: 'Falha ao carregar dados de usuários.',
         description: 'Por favor tente mais tarde!',
         action: <ToastAction altText="Try again">Try again</ToastAction>

@@ -5,4 +5,10 @@ declare namespace App {
     key: string
     name: string
   }
+  export interface KeyPixProps {
+    id: string
+    type: string
+    code: string
+    created: string
+  }
 }

@@ -25,6 +25,7 @@ const CloseAccount: React.FC = () => {
   useEffect(() => {
     if (isError) {
       toast({
+        variant: 'destructive',
         title: 'Falha ao carregar dados da conta.',
         description: 'Por favor tente mais tarde!'
       })
