@@ -1,10 +1,11 @@
+import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { IconClose } from '@/components/icons/Close'
 import { IconPadLock } from '@/components/icons/PadLock'
 import { IconRegistration } from '@/components/icons/Registration'
 import { AdminContainer } from '@/components/layout/Container'
 import { Title } from '@/components/layout/Text/Title'
 import { Separator } from '@/components/ui/separator'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const listLinks = [
   {
@@ -15,7 +16,7 @@ const listLinks = [
   {
     title: 'Alterar senha',
     icon: IconPadLock,
-    path: '/profile/password' 
+    path: '/profile/password'
   },
   {
     title: 'Encerrar minha conta',
@@ -31,14 +32,12 @@ const Profile: React.FC = () => {
     <AdminContainer>
       <Title text="Meu Perfil" back={() => navigate(-1)} />
       {listLinks.map(({ title, icon: Icon, path }, number) => (
-        <Link
+        <ButtonAtlas
           key={number}
-          to={path}
-          className="flex w-full items-center gap-2 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 p-2 text-base font-medium text-colorPrimary-500"
-        >
-          <Icon size={30} />
-          {title}
-        </Link>
+          title={title}
+          icon={Icon}
+          click={() => navigate(path)}
+        />
       ))}
       <div className="flex flex-row-reverse">
         <Separator className="w-[52%] bg-colorSecondary-500" />

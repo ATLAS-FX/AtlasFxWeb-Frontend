@@ -11,4 +11,10 @@ declare namespace App {
     code: string
     created: string
   }
+  export interface ContactsPixProps {
+    id: string
+    name: string
+    key: string
+    created: string
+  }
 }

@@ -1,3 +1,4 @@
+import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { IconDepositCoin } from '@/components/icons/DepositCoin'
 import { IconGroupUser } from '@/components/icons/GroupUser'
 import { IconKey } from '@/components/icons/Key'
@@ -69,14 +70,12 @@ const Pix: React.FC = () => {
             <div className="flex items-start justify-between gap-2">
               <div className="flex w-6/12 flex-col gap-2">
                 {listPixActions.map(({ title, icon: Icon, path }, number) => (
-                  <Link
+                  <ButtonAtlas
                     key={number}
-                    to={path}
-                    className="flex items-center gap-2 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 p-2 text-base font-bold text-colorPrimary-500"
-                  >
-                    <Icon size={32} />
-                    {title}
-                  </Link>
+                    title={title}
+                    icon={Icon}
+                    click={() => navigate(path)}
+                  />
                 ))}
               </div>
               <div className="flex w-6/12 flex-col gap-4 px-4 text-xs font-normal">

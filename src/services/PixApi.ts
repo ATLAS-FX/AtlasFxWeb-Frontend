@@ -11,6 +11,11 @@ class UserApi {
     return res.data
   }
 
+  public async listPixContacts(): Promise<App.ContactsPixProps[]> {
+    const res = await api.get('portal/contacts/list')
+    return [res.data]
+  }
+
   public async createdKeyPix(params: { key_type: string; key_code: string }) {
     const res = await api.post('portal/pix/create_key', params)
     return res.data

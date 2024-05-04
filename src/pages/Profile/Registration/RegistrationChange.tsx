@@ -1,7 +1,7 @@
+import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { IconAddress } from '@/components/icons/Address'
 import { IconEmailCircle } from '@/components/icons/EmailCircle'
 import { IconMovingCar } from '@/components/icons/MovingCar'
-import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Dispatch, SetStateAction } from 'react'
 
@@ -65,14 +65,12 @@ export const RegistratrionChange: React.FC<IRegistratrionChange> = ({
             </div>
           </h2>
         </div>
-        <Button
-          className="flex items-center gap-2 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 p-6 text-base font-medium text-colorPrimary-500"
-          variant="ghost"
-          onClick={() => step(1)}
-        >
-          <IconMovingCar className="w-8 fill-colorPrimary-500" />
-          Alterar endereço
-        </Button>
+        <ButtonAtlas
+          click={() => step(1)}
+          title="Alterar endereço"
+          icon={IconMovingCar}
+          classButton="w-5/12"
+        />
       </div>
       <Separator className="w-[52%] bg-colorSecondary-500" />
       <div className="flex flex-col gap-2">

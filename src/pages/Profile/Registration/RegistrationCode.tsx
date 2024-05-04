@@ -1,3 +1,4 @@
+import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { IconMovingCar } from '@/components/icons/MovingCar'
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Button } from '@/components/ui/button'
@@ -78,14 +79,11 @@ export const RegistratrionCode: React.FC<IRegistrationCode> = ({
           Para evitar fraudes, enviaremos um código para seu e-mail cadastrado.
           Insira-o para prosseguir com a alteração de seu endereço de cadastro.
         </p>
-        <Button
-          className="flex w-full items-center justify-start gap-2 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 p-6 text-base font-medium text-colorPrimary-500"
-          onClick={handleChangeAddress}
-          variant="ghost"
-        >
-          <IconMovingCar className="w-8 fill-colorPrimary-500" />
-          Prosseguir com a alteração de endereço
-        </Button>
+        <ButtonAtlas
+          title="Prosseguir com a alteração de endereço"
+          click={handleChangeAddress}
+          icon={IconMovingCar}
+        />
         <ModalDefault
           openModal={openModalValidation}
           setOpenModal={setOpenModalValidation}

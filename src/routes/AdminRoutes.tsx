@@ -8,13 +8,22 @@ import PixDeposit from '@/pages/Pix/Deposits/PixDeposit'
 import PixKeys from '@/pages/Pix/KeysLists/PixKeys'
 import PixStep from '@/pages/Pix/Transactions/PixStep'
 import Profile from '@/pages/Profile'
-import Password from '@/pages/Profile/Password'
 import CloseAccount from '@/pages/Profile/CloseAccount'
+import Password from '@/pages/Profile/Password'
 import RegistrationStep from '@/pages/Profile/Registration/RegistrationStep'
 import React from 'react'
 import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
 
 export const AdminRoutes: React.FC = () => {
+  // const location = useLocation()
+  // useEffect(() => {
+  //   if (location.pathname === '/checkout/personalizar') {
+  //     setIsCustomizeCheckout(true)
+  //   } else {
+  //     setIsCustomizeCheckout(false)
+  //   }
+  // }, [location.pathname])
+
   const StyleAuth = {
     background: 'linear-gradient(358deg, #242F5F 0%, #425EA8 100%)',
     backgroundPosition: 'top'
@@ -32,8 +41,9 @@ export const AdminRoutes: React.FC = () => {
           <Sidebar />
           <div className="max-h-[calc(100vh-164px)] overflow-y-auto overflow-x-hidden pr-4">
             <ReactRoutes>
+              {/* welcome */}
               <Route path="/welcome" Component={Home} />
-              <Route path="pix" Component={Pix} />
+              {/* pix */}
               <Route path="pix">
                 <Route index Component={Pix} />
                 <Route path=":id" Component={PixStep} />
@@ -41,11 +51,12 @@ export const AdminRoutes: React.FC = () => {
                 <Route path="my-contacts" Component={PixContacts} />
                 <Route path="my-deposits" Component={PixDeposit} />
               </Route>
+              {/* profile */}
               <Route path="profile">
                 <Route index Component={Profile} />
                 <Route path="registration" Component={RegistrationStep} />
                 <Route path="password" Component={Password} />
-                <Route path="close-account" Component={CloseAccount}/>
+                <Route path="close-account" Component={CloseAccount} />
               </Route>
               <Route path="*" element={<Navigate to="/welcome" />} />
             </ReactRoutes>

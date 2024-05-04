@@ -7,7 +7,7 @@ export const IconKey: FC<App.IconProps> = ({ size, color, fill, className }) => 
       height={size}
       color={fill}
       fill={color}
-      viewBox="0 0 27 27"
+      viewBox="0 -2 25 25"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >

@@ -1,18 +1,15 @@
+import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
+import { IconClose } from '@/components/icons/Close'
 import { IconCopyPaste } from '@/components/icons/CopyPaste'
 import { IconShared } from '@/components/icons/Shared'
 import { IconTrash } from '@/components/icons/Trash'
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Button } from '@/components/ui/button'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
 import { toast } from '@/components/ui/use-toast'
 import PixApi from '@/services/PixApi'
 import { listPixButton } from '@/utils/PixListButtons'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface IListOfKeys {
   listMyKeys: App.KeyPixProps[]
@@ -20,10 +17,11 @@ interface IListOfKeys {
 }
 
 const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
+  const navigate = useNavigate()
   const [openModalDeleteKey, setOpenModalDeleteKey] = useState<boolean>(false)
   const [data, setData] = useState<
     {
-      icon: React.FC<App.IconProps> | string
+      icon: React.FC<App.IconProps>
       title: string | string
       id: string
       type: string
@@ -38,14 +36,14 @@ const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
         .filter((action) => listPixButton.some((item) => item.type === action.type))
         .map((action) => ({
           ...action,
-          icon: listPixButton.find((item) => item.type === action.type)?.icon || '',
+          icon:
+            listPixButton.find((item) => item.type === action.type)?.icon ||
+            IconClose,
           title: listPixButton.find((item) => item.type === action.type)?.name || ''
         }))
       setData(filteredListPixActions)
     }
   }, [listMyKeys])
-
-  console.log(data)
 
   const handleCopyClick = (value: string) => {
     navigator.clipboard
@@ -74,7 +72,8 @@ const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
           title: 'Seu chave pix foi deletada com sucesso!',
           description: res.success
         })
-        refetch()
+        console.log(data)
+        data.length >= 1 ? refetch() : navigate(0)
         setOpenModalDeleteKey(false)
       })
       .catch((e: Error) => {
@@ -93,60 +92,34 @@ const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
           <h4 className="mb-4 text-base font-semibold">Gerencie suas chaves Pix</h4>
           <div className="flex flex-col gap-2">
             {data.map(({ id, title, code, icon: Icon }, number) => (
-              <div
-                key={number}
-                className="flex items-center justify-between gap-2 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 p-2 text-base font-bold text-colorPrimary-500"
-              >
-                <div className="flex items-center gap-2">
-                  <Icon size={32} />
-                  {title}
-                </div>
-                <div className="flex items-center gap-2">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger onClick={() => handleCopyClick(code)}>
-                        <IconCopyPaste
-                          size={20}
-                          className="fill-colorPrimary-500 transition-transform duration-300 hover:fill-colorSecondary-500"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent className="rounded-md bg-colorPrimary-500 p-2 text-sm font-normal text-white">
-                        Clique para copiar chave pix
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <IconShared
-                          size={20}
-                          className="fill-colorPrimary-500 transition-transform duration-300 hover:fill-colorSecondary-500"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent
-                        className="rounded-md bg-colorPrimary-500 p-2 text-sm font-normal text-white"
-                        onClick={() => handleCopyClick(code)}
-                      >
-                        Clique para compartilhar
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger
-                        onClick={() => setOpenModalDeleteKey(!openModalDeleteKey)}
-                      >
-                        <IconTrash
-                          size={20}
-                          className="fill-colorPrimary-500 transition-transform duration-300 hover:fill-colorSecondary-500"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent className="rounded-md bg-colorPrimary-500 p-2 text-sm font-normal text-white">
-                        Clique para deletar chave
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
+              <React.Fragment key={number}>
+                <ButtonAtlas
+                  title={title}
+                  icon={Icon}
+                  listAction={[
+                    {
+                      icon: IconCopyPaste,
+                      tooltip: 'Clique para copiar chave pix',
+                      func: () => {
+                        handleCopyClick(code)
+                      }
+                    },
+                    {
+                      icon: IconShared,
+                      tooltip: 'Clique para compartilhar',
+                      func: () => {
+                        handleCopyClick(code)
+                      }
+                    },
+                    {
+                      icon: IconTrash,
+                      tooltip: 'Clique para deletar chave',
+                      func: () => {
+                        setOpenModalDeleteKey(!openModalDeleteKey)
+                      }
+                    }
+                  ]}
+                />
                 <ModalDefault
                   title="Confirmação de exclusão"
                   body={<p>Tem certeza que deseja excluir a chave Pix?</p>}
@@ -169,7 +142,7 @@ const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
                   openModal={openModalDeleteKey}
                   setOpenModal={setOpenModalDeleteKey}
                 />
-              </div>
+              </React.Fragment>
             ))}
           </div>
         </>

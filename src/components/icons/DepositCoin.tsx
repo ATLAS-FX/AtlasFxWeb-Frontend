@@ -12,7 +12,7 @@ export const IconDepositCoin: FC<App.IconProps> = ({
       height={size}
       color={fill}
       fill={color}
-      viewBox="0 0 24 27"
+      viewBox="0 0 23 23"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >

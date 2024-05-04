@@ -1,3 +1,4 @@
+import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
@@ -47,17 +48,18 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
         {listPixButton
           .filter((item) => validNames.has(item.name))
           .map(({ name, icon: Icon, type }, number) => (
-            <Button
-              className="flex h-20 w-24 cursor-pointer flex-col items-center justify-center gap-1  rounded-xl border-2 border-colorPrimary-500 bg-transparent fill-colorPrimary-500 text-colorPrimary-500 transition-all duration-300 ease-out hover:bg-colorPrimary-500 hover:fill-white hover:text-white"
+            <ButtonAtlas
               key={number}
-              onClick={() => {
+              title={name}
+              icon={Icon}
+              sizeIcon={number === 4 ? 28 : 32}
+              classButton="flex-col items-center w-24 h-20"
+              classDiv="flex-col text-xs"
+              click={() => {
                 setStepCreate(1)
                 setFormCreateKeyPix((prevState) => ({ ...prevState, type: type }))
               }}
-            >
-              <Icon size={number === 4 ? 28 : 32} />
-              <span className="text-center text-xs font-medium">{name}</span>
-            </Button>
+            />
           ))}
       </div>
       <div className="flex flex-row-reverse">
