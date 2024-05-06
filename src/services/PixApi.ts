@@ -26,6 +26,7 @@ class UserApi {
     amount: number
     desc: string
     save: number
+    pwd: string
   }) {
     const res = await api.post('portal/pix/send', params)
     return res.data

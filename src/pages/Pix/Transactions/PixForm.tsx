@@ -8,6 +8,7 @@ import { toast } from '@/components/ui/use-toast'
 import PixApi from '@/services/PixApi'
 import { formatDoc } from '@/utils/formatDoc'
 import { formatedPrice } from '@/utils/formatedPrice'
+import md5 from 'md5'
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 
 interface IPixForm {
@@ -38,7 +39,8 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
       amount: Number(formSendPix.amount) || 0,
       desc: formSendPix.desc || '',
       key: keyPix,
-      save: formSendPix.save
+      save: formSendPix.save,
+      pwd: md5(pwdCode)
     })
       .then((res) => {
         toast({
