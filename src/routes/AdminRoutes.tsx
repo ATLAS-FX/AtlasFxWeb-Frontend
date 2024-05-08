@@ -15,15 +15,6 @@ import React from 'react'
 import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
 
 export const AdminRoutes: React.FC = () => {
-  // const location = useLocation()
-  // useEffect(() => {
-  //   if (location.pathname === '/checkout/personalizar') {
-  //     setIsCustomizeCheckout(true)
-  //   } else {
-  //     setIsCustomizeCheckout(false)
-  //   }
-  // }, [location.pathname])
-
   const StyleAuth = {
     background: 'linear-gradient(358deg, #242F5F 0%, #425EA8 100%)',
     backgroundPosition: 'top'

@@ -1,6 +1,6 @@
 import Login from '@/pages/Auth/'
 import React from 'react'
-import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
+import { Routes as ReactRoutes, Route } from 'react-router-dom'
 import Atlas_Logo from '../assets/atlas_logo.png'
 
 export const AuthRoutes: React.FC = () => {
@@ -25,7 +25,7 @@ export const AuthRoutes: React.FC = () => {
         <ReactRoutes>
           <Route path="/" Component={Login} />
           <Route path="/login" Component={Login} />
-          <Route path="*" element={<Navigate to="/login" />} />
+          {/* <Route path="*" element={<Navigate to="/login" />} /> */}
         </ReactRoutes>
       </div>
     </div>

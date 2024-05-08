@@ -1,6 +1,5 @@
 import { toast } from '@/components/ui/use-toast'
 import axios from 'axios'
-import { redirect } from 'react-router-dom'
 
 export const api = axios.create({
   baseURL: 'https://backendserver.cloud/atlas/'
@@ -33,7 +32,6 @@ api.interceptors.response.use(
         title: 'Você foi desconectado.',
         description: 'Faça login novamente.'
       })
-      redirect('/login')
     }
     return Promise.reject(error)
   }

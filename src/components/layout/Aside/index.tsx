@@ -104,9 +104,9 @@ export const Aside: React.FC = () => {
                   <li>
                     <Separator className="mb-4 bg-white/30" />
                     {user.releases.map(
-                      ({ name, amount, method, send, id, created }) => (
+                      ({ name, amount, method, send, id, created }, number) => (
                         <Movements
-                          key={Number(id)}
+                          key={number}
                           id={id}
                           name={name}
                           amount={amount}

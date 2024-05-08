@@ -12,16 +12,16 @@ const queryClient = new QueryClient({
 })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <BrowserRouter>
-    <React.StrictMode>
+  <React.StrictMode>
+    <Suspense fallback={<span>Loading...</span>}>
       <QueryClientProvider client={queryClient}>
         <UserProvider>
-          <Suspense fallback={<span>Loading...</span>}>
+          <BrowserRouter>
             <App />
             <Toaster />
-          </Suspense>
+          </BrowserRouter>
         </UserProvider>
       </QueryClientProvider>
-    </React.StrictMode>
-  </BrowserRouter>
+    </Suspense>
+  </React.StrictMode>
 )
