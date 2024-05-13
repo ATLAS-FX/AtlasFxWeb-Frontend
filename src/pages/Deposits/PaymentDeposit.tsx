@@ -11,6 +11,7 @@ import { formattedDate } from '@/utils/formatDate'
 import { Image, Page, StyleSheet, Text, View, pdf } from '@react-pdf/renderer'
 import QRCode from 'qrcode.react'
 import { useEffect, useState } from 'react'
+import Barcode from 'react-barcode'
 
 interface StepDepositProps {
   amount: string
@@ -22,6 +23,7 @@ const PaymentDeposit: React.FC<StepDepositProps> = ({ amount, type }) => {
     amount: string
     barcode: string
   }>({ amount: '', barcode: '' })
+
   const listPaymentQrCodeActions = [
     {
       title: 'Copiar QR Code',
@@ -81,7 +83,8 @@ const PaymentDeposit: React.FC<StepDepositProps> = ({ amount, type }) => {
       logo: {
         width: 48,
         height: 48,
-        marginBottom: 8
+        marginBottom: 8,
+        objectFit: 'cover'
       },
       section: { color: 'white', textAlign: 'center', margin: 30 }
     })
@@ -133,12 +136,11 @@ const PaymentDeposit: React.FC<StepDepositProps> = ({ amount, type }) => {
       logo: {
         width: 48,
         height: 48,
-        marginBottom: 8
+        marginBottom: 8,
+        objectFit: 'cover'
       },
       section: { color: 'white', textAlign: 'center', margin: 30 }
     })
-
-    // const generateBarcode = () => {}
 
     const doc = (
       <PdfDefault
@@ -148,7 +150,7 @@ const PaymentDeposit: React.FC<StepDepositProps> = ({ amount, type }) => {
             <Text>Boleto para pagamento</Text>
             <View>
               <Text style={styles.value}>Código de Barras:</Text>
-              {/* <Image src={generateBarcode} style={{ width: 240 }} /> */}
+              <Barcode value={ticket.barcode} />
             </View>
           </Page>
         }
@@ -209,11 +211,11 @@ const PaymentDeposit: React.FC<StepDepositProps> = ({ amount, type }) => {
       )}
       {type === 'bar' && (
         <>
-          <h4>Número do código de barras:</h4>
+          <h4 className="text-lg">Número do código de barras:</h4>
           <div className='text-colorPrimary-500" flex w-full items-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium'>
-            <h4>{ticket.barcode}</h4>
+            <h4 className="text-3xl">{ticket.barcode}</h4>
           </div>
-          <h4>
+          <h4 className="text-lg font-medium">
             Atenção! Este boleto pode levar até 30 minutos para ser processado pela
             CIP e reconhecido pelos demais bancos.
           </h4>
@@ -226,7 +228,12 @@ const PaymentDeposit: React.FC<StepDepositProps> = ({ amount, type }) => {
             ))}
           </div>
           <Separator className="w-[52%] bg-colorSecondary-500" />
-          <h4>Após o pagamento, o saldo é liberado em até 3 dias úteis.</h4>
+          <h4 className="px-8 text-2xl font-semibold">
+            Após o pagamento, o saldo é liberado em até 3 dias úteis.
+          </h4>
+          <div className="flex flex-row-reverse">
+            <Separator className="w-[52%] bg-colorSecondary-500" />
+          </div>
         </>
       )}
     </>

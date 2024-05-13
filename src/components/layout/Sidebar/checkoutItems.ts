@@ -44,7 +44,7 @@ export const checkoutItems = [
     id: 5,
     title: 'Depósito',
     icon: IconDeposit,
-    path: '/deposit',
+    path: '/deposits',
     active: true,
     comming: false
   },

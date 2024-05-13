@@ -32,7 +32,7 @@ const Pix: React.FC = () => {
     {
       title: 'Depositar',
       icon: IconDepositCoin,
-      path: '/pix/my-deposits'
+      path: '/deposits'
     }
   ]
 
