@@ -5,7 +5,7 @@ declare namespace App {
     amount: string
     id: number
     name: string
-    cnpj: string
+    doc: string
     bank: string
     releases: DepositDetailsProps[]
   }

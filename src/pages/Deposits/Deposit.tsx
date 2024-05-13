@@ -49,7 +49,7 @@ const Deposit: React.FC = () => {
               key={infoDeposit?.id}
               step={setStepDeposit}
               name={infoDeposit?.name || ''}
-              cnpj={infoDeposit?.cnpj || ''}
+              cnpj={infoDeposit?.doc || ''}
               bank={infoDeposit?.bank || ''}
               agency={infoDeposit?.agency || ''}
               account={infoDeposit?.account || ''}
