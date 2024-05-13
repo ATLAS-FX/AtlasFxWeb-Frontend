@@ -59,7 +59,6 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
           description: e.message
         })
       })
-    console.log(pwdCode)
   }
 
   return (
@@ -91,7 +90,6 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
             value={formSendPix.amount}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const format = formatedPrice(e.target.value) || ''
-              console.log(format)
               setFormSendPix((prevState) => ({
                 ...prevState,
                 amount: format

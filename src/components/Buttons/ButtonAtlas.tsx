@@ -11,7 +11,7 @@ interface ButtonAtlasProps {
   title: string
   classButton?: string
   classDiv?: string
-  icon: React.FC<App.IconProps>
+  icon?: React.FC<App.IconProps>
   sizeIcon?: number
   click?: () => void
   listAction?: {
@@ -31,10 +31,10 @@ export const ButtonAtlas: React.FC<ButtonAtlasProps> = ({
   listAction
 }) => {
   return (
-    <button
+    <div
       onClick={click}
       className={cn(
-        'flex w-full items-center gap-2 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 p-2 text-base font-medium text-colorPrimary-500 transition-transform duration-300 ',
+        'flex w-full cursor-pointer items-center gap-2 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 p-2 text-base font-medium text-colorPrimary-500 transition-transform duration-300',
         classButton,
         listAction
           ? 'justify-between'
@@ -42,7 +42,7 @@ export const ButtonAtlas: React.FC<ButtonAtlasProps> = ({
       )}
     >
       <div className={cn('flex items-center justify-start gap-2', classDiv)}>
-        <Icon size={sizeIcon} />
+        {Icon && <Icon size={sizeIcon} />}
         {title}
       </div>
       {listAction && (
@@ -64,6 +64,6 @@ export const ButtonAtlas: React.FC<ButtonAtlasProps> = ({
           ))}
         </div>
       )}
-    </button>
+    </div>
   )
 }

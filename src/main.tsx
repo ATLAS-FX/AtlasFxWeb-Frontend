@@ -15,12 +15,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Suspense fallback={<span>Loading...</span>}>
       <QueryClientProvider client={queryClient}>
-        <UserProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <UserProvider>
             <App />
             <Toaster />
-          </BrowserRouter>
-        </UserProvider>
+          </UserProvider>
+        </BrowserRouter>
       </QueryClientProvider>
     </Suspense>
   </React.StrictMode>

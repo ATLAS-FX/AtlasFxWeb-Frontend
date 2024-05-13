@@ -10,7 +10,12 @@ function App() {
     checkUserIsAuthenticated()
   }, [])
 
-  return <>{isAuthenticated ? <AdminRoutes /> : <AuthRoutes />}</>
+  return (
+    <>
+      {isAuthenticated === true && <AdminRoutes />}
+      {isAuthenticated === false && <AuthRoutes />}
+    </>
+  )
 }
 
 export default App

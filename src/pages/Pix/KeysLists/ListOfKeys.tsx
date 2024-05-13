@@ -7,6 +7,7 @@ import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import PixApi from '@/services/PixApi'
+import { handleCopyClick } from '@/utils/Copy&Paste'
 import { listPixButton } from '@/utils/PixListButtons'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -45,25 +46,6 @@ const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
     }
   }, [listMyKeys])
 
-  const handleCopyClick = (value: string) => {
-    navigator.clipboard
-      .writeText(value)
-      .then(() => {
-        toast({
-          variant: 'success',
-          title: 'Chave copiada com sucesso',
-          description: ''
-        })
-      })
-      .catch((e: Error) => {
-        toast({
-          variant: 'destructive',
-          title: 'Falha ao copiar chave',
-          description: e.message
-        })
-      })
-  }
-
   const handleDeleteKeyPix = async (key: string) => {
     await PixApi.deletePixKey({ id: key })
       .then((res) => {
@@ -72,7 +54,6 @@ const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
           title: 'Seu chave pix foi deletada com sucesso!',
           description: res.success
         })
-        console.log(data)
         data.length >= 1 ? refetch() : navigate(0)
         setOpenModalDeleteKey(false)
       })
@@ -101,14 +82,22 @@ const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
                       icon: IconCopyPaste,
                       tooltip: 'Clique para copiar chave pix',
                       func: () => {
-                        handleCopyClick(code)
+                        handleCopyClick(
+                          code,
+                          'Chave copiada com sucesso',
+                          'Falha ao copiar chave'
+                        )
                       }
                     },
                     {
                       icon: IconShared,
                       tooltip: 'Clique para compartilhar',
                       func: () => {
-                        handleCopyClick(code)
+                        handleCopyClick(
+                          code,
+                          'Chave copiada com sucesso',
+                          'Falha ao copiar chave'
+                        )
                       }
                     },
                     {

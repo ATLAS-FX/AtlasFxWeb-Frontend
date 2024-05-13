@@ -6,6 +6,7 @@ import {
   useContext,
   useState
 } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface UserContextData {
   user: App.UserProps
@@ -28,9 +29,10 @@ interface UserProviderProps {
 export const UserContext = createContext({} as UserContextData)
 
 export const UserProvider = ({ children }: UserProviderProps) => {
+  const navigate = useNavigate()
   const [currentStepEmail, setCurrentStepEmail] = useState<number>(0)
   const [currentStepProfile, setCurrentStepProfile] = useState<number>(0)
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>()
   const [token, setToken] = useState<string>('')
   const [user, setUser] = useState<App.UserProps>({
     id: 0,
@@ -51,7 +53,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const signOut = () => {
     setIsAuthenticated(false)
     localStorage.removeItem('atlas_token')
-    // navigate('/login', { replace: true })
+    navigate('/login', { replace: true })
   }
 
   const checkUserIsAuthenticated = () => {

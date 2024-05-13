@@ -4,7 +4,7 @@ import { Sidebar } from '@/components/layout/Sidebar'
 import Home from '@/pages/Home'
 import Pix from '@/pages/Pix'
 import PixContacts from '@/pages/Pix/Contacts/PixContacts'
-import PixDeposit from '@/pages/Pix/Deposits/PixDeposit'
+import Deposit from '@/pages/Pix/Deposits/Deposit'
 import PixKeys from '@/pages/Pix/KeysLists/PixKeys'
 import PixStep from '@/pages/Pix/Transactions/PixStep'
 import Profile from '@/pages/Profile'
@@ -40,7 +40,7 @@ export const AdminRoutes: React.FC = () => {
                 <Route path=":id" Component={PixStep} />
                 <Route path="my-keys" Component={PixKeys} />
                 <Route path="my-contacts" Component={PixContacts} />
-                <Route path="my-deposits" Component={PixDeposit} />
+                <Route path="my-deposits" Component={Deposit} />
               </Route>
               {/* profile */}
               <Route path="profile">
