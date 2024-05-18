@@ -1,5 +1,5 @@
 declare namespace App {
-  export interface DepositProps {
+  export interface BankDepositProps {
     account: string
     agency: string
     amount: string

@@ -1,10 +1,11 @@
 import { Aside } from '@/components/layout/Aside'
 import { Header } from '@/components/layout/Header'
 import { Sidebar } from '@/components/layout/Sidebar'
+import BankDeposit from '@/pages/BankDeposit'
 import Home from '@/pages/Home'
+import Payments from '@/pages/Payment'
 import Pix from '@/pages/Pix'
 import PixContacts from '@/pages/Pix/Contacts/PixContacts'
-import Deposit from '@/pages/Deposits/Deposit'
 import PixKeys from '@/pages/Pix/KeysLists/PixKeys'
 import PixStep from '@/pages/Pix/Transactions/PixStep'
 import Profile from '@/pages/Profile'
@@ -35,7 +36,9 @@ export const AdminRoutes: React.FC = () => {
               {/* welcome */}
               <Route path="/welcome" Component={Home} />
               {/* deposito */}
-              <Route path="deposits" Component={Deposit} />
+              <Route path="deposits" Component={BankDeposit} />
+              {/* pagamentos */}
+              <Route path="payments" Component={Payments} />
               {/* pix */}
               <Route path="pix">
                 <Route index Component={Pix} />

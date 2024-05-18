@@ -116,7 +116,7 @@ const PixStep: React.FC = () => {
           ag=""
           cont=""
           time=""
-          transaction=""
+          transaction="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
           amount={getAmountForm}
         />
       )}

@@ -9,7 +9,7 @@ import { handleCopyClick } from '@/utils/Copy&Paste'
 import { formatedPrice } from '@/utils/formatedPrice'
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 
-interface DepositProfileProps {
+interface ProfileBankDepositProps {
   step: Dispatch<SetStateAction<number>>
   name: string
   cnpj: string
@@ -21,7 +21,7 @@ interface DepositProfileProps {
   SetType: Dispatch<SetStateAction<string>>
 }
 
-const DepositProfile: React.FC<DepositProfileProps> = ({
+const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
   step,
   name,
   cnpj,
@@ -32,8 +32,8 @@ const DepositProfile: React.FC<DepositProfileProps> = ({
   SetAmountState,
   SetType
 }) => {
-  const [stepPassDeposit, setStepPassDeposit] = useState<number>(0)
-  const listDepositActions = [
+  const [stepPassBankDeposit, setStepPassBankDeposit] = useState<number>(0)
+  const listBankDepositActions = [
     {
       title: 'Copiar dados',
       icon: IconCopyDatabase,
@@ -48,14 +48,14 @@ const DepositProfile: React.FC<DepositProfileProps> = ({
       title: 'Gerar QR Code para depósito',
       icon: IconQRCode,
       func: () => {
-        setStepPassDeposit(1), SetType('qrcode')
+        setStepPassBankDeposit(1), SetType('qrcode')
       }
     },
     {
       title: 'Gerar boleto de recarga',
       icon: IconTicket,
       func: () => {
-        setStepPassDeposit(1), SetType('bar')
+        setStepPassBankDeposit(1), SetType('bar')
       }
     }
   ]
@@ -84,16 +84,16 @@ const DepositProfile: React.FC<DepositProfileProps> = ({
       <div className="flex flex-row-reverse">
         <Separator className="w-[52%] bg-colorSecondary-500" />
       </div>
-      {stepPassDeposit === 0 && (
+      {stepPassBankDeposit === 0 && (
         <>
           <div className="flex flex-col gap-2 p-2">
-            {listDepositActions.map(({ title, icon: Icon, func }, number) => (
+            {listBankDepositActions.map(({ title, icon: Icon, func }, number) => (
               <ButtonAtlas key={number} title={title} icon={Icon} click={func} />
             ))}
           </div>
         </>
       )}
-      {stepPassDeposit === 1 && (
+      {stepPassBankDeposit === 1 && (
         <>
           <div className="flex items-center gap-2">
             <div className="w-3/12 font-Bills_Bold text-2xl">Define o valor</div>
@@ -125,4 +125,4 @@ const DepositProfile: React.FC<DepositProfileProps> = ({
   )
 }
 
-export default DepositProfile
+export default ProfileBankDeposit

@@ -4,7 +4,7 @@ import { IconCopyDatabase } from '@/components/icons/CopyDatabase'
 import { IconExportPDF } from '@/components/icons/ExportPdf'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
-import DepositApi from '@/services/DepositApi'
+import BankDepositApi from '@/services/BankDepositApi'
 import { handleCopyClick } from '@/utils/Copy&Paste'
 import { PdfDefault } from '@/utils/PDFDefault'
 import { formattedDate } from '@/utils/formatDate'
@@ -13,13 +13,13 @@ import QRCode from 'qrcode.react'
 import { useEffect, useState } from 'react'
 import Barcode from 'react-barcode'
 
-interface StepDepositProps {
+interface StepBankDepositProps {
   amount: string
   type: string
 }
 
-const PaymentDeposit: React.FC<StepDepositProps> = ({ amount, type }) => {
-  const [ticket, setTicket] = useState<{
+const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) => {
+  const [bankDeposit, setBankDeposit] = useState<{
     amount: string
     barcode: string
   }>({ amount: '', barcode: '' })
@@ -50,7 +50,7 @@ const PaymentDeposit: React.FC<StepDepositProps> = ({ amount, type }) => {
       icon: IconCopyDatabase,
       func: () => {
         handleCopyClick(
-          `${ticket.barcode}`,
+          `${bankDeposit.barcode}`,
           'Sucesso ao copiar dados para deposito',
           'Falha ao copiar dados para deposito'
         )
@@ -150,7 +150,7 @@ const PaymentDeposit: React.FC<StepDepositProps> = ({ amount, type }) => {
             <Text>Boleto para pagamento</Text>
             <View>
               <Text style={styles.value}>Código de Barras:</Text>
-              <Barcode value={ticket.barcode} />
+              <Barcode value={bankDeposit.barcode} />
             </View>
           </Page>
         }
@@ -170,14 +170,14 @@ const PaymentDeposit: React.FC<StepDepositProps> = ({ amount, type }) => {
   }
 
   const handleCreateBarCode = async () => {
-    await DepositApi.createBarCode({ amount: amount })
+    await BankDepositApi.createBarCode({ amount: amount })
       .then((res) => {
         toast({
           variant: 'success',
           title: 'Seu boleto foi gerado com sucesso!',
           description: res.success
         })
-        setTicket(res)
+        setBankDeposit(res)
       })
       .catch((e: Error) => {
         toast({
@@ -213,7 +213,7 @@ const PaymentDeposit: React.FC<StepDepositProps> = ({ amount, type }) => {
         <>
           <h4 className="text-lg">Número do código de barras:</h4>
           <div className='text-colorPrimary-500" flex w-full items-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium'>
-            <h4 className="text-3xl">{ticket.barcode}</h4>
+            <h4 className="text-3xl">{bankDeposit.barcode}</h4>
           </div>
           <h4 className="text-lg font-medium">
             Atenção! Este boleto pode levar até 30 minutos para ser processado pela
@@ -240,4 +240,4 @@ const PaymentDeposit: React.FC<StepDepositProps> = ({ amount, type }) => {
   )
 }
 
-export default PaymentDeposit
+export default PaymentBankDeposit

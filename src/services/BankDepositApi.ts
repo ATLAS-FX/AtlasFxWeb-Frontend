@@ -1,8 +1,8 @@
 import { api } from './api'
 
-class DepositApi {
-  public async getDepositInfo() {
-    const res = await api.post<App.DepositProps>('portal/deposit/info')
+class BankDepositApi {
+  public async getBankDepositInfo() {
+    const res = await api.post<App.BankDepositProps>('portal/deposit/info')
     return res.data
   }
 
@@ -12,4 +12,4 @@ class DepositApi {
   }
 }
 
-export default new DepositApi()
+export default new BankDepositApi()

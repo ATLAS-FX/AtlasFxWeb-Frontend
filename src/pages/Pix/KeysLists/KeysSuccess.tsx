@@ -13,7 +13,7 @@ const KeyPixSuccess: React.FC<IKeyPixSuccess> = ({ step }) => {
     <>
       <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold">
         <CircleCheck className="w-8" color="#32BA7C" />
-        Sucesso! Seu endereço foi alterado.
+        Sucesso! Sua chave Pix foi cadastrada.
       </h4>
       <ButtonAtlas
         title="Minhas chaves Pix"

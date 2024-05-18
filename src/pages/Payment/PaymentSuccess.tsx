@@ -7,22 +7,20 @@ import { formattedDate } from '@/utils/formatDate'
 import { Image, Page, StyleSheet, Text, View, pdf } from '@react-pdf/renderer'
 import { CircleCheck } from 'lucide-react'
 
-interface IPixSuccess {
+interface IPaymentSuccess {
   name: string
-  bank: string
-  ag: string
-  cont: string
-  transaction: string
-  time: string
   amount: string
+  barcode: string
+  doc: string
+  expired: string
+  time: string
 }
 
-const PixSuccess: React.FC<IPixSuccess> = ({
+const PaymentSuccess: React.FC<IPaymentSuccess> = ({
   name,
-  bank,
-  ag,
-  cont,
-  transaction,
+  barcode,
+  doc,
+  expired,
   time,
   amount
 }) => {
@@ -62,10 +60,7 @@ const PixSuccess: React.FC<IPixSuccess> = ({
               <Text>Valor: {amount}</Text>
               <Text>Tipo de transferências: Pix</Text>
               <Text>Nome: {name}</Text>
-              <Text>Banco: {bank}</Text>
-              <Text>Agência: {ag}</Text>
-              <Text>Conta: {cont}</Text>
-              <Text>Transaction: {transaction}</Text>
+              <Text>Código de Barras: {barcode}</Text>
             </View>
           </Page>
         }
@@ -88,36 +83,37 @@ const PixSuccess: React.FC<IPixSuccess> = ({
     <>
       <h4 className="flex items-center gap-2 text-sm font-semibold">
         <CircleCheck className="w-8" color="#32BA7C" />
-        Sucesso! Seu Pix foi efetuado.
+        Sucesso! Seu boleto foi pago.
       </h4>
       <div className="text-sm font-medium">
         <div className="flex items-center gap-2">
           <label>Valor:</label>
-          <h4 className="text-base font-bold">R$ {amount}</h4>
+          <h4 className="text-base font-semibold">R$ {amount}</h4>
         </div>
         <div className="flex items-center gap-2">
-          <label>Para:</label>
-          <h4 className="text-base font-semibold">{name}</h4>
+          <label>Código de barras:</label>
+          <h4 className="text-2xl font-semibold">{barcode}</h4>
         </div>
         <div className="flex items-center gap-2">
-          <label>Banco:</label>
-          <h4 className="text-base font-semibold">{bank}</h4>
+          <label>Data do vencimento:</label>
+          <h4 className="text-base font-semibold">{formattedDate(expired)}</h4>
         </div>
-        <div className="flex items-center gap-2">
-          <label>Agência:</label>
-          <h4 className="text-base font-semibold">{ag}</h4>
-          <label>Conta:</label>
-          <h4 className="text-base font-semibold">{cont}</h4>
+        <div className="flex flex-col">
+          <label>Favorecido:</label>
+          <h4 className="text-2xl font-bold">{name}</h4>
+          <h4 className="text-2xl font-bold">{doc}</h4>
         </div>
       </div>
       <Separator className="bg-colorPrimary-500" />
       <div className="flex items-center gap-2 font-medium">
         <label>ID da transação:</label>
-        <h4 className="text-base font-semibold">{transaction}</h4>
+        <h4 className="text-base font-semibold">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</h4>
       </div>
       <div className="flex items-center gap-2 font-medium">
         <label>Data e hora da transação:</label>
-        <h4 className="text-base font-semibold">{time}</h4>
+        <h4 className="text-base font-semibold">
+          {formattedDate(new Date().toString())}
+        </h4>
       </div>
       <Separator className="bg-colorPrimary-500" />
       <ButtonAtlas
@@ -139,4 +135,4 @@ const PixSuccess: React.FC<IPixSuccess> = ({
   )
 }
 
-export default PixSuccess
+export default PaymentSuccess
