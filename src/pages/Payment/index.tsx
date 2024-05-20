@@ -40,7 +40,9 @@ const Payments: React.FC = () => {
 
   const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     let value = e.target.value
-    value = formatLineDigit(value)
+    if (typePayment === 'boleto') {
+      value = formatLineDigit(value)
+    }
     setTextValuePayment(value)
   }
 
@@ -134,7 +136,11 @@ const Payments: React.FC = () => {
           <div className="mt-1 flex justify-end">
             <Button
               className="w-6/12 p-2 text-base"
-              disabled={textValuePayment.length <= 50}
+              disabled={
+                typePayment === 'boleto'
+                  ? textValuePayment.length <= 50
+                  : textValuePayment.length <= 1
+              }
               onClick={handleConsultPayment}
             >
               Prosseguir
@@ -156,45 +162,57 @@ const Payments: React.FC = () => {
                 <Separator className="h-[2px] bg-colorPrimary-500" />
                 <div className="flex flex-col gap-2 text-sm font-normal text-colorPrimary-500">
                   <div className="flex flex-col gap-1">
-                    <label>Código de barras:</label>
+                    <label>
+                      {typePayment === 'boleto'
+                        ? 'Código de barras: '
+                        : 'Código do Pix'}
+                    </label>
                     <h4 className="text-xl font-bold">{textValuePayment}</h4>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <label>Data de Vencimento:</label>
-                    <h4 className="text-base font-semibold">
-                      {new Date(
-                        dataPayment?.expired_date || ''
-                      ).toLocaleDateString()}
-                    </h4>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label>Data de Pagamento:</label>
-                    <h4 className="text-base font-semibold">
-                      {new Date().toLocaleDateString()}
-                    </h4>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label>Valor nominal:</label>
-                    <h4 className="text-base font-semibold">
-                      R$ {dataPayment?.price}
-                    </h4>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label>Descontos:</label>
-                    <h4 className="text-base font-semibold">{dataPayment?.fee}</h4>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label>Encargos:</label>
-                    <h4 className="text-base font-semibold">
-                      {dataPayment?.charges}
-                    </h4>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label>Valor total a receber:</label>
-                    <h4 className="text-base font-semibold">
-                      R$ {dataPayment?.receviePrice}
-                    </h4>
-                  </div>
+                  {typePayment === 'boleto' ? (
+                    <>
+                      <div className="flex items-center gap-2">
+                        <label>Data de Vencimento:</label>
+                        <h4 className="text-base font-semibold">
+                          {new Date(
+                            dataPayment?.expired_date || ''
+                          ).toLocaleDateString()}
+                        </h4>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <label>Data de Pagamento:</label>
+                        <h4 className="text-base font-semibold">
+                          {new Date().toLocaleDateString()}
+                        </h4>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <label>Valor nominal:</label>
+                        <h4 className="text-base font-semibold">
+                          R$ {dataPayment?.price}
+                        </h4>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <label>Descontos:</label>
+                        <h4 className="text-base font-semibold">
+                          {dataPayment?.fee}
+                        </h4>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <label>Encargos:</label>
+                        <h4 className="text-base font-semibold">
+                          {dataPayment?.charges}
+                        </h4>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <label>Valor total a receber:</label>
+                        <h4 className="text-base font-semibold">
+                          R$ {dataPayment?.receviePrice}
+                        </h4>
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                   <div className="flex items-center gap-2">
                     <label>Nome do Beneficiário:</label>
                     <h4 className="text-base font-semibold">{dataPayment?.owner}</h4>
@@ -261,7 +279,6 @@ const Payments: React.FC = () => {
           amount={dataPayment?.price.toString() || ''}
           name={dataPayment?.owner.toString() || ''}
           doc={dataPayment?.document || ''}
-          expired={dataPayment?.expired_date.toLocaleDateString() || ''}
           barcode={dataPayment?.barcode || ''}
           time={''}
         />
