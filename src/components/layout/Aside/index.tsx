@@ -121,12 +121,17 @@ export const Aside: React.FC = () => {
               }
             />
             <BlockPad
-              className="bg-[#FFFFFF40]"
+              className="bg-[#FFFFFF40] py-2"
               children={
                 <>
                   <div className="gap flex flex-col">
-                    <Accordion type="single" collapsible className="w-full">
-                      <AccordionItem value="item-1">
+                    <Accordion
+                      type="single"
+                      collapsible
+                      className="w-full"
+                      defaultValue="item-1"
+                    >
+                      <AccordionItem value="item-1" className="border-0">
                         <AccordionTrigger>
                           <div className="mb-2 flex items-center justify-start gap-2 text-white">
                             <h2 className="text-start text-xs">
@@ -137,7 +142,7 @@ export const Aside: React.FC = () => {
                         </AccordionTrigger>
                         <AccordionContent>
                           <BlockPad
-                            className="bg-white px-2"
+                            className="bg-white px-2 py-2"
                             children={
                               <div className="flex items-center justify-between gap-2">
                                 <img
@@ -167,7 +172,7 @@ export const Aside: React.FC = () => {
                             }
                           />
                           <BlockPad
-                            className="bg-white px-2"
+                            className="bg-white px-2 py-2"
                             children={
                               <div className="flex items-center justify-between gap-2">
                                 <img
@@ -197,7 +202,7 @@ export const Aside: React.FC = () => {
                             }
                           />
                           <BlockPad
-                            className="bg-white px-2"
+                            className="bg-white px-2 py-2"
                             children={
                               <div className="flex items-center justify-between gap-2">
                                 <img

@@ -61,7 +61,7 @@ const Pix: React.FC = () => {
         <Separator className="w-[52%] bg-colorSecondary-500" />
       </div>
       <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
-        <AccordionItem value="item-1">
+        <AccordionItem value="item-1" className="border-0">
           <AccordionTrigger>
             <h2 className="text-xl font-bold">Use também</h2>
             <ChevronDown size={24} className="transition-transform duration-300" />

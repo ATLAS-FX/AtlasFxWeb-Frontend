@@ -1,6 +1,16 @@
+import { PdfDefault } from '@/components/PDFDefault'
 import { IconDoubleArrow } from '@/components/icons/DoubleArrow'
 import { IconPDFDownload } from '@/components/icons/PDFDownload'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
 import { formatedPrice } from '@/utils/formatedPrice'
+import { PDFViewer } from '@react-pdf/renderer'
+import { useState } from 'react'
+import { ModalPrint } from '../Modal/ModaPrint'
 
 export const Movements: React.FC<App.RegisterPixProps> = ({
   id,
@@ -10,6 +20,7 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
   name,
   send
 }) => {
+  const [openModalPrint, setOpenModalPrint] = useState<boolean>(false)
   const DateFormat = (value: string): string => {
     const dataObj = new Date(value)
 
@@ -22,6 +33,7 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
 
     return dataFormatada
   }
+
   return (
     <div
       id={id.toString()}
@@ -53,7 +65,26 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
           R$ {send > 0 ? '-' : ''} {formatedPrice(amount.toString())}
         </label>
       </div>
-      <IconPDFDownload size={32} className="fill-white" />
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger onClick={() => setOpenModalPrint(!openModalPrint)}>
+            <IconPDFDownload size={32} className="fill-white" />
+          </TooltipTrigger>
+          <TooltipContent className="rounded-md bg-colorPrimary-500 p-2 text-sm font-normal text-white">
+            Baixar extrato em PDF
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <ModalPrint
+        openModal={openModalPrint}
+        setOpenModal={setOpenModalPrint}
+        ArrayButton={<></>}
+        body={
+          <PDFViewer width="100%" height="700px">
+            <PdfDefault doc="" ag="" account="" children={<></>} />
+          </PDFViewer>
+        }
+      />
     </div>
   )
 }

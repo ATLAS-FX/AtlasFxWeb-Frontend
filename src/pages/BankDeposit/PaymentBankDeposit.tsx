@@ -1,4 +1,3 @@
-import Atlas_Logo from '@/assets/atlas_comprovante.png'
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { IconCopyDatabase } from '@/components/icons/CopyDatabase'
 import { IconExportPDF } from '@/components/icons/ExportPdf'
@@ -6,12 +5,8 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import BankDepositApi from '@/services/BankDepositApi'
 import { handleCopyClick } from '@/utils/Copy&Paste'
-import { PdfDefault } from '@/utils/PDFDefault'
-import { formattedDate } from '@/utils/formatDate'
-import { Image, Page, StyleSheet, Text, View, pdf } from '@react-pdf/renderer'
 import QRCode from 'qrcode.react'
 import { useEffect, useState } from 'react'
-import Barcode from 'react-barcode'
 
 interface StepBankDepositProps {
   amount: string
@@ -39,9 +34,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) =>
     {
       title: 'Exportar QR Code em PDF',
       icon: IconExportPDF,
-      func: () => {
-        handleDownloadPDFQrCode()
-      }
+      func: () => {}
     }
   ]
   const listPaymentBarCodeActions = [
@@ -59,115 +52,9 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) =>
     {
       title: 'Exportar boleto de recarga em PDF',
       icon: IconExportPDF,
-      func: () => {
-        handleDownloadPDFBarCode()
-      }
+      func: () => {}
     }
   ]
-
-  const handleDownloadPDFQrCode = async () => {
-    const styles = StyleSheet.create({
-      page: {
-        backgroundColor: '#eeeeee',
-        fontFamily: 'Poppins-Regular',
-        fontSize: 24,
-        padding: 24
-      },
-      flex: {
-        justifyContent: 'space-between',
-        display: 'flex'
-      },
-      value: {
-        color: 'gray'
-      },
-      logo: {
-        width: 48,
-        height: 48,
-        marginBottom: 8,
-        objectFit: 'cover'
-      },
-      section: { color: 'white', textAlign: 'center', margin: 30 }
-    })
-
-    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${amount}&size=250x250`
-
-    const doc = (
-      <PdfDefault
-        children={
-          <Page style={styles.page} size={[720, 1280]}>
-            <Image src={Atlas_Logo} style={styles.logo} />
-            <Text>Comprovante de transferência</Text>
-            <View>
-              <Text style={styles.value}>QRCode</Text>
-              <Image style={{ width: 240 }} src={qrCodeUrl} />
-            </View>
-          </Page>
-        }
-      />
-    )
-    // Converte o documento PDF em blob
-    const pdfBlob = await pdf(doc).toBlob()
-
-    // Cria a URL do blob para o download
-    const pdfUrl = URL.createObjectURL(pdfBlob)
-
-    // Cria um link temporário para o download e inicia o download
-    const a = document.createElement('a')
-    a.href = pdfUrl
-    a.download = `deposito_${formattedDate(new Date().toString())}.pdf`
-    a.click()
-  }
-
-  const handleDownloadPDFBarCode = async () => {
-    const styles = StyleSheet.create({
-      page: {
-        backgroundColor: '#eeeeee',
-        fontFamily: 'Poppins-Regular',
-        fontSize: 24,
-        padding: 24
-      },
-      flex: {
-        justifyContent: 'space-between',
-        display: 'flex'
-      },
-      value: {
-        color: 'gray'
-      },
-      logo: {
-        width: 48,
-        height: 48,
-        marginBottom: 8,
-        objectFit: 'cover'
-      },
-      section: { color: 'white', textAlign: 'center', margin: 30 }
-    })
-
-    const doc = (
-      <PdfDefault
-        children={
-          <Page style={styles.page} size={[720, 1280]}>
-            <Image src={Atlas_Logo} style={styles.logo} />
-            <Text>Boleto para pagamento</Text>
-            <View>
-              <Text style={styles.value}>Código de Barras:</Text>
-              <Barcode value={bankDeposit.barcode} />
-            </View>
-          </Page>
-        }
-      />
-    )
-    // Converte o documento PDF em blob
-    const pdfBlob = await pdf(doc).toBlob()
-
-    // Cria a URL do blob para o download
-    const pdfUrl = URL.createObjectURL(pdfBlob)
-
-    // Cria um link temporário para o download e inicia o download
-    const a = document.createElement('a')
-    a.href = pdfUrl
-    a.download = `deposito_${formattedDate(new Date().toString())}.pdf`
-    a.click()
-  }
 
   const handleCreateBarCode = async () => {
     await BankDepositApi.createBarCode({ amount: amount })
