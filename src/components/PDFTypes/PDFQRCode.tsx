@@ -1,6 +1,7 @@
 import Atlas_Logo from '@/assets/atlas_logo.png'
 import PoppinsRegular from '@/assets/Poppins-Regular.ttf'
 import PoppinsSemi from '@/assets/Poppins-SemiBold.ttf'
+import { generateQRCode } from '@/utils/generateQrCode'
 import {
   Document,
   Font,
@@ -10,13 +11,13 @@ import {
   Text,
   View
 } from '@react-pdf/renderer'
-import QRCode from 'qrcode'
 import { useEffect, useState } from 'react'
 
 interface PdfQRCodeProps {
   document: string
   name: string
   pix: string
+  amount: string
   bank: string
   agency: string
   account: string
@@ -28,23 +29,16 @@ export const PDFQRCode: React.FC<PdfQRCodeProps> = ({
   account,
   name,
   pix,
+  amount,
   bank
 }) => {
   const [qrCode, setQrCode] = useState<string>('')
 
   // Função para gerar um QR code em base64
-  const generateQRCode = async (text: string) => {
-    try {
-      return await QRCode.toDataURL(text)
-    } catch (err) {
-      console.error(err)
-      return ''
-    }
-  }
 
   useEffect(() => {
     const generateQr = async () => {
-      const qrCodeData = await generateQRCode(pix)
+      const qrCodeData = await generateQRCode(pix, '#FFFFFF', '#0000')
       setQrCode(qrCodeData)
     }
 
@@ -86,11 +80,18 @@ export const PDFQRCode: React.FC<PdfQRCodeProps> = ({
     Title: {
       color: '#FFF',
       fontSize: 24,
-      textAlign: 'center'
+      textAlign: 'center',
+      marginBottom: 10
     },
     Subtitle: {
       color: '#FFF',
-      fontSize: 18
+      fontSize: 18,
+      marginBottom: 10
+    },
+    Value: {
+      color: '#C8D753',
+      fontSize: 18,
+      marginBottom: 10
     },
     label: {
       color: '#FFF',
@@ -141,6 +142,11 @@ export const PDFQRCode: React.FC<PdfQRCodeProps> = ({
               <Text>QR Code</Text>
             </View>
             {qrCode && <Image style={styles.qrCode} src={qrCode} />}
+          </View>
+          <View>
+            <Text style={styles.Subtitle}>
+              Valor: <Text style={{ color: '#C8D753' }}>R$ {amount}</Text>
+            </Text>
           </View>
           <View>
             <Text style={styles.Subtitle}>Dados do favorecido</Text>

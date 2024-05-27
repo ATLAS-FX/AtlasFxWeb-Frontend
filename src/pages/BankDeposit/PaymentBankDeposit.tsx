@@ -12,7 +12,7 @@ import { downloadPDF } from '@/utils/DownloadPdf'
 import { formattedDate } from '@/utils/formatDate'
 import { formatedPrice } from '@/utils/formatedPrice'
 import { generateHash } from '@/utils/generateHash'
-import QRCode from 'qrcode'
+import { generateQRCode } from '@/utils/generateQrCode'
 import { useEffect, useState } from 'react'
 
 interface StepBankDepositProps {
@@ -29,19 +29,9 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) =>
   const [qrCode, setQrCode] = useState<string>('')
   const idTransaction = generateHash()
 
-  // Função para gerar um QR code em base64
-  const generateQRCode = async (text: string) => {
-    try {
-      return await QRCode.toDataURL(text)
-    } catch (err) {
-      console.error(err)
-      return ''
-    }
-  }
-
   useEffect(() => {
     const generateQr = async () => {
-      const qrCodeData = await generateQRCode(amount)
+      const qrCodeData = await generateQRCode(amount, '#000000', '#0000')
       setQrCode(qrCodeData)
     }
 
@@ -66,6 +56,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) =>
         <PDFQRCode
           document={''}
           name={user.name}
+          amount={formatedPrice(amount) || ''}
           pix={generateHash()}
           bank={'Atlas Finance'}
           agency={user.agency}

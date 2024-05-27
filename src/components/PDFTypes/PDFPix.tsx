@@ -72,8 +72,7 @@ export const PDFPix: React.FC<PdfPixProps> = ({
     viewFlex: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      padding: 20,
-      width: '80%'
+      padding: 20
     },
     flex: {
       flexDirection: 'row',
@@ -155,13 +154,13 @@ export const PDFPix: React.FC<PdfPixProps> = ({
             <Text style={styles.Subtitle}>Dados da conta</Text>
           </View>
           <View style={styles.viewFlex}>
-            <View>
+            <View style={{ width: '50%' }}>
               <Text style={styles.label}>Nome:</Text>
               <Text style={styles.value}>{nameSent}</Text>
               <Text style={styles.label}>CPF/CNPJ:</Text>
               <Text style={styles.value}>{documentSent}</Text>
             </View>
-            <View>
+            <View style={{ width: '50%' }}>
               <Text style={styles.label}>Instuição:</Text>
               <Text style={styles.value}>{bankSent}</Text>
               <Text style={styles.label}>Agencia:</Text>
@@ -175,13 +174,13 @@ export const PDFPix: React.FC<PdfPixProps> = ({
             <Text style={styles.Subtitle}>Dados do favorecido</Text>
           </View>
           <View style={styles.viewFlex}>
-            <View>
+            <View style={{ width: '50%' }}>
               <Text style={styles.label}>Nome:</Text>
               <Text style={styles.value}>{nameReceiver}</Text>
               <Text style={styles.label}>CPF/CNPJ:</Text>
               <Text style={styles.value}>{documentReceiver}</Text>
             </View>
-            <View>
+            <View style={{ width: '50%' }}>
               <Text style={styles.label}>Instuição:</Text>
               <Text style={styles.value}>{bankReceiver}</Text>
               <Text style={styles.label}>Agencia:</Text>
@@ -192,11 +191,11 @@ export const PDFPix: React.FC<PdfPixProps> = ({
           </View>
           <View style={styles.hr} />
           <View style={styles.viewFlex}>
-            <View>
+            <View style={{ width: '50%' }}>
               <Text style={styles.label}>ID de transação:</Text>
               <Text style={styles.value}>{idTransaction}</Text>
             </View>
-            <View>
+            <View style={{ width: '50%' }}>
               <Text style={styles.label}>Data e hora:</Text>
               <Text style={styles.value}>{date}</Text>
             </View>

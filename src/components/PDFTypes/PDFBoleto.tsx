@@ -1,6 +1,7 @@
 import Atlas_Logo from '@/assets/atlas_logo.png'
 import PoppinsRegular from '@/assets/Poppins-Regular.ttf'
 import PoppinsSemi from '@/assets/Poppins-SemiBold.ttf'
+import { generateBarcode } from '@/utils/generateBarcode'
 import {
   Document,
   Font,
@@ -64,8 +65,7 @@ export const PDFBoleto: React.FC<PdfBoletoProps> = ({
     viewFlex: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      padding: 20,
-      width: '80%'
+      padding: 20
     },
     flex: {
       flexDirection: 'row',
@@ -113,6 +113,11 @@ export const PDFBoleto: React.FC<PdfBoletoProps> = ({
       width: 240,
       height: 240
     },
+    barcode: {
+      width: 672,
+      // height: 78,
+      marginVertical: 10
+    },
     hr: {
       width: '100%',
       height: 1,
@@ -121,6 +126,8 @@ export const PDFBoleto: React.FC<PdfBoletoProps> = ({
       margin: '10 0'
     }
   })
+
+  const barcodeImg = generateBarcode(barcode)
 
   return (
     <Document>
@@ -147,15 +154,15 @@ export const PDFBoleto: React.FC<PdfBoletoProps> = ({
             <Text style={styles.Subtitle}>Dados de pagamento</Text>
           </View>
           <View style={styles.viewFlex}>
-            <View>
-              <Text style={styles.label}>Código de barras:</Text>
-              <Text style={styles.value}>{barcode}</Text>
+            <View style={{ width: '50%' }}>
               <Text style={styles.label}>Nome:</Text>
               <Text style={styles.value}>{name}</Text>
               <Text style={styles.label}>CPF/CNPJ:</Text>
               <Text style={styles.value}>{document}</Text>
+              <Text style={styles.label}>Linha de Código de barras:</Text>
+              <Text style={styles.value}>{barcode}</Text>
             </View>
-            <View>
+            <View style={{ width: '50%' }}>
               <Text style={styles.label}>Instuição:</Text>
               <Text style={styles.value}>{bank}</Text>
               <Text style={styles.label}>Agencia:</Text>
@@ -166,14 +173,19 @@ export const PDFBoleto: React.FC<PdfBoletoProps> = ({
           </View>
           <View style={styles.hr} />
           <View style={styles.viewFlex}>
-            <View>
+            <View style={{ width: '50%' }}>
               <Text style={styles.label}>ID de transação:</Text>
               <Text style={styles.value}>{idTransaction}</Text>
             </View>
-            <View>
+            <View style={{ width: '50%' }}>
               <Text style={styles.label}>Data e hora:</Text>
               <Text style={styles.value}>{date}</Text>
             </View>
+          </View>
+          <View style={styles.hr} />
+          <View style={styles.centerText}>
+            <Text style={styles.label}>Código de barras:</Text>
+            <Image src={barcodeImg} style={styles.barcode} />
           </View>
         </View>
       </Page>

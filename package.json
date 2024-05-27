@@ -16,6 +16,7 @@
     "@react-pdf/renderer": "^3.4.4",
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
+    "jsbarcode": "^3.11.6",
     "lucide-react": "^0.368.0",
     "md5": "^2.3.0",
     "qrcode": "^1.5.3",
