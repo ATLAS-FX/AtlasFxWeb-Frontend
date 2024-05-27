@@ -18,6 +18,7 @@ import PaymentSuccess from './PaymentSuccess'
 
 const Payments: React.FC = () => {
   const navigate = useNavigate()
+  const [stepFlow, setStepflow] = useState<number>(0)
   const [typePayment, setTypePayment] = useState<string>('')
   const [textValuePayment, setTextValuePayment] = useState<string>('')
   const [stateModalPayment, setStateModalPayment] = useState<boolean>(false)
@@ -29,12 +30,16 @@ const Payments: React.FC = () => {
     {
       title: 'Digitar código de barras',
       icon: IconBarCode,
-      func: () => setTypePayment('boleto')
+      func: () => {
+        setTypePayment('boleto'), setStepflow(1)
+      }
     },
     {
       title: 'Pix Copia e Cola',
       icon: IconPix,
-      func: () => setTypePayment('pix')
+      func: () => {
+        setTypePayment('pix'), setStepflow(1)
+      }
     }
   ]
 
@@ -66,7 +71,7 @@ const Payments: React.FC = () => {
 
   const handleConsultPayment = async () => {
     await PaymentApi.consultPayment({
-      number: '123',
+      number: textValuePayment,
       type: typePayment
     })
       .then((res) => {
@@ -90,7 +95,7 @@ const Payments: React.FC = () => {
           title: 'Pagamento feito com sucesso!',
           description: res.success
         })
-        setTypePayment('success')
+        setStepflow(3)
         setOpenModalPwd(false)
       })
       .catch((e: Error) => {
@@ -108,7 +113,7 @@ const Payments: React.FC = () => {
         text="Pagamentos"
         back={() => (typePayment.length <= 0 ? navigate(-1) : setTypePayment(''))}
       />
-      {typePayment.length <= 0 && (
+      {stepFlow === 0 && (
         <>
           <h4 className="text-base font-medium">Escolha como pagar</h4>
           <div className="flex flex-col gap-2 p-2">
@@ -118,7 +123,7 @@ const Payments: React.FC = () => {
           </div>
         </>
       )}
-      {typePayment.length >= 1 && typePayment !== 'success' && (
+      {stepFlow === 1 && (
         <>
           <h4 className="text-base font-medium">
             {typePayment === 'boleto' ? 'Digite o código de barras' : 'Cole o Pix'}
@@ -274,12 +279,14 @@ const Payments: React.FC = () => {
           />
         </>
       )}
-      {typePayment === 'success' && (
+      {stepFlow === 3 && (
         <PaymentSuccess
+          type={typePayment}
           amount={dataPayment?.price.toString() || ''}
           name={dataPayment?.owner.toString() || ''}
-          doc={dataPayment?.document || ''}
+          document={dataPayment?.document || ''}
           barcode={dataPayment?.barcode || ''}
+          expired=""
           time={''}
         />
       )}

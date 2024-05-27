@@ -35,8 +35,9 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
   )
 
   const handleSendPix = async () => {
+    const reversePrice = Number(formSendPix.amount.replace(',', '').replace('.', ''))
     await PixApi.sendPix({
-      amount: Number(formSendPix.amount) || 0,
+      amount: reversePrice,
       desc: formSendPix.desc || '',
       key: keyPix,
       save: formSendPix.save,

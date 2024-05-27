@@ -1,4 +1,3 @@
-import { PdfDefault } from '@/components/PDFDefault'
 import { IconDoubleArrow } from '@/components/icons/DoubleArrow'
 import { IconPDFDownload } from '@/components/icons/PDFDownload'
 import {
@@ -8,9 +7,6 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { formatedPrice } from '@/utils/formatedPrice'
-import { PDFViewer } from '@react-pdf/renderer'
-import { useState } from 'react'
-import { ModalPrint } from '../Modal/ModaPrint'
 
 export const Movements: React.FC<App.RegisterPixProps> = ({
   id,
@@ -20,7 +16,7 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
   name,
   send
 }) => {
-  const [openModalPrint, setOpenModalPrint] = useState<boolean>(false)
+  // const [openModalPrint, setOpenModalPrint] = useState<boolean>(false)
   const DateFormat = (value: string): string => {
     const dataObj = new Date(value)
 
@@ -67,7 +63,9 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
       </div>
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger onClick={() => setOpenModalPrint(!openModalPrint)}>
+          <TooltipTrigger
+          // onClick={() => setOpenModalPrint(!openModalPrint)}
+          >
             <IconPDFDownload size={32} className="fill-white" />
           </TooltipTrigger>
           <TooltipContent className="rounded-md bg-colorPrimary-500 p-2 text-sm font-normal text-white">
@@ -75,16 +73,23 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <ModalPrint
+      {/* <ModalPrint
         openModal={openModalPrint}
         setOpenModal={setOpenModalPrint}
         ArrayButton={<></>}
         body={
           <PDFViewer width="100%" height="700px">
-            <PdfDefault doc="" ag="" account="" children={<></>} />
+            <PDFQRCode
+              doc={' - '}
+              name={name}
+              pix={' - '}
+              bank={' - '}
+              agency={' - '}
+              account={' - '}
+            />
           </PDFViewer>
         }
-      />
+      /> */}
     </div>
   )
 }

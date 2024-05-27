@@ -1,25 +1,70 @@
 import RoboSucess from '@/assets/robo.png'
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
+import { PDFBoleto } from '@/components/PDFTypes/PDFBoleto'
+import { PDFPix } from '@/components/PDFTypes/PDFPix'
 import { Separator } from '@/components/ui/separator'
+import { downloadPDF } from '@/utils/DownloadPdf'
 import { formattedDate } from '@/utils/formatDate'
+import { formatDoc } from '@/utils/formatDoc'
+import { formatedPrice } from '@/utils/formatedPrice'
+import { generateHash } from '@/utils/generateHash'
 import { CircleCheck } from 'lucide-react'
 
 interface IPaymentSuccess {
+  type: string
   name: string
   amount: string
-  barcode?: string
-  doc: string
-  expired?: string
+  barcode: string
+  document: string
+  expired: string
   time: string
 }
 
 const PaymentSuccess: React.FC<IPaymentSuccess> = ({
+  type,
   name,
   barcode,
-  doc,
+  document,
   expired,
   amount
 }) => {
+  const idTransaction = generateHash()
+
+  const handleDownloadPDF = (type: string) => {
+    const doc =
+      type === 'boleto' ? (
+        <PDFBoleto
+          document={formatDoc(document, 'cnpj') || ''}
+          amount={formatedPrice(amount) || ''}
+          name={name}
+          barcode={barcode}
+          bank={'-'}
+          agency={'-'}
+          account={'-'}
+          idTransaction={idTransaction}
+          date={formattedDate(new Date().toString())}
+        />
+      ) : (
+        <PDFPix
+          documentSent={formatDoc(document, 'cnpj') || ''}
+          amount={formatedPrice(amount) || ''}
+          nameSent={name}
+          bankSent={'-'}
+          agencySent={'-'}
+          accountSent={'-'}
+          nameReceiver={'-'}
+          documentReceiver={'-'}
+          bankReceiver={'-'}
+          agencyReceiver={'-'}
+          accountReceiver={'-'}
+          idTransaction={idTransaction}
+          date={formattedDate(new Date().toString())}
+        />
+      )
+
+    downloadPDF(doc)
+  }
+
   return (
     <>
       <h4 className="flex items-center gap-2 text-sm font-semibold">
@@ -44,13 +89,13 @@ const PaymentSuccess: React.FC<IPaymentSuccess> = ({
         <div className="flex flex-col">
           <label>Favorecido:</label>
           <h4 className="text-2xl font-bold">{name}</h4>
-          <h4 className="text-2xl font-bold">{doc}</h4>
+          <h4 className="text-2xl font-bold">{document}</h4>
         </div>
       </div>
       <Separator className="bg-colorPrimary-500" />
       <div className="flex items-center gap-2 font-medium">
         <label>ID da transação:</label>
-        <h4 className="text-base font-semibold">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</h4>
+        <h4 className="text-base font-semibold">{idTransaction}</h4>
       </div>
       <div className="flex items-center gap-2 font-medium">
         <label>Data e hora da transação:</label>
@@ -62,7 +107,7 @@ const PaymentSuccess: React.FC<IPaymentSuccess> = ({
       <ButtonAtlas
         title="Baixa comprovante em PDF"
         classButton="w-fit px-4 text-bold"
-        // click={handleDownloadPDF}
+        click={() => handleDownloadPDF(type)}
       />
       <span className="font-medium">
         Seus comprovantes estão disponíveis para download no extrato.

@@ -1,13 +1,18 @@
 import RoboSucess from '@/assets/robo.png'
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
+import { PDFPix } from '@/components/PDFTypes/PDFPix'
 import { Separator } from '@/components/ui/separator'
+import { downloadPDF } from '@/utils/DownloadPdf'
+import { formattedDate } from '@/utils/formatDate'
+import { formatedPrice } from '@/utils/formatedPrice'
+import { generateHash } from '@/utils/generateHash'
 import { CircleCheck } from 'lucide-react'
 
 interface IPixSuccess {
   name: string
   bank: string
-  ag: string
-  cont: string
+  agency: string
+  account: string
   transaction: string
   time: string
   amount: string
@@ -16,12 +21,35 @@ interface IPixSuccess {
 const PixSuccess: React.FC<IPixSuccess> = ({
   name,
   bank,
-  ag,
-  cont,
-  transaction,
+  agency,
+  account,
   time,
   amount
 }) => {
+  const idTransaction = generateHash()
+
+  const handleDownloadPDF = () => {
+    const doc = (
+      <PDFPix
+        documentSent={'-'}
+        amount={formatedPrice(amount) || ''}
+        nameSent={name}
+        bankSent={'-'}
+        agencySent={'-'}
+        accountSent={'-'}
+        nameReceiver={'-'}
+        documentReceiver={'-'}
+        bankReceiver={'-'}
+        agencyReceiver={'-'}
+        accountReceiver={'-'}
+        idTransaction={idTransaction}
+        date={formattedDate(new Date().toString())}
+      />
+    )
+
+    downloadPDF(doc)
+  }
+
   return (
     <>
       <h4 className="flex items-center gap-2 text-sm font-semibold">
@@ -43,15 +71,15 @@ const PixSuccess: React.FC<IPixSuccess> = ({
         </div>
         <div className="flex items-center gap-2">
           <label>Agência:</label>
-          <h4 className="text-base font-semibold">{ag}</h4>
+          <h4 className="text-base font-semibold">{agency}</h4>
           <label>Conta:</label>
-          <h4 className="text-base font-semibold">{cont}</h4>
+          <h4 className="text-base font-semibold">{account}</h4>
         </div>
       </div>
       <Separator className="bg-colorPrimary-500" />
       <div className="flex items-center gap-2 font-medium">
         <label>ID da transação:</label>
-        <h4 className="text-base font-semibold">{transaction}</h4>
+        <h4 className="text-base font-semibold">{idTransaction}</h4>
       </div>
       <div className="flex items-center gap-2 font-medium">
         <label>Data e hora da transação:</label>
@@ -61,7 +89,7 @@ const PixSuccess: React.FC<IPixSuccess> = ({
       <ButtonAtlas
         title="Baixa comprovante em PDF"
         classButton="w-fit px-4 text-bold"
-        click={() => {}}
+        click={handleDownloadPDF}
       />
       <span className="font-medium">
         Seus comprovantes estão disponíveis para download no extrato.

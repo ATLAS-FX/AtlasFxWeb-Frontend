@@ -12,6 +12,8 @@ import { ChangeEvent, useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PixForm from './PixForm'
 import PixSuccess from './PixSuccess'
+import { generateHash } from '@/utils/generateHash'
+import { formattedDate } from '@/utils/formatDate'
 
 const PixStep: React.FC = () => {
   const navigate = useNavigate()
@@ -113,10 +115,10 @@ const PixStep: React.FC = () => {
           key="pix-success"
           name={data.name}
           bank={data.bank}
-          ag=""
-          cont=""
-          time=""
-          transaction="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          agency=""
+          account=""
+          time={formattedDate(new Date().toString())}
+          transaction={generateHash()}
           amount={getAmountForm}
         />
       )}
