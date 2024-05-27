@@ -1,11 +1,18 @@
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
+import { PDFBoleto } from '@/components/PDFTypes/PDFBoleto'
+import { PDFQRCode } from '@/components/PDFTypes/PDFQRCode'
 import { IconCopyDatabase } from '@/components/icons/CopyDatabase'
 import { IconExportPDF } from '@/components/icons/ExportPdf'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
+import { useAdm } from '@/contexts/UserContext'
 import BankDepositApi from '@/services/BankDepositApi'
 import { handleCopyClick } from '@/utils/Copy&Paste'
-import QRCode from 'qrcode.react'
+import { downloadPDF } from '@/utils/DownloadPdf'
+import { formattedDate } from '@/utils/formatDate'
+import { formatedPrice } from '@/utils/formatedPrice'
+import { generateHash } from '@/utils/generateHash'
+import QRCode from 'qrcode'
 import { useEffect, useState } from 'react'
 
 interface StepBankDepositProps {
@@ -14,10 +21,60 @@ interface StepBankDepositProps {
 }
 
 const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) => {
+  const { user } = useAdm()
   const [bankDeposit, setBankDeposit] = useState<{
     amount: string
     barcode: string
   }>({ amount: '', barcode: '' })
+  const [qrCode, setQrCode] = useState<string>('')
+  const idTransaction = generateHash()
+
+  // Função para gerar um QR code em base64
+  const generateQRCode = async (text: string) => {
+    try {
+      return await QRCode.toDataURL(text)
+    } catch (err) {
+      console.error(err)
+      return ''
+    }
+  }
+
+  useEffect(() => {
+    const generateQr = async () => {
+      const qrCodeData = await generateQRCode(amount)
+      setQrCode(qrCodeData)
+    }
+
+    generateQr()
+  }, [])
+
+  const handleDownloadPDF = (type: string) => {
+    const doc =
+      type === 'bar' ? (
+        <PDFBoleto
+          document={''}
+          amount={formatedPrice(amount) || ''}
+          name={user.name}
+          barcode={bankDeposit.barcode}
+          bank={'Atlas Finance'}
+          agency={user.agency}
+          account={user.account}
+          idTransaction={idTransaction}
+          date={formattedDate(new Date().toString())}
+        />
+      ) : (
+        <PDFQRCode
+          document={''}
+          name={user.name}
+          pix={generateHash()}
+          bank={'Atlas Finance'}
+          agency={user.agency}
+          account={user.account}
+        />
+      )
+
+    downloadPDF(doc)
+  }
 
   const listPaymentQrCodeActions = [
     {
@@ -25,7 +82,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) =>
       icon: IconCopyDatabase,
       func: () => {
         handleCopyClick(
-          `https://api.qrserver.com/v1/create-qr-code/?data=${amount}&size=250x250`,
+          qrCode,
           'Sucesso ao copiar dados para deposito',
           'Falha ao copiar dados para deposito'
         )
@@ -34,7 +91,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) =>
     {
       title: 'Exportar QR Code em PDF',
       icon: IconExportPDF,
-      func: () => {}
+      func: () => handleDownloadPDF(type)
     }
   ]
   const listPaymentBarCodeActions = [
@@ -52,7 +109,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) =>
     {
       title: 'Exportar boleto de recarga em PDF',
       icon: IconExportPDF,
-      func: () => {}
+      func: () => handleDownloadPDF(type)
     }
   ]
 
@@ -85,7 +142,12 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) =>
     <>
       {type === 'qrcode' && (
         <>
-          <QRCode value={`${amount}`} size={250} className="m-auto my-0 py-2" />
+          <img
+            src={qrCode}
+            className="m-auto my-0 object-contain py-2"
+            width={250}
+            height={250}
+          />
           <div className="flex flex-row-reverse">
             <Separator className="w-[52%] bg-colorSecondary-500" />
           </div>

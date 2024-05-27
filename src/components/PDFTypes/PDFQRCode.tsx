@@ -13,8 +13,8 @@ import {
 import QRCode from 'qrcode'
 import { useEffect, useState } from 'react'
 
-interface PdfDefaultProps {
-  doc: string
+interface PdfQRCodeProps {
+  document: string
   name: string
   pix: string
   bank: string
@@ -22,8 +22,8 @@ interface PdfDefaultProps {
   account: string
 }
 
-export const PDFQRCode: React.FC<PdfDefaultProps> = ({
-  doc,
+export const PDFQRCode: React.FC<PdfQRCodeProps> = ({
+  document,
   agency,
   account,
   name,
@@ -149,19 +149,18 @@ export const PDFQRCode: React.FC<PdfDefaultProps> = ({
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
-              padding: 20,
-              width: '80%'
+              padding: 20
             }}
           >
-            <View>
+            <View style={{ width: '50%' }}>
               <Text style={styles.label}>Nome:</Text>
               <Text style={styles.value}>{name}</Text>
               <Text style={styles.label}>CPF/CNPJ:</Text>
-              <Text style={styles.value}>{doc}</Text>
+              <Text style={styles.value}>{document}</Text>
               <Text style={styles.label}>Chave Pix:</Text>
               <Text style={styles.value}>{pix}</Text>
             </View>
-            <View>
+            <View style={{ width: '50%' }}>
               <Text style={styles.label}>Instuição:</Text>
               <Text style={styles.value}>{bank}</Text>
               <Text style={styles.label}>Agencia:</Text>

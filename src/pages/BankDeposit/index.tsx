@@ -35,7 +35,7 @@ const BankDeposit: React.FC = () => {
         description: '  Por favor tente mais tarde!'
       })
     }
-  }, [isError])
+  }, [isError, stepBankDeposit])
 
   return (
     <>
@@ -43,7 +43,14 @@ const BankDeposit: React.FC = () => {
         <Skeleton className="h-[calc(100vh-164px)] w-full rounded-lg" />
       ) : (
         <AdminContainer>
-          <Title text="Depositar" back={() => navigate(-1)} />
+          <Title
+            text="Depositar"
+            back={() =>
+              stepBankDeposit <= 0
+                ? navigate(-1)
+                : setStepBankDeposit((prev) => prev - 1)
+            }
+          />
           {stepBankDeposit === 0 && (
             <ProfileBankDeposit
               key={infoBankDeposit?.id}
