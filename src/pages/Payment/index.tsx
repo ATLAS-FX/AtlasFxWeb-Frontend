@@ -111,7 +111,7 @@ const Payments: React.FC = () => {
     <AdminContainer>
       <Title
         text="Pagamentos"
-        back={() => (typePayment.length <= 0 ? navigate(-1) : setTypePayment(''))}
+        back={() => (stepFlow <= 0 ? navigate(-1) : setStepflow((prev) => prev - 1))}
       />
       {stepFlow === 0 && (
         <>

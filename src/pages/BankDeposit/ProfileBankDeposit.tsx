@@ -7,10 +7,21 @@ import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { handleCopyClick } from '@/utils/Copy&Paste'
 import { formatedPrice } from '@/utils/formatedPrice'
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
+import { ChangeEvent, Dispatch, SetStateAction } from 'react'
 
 interface ProfileBankDepositProps {
-  step: Dispatch<SetStateAction<number>>
+  step: {
+    typePayment: string
+    stepPage: number
+    selectPayment: number
+  }
+  setStep: Dispatch<
+    SetStateAction<{
+      typePayment: string
+      stepPage: number
+      selectPayment: number
+    }>
+  >
   name: string
   cnpj: string
   bank: string
@@ -18,21 +29,19 @@ interface ProfileBankDepositProps {
   account: string
   amountState: string
   SetAmountState: Dispatch<SetStateAction<string>>
-  SetType: Dispatch<SetStateAction<string>>
 }
 
 const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
   step,
+  setStep,
   name,
   cnpj,
   bank,
   agency,
   account,
   amountState,
-  SetAmountState,
-  SetType
+  SetAmountState
 }) => {
-  const [stepPassBankDeposit, setStepPassBankDeposit] = useState<number>(0)
   const listBankDepositActions = [
     {
       title: 'Copiar dados',
@@ -48,14 +57,14 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
       title: 'Gerar QR Code para depósito',
       icon: IconQRCode,
       func: () => {
-        setStepPassBankDeposit(1), SetType('qrcode')
+        setStep((prev) => ({ ...prev, selectPayment: 1, typePayment: 'qrcode' }))
       }
     },
     {
       title: 'Gerar boleto de recarga',
       icon: IconTicket,
       func: () => {
-        setStepPassBankDeposit(1), SetType('bar')
+        setStep((prev) => ({ ...prev, selectPayment: 1, typePayment: 'bar' }))
       }
     }
   ]
@@ -84,7 +93,7 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
       <div className="flex flex-row-reverse">
         <Separator className="w-[52%] bg-colorSecondary-500" />
       </div>
-      {stepPassBankDeposit === 0 && (
+      {step.selectPayment === 0 && (
         <>
           <div className="flex flex-col gap-2 p-2">
             {listBankDepositActions.map(({ title, icon: Icon, func }, number) => (
@@ -93,7 +102,7 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
           </div>
         </>
       )}
-      {stepPassBankDeposit === 1 && (
+      {step.selectPayment === 1 && (
         <>
           <div className="flex items-center gap-2">
             <div className="w-3/12 font-Bills_Bold text-2xl">Define o valor</div>
@@ -114,7 +123,7 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
             <Button
               className="w-6/12 p-2 text-base"
               disabled={amountState.length <= 0}
-              onClick={() => step(1)}
+              onClick={() => setStep((prev) => ({ ...prev, stepPage: 1 }))}
             >
               Prosseguir
             </Button>

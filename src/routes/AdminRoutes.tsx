@@ -2,6 +2,7 @@ import { Aside } from '@/components/layout/Aside'
 import { Header } from '@/components/layout/Header'
 import { Sidebar } from '@/components/layout/Sidebar'
 import BankDeposit from '@/pages/BankDeposit'
+import Extract from '@/pages/Extract'
 import Home from '@/pages/Home'
 import Payments from '@/pages/Payment'
 import Pix from '@/pages/Pix'
@@ -37,6 +38,8 @@ export const AdminRoutes: React.FC = () => {
               <Route path="/welcome" Component={Home} />
               {/* deposito */}
               <Route path="deposits" Component={BankDeposit} />
+              {/* extrato */}
+              <Route path="extract" Component={Extract} />
               {/* pagamentos */}
               <Route path="payments" Component={Payments} />
               {/* pix */}

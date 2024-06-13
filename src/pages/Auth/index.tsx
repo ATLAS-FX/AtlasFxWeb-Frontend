@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
-import { ToastAction } from '@/components/ui/toast'
 import { toast } from '@/components/ui/use-toast'
 import { useAdm } from '@/contexts/UserContext'
 import { cn } from '@/lib/utils'
@@ -46,11 +45,12 @@ const Login: React.FC = () => {
         signIn(res.key)
         navigate('/')
       })
-      .catch((e: Error) => {
+      .catch((e) => {
+        console.log(e)
         toast({
           variant: 'destructive',
-          title: 'Falha ao acessar sua conta PJ.',
-          description: e.message
+          title: e.response.data.error,
+          description: 'Falha ao acessar sua conta PJ.'
         })
       })
   }
@@ -66,8 +66,7 @@ const Login: React.FC = () => {
       toast({
         variant: 'destructive',
         title: 'Falha ao carregar dados de usuários.',
-        description: 'Por favor tente mais tarde!',
-        action: <ToastAction altText="Try again">Try again</ToastAction>
+        description: 'Por favor tente mais tarde!'
       })
     }
   }, [isError, genQRCode])

@@ -11,8 +11,11 @@ import ProfileBankDeposit from './ProfileBankDeposit'
 
 const BankDeposit: React.FC = () => {
   const navigate = useNavigate()
-  const [stepBankDeposit, setStepBankDeposit] = useState<number>(0)
-  const [typePayment, setTypePayment] = useState<string>('')
+  const [stepBankDeposit, setStepBankDeposit] = useState<{
+    typePayment: string
+    stepPage: number
+    selectPayment: number
+  }>({ typePayment: '', selectPayment: 0, stepPage: 0 })
   const [amountBankDeposit, setAmountBankDeposit] = useState<string>('')
 
   const {
@@ -35,6 +38,7 @@ const BankDeposit: React.FC = () => {
         description: '  Por favor tente mais tarde!'
       })
     }
+    console.log(stepBankDeposit)
   }, [isError, stepBankDeposit])
 
   return (
@@ -46,15 +50,19 @@ const BankDeposit: React.FC = () => {
           <Title
             text="Depositar"
             back={() =>
-              stepBankDeposit <= 0
+              stepBankDeposit.stepPage <= 0
                 ? navigate(-1)
-                : setStepBankDeposit((prev) => prev - 1)
+                : setStepBankDeposit((prev) => ({
+                    ...prev,
+                    stepPage: prev.stepPage - 1
+                  }))
             }
           />
-          {stepBankDeposit === 0 && (
+          {stepBankDeposit.stepPage === 0 && (
             <ProfileBankDeposit
               key={infoBankDeposit?.id}
-              step={setStepBankDeposit}
+              step={stepBankDeposit}
+              setStep={setStepBankDeposit}
               name={infoBankDeposit?.name || ''}
               cnpj={infoBankDeposit?.doc || ''}
               bank={infoBankDeposit?.bank || ''}
@@ -62,11 +70,13 @@ const BankDeposit: React.FC = () => {
               account={infoBankDeposit?.account || ''}
               amountState={amountBankDeposit}
               SetAmountState={setAmountBankDeposit}
-              SetType={setTypePayment}
             />
           )}
-          {stepBankDeposit === 1 && (
-            <PaymentBankDeposit amount={amountBankDeposit} type={typePayment} />
+          {stepBankDeposit.stepPage === 1 && (
+            <PaymentBankDeposit
+              amount={amountBankDeposit}
+              type={stepBankDeposit.typePayment}
+            />
           )}
         </AdminContainer>
       )}

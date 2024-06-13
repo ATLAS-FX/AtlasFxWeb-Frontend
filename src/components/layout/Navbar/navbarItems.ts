@@ -14,7 +14,7 @@ export const navbarItems = [
     id: 2,
     title: 'Suporte',
     icon: IconSupport,
-    path: '/extract',
+    path: '/suport',
     exit: false
   },
   {
