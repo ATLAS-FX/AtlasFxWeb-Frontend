@@ -10,16 +10,18 @@ import { formatedPrice } from '@/utils/formatedPrice'
 import { ChangeEvent, Dispatch, SetStateAction } from 'react'
 
 interface ProfileBankDepositProps {
-  step: {
+  state: {
     typePayment: string
     stepPage: number
     selectPayment: number
+    amount: string
   }
-  setStep: Dispatch<
+  setState: Dispatch<
     SetStateAction<{
       typePayment: string
       stepPage: number
       selectPayment: number
+      amount: string
     }>
   >
   name: string
@@ -27,20 +29,16 @@ interface ProfileBankDepositProps {
   bank: string
   agency: string
   account: string
-  amountState: string
-  SetAmountState: Dispatch<SetStateAction<string>>
 }
 
 const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
-  step,
-  setStep,
+  state,
+  setState,
   name,
   cnpj,
   bank,
   agency,
-  account,
-  amountState,
-  SetAmountState
+  account
 }) => {
   const listBankDepositActions = [
     {
@@ -57,14 +55,14 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
       title: 'Gerar QR Code para depósito',
       icon: IconQRCode,
       func: () => {
-        setStep((prev) => ({ ...prev, selectPayment: 1, typePayment: 'qrcode' }))
+        setState((prev) => ({ ...prev, selectPayment: 1, typePayment: 'qrcode' }))
       }
     },
     {
       title: 'Gerar boleto de recarga',
       icon: IconTicket,
       func: () => {
-        setStep((prev) => ({ ...prev, selectPayment: 1, typePayment: 'bar' }))
+        setState((prev) => ({ ...prev, selectPayment: 1, typePayment: 'bar' }))
       }
     }
   ]
@@ -93,7 +91,7 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
       <div className="flex flex-row-reverse">
         <Separator className="w-[52%] bg-colorSecondary-500" />
       </div>
-      {step.selectPayment === 0 && (
+      {state.selectPayment === 0 && (
         <>
           <div className="flex flex-col gap-2 p-2">
             {listBankDepositActions.map(({ title, icon: Icon, func }, number) => (
@@ -102,7 +100,7 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
           </div>
         </>
       )}
-      {step.selectPayment === 1 && (
+      {state.selectPayment === 1 && (
         <>
           <div className="flex items-center gap-2">
             <div className="w-3/12 font-Bills_Bold text-2xl">Define o valor</div>
@@ -111,10 +109,13 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
               <Input
                 className="border-none p-0 text-lg shadow-none"
                 type="string"
-                value={amountState}
+                value={state.amount}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   const format = formatedPrice(e.target.value) || ''
-                  SetAmountState(format)
+                  setState((prev) => ({
+                    ...prev,
+                    amount: format
+                  }))
                 }}
               />
             </div>
@@ -122,8 +123,8 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
           <div className="mt-1 flex justify-end">
             <Button
               className="w-6/12 p-2 text-base"
-              disabled={amountState.length <= 0}
-              onClick={() => setStep((prev) => ({ ...prev, stepPage: 1 }))}
+              disabled={state.amount.length <= 0}
+              onClick={() => setState((prev) => ({ ...prev, stepPage: 1 }))}
             >
               Prosseguir
             </Button>

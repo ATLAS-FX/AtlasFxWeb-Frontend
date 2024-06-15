@@ -15,9 +15,8 @@ const BankDeposit: React.FC = () => {
     typePayment: string
     stepPage: number
     selectPayment: number
-  }>({ typePayment: '', selectPayment: 0, stepPage: 0 })
-  const [amountBankDeposit, setAmountBankDeposit] = useState<string>('')
-
+    amount: string
+  }>({ typePayment: '', selectPayment: 0, stepPage: 0, amount: '0,00' })
   const {
     data: infoBankDeposit,
     isLoading,
@@ -38,8 +37,7 @@ const BankDeposit: React.FC = () => {
         description: '  Por favor tente mais tarde!'
       })
     }
-    console.log(stepBankDeposit)
-  }, [isError, stepBankDeposit])
+  }, [isError])
 
   return (
     <>
@@ -50,31 +48,39 @@ const BankDeposit: React.FC = () => {
           <Title
             text="Depositar"
             back={() =>
-              stepBankDeposit.stepPage <= 0
+              stepBankDeposit.selectPayment === 0 && stepBankDeposit.stepPage === 0
                 ? navigate(-1)
-                : setStepBankDeposit((prev) => ({
-                    ...prev,
-                    stepPage: prev.stepPage - 1
-                  }))
+                : stepBankDeposit.selectPayment > 0 && stepBankDeposit.stepPage > 0
+                  ? setStepBankDeposit((prev) => ({
+                      ...prev,
+                      typePayment: '',
+                      selectPayment: 1,
+                      stepPage: 0,
+                      amount: '0,00'
+                    }))
+                  : setStepBankDeposit((prev) => ({
+                      ...prev,
+                      selectPayment: 0,
+                      stepPage: 0,
+                      amount: '0,00'
+                    }))
             }
           />
           {stepBankDeposit.stepPage === 0 && (
             <ProfileBankDeposit
               key={infoBankDeposit?.id}
-              step={stepBankDeposit}
-              setStep={setStepBankDeposit}
+              state={stepBankDeposit}
+              setState={setStepBankDeposit}
               name={infoBankDeposit?.name || ''}
               cnpj={infoBankDeposit?.doc || ''}
               bank={infoBankDeposit?.bank || ''}
               agency={infoBankDeposit?.agency || ''}
               account={infoBankDeposit?.account || ''}
-              amountState={amountBankDeposit}
-              SetAmountState={setAmountBankDeposit}
             />
           )}
           {stepBankDeposit.stepPage === 1 && (
             <PaymentBankDeposit
-              amount={amountBankDeposit}
+              amount={stepBankDeposit.amount}
               type={stepBankDeposit.typePayment}
             />
           )}

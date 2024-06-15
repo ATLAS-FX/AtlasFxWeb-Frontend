@@ -32,12 +32,26 @@ export const Aside: React.FC = () => {
     queryKey: 'get-info-user',
     queryFn: async () => {
       const res = await UserApi.getInfo()
-      return res
+
+      // gambiarra enquanto o victor nao ajeita
+      return cleanApiResponse(res)
     }
   })
 
+  const cleanApiResponse = (responseText: any) => {
+    try {
+      const jsonStartIndex = responseText.indexOf('{')
+      const jsonEndIndex = responseText.lastIndexOf('}') + 1
+      const jsonString = responseText.slice(jsonStartIndex, jsonEndIndex)
+      return JSON.parse(jsonString)
+    } catch (error) {
+      console.error('Failed to parse API response:', error)
+      return null
+    }
+  }
   useEffect(() => {
     if (infoUser) {
+      console.log(infoUser)
       setUser(infoUser)
     }
     if (isError) {
@@ -75,14 +89,11 @@ export const Aside: React.FC = () => {
                 <div className="flex w-full items-center justify-between">
                   <div className="flex flex-col justify-center gap-2 text-colorPrimary-500">
                     <h2 className="text-sm font-semibold">Saldo em conta: </h2>
-                    <h3
-                      className="text-xl font-semibold"
-                      style={{ textShadow: 'rgba(0, 0, 0, 0.4) 0px 4px 4px' }}
-                    >
+                    <h3 className="text-shadow4 text-xl font-semibold">
                       R${' '}
                       {!hideValue
-                        ? formatedPrice(user.amount)
-                        : formatedHideValue(user.amount)}
+                        ? formatedPrice(user.amount) || '0,00'
+                        : formatedHideValue(user.amount || '0,00')}
                     </h3>
                   </div>
                   <button onClick={() => setHideValue(!hideValue)}>
@@ -152,12 +163,7 @@ export const Aside: React.FC = () => {
                                   width={78}
                                 />
                                 <div className="flex flex-col items-center gap-1">
-                                  <h2
-                                    className="flex w-full flex-col text-xs font-semibold text-colorPrimary-500"
-                                    style={{
-                                      textShadow: 'rgba(0, 0, 0, 0.4) 0px 3px 3px'
-                                    }}
-                                  >
+                                  <h2 className="text-shadow-3x flex w-full flex-col text-xs font-semibold text-colorPrimary-500">
                                     Emissão de boleto em lote
                                   </h2>
                                   <span className="text-justify text-[10px] font-normal">
@@ -182,12 +188,7 @@ export const Aside: React.FC = () => {
                                   width={78}
                                 />
                                 <div className="flex flex-col items-center gap-1">
-                                  <h2
-                                    className="flex w-full flex-col text-xs font-semibold text-colorPrimary-500"
-                                    style={{
-                                      textShadow: 'rgba(0, 0, 0, 0.4) 0px 3px 3px'
-                                    }}
-                                  >
+                                  <h2 className="text-shadow-3x flex w-full flex-col text-xs font-semibold text-colorPrimary-500">
                                     Transferência em lote
                                   </h2>
                                   <span className="text-justify text-[10px] font-normal">
@@ -212,12 +213,7 @@ export const Aside: React.FC = () => {
                                   width={78}
                                 />
                                 <div className="flex flex-col items-center gap-1">
-                                  <h2
-                                    className="flex w-full flex-col text-xs font-semibold text-colorPrimary-500"
-                                    style={{
-                                      textShadow: 'rgba(0, 0, 0, 0.4) 0px 3px 3px'
-                                    }}
-                                  >
+                                  <h2 className="text-shadow-3x flex w-full flex-col text-xs font-semibold text-colorPrimary-500">
                                     Folha de pagamentos
                                   </h2>
                                   <span className="text-justify text-[10px] font-normal">

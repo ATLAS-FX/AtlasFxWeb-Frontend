@@ -59,8 +59,7 @@ const Login: React.FC = () => {
     if (!genQRCode) {
       setTimeout(() => {
         setGenQRCode(!genQRCode)
-      }, 8000)
-      // }, 120000)
+      }, 24000)
     }
     if (isError) {
       toast({

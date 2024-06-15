@@ -34,7 +34,7 @@ export const ButtonAtlas: React.FC<ButtonAtlasProps> = ({
     <div
       onClick={click}
       className={cn(
-        'flex w-full cursor-pointer items-center gap-2 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 p-2 text-base font-medium text-colorPrimary-500 transition-transform duration-300',
+        'flex w-full cursor-pointer items-center gap-2 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 p-2 text-base font-medium text-colorPrimary-500 shadow-md shadow-slate-400 drop-shadow-md transition-transform duration-300',
         classButton,
         listAction
           ? 'justify-between'

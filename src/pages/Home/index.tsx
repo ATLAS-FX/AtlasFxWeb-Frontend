@@ -5,12 +5,7 @@ const Home: React.FC = () => {
   return (
     <div className="flex h-[calc(100vh-164px)] flex-col items-center gap-4 text-xs text-white">
       <div className="flex flex-col gap-2">
-        <h4
-          className="text-base font-semibold xl:text-sm"
-          style={{
-            textShadow: 'rgba(0, 0, 0, 0.4) 0px 3px 3px'
-          }}
-        >
+        <h4 className="text-shadow-3x text-base font-semibold xl:text-sm">
           Seja bem-vindo!
         </h4>
         <p>
@@ -44,12 +39,7 @@ const Home: React.FC = () => {
         </p>
       </div>
       <div className="flex flex-col justify-center gap-4">
-        <h4
-          className="text-center text-sm font-medium text-white"
-          style={{
-            textShadow: 'rgba(0, 0, 0, 0.4) 0px 3px 3px'
-          }}
-        >
+        <h4 className="text-shadow-3x text-center text-sm font-medium text-white">
           Maior Segurança para Contas PJ com Acesso Limitado por IP Fixo
         </h4>
         <div className="flex items-start justify-between gap-2">

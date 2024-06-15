@@ -10,14 +10,7 @@ const Password: React.FC = () => {
     <AdminContainer>
       <Title text="alterar Senha" back={() => navigate(-1)} />
       <div className="mb-2 flex flex-col gap-2 text-justify text-sm font-normal">
-        <h4
-          className="text-lg font-semibold"
-          style={{
-            textShadow: 'rgba(0, 0, 0, 0.4) 0px 3px 3px'
-          }}
-        >
-          Aviso de segurança
-        </h4>
+        <h4 className="text-shadow-3x text-lg font-semibold">Aviso de segurança</h4>
         <p>
           Para garantir a máxima segurança de sua conta e proteger suas informações
           financeiras, informamos que a alteração de senha de acesso à sua conta
@@ -47,12 +40,7 @@ const Password: React.FC = () => {
         <Separator className="w-[52%] bg-colorSecondary-500" />
       </div>
       <div className="flex flex-col gap-2 text-justify text-sm font-normal">
-        <h4
-          className="text-lg font-semibold"
-          style={{
-            textShadow: 'rgba(0, 0, 0, 0.4) 0px 3px 3px'
-          }}
-        >
+        <h4 className="text-shadow-3x text-lg font-semibold">
           Como alterar sua senha:
         </h4>
         <p>

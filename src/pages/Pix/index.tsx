@@ -47,7 +47,7 @@ const Pix: React.FC = () => {
         <div className="flex w-full items-center justify-between gap-2 py-4">
           {listPixButton.map(({ name, icon: Icon }, number) => (
             <Link
-              className="flex h-20 w-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-colorPrimary-500 bg-transparent fill-colorPrimary-500 text-colorPrimary-500 transition-all duration-300 ease-out hover:bg-colorPrimary-500 hover:fill-white hover:text-white"
+              className="flex h-20 w-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-colorPrimary-500 bg-transparent fill-colorPrimary-500 text-colorPrimary-500 shadow-md shadow-slate-400 drop-shadow-md transition-all duration-300 ease-out hover:bg-colorPrimary-500 hover:fill-white hover:text-white"
               key={number}
               to={`/pix/${name}`}
             >

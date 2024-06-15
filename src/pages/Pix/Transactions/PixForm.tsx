@@ -28,7 +28,7 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
     amount: string
     desc: string
     save: number
-  }>({ amount: '', desc: '', save: 0 })
+  }>({ amount: '0,00', desc: '', save: 0 })
 
   const isFormValid = Object.values(formSendPix.amount).every(
     (value) => value.trim() !== ''

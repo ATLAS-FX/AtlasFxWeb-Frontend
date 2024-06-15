@@ -18,14 +18,7 @@ export const Title: React.FC<ITitle> = ({ text, back }) => {
         >
           <ChevronLeft size={28} strokeWidth={3} />
         </Button>
-        <h1
-          className="font-Bills_Bold text-3xl uppercase"
-          style={{
-            textShadow: 'rgba(0, 0, 0, 0.4) 0px 3px 3px'
-          }}
-        >
-          {text}
-        </h1>
+        <h1 className="text-shadow-3x font-Bills_Bold text-3xl uppercase">{text}</h1>
       </div>
       <Separator className="w-[52%] bg-colorSecondary-500" />
     </>

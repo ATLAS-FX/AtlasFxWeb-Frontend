@@ -94,5 +94,19 @@ module.exports = {
       }
     }
   },
-  plugins: [require('tailwindcss-animate')]
+  plugins: [
+    require('tailwindcss-animate'),
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.text-shadow-3x': {
+          textShadow: 'rgba(0, 0, 0, 0.3) 0px 3px 3px'
+        },
+        '.text-shadow-4x': {
+          textShadow: 'rgba(0, 0, 0, 0.4) 0px 4px 4px'
+        }
+      }
+
+      addUtilities(newUtilities, ['responsive', 'hover'])
+    }
+  ]
 }

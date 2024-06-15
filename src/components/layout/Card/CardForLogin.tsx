@@ -27,23 +27,14 @@ export const CardForLogin: React.FC<ICardForLogin> = ({
       <CardHeader>
         <CardTitle className="mb-2 flex justify-between">
           <div className="flex flex-col">
-            <h3
-              className="text-2xl font-light text-colorPrimary-500"
-              style={{ textShadow: 'rgba(0, 0, 0, 0.4) 0px 4px 4px' }}
-            >
+            <h3 className="text-shadow-4x text-2xl font-light text-colorPrimary-500">
               {title}
             </h3>
-            <h2
-              className="text-[40px] font-semibold text-colorPrimary-500"
-              style={{ textShadow: 'rgba(0, 0, 0, 0.4) 0px 4px 5px' }}
-            >
+            <h2 className="text-shadow-4x text-[40px] font-semibold text-colorPrimary-500">
               {subtitle}
             </h2>
           </div>
-          <span
-            className="text-3xl font-light text-colorPrimary-500"
-            style={{ textShadow: 'rgba(0, 0, 0, 0.4) 0px 4px 4px' }}
-          >
+          <span className="text-shadow-4x text-3xl font-light text-colorPrimary-500">
             {option}
           </span>
         </CardTitle>

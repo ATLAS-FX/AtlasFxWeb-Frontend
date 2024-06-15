@@ -40,12 +40,7 @@ const CloseAccount: React.FC = () => {
         <AdminContainer>
           <Title text="Encerrar Conta" back={() => navigate(-1)} />
           <div className="flex flex-col gap-2 text-justify text-sm font-normal">
-            <h4
-              className="text-lg font-semibold"
-              style={{
-                textShadow: 'rgba(0, 0, 0, 0.5) 0px 3px 3px'
-              }}
-            >
+            <h4 className="text-shadow-3x text-lg font-semibold">
               Para Encerrar sua conta,
             </h4>
             <p>Para solicitar o encerramento de sua conta, lembre-se: </p>
