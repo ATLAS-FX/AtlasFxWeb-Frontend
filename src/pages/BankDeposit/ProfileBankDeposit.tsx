@@ -180,16 +180,18 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
               />
             </div>
           </div>
-          <ButtonNext
-            title="Prosseguir"
-            disabled={Number(state.amount.replace(/[.,]/g, '')) <= 0}
-            loading={state.loading}
-            func={() => {
-              state.typePayment === 'qrcode'
-                ? handleCreateQrCode()
-                : handleCreateBarCode()
-            }}
-          />
+          <div className="mt-1 flex justify-end">
+            <ButtonNext
+              title="Prosseguir"
+              disabled={Number(state.amount.replace(/[.,]/g, '')) <= 0}
+              loading={state.loading}
+              func={() => {
+                state.typePayment === 'qrcode'
+                  ? handleCreateQrCode()
+                  : handleCreateBarCode()
+              }}
+            />
+          </div>
         </>
       )}
     </>

@@ -118,11 +118,13 @@ export const RegistrationForm: React.FC<IRegistrationForm> = ({
             />
           </div>
         ))}
-        <ButtonNext
-          title="Prosseguir para a revisão"
-          disabled={!isFormValid}
-          func={() => setOpenModalPwd(!openModalPwd)}
-        />
+        <div className="mt-1 flex justify-end">
+          <ButtonNext
+            title="Prosseguir para a revisão"
+            disabled={!isFormValid}
+            func={() => setOpenModalPwd(!openModalPwd)}
+          />
+        </div>
         <ModalDefault
           openModal={openModalPwd}
           setOpenModal={setOpenModalPwd}

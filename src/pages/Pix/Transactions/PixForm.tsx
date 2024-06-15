@@ -112,11 +112,13 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
           }
         ></textarea>
       </div>
-      <ButtonNext
-        title="Prosseguir para a revisão"
-        disabled={Number(formSendPix.amount.replace(/[.,]/g, '')) <= 0}
-        func={() => setStateModalPix(!stateModalPix)}
-      />
+      <div className="mt-1 flex justify-end">
+        <ButtonNext
+          title="Prosseguir para a revisão"
+          disabled={Number(formSendPix.amount.replace(/[.,]/g, '')) <= 0}
+          func={() => setStateModalPix(!stateModalPix)}
+        />
+      </div>
       <ModalDefault
         title="Para seguir, verifique e confirme as informações."
         body={

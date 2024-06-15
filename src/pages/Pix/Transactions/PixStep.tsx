@@ -69,12 +69,14 @@ const PixStep: React.FC = () => {
               }}
             />
           </div>
-          <ButtonNext
-            title="Prosseguir"
-            disabled={getKeyInput.length <= 0}
-            func={CheckKeyInputPix}
-            loading={loading}
-          />
+          <div className="mt-1 flex justify-end">
+            <ButtonNext
+              title="Prosseguir"
+              disabled={getKeyInput.length <= 0}
+              func={CheckKeyInputPix}
+              loading={loading}
+            />
+          </div>
           <div className={cn('flex', stepPix > 0 ? 'flex-row' : 'flex-row-reverse')}>
             <Separator className="w-[72%] bg-colorSecondary-500" />
           </div>

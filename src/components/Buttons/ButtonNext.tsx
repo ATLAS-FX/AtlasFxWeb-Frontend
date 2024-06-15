@@ -19,18 +19,16 @@ export const ButtonNext: React.FC<ButtonNextProps> = ({
   func
 }) => {
   return (
-    <div className="mt-1 flex justify-end">
-      <Button
-        className={cn('w-6/12 rounded-xl py-6 text-base', classPlus)}
-        disabled={disabled}
-        onClick={func}
-      >
-        {loading ? (
-          <LoaderCircle className="h-10 w-10 animate-spin text-white transition-transform" />
-        ) : (
-          title
-        )}
-      </Button>
-    </div>
+    <Button
+      className={cn('w-6/12 rounded-xl py-6 text-base', classPlus)}
+      disabled={disabled}
+      onClick={func}
+    >
+      {loading ? (
+        <LoaderCircle className="h-10 w-10 animate-spin text-white transition-transform" />
+      ) : (
+        title
+      )}
+    </Button>
   )
 }
