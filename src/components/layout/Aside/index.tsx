@@ -33,25 +33,24 @@ export const Aside: React.FC = () => {
     queryFn: async () => {
       const res = await UserApi.getInfo()
 
-      // gambiarra enquanto o victor nao ajeita
-      return cleanApiResponse(res)
+      return res
     }
   })
 
-  const cleanApiResponse = (responseText: any) => {
-    try {
-      const jsonStartIndex = responseText.indexOf('{')
-      const jsonEndIndex = responseText.lastIndexOf('}') + 1
-      const jsonString = responseText.slice(jsonStartIndex, jsonEndIndex)
-      return JSON.parse(jsonString)
-    } catch (error) {
-      console.error('Failed to parse API response:', error)
-      return null
-    }
-  }
+  // const cleanApiResponse = (responseText: any) => {
+  //   try {
+  //     const jsonStartIndex = responseText.indexOf('{')
+  //     const jsonEndIndex = responseText.lastIndexOf('}') + 1
+  //     const jsonString = responseText.slice(jsonStartIndex, jsonEndIndex)
+  //     return JSON.parse(jsonString)
+  //   } catch (error) {
+  //     console.error('Failed to parse API response:', error)
+  //     return null
+  //   }
+  // }
+
   useEffect(() => {
     if (infoUser) {
-      console.log(infoUser)
       setUser(infoUser)
     }
     if (isError) {
@@ -163,7 +162,7 @@ export const Aside: React.FC = () => {
                                   width={78}
                                 />
                                 <div className="flex flex-col items-center gap-1">
-                                  <h2 className="text-shadow-3x flex w-full flex-col text-xs font-semibold text-colorPrimary-500">
+                                  <h2 className="flex w-full flex-col text-xs font-semibold text-colorPrimary-500 text-shadow-3x">
                                     Emissão de boleto em lote
                                   </h2>
                                   <span className="text-justify text-[10px] font-normal">
@@ -188,7 +187,7 @@ export const Aside: React.FC = () => {
                                   width={78}
                                 />
                                 <div className="flex flex-col items-center gap-1">
-                                  <h2 className="text-shadow-3x flex w-full flex-col text-xs font-semibold text-colorPrimary-500">
+                                  <h2 className="flex w-full flex-col text-xs font-semibold text-colorPrimary-500 text-shadow-3x">
                                     Transferência em lote
                                   </h2>
                                   <span className="text-justify text-[10px] font-normal">
@@ -213,7 +212,7 @@ export const Aside: React.FC = () => {
                                   width={78}
                                 />
                                 <div className="flex flex-col items-center gap-1">
-                                  <h2 className="text-shadow-3x flex w-full flex-col text-xs font-semibold text-colorPrimary-500">
+                                  <h2 className="flex w-full flex-col text-xs font-semibold text-colorPrimary-500 text-shadow-3x">
                                     Folha de pagamentos
                                   </h2>
                                   <span className="text-justify text-[10px] font-normal">

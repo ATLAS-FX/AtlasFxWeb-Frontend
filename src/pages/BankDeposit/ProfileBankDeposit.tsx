@@ -1,10 +1,12 @@
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
+import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { IconCopyDatabase } from '@/components/icons/CopyDatabase'
 import { IconQRCode } from '@/components/icons/QRCode'
 import { IconTicket } from '@/components/icons/Ticket'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
+import { toast } from '@/components/ui/use-toast'
+import BankDepositApi from '@/services/BankDepositApi'
 import { handleCopyClick } from '@/utils/Copy&Paste'
 import { formatedPrice } from '@/utils/formatedPrice'
 import { ChangeEvent, Dispatch, SetStateAction } from 'react'
@@ -15,6 +17,10 @@ interface ProfileBankDepositProps {
     stepPage: number
     selectPayment: number
     amount: string
+    barcode: string
+    qrcode: string
+    key: string
+    loading: boolean
   }
   setState: Dispatch<
     SetStateAction<{
@@ -22,6 +28,10 @@ interface ProfileBankDepositProps {
       stepPage: number
       selectPayment: number
       amount: string
+      barcode: string
+      qrcode: string
+      key: string
+      loading: boolean
     }>
   >
   name: string
@@ -67,6 +77,56 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
     }
   ]
 
+  const handleCreateBarCode = async () => {
+    setState((prev) => ({ ...prev, loading: true }))
+    await BankDepositApi.createBarCode({ amount: state.amount })
+      .then((res) => {
+        setState((prev) => ({ ...prev, barcode: res.barcode, stepPage: 1 }))
+        toast({
+          variant: 'success',
+          title: 'Seu boleto foi gerado com sucesso!',
+          description: res.success
+        })
+      })
+      .catch((e: Error) => {
+        toast({
+          variant: 'destructive',
+          title: 'Erro ao gerar boleto!',
+          description: e.message
+        })
+      })
+      .finally(() => {
+        setState((prev) => ({ ...prev, stepPage: 1, loading: false }))
+      })
+  }
+
+  const handleCreateQrCode = async () => {
+    setState((prev) => ({ ...prev, loading: true }))
+    await BankDepositApi.createQrCode({ amount: state.amount })
+      .then((res) => {
+        setState((prev) => ({
+          ...prev,
+          key: res.key,
+          qrcode: res.qrcode
+        }))
+        toast({
+          variant: 'success',
+          title: 'Seu QrCode foi gerado com sucesso!',
+          description: res.success
+        })
+      })
+      .catch((e: Error) => {
+        toast({
+          variant: 'destructive',
+          title: 'Erro ao gerar QrCode!',
+          description: e.message
+        })
+      })
+      .finally(() => {
+        setState((prev) => ({ ...prev, stepPage: 1, loading: false }))
+      })
+  }
+
   return (
     <>
       <div className="flex flex-col gap-2 text-lg font-medium">
@@ -103,7 +163,7 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
       {state.selectPayment === 1 && (
         <>
           <div className="flex items-center gap-2">
-            <div className="w-3/12 font-Bills_Bold text-2xl">Define o valor</div>
+            <div className="w-4/12 font-Bills_Bold text-2xl">Define o valor</div>
             <div className='text-colorPrimary-500" flex w-full items-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium'>
               <label>R$</label>
               <Input
@@ -120,15 +180,16 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
               />
             </div>
           </div>
-          <div className="mt-1 flex justify-end">
-            <Button
-              className="w-6/12 p-2 text-base"
-              disabled={state.amount.length <= 0}
-              onClick={() => setState((prev) => ({ ...prev, stepPage: 1 }))}
-            >
-              Prosseguir
-            </Button>
-          </div>
+          <ButtonNext
+            title="Prosseguir"
+            disabled={Number(state.amount.replace(/[.,]/g, '')) <= 0}
+            loading={state.loading}
+            func={() => {
+              state.typePayment === 'qrcode'
+                ? handleCreateQrCode()
+                : handleCreateBarCode()
+            }}
+          />
         </>
       )}
     </>

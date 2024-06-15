@@ -1,3 +1,4 @@
+import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import TwoFactorAuthValidator from '@/components/layout/Input/TwoFactorAuthValidator'
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Button } from '@/components/ui/button'
@@ -117,15 +118,11 @@ export const RegistrationForm: React.FC<IRegistrationForm> = ({
             />
           </div>
         ))}
-        <div className="mt-1 flex justify-end">
-          <Button
-            className="w-6/12 p-2 text-base"
-            disabled={!isFormValid}
-            onClick={() => setOpenModalPwd(!openModalPwd)}
-          >
-            Prosseguir para a revisão
-          </Button>
-        </div>
+        <ButtonNext
+          title="Prosseguir para a revisão"
+          disabled={!isFormValid}
+          func={() => setOpenModalPwd(!openModalPwd)}
+        />
         <ModalDefault
           openModal={openModalPwd}
           setOpenModal={setOpenModalPwd}

@@ -46,7 +46,6 @@ const Login: React.FC = () => {
         navigate('/')
       })
       .catch((e) => {
-        console.log(e)
         toast({
           variant: 'destructive',
           title: e.response.data.error,

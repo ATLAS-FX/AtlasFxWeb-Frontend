@@ -1,3 +1,4 @@
+import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { IconAlert } from '@/components/icons/Alert'
 import TwoFactorAuthValidator from '@/components/layout/Input/TwoFactorAuthValidator'
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
@@ -29,10 +30,6 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
     desc: string
     save: number
   }>({ amount: '0,00', desc: '', save: 0 })
-
-  const isFormValid = Object.values(formSendPix.amount).every(
-    (value) => value.trim() !== ''
-  )
 
   const handleSendPix = async () => {
     const reversePrice = Number(formSendPix.amount.replace(',', '').replace('.', ''))
@@ -115,15 +112,11 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
           }
         ></textarea>
       </div>
-      <div className="mt-1 flex justify-end">
-        <Button
-          className="w-6/12 p-2 text-base"
-          disabled={!isFormValid}
-          onClick={() => setStateModalPix(!stateModalPix)}
-        >
-          Prosseguir para a revisão
-        </Button>
-      </div>
+      <ButtonNext
+        title="Prosseguir para a revisão"
+        disabled={Number(formSendPix.amount.replace(/[.,]/g, '')) <= 0}
+        func={() => setStateModalPix(!stateModalPix)}
+      />
       <ModalDefault
         title="Para seguir, verifique e confirme as informações."
         body={

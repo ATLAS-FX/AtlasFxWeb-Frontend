@@ -1,4 +1,5 @@
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
+import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { IconAlert } from '@/components/icons/Alert'
 import { IconBarCode } from '@/components/icons/BarCode'
 import { IconPix } from '@/components/icons/Pix'
@@ -18,12 +19,21 @@ import PaymentSuccess from './PaymentSuccess'
 
 const Payments: React.FC = () => {
   const navigate = useNavigate()
-  const [stepFlow, setStepflow] = useState<number>(0)
-  const [typePayment, setTypePayment] = useState<string>('')
-  const [textValuePayment, setTextValuePayment] = useState<string>('')
+  const [stepPayment, setStepPayment] = useState<{
+    step: number
+    type: string
+    textValue: string
+    pwdCode: string
+    loading: boolean
+  }>({
+    step: 0,
+    type: '',
+    textValue: '',
+    pwdCode: '',
+    loading: false
+  })
   const [stateModalPayment, setStateModalPayment] = useState<boolean>(false)
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
-  const [pwdCode, setPwdCode] = useState<string>('')
   const [dataPayment, setDataPayment] = useState<App.PaymentProps | undefined>()
 
   const listPaymentsActions = [
@@ -31,24 +41,24 @@ const Payments: React.FC = () => {
       title: 'Digitar código de barras',
       icon: IconBarCode,
       func: () => {
-        setTypePayment('boleto'), setStepflow(1)
+        setStepPayment((prev) => ({ ...prev, typePayment: 'boleto', step: 1 }))
       }
     },
     {
       title: 'Pix Copia e Cola',
       icon: IconPix,
       func: () => {
-        setTypePayment('pix'), setStepflow(1)
+        setStepPayment((prev) => ({ ...prev, typePayment: 'pix', step: 1 }))
       }
     }
   ]
 
   const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     let value = e.target.value
-    if (typePayment === 'boleto') {
+    if (stepPayment.type === 'boleto') {
       value = formatLineDigit(value)
     }
-    setTextValuePayment(value)
+    setStepPayment((prev) => ({ ...prev, textValuePayment: value }))
   }
 
   const formatLineDigit = (value: string): string => {
@@ -71,12 +81,12 @@ const Payments: React.FC = () => {
 
   const handleConsultPayment = async () => {
     await PaymentApi.consultPayment({
-      number: textValuePayment,
-      type: typePayment
+      number: stepPayment.textValue,
+      type: stepPayment.type
     })
       .then((res) => {
         setDataPayment(res)
-        setStateModalPayment(true)
+        setStepPayment((prev) => ({ ...prev, stateModalPayment: true }))
       })
       .catch((e: Error) => {
         console.error(e)
@@ -85,9 +95,9 @@ const Payments: React.FC = () => {
 
   const handleSendPayment = async () => {
     await PaymentApi.sendPayment({
-      number: textValuePayment,
-      type: typePayment,
-      pwd: md5(pwdCode)
+      number: stepPayment.textValue,
+      type: stepPayment.type,
+      pwd: md5(stepPayment.pwdCode)
     })
       .then((res) => {
         toast({
@@ -95,8 +105,7 @@ const Payments: React.FC = () => {
           title: 'Pagamento feito com sucesso!',
           description: res.success
         })
-        setStepflow(3)
-        setOpenModalPwd(false)
+        setStepPayment((prev) => ({ ...prev, step: 3, openModalPwd: false }))
       })
       .catch((e: Error) => {
         toast({
@@ -111,9 +120,13 @@ const Payments: React.FC = () => {
     <AdminContainer>
       <Title
         text="Pagamentos"
-        back={() => (stepFlow <= 0 ? navigate(-1) : setStepflow((prev) => prev - 1))}
+        back={() =>
+          stepPayment.step <= 0
+            ? navigate(-1)
+            : setStepPayment((prev) => ({ ...prev, step: prev.step - 1 }))
+        }
       />
-      {stepFlow === 0 && (
+      {stepPayment.step === 0 && (
         <>
           <h4 className="text-base font-medium">Escolha como pagar</h4>
           <div className="flex flex-col gap-2 p-2">
@@ -123,10 +136,12 @@ const Payments: React.FC = () => {
           </div>
         </>
       )}
-      {stepFlow === 1 && (
+      {stepPayment.step === 1 && (
         <>
           <h4 className="text-base font-medium">
-            {typePayment === 'boleto' ? 'Digite o código de barras' : 'Cole o Pix'}
+            {stepPayment.type === 'boleto'
+              ? 'Digite o código de barras'
+              : 'Cole o Pix'}
           </h4>
           <div className="flex flex-col gap-2 p-2">
             <textarea
@@ -134,23 +149,19 @@ const Payments: React.FC = () => {
               style={{ resize: 'none' }}
               maxLength={51}
               rows={5}
-              value={textValuePayment}
+              value={stepPayment.textValue}
               onChange={handleTextChange}
             />
           </div>
-          <div className="mt-1 flex justify-end">
-            <Button
-              className="w-6/12 p-2 text-base"
-              disabled={
-                typePayment === 'boleto'
-                  ? textValuePayment.length <= 50
-                  : textValuePayment.length <= 1
-              }
-              onClick={handleConsultPayment}
-            >
-              Prosseguir
-            </Button>
-          </div>
+          <ButtonNext
+            title="Prosseguir"
+            disabled={
+              stepPayment.type === 'boleto'
+                ? stepPayment.textValue.length <= 50
+                : stepPayment.textValue.length <= 1
+            }
+            func={handleConsultPayment}
+          />
           <ModalDefault
             title="Para seguir, verifique e confirme as informações."
             body={
@@ -168,13 +179,13 @@ const Payments: React.FC = () => {
                 <div className="flex flex-col gap-2 text-sm font-normal text-colorPrimary-500">
                   <div className="flex flex-col gap-1">
                     <label>
-                      {typePayment === 'boleto'
+                      {stepPayment.type === 'boleto'
                         ? 'Código de barras: '
                         : 'Código do Pix'}
                     </label>
-                    <h4 className="text-xl font-bold">{textValuePayment}</h4>
+                    <h4 className="text-xl font-bold">{stepPayment.textValue}</h4>
                   </div>
-                  {typePayment === 'boleto' ? (
+                  {stepPayment.type === 'boleto' ? (
                     <>
                       <div className="flex items-center gap-2">
                         <label>Data de Vencimento:</label>
@@ -261,7 +272,12 @@ const Payments: React.FC = () => {
                 <TwoFactorAuthValidator
                   className="text-colorPrimary-500"
                   codeLength={6}
-                  onValidCode={(code) => setPwdCode(code)}
+                  onValidCode={(code) =>
+                    setStepPayment((prev) => ({
+                      ...prev,
+                      pwdCode: code
+                    }))
+                  }
                 />
                 <Separator className="bg-colorPrimary-500" />
               </>
@@ -279,9 +295,9 @@ const Payments: React.FC = () => {
           />
         </>
       )}
-      {stepFlow === 3 && (
+      {stepPayment.step === 3 && (
         <PaymentSuccess
-          type={typePayment}
+          type={stepPayment.type}
           amount={dataPayment?.price.toString() || ''}
           name={dataPayment?.owner.toString() || ''}
           document={dataPayment?.document || ''}

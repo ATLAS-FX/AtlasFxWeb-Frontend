@@ -35,7 +35,6 @@ export const PDFQRCode: React.FC<PdfQRCodeProps> = ({
   const [qrCode, setQrCode] = useState<string>('')
 
   // Função para gerar um QR code em base64
-
   useEffect(() => {
     const generateQr = async () => {
       const qrCodeData = await generateQRCode(pix, '#FFFFFF', '#0000')

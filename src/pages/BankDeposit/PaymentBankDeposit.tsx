@@ -4,39 +4,29 @@ import { PDFQRCode } from '@/components/PDFTypes/PDFQRCode'
 import { IconCopyDatabase } from '@/components/icons/CopyDatabase'
 import { IconExportPDF } from '@/components/icons/ExportPdf'
 import { Separator } from '@/components/ui/separator'
-import { toast } from '@/components/ui/use-toast'
 import { useAdm } from '@/contexts/UserContext'
-import BankDepositApi from '@/services/BankDepositApi'
 import { handleCopyClick } from '@/utils/Copy&Paste'
 import { downloadPDF } from '@/utils/DownloadPdf'
 import { formattedDate } from '@/utils/formatDate'
 import { formatedPrice } from '@/utils/formatedPrice'
 import { generateHash } from '@/utils/generateHash'
-import { generateQRCode } from '@/utils/generateQrCode'
-import { useEffect, useState } from 'react'
+import QRCode from 'qrcode.react'
 
 interface StepBankDepositProps {
   amount: string
   type: string
+  barcode: string
+  qrcode: string
 }
 
-const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) => {
+const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({
+  amount,
+  type,
+  barcode,
+  qrcode
+}) => {
   const { user } = useAdm()
-  const [bankDeposit, setBankDeposit] = useState<{
-    amount: string
-    barcode: string
-  }>({ amount: '', barcode: '' })
-  const [qrCode, setQrCode] = useState<string>('')
   const idTransaction = generateHash()
-
-  useEffect(() => {
-    const generateQr = async () => {
-      const qrCodeData = await generateQRCode(amount, '#000000', '#0000')
-      setQrCode(qrCodeData)
-    }
-
-    generateQr()
-  }, [])
 
   const handleDownloadPDF = (type: string) => {
     const doc =
@@ -45,7 +35,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) =>
           document={''}
           amount={formatedPrice(amount) || ''}
           name={user.name}
-          barcode={bankDeposit.barcode}
+          barcode={barcode}
           bank={'Atlas Finance'}
           agency={user.agency}
           account={user.account}
@@ -57,7 +47,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) =>
           document={''}
           name={user.name}
           amount={formatedPrice(amount) || ''}
-          pix={generateHash()}
+          pix={qrcode}
           bank={'Atlas Finance'}
           agency={user.agency}
           account={user.account}
@@ -73,7 +63,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) =>
       icon: IconCopyDatabase,
       func: () => {
         handleCopyClick(
-          qrCode,
+          qrcode,
           'Sucesso ao copiar dados para deposito',
           'Falha ao copiar dados para deposito'
         )
@@ -91,7 +81,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) =>
       icon: IconCopyDatabase,
       func: () => {
         handleCopyClick(
-          `${bankDeposit.barcode}`,
+          `${barcode}`,
           'Sucesso ao copiar dados para deposito',
           'Falha ao copiar dados para deposito'
         )
@@ -104,40 +94,14 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) =>
     }
   ]
 
-  const handleCreateBarCode = async () => {
-    await BankDepositApi.createBarCode({ amount: amount })
-      .then((res) => {
-        toast({
-          variant: 'success',
-          title: 'Seu boleto foi gerado com sucesso!',
-          description: res.success
-        })
-        setBankDeposit(res)
-      })
-      .catch((e: Error) => {
-        toast({
-          variant: 'destructive',
-          title: 'Erro ao gerar boleto!',
-          description: e.message
-        })
-      })
-  }
-
-  useEffect(() => {
-    if (type === 'bar') {
-      handleCreateBarCode()
-    }
-  }, [type])
-
   return (
     <>
       {type === 'qrcode' && (
         <>
-          <img
-            src={qrCode}
+          <QRCode
+            value={qrcode.toString()}
             className="m-auto my-0 object-contain py-2"
-            width={250}
-            height={250}
+            size={250}
           />
           <div className="flex flex-row-reverse">
             <Separator className="w-[52%] bg-colorSecondary-500" />
@@ -153,7 +117,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({ amount, type }) =>
         <>
           <h4 className="text-lg">Número do código de barras:</h4>
           <div className='text-colorPrimary-500" flex w-full items-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium'>
-            <h4 className="text-3xl">{bankDeposit.barcode}</h4>
+            <h4 className="text-3xl">{barcode}</h4>
           </div>
           <h4 className="text-lg font-medium">
             Atenção! Este boleto pode levar até 30 minutos para ser processado pela

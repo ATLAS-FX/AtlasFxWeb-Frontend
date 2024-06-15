@@ -16,7 +16,21 @@ const BankDeposit: React.FC = () => {
     stepPage: number
     selectPayment: number
     amount: string
-  }>({ typePayment: '', selectPayment: 0, stepPage: 0, amount: '0,00' })
+    key: string
+    barcode: string
+    qrcode: string
+    loading: boolean
+  }>({
+    typePayment: '',
+    stepPage: 0,
+    selectPayment: 0,
+    amount: '0,00',
+    key: '',
+    barcode: '',
+    qrcode: '',
+    loading: false
+  })
+
   const {
     data: infoBankDeposit,
     isLoading,
@@ -37,7 +51,7 @@ const BankDeposit: React.FC = () => {
         description: '  Por favor tente mais tarde!'
       })
     }
-  }, [isError])
+  }, [isError, stepBankDeposit])
 
   return (
     <>
@@ -56,13 +70,19 @@ const BankDeposit: React.FC = () => {
                       typePayment: '',
                       selectPayment: 1,
                       stepPage: 0,
-                      amount: '0,00'
+                      amount: '0,00',
+                      barcode: '',
+                      key: '',
+                      qrcode: ''
                     }))
                   : setStepBankDeposit((prev) => ({
                       ...prev,
                       selectPayment: 0,
                       stepPage: 0,
-                      amount: '0,00'
+                      amount: '0,00',
+                      barcode: '',
+                      key: '',
+                      qrcode: ''
                     }))
             }
           />
@@ -82,6 +102,8 @@ const BankDeposit: React.FC = () => {
             <PaymentBankDeposit
               amount={stepBankDeposit.amount}
               type={stepBankDeposit.typePayment}
+              barcode={stepBankDeposit.barcode}
+              qrcode={stepBankDeposit.qrcode}
             />
           )}
         </AdminContainer>

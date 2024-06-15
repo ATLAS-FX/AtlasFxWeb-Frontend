@@ -1,25 +1,25 @@
+import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { AdminContainer } from '@/components/layout/Container'
 import { Title } from '@/components/layout/Text/Title'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import PixApi from '@/services/PixApi'
+import { formattedDate } from '@/utils/formatDate'
 import { formatDoc } from '@/utils/formatDoc'
-import { CheckCircle2 } from 'lucide-react'
+import { generateHash } from '@/utils/generateHash'
 import { ChangeEvent, useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PixForm from './PixForm'
 import PixSuccess from './PixSuccess'
-import { generateHash } from '@/utils/generateHash'
-import { formattedDate } from '@/utils/formatDate'
 
 const PixStep: React.FC = () => {
   const navigate = useNavigate()
   const [stepPix, setStepPix] = useState<number>(0)
   const [getKeyInput, setGetKeyInput] = useState<string>('')
   const [getAmountForm, setGetAmountForm] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<App.PixProps>({
     bank: '',
     doc: '',
@@ -28,6 +28,7 @@ const PixStep: React.FC = () => {
   })
 
   const CheckKeyInputPix = useCallback(async () => {
+    setLoading(true)
     await PixApi.getKeyInfo({ key: getKeyInput })
       .then((res) => {
         setData(res)
@@ -36,16 +37,19 @@ const PixStep: React.FC = () => {
       .catch((e: Error) => {
         toast({
           variant: 'destructive',
-          title: 'Erro ao gerar código de alteração de endereço.',
+          title: 'Erro ao consultar chave Pix.',
           description: e.message
         })
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }, [getKeyInput])
 
   return (
     <AdminContainer>
       {stepPix < 2 && (
-        <>
+        <div className="flex flex-col gap-4">
           <Title text="Enviar Pix" back={() => navigate(-1)} />
           <label className="text-base font-medium">
             Insira os dados da Chave Pix
@@ -64,19 +68,17 @@ const PixStep: React.FC = () => {
                 setGetKeyInput(e.target.value)
               }}
             />
-            <Button
-              variant="ghost"
-              className="w-fit p-0 hover:text-colorSecondary-500"
-              disabled={getKeyInput.length <= 0}
-              onClick={CheckKeyInputPix}
-            >
-              <CheckCircle2 size={32} />
-            </Button>
           </div>
+          <ButtonNext
+            title="Prosseguir"
+            disabled={getKeyInput.length <= 0}
+            func={CheckKeyInputPix}
+            loading={loading}
+          />
           <div className={cn('flex', stepPix > 0 ? 'flex-row' : 'flex-row-reverse')}>
-            <Separator className="w-[52%] bg-colorSecondary-500" />
+            <Separator className="w-[72%] bg-colorSecondary-500" />
           </div>
-        </>
+        </div>
       )}
 
       {stepPix === 1 && (

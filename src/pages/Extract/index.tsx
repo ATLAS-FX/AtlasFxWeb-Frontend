@@ -1,7 +1,7 @@
 import { AdminContainer } from '@/components/layout/Container'
 import { Title } from '@/components/layout/Text/Title'
 import { useAdm } from '@/contexts/UserContext'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ExtractResum from './ExtractResum'
 import FilterPage from './FilterPage'
@@ -28,10 +28,6 @@ const Extract: React.FC = () => {
     acc[date].push(transaction)
     return acc
   }, {} as GroupedTransactions)
-
-  useEffect(() => {
-    console.log(filterOptions)
-  }, [filterOptions])
 
   return (
     <AdminContainer>

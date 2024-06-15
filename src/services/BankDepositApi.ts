@@ -10,6 +10,11 @@ class BankDepositApi {
     const res = await api.post('portal/deposit/barcode', params)
     return res.data
   }
+
+  public async createQrCode(params: { amount: string }) {
+    const res = await api.post('portal/deposit/qrcode', params)
+    return res.data
+  }
 }
 
 export default new BankDepositApi()
