@@ -1,7 +1,7 @@
 import Atlas_Logo from '@/assets/atlas_logo.png'
 import PoppinsRegular from '@/assets/Poppins-Regular.ttf'
 import PoppinsSemi from '@/assets/Poppins-SemiBold.ttf'
-import { generateBarcode } from '@/utils/generateBarcode'
+import { generateBarcode } from '@/utils/GenerateCode'
 import {
   Document,
   Font,

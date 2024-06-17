@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import BankDepositApi from '@/services/BankDepositApi'
 import { handleCopyClick } from '@/utils/Copy&Paste'
-import { formatedPrice } from '@/utils/formatedPrice'
+import { formatedPrice } from '@/utils/FormattedPrice'
 import { ChangeEvent, Dispatch, SetStateAction } from 'react'
 
 interface ProfileBankDepositProps {

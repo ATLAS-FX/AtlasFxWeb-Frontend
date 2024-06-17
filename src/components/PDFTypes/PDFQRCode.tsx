@@ -1,7 +1,7 @@
 import Atlas_Logo from '@/assets/atlas_logo.png'
 import PoppinsRegular from '@/assets/Poppins-Regular.ttf'
 import PoppinsSemi from '@/assets/Poppins-SemiBold.ttf'
-import { generateQRCode } from '@/utils/generateQrCode'
+import { generateQRCode } from '@/utils/GenerateCode'
 import {
   Document,
   Font,

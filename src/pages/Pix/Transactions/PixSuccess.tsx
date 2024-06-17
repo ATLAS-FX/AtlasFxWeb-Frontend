@@ -3,9 +3,9 @@ import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { PDFPix } from '@/components/PDFTypes/PDFPix'
 import { Separator } from '@/components/ui/separator'
 import { downloadPDF } from '@/utils/DownloadPdf'
-import { formattedDate } from '@/utils/formatDate'
-import { formatedPrice } from '@/utils/formatedPrice'
-import { generateHash } from '@/utils/generateHash'
+import { formattedDate } from '@/utils/FormattedDate'
+import { formatedPrice } from '@/utils/FormattedPrice'
+import { generateHash } from '@/utils/GenerateCode'
 import { CircleCheck } from 'lucide-react'
 
 interface IPixSuccess {

@@ -5,7 +5,7 @@ import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import PaymentApi from '@/services/PaymentApi'
-import { formatDoc } from '@/utils/formatDoc'
+import { formatDoc } from '@/utils/FormattedDoc'
 import md5 from 'md5'
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 

@@ -7,8 +7,8 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
-import { formatedPrice } from '@/utils/formatedPrice'
-import { DateFormat } from '@/utils/DateFormat'
+import { DateFormat } from '@/utils/FormattedDate'
+import { formatedPrice } from '@/utils/FormattedPrice'
 
 interface RegistersProps {
   id: number

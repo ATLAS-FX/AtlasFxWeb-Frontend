@@ -33,6 +33,14 @@ const Login: React.FC = () => {
     }
   })
 
+  // const { data: checkHash, refetch } = useQuery({
+  //   queryKey: 'get-qrcode',
+  //   queryFn: async () => {
+  //     const res = await AuthApi.checkHash()
+  //     return res
+  //   }
+  // })
+
   const generateNewQRCode = () => {
     refetch()
     setGenQRCode(false)

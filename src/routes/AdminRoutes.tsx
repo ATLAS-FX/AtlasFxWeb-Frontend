@@ -13,6 +13,7 @@ import Profile from '@/pages/Profile'
 import CloseAccount from '@/pages/Profile/CloseAccount'
 import Password from '@/pages/Profile/Password'
 import RegistrationStep from '@/pages/Profile/Registration/RegistrationStep'
+import Transfer from '@/pages/Transfer'
 import React from 'react'
 import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
 
@@ -42,6 +43,8 @@ export const AdminRoutes: React.FC = () => {
               <Route path="extract" Component={Extract} />
               {/* pagamentos */}
               <Route path="payments" Component={Payments} />
+              {/* transferencia */}
+              <Route path="transfer" Component={Transfer} />
               {/* pix */}
               <Route path="pix">
                 <Route index Component={Pix} />

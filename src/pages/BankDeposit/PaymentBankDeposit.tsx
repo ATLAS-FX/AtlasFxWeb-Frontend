@@ -7,9 +7,9 @@ import { Separator } from '@/components/ui/separator'
 import { useAdm } from '@/contexts/UserContext'
 import { handleCopyClick } from '@/utils/Copy&Paste'
 import { downloadPDF } from '@/utils/DownloadPdf'
-import { formattedDate } from '@/utils/formatDate'
-import { formatedPrice } from '@/utils/formatedPrice'
-import { generateHash } from '@/utils/generateHash'
+import { formattedDate } from '@/utils/FormattedDate'
+import { formatedPrice } from '@/utils/FormattedPrice'
+import { generateHash } from '@/utils/GenerateCode'
 import QRCode from 'qrcode.react'
 
 interface StepBankDepositProps {

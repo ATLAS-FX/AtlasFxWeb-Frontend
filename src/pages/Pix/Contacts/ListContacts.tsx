@@ -1,10 +1,10 @@
+import Contact from '@/components/layout/Contact'
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { ChevronDown, Search } from 'lucide-react'
 import React, { useState } from 'react'
-import Contact from './Contact'
 
 interface IContact {
   data: App.ContactsPixProps[]

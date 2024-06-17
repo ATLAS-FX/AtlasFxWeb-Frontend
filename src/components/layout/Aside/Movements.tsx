@@ -6,7 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { formatedPrice } from '@/utils/formatedPrice'
+import { formatedPrice } from '@/utils/FormattedPrice'
 
 export const Movements: React.FC<App.RegisterPixProps> = ({
   id,

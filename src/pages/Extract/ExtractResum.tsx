@@ -8,8 +8,8 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { DateFormat } from '@/utils/DateFormat'
-import { formatedPrice } from '@/utils/formatedPrice'
+import { DateFormat } from '@/utils/FormattedDate'
+import { formatedPrice } from '@/utils/FormattedPrice'
 import { Dispatch, SetStateAction } from 'react'
 
 interface ExtractResumProps {
@@ -47,7 +47,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ setAction, data }) => {
         {ButtonsOptions.map((buton, number) => (
           <button
             key={number}
-            className="text-shadow-3x text-base font-semibold uppercase"
+            className="text-base font-semibold uppercase text-shadow-3x"
             onClick={buton.func}
           >
             {buton.title}

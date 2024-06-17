@@ -1,5 +1,5 @@
 import { pdf } from '@react-pdf/renderer'
-import { formattedDate } from './formatDate'
+import { formattedDate } from './FormattedDate'
 
 export const downloadPDF = async (doc: JSX.Element) => {
   const pdfBlob = await pdf(doc).toBlob()
