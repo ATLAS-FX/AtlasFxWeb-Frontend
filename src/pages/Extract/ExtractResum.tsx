@@ -41,6 +41,10 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ setAction, data }) => {
     }
   ]
 
+  const sortedEntries = Object.entries(data).sort(
+    ([dateA], [dateB]) => Date.parse(dateB) - Date.parse(dateA)
+  )
+
   return (
     <>
       <div className="flex justify-end gap-8">
@@ -55,7 +59,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ setAction, data }) => {
         ))}
       </div>
 
-      {Object.entries(data).map(([date, extracts], index) => (
+      {sortedEntries.map(([date, extracts], index) => (
         <div className="flex flex-col items-center gap-2" key={index}>
           <div className="mb-2 flex w-full items-center gap-4 rounded-lg border-2 border-colorPrimary-500 fill-colorPrimary-500 px-6 py-3 text-lg font-medium text-colorPrimary-500 shadow-md shadow-slate-400 transition-transform duration-300">
             <IconCalendar className="w-8" />

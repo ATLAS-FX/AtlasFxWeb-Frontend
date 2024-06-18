@@ -39,6 +39,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     account: '',
     agency: '',
     amount: '',
+    doc: '',
     name: '',
     releases: []
   })

@@ -1,4 +1,4 @@
-export const formatDoc = (value: string, type: string) => {
+export const formattedDoc = (value: string, type: string) => {
   if (type === 'cnpj') {
     if (!value) return 'xx.xxx.xxx/xxxx-xx'
     value = value.replace(/\D/g, '')

@@ -1,5 +1,6 @@
 import JsBarcode from 'jsbarcode'
 import QRCode from 'qrcode'
+import { v4 as uuidv4 } from 'uuid'
 
 const generateQRCode = async (
   text: string,
@@ -41,4 +42,8 @@ const generateBarcode = (text: string): string => {
   return canvas.toDataURL('image/png')
 }
 
-export { generateBarcode, generateHash, generateQRCode }
+const generatePixKey = (): string => {
+  return uuidv4()
+}
+
+export { generateBarcode, generateHash, generateQRCode, generatePixKey }

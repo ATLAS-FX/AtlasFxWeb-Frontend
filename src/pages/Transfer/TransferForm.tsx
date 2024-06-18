@@ -9,8 +9,9 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
+import { formattedDoc } from '@/utils/FormattedDoc'
 import { ListBank } from '@/utils/ListBank'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 
 interface TransferFormProps {
   form: {
@@ -18,6 +19,7 @@ interface TransferFormProps {
     bank: string
     agency: string
     account: string
+    amount: string
     typeAccount: string
     nameOrtitle: string
     doc: string
@@ -29,6 +31,7 @@ interface TransferFormProps {
       bank: string
       agency: string
       account: string
+      amount: string
       typeAccount: string
       nameOrtitle: string
       doc: string
@@ -69,6 +72,10 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
   })
 
   const isFormValid = Object.values(form).every((value) => value !== '')
+
+  useEffect(() => {
+    console.log(form)
+  }, [form])
 
   return (
     <>
@@ -180,11 +187,12 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
             placeholder="Número do documento"
             type="text"
             // maxLength={form.typeAccount === 'cnpj' ? 24 : 18}
-            value={form.numberDoc}
+            value={formattedDoc(form.numberDoc, form.typeAccount)}
             onChange={(e) => {
+              const format = formattedDoc(e.target.value, form.typeAccount)
               setForm((prev) => ({
                 ...prev,
-                numberDoc: e.target.value
+                numberDoc: format || ''
               }))
             }}
           />

@@ -1,12 +1,13 @@
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
-import { Button } from '@/components/ui/button'
+import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import PixApi from '@/services/PixApi'
+import { generatePixKey } from '@/utils/GenerateCode'
 import { listPixButton } from '@/utils/PixListButtons'
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 interface ICreatePix {
   refetch: () => {}
@@ -14,11 +15,15 @@ interface ICreatePix {
 }
 
 const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
-  const [stepCreate, setStepCreate] = useState<number>(0)
   const [formCreateKeyPix, setFormCreateKeyPix] = useState<{
+    step: number
     type: string
     key: string
-  }>({ type: '', key: '' })
+  }>({
+    step: 0,
+    type: '',
+    key: ''
+  })
 
   const validNames = new Set(['CNPJ', 'CPF', 'Celular', 'E-mail', 'Chave aleatória'])
 
@@ -42,9 +47,13 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
       })
   }
 
+  useEffect(() => {
+    console.log(formCreateKeyPix)
+  }, [])
+
   return (
     <>
-      <div className="flex w-full items-center justify-start gap-2 py-4">
+      <div className="flex w-full items-center justify-evenly py-4">
         {listPixButton
           .filter((item) => validNames.has(item.name))
           .map(({ name, icon: Icon, type }, number) => (
@@ -53,11 +62,26 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
               title={name}
               icon={Icon}
               sizeIcon={number === 4 ? 28 : 32}
-              classButton="flex-col items-center w-24 h-20"
-              classDiv="flex-col text-xs"
+              classButton={`flex h-20 w-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-colorPrimary-500 bg-transparent fill-colorPrimary-500 text-colorPrimary-500 shadow-md shadow-slate-400 drop-shadow-md transition-all duration-300 ease-out hover:bg-colorPrimary-500 hover:fill-white hover:text-white text-center,
+                 ${
+                   formCreateKeyPix.type === type &&
+                   'border-primary/90 bg-primary/90 text-white shadow-none drop-shadow-none transition-transform duration-300 fill-white'
+                 }`}
+              classDiv="flex-col text-xs text-center"
               click={() => {
-                setStepCreate(1)
-                setFormCreateKeyPix((prevState) => ({ ...prevState, type: type }))
+                type !== 'key-random'
+                  ? setFormCreateKeyPix((prevState) => ({
+                      ...prevState,
+                      type: type,
+                      step: 1,
+                      key: ''
+                    }))
+                  : setFormCreateKeyPix((prevState) => ({
+                      ...prevState,
+                      type: type,
+                      step: 2,
+                      key: generatePixKey()
+                    }))
               }}
             />
           ))}
@@ -65,7 +89,7 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
       <div className="flex flex-row-reverse">
         <Separator className="w-[52%] bg-colorSecondary-500" />
       </div>
-      {stepCreate === 1 && (
+      {formCreateKeyPix.step === 1 && (
         <>
           <label className="text-base font-medium">Nova chave pix</label>
           <Input
@@ -85,15 +109,28 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
             }}
           />
           <div className="flex justify-end">
-            <Button
-              className="w-6/12 p-2 text-base"
+            <ButtonNext
+              title="Prosseguir"
               disabled={formCreateKeyPix.key.length <= 0}
-              onClick={() =>
+              func={() =>
                 handleCreateKeyPix(formCreateKeyPix.type, formCreateKeyPix.key)
               }
-            >
-              Prosseguir
-            </Button>
+            />
+          </div>
+        </>
+      )}
+      {formCreateKeyPix.step === 2 && (
+        <>
+          <label className="mb-4 text-lg font-medium">
+            Sua chave aleatoria será gerada
+          </label>
+          <div className="flex justify-end">
+            <ButtonNext
+              title="Prosseguir"
+              func={() =>
+                handleCreateKeyPix(formCreateKeyPix.type, formCreateKeyPix.key)
+              }
+            />
           </div>
         </>
       )}

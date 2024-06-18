@@ -7,7 +7,7 @@ import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import PixApi from '@/services/PixApi'
 import { formattedDate } from '@/utils/FormattedDate'
-import { formatDoc } from '@/utils/FormattedDoc'
+import { formattedDoc } from '@/utils/FormattedDoc'
 import { generateHash } from '@/utils/GenerateCode'
 import { ChangeEvent, useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -93,7 +93,7 @@ const PixStep: React.FC = () => {
             <div className="flex items-center gap-2">
               <label>CPF/CNPJ:</label>
               <h4 className="text-base font-semibold">
-                {formatDoc(data.doc, data.doc.length > 12 ? 'cnpj' : 'cpf')}
+                {formattedDoc(data.doc, data.doc.length > 12 ? 'cnpj' : 'cpf')}
               </h4>
               <label>Banco:</label>
               <h4 className="text-base font-semibold">{data.bank}</h4>

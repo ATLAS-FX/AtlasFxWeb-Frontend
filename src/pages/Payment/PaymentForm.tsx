@@ -5,7 +5,7 @@ import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import PaymentApi from '@/services/PaymentApi'
-import { formatDoc } from '@/utils/FormattedDoc'
+import { formattedDoc } from '@/utils/FormattedDoc'
 import md5 from 'md5'
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 
@@ -192,7 +192,7 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
               <div className="flex items-center gap-2">
                 <label>Documento:</label>
                 <h4 className="text-base font-semibold">
-                  {formatDoc(data?.document || '', 'cnpj')}
+                  {formattedDoc(data?.document || '', 'cnpj')}
                 </h4>
               </div>
             </div>

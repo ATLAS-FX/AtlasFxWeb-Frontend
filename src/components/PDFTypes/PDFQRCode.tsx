@@ -1,6 +1,7 @@
 import Atlas_Logo from '@/assets/atlas_logo.png'
 import PoppinsRegular from '@/assets/Poppins-Regular.ttf'
 import PoppinsSemi from '@/assets/Poppins-SemiBold.ttf'
+import { formattedDoc } from '@/utils/FormattedDoc'
 import { generateQRCode } from '@/utils/GenerateCode'
 import {
   Document,
@@ -161,7 +162,7 @@ export const PDFQRCode: React.FC<PdfQRCodeProps> = ({
               <Text style={styles.label}>Nome:</Text>
               <Text style={styles.value}>{name}</Text>
               <Text style={styles.label}>CPF/CNPJ:</Text>
-              <Text style={styles.value}>{document}</Text>
+              <Text style={styles.value}>{formattedDoc(document, 'cnpj')}</Text>
               <Text style={styles.label}>Chave Pix:</Text>
               <Text style={styles.value}>{pix}</Text>
             </View>

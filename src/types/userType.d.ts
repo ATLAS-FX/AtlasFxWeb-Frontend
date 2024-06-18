@@ -4,6 +4,7 @@ declare namespace App {
     name: string
     account: string
     agency: string
+    doc: string
     amount: string
     releases: RegisterPixProps[]
   }

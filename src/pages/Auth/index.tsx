@@ -1,3 +1,4 @@
+import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { CardForLogin } from '@/components/layout/Card/CardForLogin'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -21,25 +22,25 @@ const Login: React.FC = () => {
   const [genQRCode, setGenQRCode] = useState<boolean>(false)
 
   const {
-    data: qrcode,
+    data: gencode,
     isLoading,
     isError,
     refetch
   } = useQuery({
     queryKey: 'get-qrcode',
     queryFn: async () => {
-      const res = await AuthApi.getQrCode()
+      const res = await AuthApi.getCode()
       return res
     }
   })
 
-  // const { data: checkHash, refetch } = useQuery({
-  //   queryKey: 'get-qrcode',
-  //   queryFn: async () => {
-  //     const res = await AuthApi.checkHash()
-  //     return res
-  //   }
-  // })
+  const { data: checkHash, refetch: CheckRefetch } = useQuery({
+    queryKey: 'check-hash',
+    queryFn: async () => {
+      const res = await AuthApi.checkHash({ hash: gencode ? gencode?.hash : '' })
+      return res
+    }
+  })
 
   const generateNewQRCode = () => {
     refetch()
@@ -66,7 +67,7 @@ const Login: React.FC = () => {
     if (!genQRCode) {
       setTimeout(() => {
         setGenQRCode(!genQRCode)
-      }, 24000)
+      }, 48000)
     }
     if (isError) {
       toast({
@@ -75,7 +76,11 @@ const Login: React.FC = () => {
         description: 'Por favor tente mais tarde!'
       })
     }
-  }, [isError, genQRCode])
+    setTimeout(() => {
+      CheckRefetch()
+    }, 2500)
+    console.log(checkHash)
+  }, [isError, genQRCode, checkHash])
 
   return (
     <div>
@@ -151,7 +156,7 @@ const Login: React.FC = () => {
                         </span>
                       </button>
                     )}
-                    <QRCode value={qrcode ? qrcode?.hash : ''} size={180} />
+                    <QRCode value={gencode ? gencode?.hash : ''} size={180} />
                   </>
                 )}
               </div>
@@ -184,15 +189,13 @@ const Login: React.FC = () => {
                 type="text"
               />
               <div className="flex justify-end">
-                <Button
-                  className={cn(
-                    'h-12 w-5/12 rounded-lg bg-colorSecondary-500 text-base font-bold text-colorPrimary-500',
-                    inputPassword.length < 8 ? 'bg-[#BEBEBE] text-[#7E7E7E]' : ''
-                  )}
+                <ButtonNext
+                  title="Enviar agora"
+                  func={() => {}}
                   disabled={inputPassword.length < 8}
-                >
-                  Enviar agora
-                </Button>
+                  classPlus={`h-12 w-5/12 rounded-lg bg-colorSecondary-500 text-base font-bold text-colorPrimary-500',
+                    ${inputPassword.length < 8 && 'bg-[#BEBEBE] text-[#7E7E7E]'}`}
+                />
               </div>
             </div>
           }

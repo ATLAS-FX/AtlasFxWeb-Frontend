@@ -5,7 +5,7 @@ import { PDFPix } from '@/components/PDFTypes/PDFPix'
 import { Separator } from '@/components/ui/separator'
 import { downloadPDF } from '@/utils/DownloadPdf'
 import { formattedDate } from '@/utils/FormattedDate'
-import { formatDoc } from '@/utils/FormattedDoc'
+import { formattedDoc } from '@/utils/FormattedDoc'
 import { formatedPrice } from '@/utils/FormattedPrice'
 import { generateHash } from '@/utils/GenerateCode'
 import { CircleCheck } from 'lucide-react'
@@ -34,7 +34,7 @@ const PaymentSuccess: React.FC<IPaymentSuccess> = ({
     const doc =
       type === 'boleto' ? (
         <PDFBoleto
-          document={formatDoc(document, 'cnpj') || ''}
+          document={formattedDoc(document, 'cnpj') || ''}
           amount={formatedPrice(amount) || ''}
           name={name}
           barcode={barcode}
@@ -46,7 +46,7 @@ const PaymentSuccess: React.FC<IPaymentSuccess> = ({
         />
       ) : (
         <PDFPix
-          documentSent={formatDoc(document, 'cnpj') || ''}
+          documentSent={formattedDoc(document, 'cnpj') || ''}
           amount={formatedPrice(amount) || ''}
           nameSent={name}
           bankSent={'-'}

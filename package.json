@@ -16,6 +16,7 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@react-pdf/renderer": "^3.4.4",
+    "@types/uuid": "^9.0.8",
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "date-fns": "^3.6.0",
@@ -27,7 +28,8 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
-    "react-router-dom": "^6.22.3"
+    "react-router-dom": "^6.22.3",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@radix-ui/react-separator": "^1.0.3",

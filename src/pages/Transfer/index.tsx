@@ -5,11 +5,13 @@ import { Title } from '@/components/layout/Text/Title'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import PixApi from '@/services/PixApi'
+import { formattedDoc } from '@/utils/FormattedDoc'
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import TransferForm from './TransferForm'
 import TransferList from './TransferList'
+import TransferStep from './TransferStep'
 
 const Transfer: React.FC = () => {
   const navigate = useNavigate()
@@ -19,6 +21,7 @@ const Transfer: React.FC = () => {
     bank: string
     agency: string
     account: string
+    amount: string
     typeAccount: string
     nameOrtitle: string
     doc: string
@@ -28,6 +31,7 @@ const Transfer: React.FC = () => {
     bank: '',
     agency: '',
     account: '',
+    amount: '',
     typeAccount: '',
     doc: '',
     nameOrtitle: '',
@@ -68,7 +72,8 @@ const Transfer: React.FC = () => {
                 doc: '',
                 nameOrtitle: '',
                 numberDoc: '',
-                typeAccount: ''
+                typeAccount: '',
+                amount: ''
               }))
         }}
       />
@@ -94,6 +99,46 @@ const Transfer: React.FC = () => {
       {stateForm.step === 0 && <TransferList data={data} />}
       {stateForm.step === 1 && (
         <TransferForm form={stateForm} setForm={setStateForm} />
+      )}
+      {stateForm.step === 2 && (
+        <>
+          <div className="flex flex-col gap-2 text-lg font-medium">
+            <h4 className="font-normal">
+              Titular:{' '}
+              <span className="font-semibold">{stateForm.nameOrtitle || ''}</span>
+            </h4>
+            <div className="ml-8">
+              <h4>
+                Documento:{' '}
+                <span className="font-normal">
+                  {formattedDoc(stateForm.numberDoc, stateForm.doc) || ''}
+                </span>
+              </h4>
+              <h4>
+                Banco: <span className="font-normal">{stateForm.bank || ''}</span>
+              </h4>
+              <div className="flex gap-2">
+                <h4>
+                  Agência:{' '}
+                  <span className="font-normal">{stateForm.agency || ''}</span>
+                </h4>
+                -
+                <h4>
+                  Conta:{' '}
+                  <span className="font-normal">{stateForm.account || ''}</span>
+                </h4>
+              </div>
+              <h4>
+                Tipo de conta:{' '}
+                <span className="font-normal">{stateForm.account || ''}</span>
+              </h4>
+            </div>
+          </div>
+          <div className="flex flex-row-reverse">
+            <Separator className="w-[52%] bg-colorSecondary-500" />
+          </div>
+          <TransferStep step={stateForm} setStep={setStateForm} />
+        </>
       )}
     </AdminContainer>
   )

@@ -5,59 +5,69 @@ import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
-import { toast } from '@/components/ui/use-toast'
-import PixApi from '@/services/PixApi'
 import { formattedDoc } from '@/utils/FormattedDoc'
 import { formatedPrice } from '@/utils/FormattedPrice'
-import md5 from 'md5'
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
+import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 
-interface IPixForm {
-  keyPix: string
-  step: Dispatch<SetStateAction<number>>
-  amount: Dispatch<SetStateAction<string>>
-  name: string
-  bank: string
-  doc: string
+interface TransferStepProps {
+  step: {
+    step: number
+    bank: string
+    agency: string
+    account: string
+    amount: string
+    typeAccount: string
+    nameOrtitle: string
+    doc: string
+    numberDoc: string
+  }
+  setStep: Dispatch<
+    SetStateAction<{
+      step: number
+      bank: string
+      agency: string
+      account: string
+      amount: string
+      typeAccount: string
+      nameOrtitle: string
+      doc: string
+      numberDoc: string
+    }>
+  >
 }
 
-const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) => {
+const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
   const [stateModalPix, setStateModalPix] = useState<boolean>(false)
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
   const [pwdCode, setPwdCode] = useState<string>('')
-  const [formSendPix, setFormSendPix] = useState<{
-    amount: string
-    desc: string
-    save: number
-  }>({ amount: '0,00', desc: '', save: 0 })
 
-  const handleSendPix = async () => {
-    const reversePrice = Number(formSendPix.amount.replace(',', '').replace('.', ''))
-    await PixApi.sendPix({
-      amount: reversePrice,
-      desc: formSendPix.desc || '',
-      key: keyPix,
-      save: formSendPix.save,
-      pwd: md5(pwdCode)
-    })
-      .then((res) => {
-        toast({
-          variant: 'success',
-          title: 'Seu código foi confirmado com sucesso!',
-          description: res.success
-        })
-        amount(formSendPix.amount !== null ? formSendPix.amount.toString() : '')
-        setOpenModalPwd(false)
-        step(2)
-      })
-      .catch((e: Error) => {
-        toast({
-          variant: 'destructive',
-          title: 'Erro ao confirmar código para alteração endereço',
-          description: e.message
-        })
-      })
-  }
+  // const handleSendPix = async () => {
+  //   const reversePrice = Number(formSendPix.amount.replace(',', '').replace('.', ''))
+  //   await PixApi.sendPix({
+  //     amount: reversePrice,
+  //     desc: formSendPix.desc || '',
+  //     key: keyPix,
+  //     save: formSendPix.save,
+  //     pwd: md5(pwdCode)
+  //   })
+  //     .then((res) => {
+  //       toast({
+  //         variant: 'success',
+  //         title: 'Seu código foi confirmado com sucesso!',
+  //         description: res.success
+  //       })
+  //       amount(formSendPix.amount !== null ? formSendPix.amount.toString() : '')
+  //       setOpenModalPwd(false)
+  //       step(2)
+  //     })
+  //     .catch((e: Error) => {
+  //       toast({
+  //         variant: 'destructive',
+  //         title: 'Erro ao confirmar código para alteração endereço',
+  //         description: e.message
+  //       })
+  //     })
+  // }
 
   return (
     <>
@@ -66,7 +76,7 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
           type="checkbox"
           className="w-fit"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setFormSendPix((prevState) => ({
+            setStep((prevState) => ({
               ...prevState,
               save: !e.target.checked ? 1 : 0
             }))
@@ -85,10 +95,10 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
           <Input
             className="border-none p-0 text-lg shadow-none"
             type="string"
-            value={formSendPix.amount}
+            value={step.amount}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const format = formatedPrice(e.target.value) || ''
-              setFormSendPix((prevState) => ({
+              setStep((prevState) => ({
                 ...prevState,
                 amount: format
               }))
@@ -105,7 +115,7 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
           style={{ resize: 'none' }}
           rows={5}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-            setFormSendPix((prevState) => ({
+            setStep((prevState) => ({
               ...prevState,
               desc: e.target.value
             }))
@@ -115,7 +125,7 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
       <div className="mt-1 flex justify-end">
         <ButtonNext
           title="Prosseguir para a revisão"
-          disabled={Number(formSendPix.amount.replace(/[.,]/g, '')) <= 0}
+          // disabled={Number(step.amount.replace(/[.,]/g, '')) <= 0}
           func={() => setStateModalPix(!stateModalPix)}
         />
       </div>
@@ -136,24 +146,16 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
             <div className="text-sm font-normal">
               <div className="flex items-center gap-2">
                 <label>Para:</label>
-                <h4 className="text-base font-semibold">{name}</h4>
+                <h4 className="text-base font-semibold">{step.nameOrtitle}</h4>
               </div>
               <div className="flex items-center gap-2">
-                <label>CPF/CNPJ:</label>
+                <label className="uppercase">{step.typeAccount}</label>
                 <h4 className="text-base font-semibold">
-                  {formattedDoc(doc, doc.length > 12 ? 'cnpj' : 'cpf')}
+                  {formattedDoc(step.numberDoc, step.typeAccount)}
                 </h4>
                 <label>Banco:</label>
-                <h4 className="text-base font-semibold">{bank}</h4>
+                <h4 className="text-base font-semibold">{step.bank}</h4>
               </div>
-              <div className="flex items-center gap-2">
-                <label>Chave pix:</label>
-                <h4 className="text-base font-semibold">{keyPix}</h4>
-              </div>
-              <h4 className="mb-2 mt-4 pl-[10%] text-lg font-semibold">
-                R$ {formSendPix.amount}
-              </h4>
-              <label>Data: {new Date().toLocaleDateString()}</label>
             </div>
             <Separator className="bg-colorPrimary-500" />
           </>
@@ -197,7 +199,8 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
             <ButtonNext
               disabled={pwdCode.length === 6}
               title="Enviar agora"
-              func={handleSendPix}
+              // func={handleSendPix}
+              func={() => {}}
               classPlus="rounded-xl w-full bg-[#008000]"
             />
           </>
@@ -207,4 +210,4 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
   )
 }
 
-export default PixForm
+export default TransferStep

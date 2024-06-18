@@ -1,7 +1,6 @@
 import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import TwoFactorAuthValidator from '@/components/layout/Input/TwoFactorAuthValidator'
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
@@ -144,12 +143,12 @@ export const RegistrationForm: React.FC<IRegistrationForm> = ({
           }
           ArrayButton={
             <>
-              <Button
-                className="w-full rounded-md bg-[#008000]"
-                onClick={handleUpdateAddressProfile}
-              >
-                Enviar agora
-              </Button>
+              <ButtonNext
+                disabled={pwdCode.length === 6}
+                title="Enviar agora"
+                func={handleUpdateAddressProfile}
+                classPlus="rounded-xl w-full bg-[#008000]"
+              />
             </>
           }
         />

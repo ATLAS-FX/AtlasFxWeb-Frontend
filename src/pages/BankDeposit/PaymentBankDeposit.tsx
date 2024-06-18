@@ -32,7 +32,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({
     const doc =
       type === 'bar' ? (
         <PDFBoleto
-          document={''}
+          document={user.doc}
           amount={formatedPrice(amount) || ''}
           name={user.name}
           barcode={barcode}
@@ -44,7 +44,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({
         />
       ) : (
         <PDFQRCode
-          document={''}
+          document={user.doc}
           name={user.name}
           amount={formatedPrice(amount) || ''}
           pix={qrcode}
@@ -103,6 +103,9 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({
             className="m-auto my-0 object-contain py-2"
             size={250}
           />
+          <h4 className="py-2 text-center text-3xl font-semibold">
+            Valor: R$ {amount}
+          </h4>
           <div className="flex flex-row-reverse">
             <Separator className="w-[52%] bg-colorSecondary-500" />
           </div>
