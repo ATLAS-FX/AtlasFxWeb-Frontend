@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router-dom'
 interface UserContextData {
   user: App.UserProps
   setUser: Dispatch<SetStateAction<App.UserProps>>
+  pixCopyPaste: boolean
+  setPixCopyPaste: Dispatch<SetStateAction<boolean>>
   currentStepEmail: number
   setCurrentStepEmail: Dispatch<SetStateAction<number>>
   currentStepProfile: number
@@ -33,6 +35,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const [currentStepEmail, setCurrentStepEmail] = useState<number>(0)
   const [currentStepProfile, setCurrentStepProfile] = useState<number>(0)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>()
+  const [pixCopyPaste, setPixCopyPaste] = useState<boolean>(false)
   const [token, setToken] = useState<string>('')
   const [user, setUser] = useState<App.UserProps>({
     id: 0,
@@ -74,6 +77,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         setUser,
         currentStepEmail,
         setCurrentStepEmail,
+        pixCopyPaste,
+        setPixCopyPaste,
         currentStepProfile,
         setCurrentStepProfile,
         isAuthenticated,

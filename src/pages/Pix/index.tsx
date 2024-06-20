@@ -11,11 +11,13 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import { Separator } from '@/components/ui/separator'
+import { useAdm } from '@/contexts/UserContext'
 import { listPixButton } from '@/utils/PixListButtons'
 import { ChevronDown } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 
 const Pix: React.FC = () => {
+  const { setPixCopyPaste } = useAdm()
   const navigate = useNavigate()
 
   const listPixActions = [
@@ -49,7 +51,8 @@ const Pix: React.FC = () => {
             <Link
               className="flex h-20 w-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-colorPrimary-500 bg-transparent fill-colorPrimary-500 text-colorPrimary-500 shadow-md shadow-slate-400 drop-shadow-md transition-all duration-300 ease-out hover:bg-colorPrimary-500 hover:fill-white hover:text-white"
               key={`${type + number}`}
-              to={`/pix/${type}`}
+              onClick={() => type === 'copy-paste' && setPixCopyPaste(true)}
+              to={type === 'copy-paste' ? `/payments` : `/pix/${type}`}
             >
               <Icon size={number === 4 ? 28 : 32} />
               <span className="text-center text-xs font-medium">{name}</span>

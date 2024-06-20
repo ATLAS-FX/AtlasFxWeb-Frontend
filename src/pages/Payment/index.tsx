@@ -3,12 +3,14 @@ import { IconBarCode } from '@/components/icons/BarCode'
 import { IconPix } from '@/components/icons/Pix'
 import { AdminContainer } from '@/components/layout/Container'
 import { Title } from '@/components/layout/Text/Title'
+import { useAdm } from '@/contexts/UserContext'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PaymentForm from './PaymentForm'
 import PaymentSuccess from './PaymentSuccess'
 
 const Payments: React.FC = () => {
+  const { pixCopyPaste, setPixCopyPaste } = useAdm()
   const navigate = useNavigate()
   const [stepPayment, setStepPayment] = useState<{
     step: number
@@ -47,16 +49,18 @@ const Payments: React.FC = () => {
       <Title
         text="Pagamentos"
         back={() =>
-          stepPayment.step <= 0
-            ? navigate(-1)
-            : setStepPayment((prev) => ({
-                ...prev,
-                step: prev.step - 1,
-                textValue: ''
-              }))
+          pixCopyPaste
+            ? setPixCopyPaste(false)
+            : stepPayment.step <= 0
+              ? navigate(-1)
+              : setStepPayment((prev) => ({
+                  ...prev,
+                  step: prev.step - 1,
+                  textValue: ''
+                }))
         }
       />
-      {stepPayment.step === 0 && (
+      {stepPayment.step === 0 && !pixCopyPaste && (
         <>
           <h4 className="text-base font-medium">Escolha como pagar</h4>
           <div className="flex flex-col gap-2 p-2">
@@ -66,14 +70,15 @@ const Payments: React.FC = () => {
           </div>
         </>
       )}
-      {stepPayment.step === 1 && (
-        <PaymentForm
-          flow={stepPayment}
-          setFlow={setStepPayment}
-          setData={setDataPayment}
-          data={dataPayment}
-        />
-      )}
+      {stepPayment.step === 1 ||
+        (pixCopyPaste && (
+          <PaymentForm
+            flow={stepPayment}
+            setFlow={setStepPayment}
+            setData={setDataPayment}
+            data={dataPayment}
+          />
+        ))}
       {stepPayment.step === 2 && (
         <PaymentSuccess
           type={stepPayment.type}

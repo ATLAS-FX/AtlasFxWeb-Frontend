@@ -4,6 +4,7 @@ import TwoFactorAuthValidator from '@/components/layout/Input/TwoFactorAuthValid
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
+import { cn } from '@/lib/utils'
 import PaymentApi from '@/services/PaymentApi'
 import { formattedDoc } from '@/utils/FormattedDoc'
 import md5 from 'md5'
@@ -117,9 +118,12 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
       </h4>
       <div className="flex flex-col gap-2 p-2">
         <textarea
-          className="w-full rounded-xl border-2 border-colorPrimary-500 p-2 text-3xl font-medium shadow-none"
+          className={cn(
+            'w-full rounded-xl border-2 border-colorPrimary-500 p-2 font-medium shadow-none',
+            flow.type === 'boleto' ? 'text-3xl' : 'text-2xl'
+          )}
+          maxLength={flow.type === 'boleto' ? 51 : 2000}
           style={{ resize: 'none' }}
-          maxLength={51}
           rows={5}
           value={flow.textValue}
           onChange={handleTextChange}
