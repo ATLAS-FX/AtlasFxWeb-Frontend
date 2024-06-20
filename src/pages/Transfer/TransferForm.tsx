@@ -1,4 +1,5 @@
 import { ButtonNext } from '@/components/Buttons/ButtonNext'
+import MaskedInput from '@/components/layout/Input/MaskedInput'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -9,9 +10,9 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { formattedDoc } from '@/utils/FormattedDoc'
 import { ListBank } from '@/utils/ListBank'
-import { Dispatch, SetStateAction, useEffect } from 'react'
+import { ListMask } from '@/utils/ListMask'
+import { Dispatch, SetStateAction } from 'react'
 
 interface TransferFormProps {
   form: {
@@ -71,11 +72,9 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
     return numA - numB
   })
 
-  const isFormValid = Object.values(form).every((value) => value !== '')
-
-  useEffect(() => {
-    console.log(form)
-  }, [form])
+  const isFormValid = Object.entries(form)
+    .filter(([key]) => key !== 'amount')
+    .every(([, value]) => value !== '')
 
   return (
     <>
@@ -102,10 +101,10 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
           </SelectContent>
         </Select>
         <div className="flex w-full items-center justify-between gap-4">
-          <Input
-            className="w-4/12 rounded-xl border-colorPrimary-500 p-6 text-base font-medium"
+          <MaskedInput
+            className="w-4/12 rounded-xl border-[1px] border-colorPrimary-500 p-4 text-base font-medium"
+            mask={'999999'}
             placeholder="Agencia"
-            type="number"
             value={form.agency}
             onChange={(e) =>
               setForm((prev) => ({
@@ -114,11 +113,11 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
               }))
             }
           />
-          <Input
-            className="w-8/12 rounded-xl border-colorPrimary-500 p-6 text-base font-medium"
+          <MaskedInput
+            className="w-8/12 rounded-xl border-[1px] border-colorPrimary-500 p-4 text-base font-medium"
+            mask={'9999999-9'}
             placeholder="Conta"
             value={form.account}
-            type="number"
             onChange={(e) =>
               setForm((prev) => ({
                 ...prev,
@@ -152,6 +151,7 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
           className="rounded-xl border-colorPrimary-500 p-6 text-base font-medium"
           placeholder="Nome completo ou razão social do titular"
           type="text"
+          min={0}
           value={form.nameOrtitle}
           onChange={(e) =>
             setForm((prev) => ({
@@ -182,19 +182,17 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Input
-            className="w-8/12 rounded-xl border-colorPrimary-500 p-6 text-base font-medium"
+          <MaskedInput
+            className="w-8/12 rounded-xl border-[1px] border-colorPrimary-500 p-4 text-base font-medium"
+            mask={ListMask.find((e) => e.key === form.doc)?.mask || ''}
             placeholder="Número do documento"
-            type="text"
-            // maxLength={form.typeAccount === 'cnpj' ? 24 : 18}
-            value={formattedDoc(form.numberDoc, form.typeAccount)}
-            onChange={(e) => {
-              const format = formattedDoc(e.target.value, form.typeAccount)
+            value={form.numberDoc}
+            onChange={(e) =>
               setForm((prev) => ({
                 ...prev,
-                numberDoc: format || ''
+                numberDoc: e.target.value
               }))
-            }}
+            }
           />
         </div>
       </div>

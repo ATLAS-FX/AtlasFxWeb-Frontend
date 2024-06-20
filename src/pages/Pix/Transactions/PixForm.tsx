@@ -10,7 +10,7 @@ import PixApi from '@/services/PixApi'
 import { formattedDoc } from '@/utils/FormattedDoc'
 import { formatedPrice } from '@/utils/FormattedPrice'
 import md5 from 'md5'
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 
 interface IPixForm {
   keyPix: string
@@ -31,10 +31,6 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
     desc: string
     save: number
   }>({ amount: '0,00', desc: '', save: 0 })
-
-  useEffect(() => {
-    console.log('pwd ->', pwdCode)
-  }, [pwdCode])
 
   const handleSendPix = async () => {
     setLoading(true)
@@ -205,7 +201,7 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
           <>
             <ButtonNext
               title="Enviar agora"
-              disabled={pwdCode.length < 6}
+              disabled={pwdCode.trim() === ''}
               loading={loading}
               func={handleSendPix}
               classPlus="rounded-xl w-full bg-[#008000]"

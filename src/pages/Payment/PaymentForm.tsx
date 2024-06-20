@@ -254,6 +254,7 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
           <>
             <ButtonNext
               title="Enviar agora"
+              disabled={flow.pwdCode.trim() === ''}
               func={handleSendPayment}
               loading={!loading}
               classPlus="rounded-xl w-full bg-[#008000]"

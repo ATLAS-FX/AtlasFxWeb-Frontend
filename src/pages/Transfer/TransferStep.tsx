@@ -7,7 +7,13 @@ import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { formattedDoc } from '@/utils/FormattedDoc'
 import { formatedPrice } from '@/utils/FormattedPrice'
-import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
+import React, {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState
+} from 'react'
 
 interface TransferStepProps {
   step: {
@@ -40,6 +46,10 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
   const [stateModalPix, setStateModalPix] = useState<boolean>(false)
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
   const [pwdCode, setPwdCode] = useState<string>('')
+
+  useEffect(() => {
+    console.log('->', pwdCode)
+  }, [pwdCode])
 
   return (
     <>
@@ -97,7 +107,7 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
       <div className="mt-1 flex justify-end">
         <ButtonNext
           title="Prosseguir para a revisão"
-          // disabled={Number(step.amount.replace(/[.,]/g, '')) <= 0}
+          disabled={Number(step.amount.replace(/[.,]/g, '')) <= 0}
           func={() => setStateModalPix(!stateModalPix)}
         />
       </div>
@@ -169,7 +179,7 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
         ArrayButton={
           <>
             <ButtonNext
-              disabled={pwdCode.length === 6}
+              disabled={pwdCode.trim() === ''}
               title="Enviar agora"
               // func={handleSendPix}
               func={() => {}}
