@@ -20,7 +20,7 @@ const Payments: React.FC = () => {
     loading: boolean
   }>({
     step: 0,
-    type: '',
+    type: pixCopyPaste ? 'pix' : '',
     textValue: '',
     pwdCode: '',
     loading: false
@@ -32,14 +32,19 @@ const Payments: React.FC = () => {
       title: 'Digitar código de barras',
       icon: IconBarCode,
       func: () => {
-        setStepPayment((prev) => ({ ...prev, type: 'boleto', step: 1 }))
+        setStepPayment((prev) => ({
+          ...prev,
+          textValue: '',
+          type: 'boleto',
+          step: 1
+        }))
       }
     },
     {
       title: 'Pix Copia e Cola',
       icon: IconPix,
       func: () => {
-        setStepPayment((prev) => ({ ...prev, type: 'pix', step: 1 }))
+        setStepPayment((prev) => ({ ...prev, textValue: '', type: 'pix', step: 1 }))
       }
     }
   ]
@@ -70,15 +75,22 @@ const Payments: React.FC = () => {
           </div>
         </>
       )}
-      {stepPayment.step === 1 ||
-        (pixCopyPaste && (
-          <PaymentForm
-            flow={stepPayment}
-            setFlow={setStepPayment}
-            setData={setDataPayment}
-            data={dataPayment}
-          />
-        ))}
+      {stepPayment.step === 1 && (
+        <PaymentForm
+          flow={stepPayment}
+          setFlow={setStepPayment}
+          setData={setDataPayment}
+          data={dataPayment}
+        />
+      )}
+      {pixCopyPaste && (
+        <PaymentForm
+          flow={stepPayment}
+          setFlow={setStepPayment}
+          setData={setDataPayment}
+          data={dataPayment}
+        />
+      )}
       {stepPayment.step === 2 && (
         <PaymentSuccess
           type={stepPayment.type}
