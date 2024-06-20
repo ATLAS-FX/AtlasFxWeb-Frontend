@@ -88,11 +88,11 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
           description: res.success
         })
       })
-      .catch((e: Error) => {
+      .catch((e: ErrorResponse) => {
         toast({
           variant: 'destructive',
-          title: 'Erro ao gerar boleto!',
-          description: e.message
+          title: e.response?.data?.error,
+          description: 'repita o processo.'
         })
       })
       .finally(() => {
@@ -115,11 +115,11 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
           description: res.success
         })
       })
-      .catch((e: Error) => {
+      .catch((e: ErrorResponse) => {
         toast({
           variant: 'destructive',
-          title: 'Erro ao gerar QrCode!',
-          description: e.message
+          title: e.response?.data?.error,
+          description: 'repita o processo.'
         })
       })
       .finally(() => {

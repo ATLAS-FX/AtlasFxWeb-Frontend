@@ -27,11 +27,11 @@ const Contact: React.FC<IContact> = ({ name, keyPix, openModal }) => {
           description: ''
         })
       })
-      .catch((e: Error) => {
+      .catch((e: ErrorResponse) => {
         toast({
           variant: 'destructive',
-          title: 'Falha ao copiar chave',
-          description: e.message
+          title: e.response?.data?.error,
+          description: 'repita o processo.'
         })
       })
   }

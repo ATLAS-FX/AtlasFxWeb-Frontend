@@ -1,4 +1,5 @@
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
+import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { IconMovingCar } from '@/components/icons/MovingCar'
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Button } from '@/components/ui/button'
@@ -26,6 +27,7 @@ export const RegistratrionCode: React.FC<IRegistrationCode> = ({
   step
 }) => {
   const [openModalValidation, setOpenModalValidation] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const handleChangeAddress = async () => {
     await UserApi.getAddressCode()
@@ -33,16 +35,17 @@ export const RegistratrionCode: React.FC<IRegistrationCode> = ({
         setCode(res.success.match(/:\s*(\w+)/)?.[1])
         setOpenModalValidation(!openModalValidation)
       })
-      .catch((e: Error) => {
+      .catch((e: ErrorResponse) => {
         toast({
           variant: 'destructive',
-          title: 'Erro ao gerar código de alteração de endereço.',
-          description: e.message
+          title: e.response?.data?.error,
+          description: 'por favor tente novamente.'
         })
       })
   }
 
   const handleCheckCode = async () => {
+    setLoading(true)
     await UserApi.checkAddressCode({ code: code })
       .then((res) => {
         toast({
@@ -53,12 +56,15 @@ export const RegistratrionCode: React.FC<IRegistrationCode> = ({
         setOpenModalValidation(false)
         step(2)
       })
-      .catch((e: Error) => {
+      .catch((e: ErrorResponse) => {
         toast({
           variant: 'destructive',
-          title: 'Erro ao confirmar código para alteração endereço',
-          description: e.message
+          title: e.response?.data?.error,
+          description: 'Tente novamente código.'
         })
+      })
+      .finally(() => {
+        setLoading(true)
       })
   }
 
@@ -101,9 +107,13 @@ export const RegistratrionCode: React.FC<IRegistrationCode> = ({
           }
           ArrayButton={
             <>
-              <Button className="rounded-md bg-[#008000]" onClick={handleCheckCode}>
-                Confirmar
-              </Button>
+              <ButtonNext
+                title="Confirmar"
+                disabled={code.trim() !== ''}
+                loading={loading}
+                func={handleCheckCode}
+                classPlus="rounded-xl w-full bg-[#008000]"
+              />
               <Button
                 className="rounded-md bg-[#FF0000]"
                 onClick={() => setOpenModalValidation(!openModalValidation)}

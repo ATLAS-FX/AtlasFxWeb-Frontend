@@ -41,34 +41,6 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
   const [pwdCode, setPwdCode] = useState<string>('')
 
-  // const handleSendPix = async () => {
-  //   const reversePrice = Number(formSendPix.amount.replace(',', '').replace('.', ''))
-  //   await PixApi.sendPix({
-  //     amount: reversePrice,
-  //     desc: formSendPix.desc || '',
-  //     key: keyPix,
-  //     save: formSendPix.save,
-  //     pwd: md5(pwdCode)
-  //   })
-  //     .then((res) => {
-  //       toast({
-  //         variant: 'success',
-  //         title: 'Seu código foi confirmado com sucesso!',
-  //         description: res.success
-  //       })
-  //       amount(formSendPix.amount !== null ? formSendPix.amount.toString() : '')
-  //       setOpenModalPwd(false)
-  //       step(2)
-  //     })
-  //     .catch((e: Error) => {
-  //       toast({
-  //         variant: 'destructive',
-  //         title: 'Erro ao confirmar código para alteração endereço',
-  //         description: e.message
-  //       })
-  //     })
-  // }
-
   return (
     <>
       <div className="flex items-center justify-start gap-2">

@@ -62,6 +62,7 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
   }
 
   const handleConsultPayment = async () => {
+    setLoading(true)
     await PaymentApi.consultPayment({
       number: flow.textValue,
       type: flow.type
@@ -70,8 +71,15 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
         setData(res)
         setStateModalPayment(true)
       })
-      .catch((e: Error) => {
-        console.error(e)
+      .catch((e: ErrorResponse) => {
+        toast({
+          variant: 'destructive',
+          title: e.response?.data?.error,
+          description: 'repita o processo.'
+        })
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 
@@ -90,11 +98,11 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
         })
         setFlow((prev) => ({ ...prev, step: 2, openModalPwd: false }))
       })
-      .catch((e: Error) => {
+      .catch((e: ErrorResponse) => {
         toast({
           variant: 'destructive',
-          title: 'Erro ao efetuar pagamento.',
-          description: e.message
+          title: e.response?.data?.error,
+          description: 'repita o processo.'
         })
       })
       .finally(() => {
@@ -125,6 +133,7 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
               ? flow.textValue.length <= 50
               : flow.textValue.length <= 1
           }
+          loading={loading}
           func={handleConsultPayment}
         />
       </div>
@@ -242,7 +251,6 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
             <ButtonNext
               title="Enviar agora"
               func={handleSendPayment}
-              disabled={flow.pwdCode.length === 6}
               loading={!loading}
               classPlus="rounded-xl w-full bg-[#008000]"
             />

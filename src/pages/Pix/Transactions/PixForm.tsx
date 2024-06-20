@@ -10,7 +10,7 @@ import PixApi from '@/services/PixApi'
 import { formattedDoc } from '@/utils/FormattedDoc'
 import { formatedPrice } from '@/utils/FormattedPrice'
 import md5 from 'md5'
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 interface IPixForm {
   keyPix: string
@@ -24,6 +24,7 @@ interface IPixForm {
 const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) => {
   const [stateModalPix, setStateModalPix] = useState<boolean>(false)
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [pwdCode, setPwdCode] = useState<string>('')
   const [formSendPix, setFormSendPix] = useState<{
     amount: string
@@ -31,7 +32,12 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
     save: number
   }>({ amount: '0,00', desc: '', save: 0 })
 
+  useEffect(() => {
+    console.log('pwd ->', pwdCode)
+  }, [pwdCode])
+
   const handleSendPix = async () => {
+    setLoading(true)
     const reversePrice = Number(formSendPix.amount.replace(',', '').replace('.', ''))
     await PixApi.sendPix({
       amount: reversePrice,
@@ -50,12 +56,15 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
         setOpenModalPwd(false)
         step(2)
       })
-      .catch((e: Error) => {
+      .catch((e: ErrorResponse) => {
         toast({
           variant: 'destructive',
-          title: 'Erro ao confirmar código para alteração endereço',
-          description: e.message
+          title: e.response?.data?.error,
+          description: 'repita o processo.'
         })
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 
@@ -195,8 +204,9 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
         ArrayButton={
           <>
             <ButtonNext
-              disabled={pwdCode.length === 6}
               title="Enviar agora"
+              disabled={pwdCode.length < 6}
+              loading={loading}
               func={handleSendPix}
               classPlus="rounded-xl w-full bg-[#008000]"
             />

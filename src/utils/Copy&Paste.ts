@@ -14,11 +14,11 @@ export const handleCopyClick = (
         description: ''
       })
     })
-    .catch((e: Error) => {
+    .catch((e: ErrorResponse) => {
       toast({
         variant: 'destructive',
         title: textError,
-        description: e.message
+        description: e.response?.data?.error
       })
     })
 }

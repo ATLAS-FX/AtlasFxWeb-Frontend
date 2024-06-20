@@ -1,5 +1,6 @@
 import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { AdminContainer } from '@/components/layout/Container'
+import MaskedInput from '@/components/layout/Input/MaskedInput'
 import { Title } from '@/components/layout/Text/Title'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
@@ -9,12 +10,14 @@ import PixApi from '@/services/PixApi'
 import { formattedDate } from '@/utils/FormattedDate'
 import { formattedDoc } from '@/utils/FormattedDoc'
 import { generateHash } from '@/utils/GenerateCode'
+import { ListMask } from '@/utils/ListMask'
 import { ChangeEvent, useCallback, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import PixForm from './PixForm'
 import PixSuccess from './PixSuccess'
 
 const PixStep: React.FC = () => {
+  const { id } = useParams()
   const navigate = useNavigate()
   const [stepPix, setStepPix] = useState<number>(0)
   const [getKeyInput, setGetKeyInput] = useState<string>('')
@@ -34,11 +37,11 @@ const PixStep: React.FC = () => {
         setData(res)
         setStepPix(1)
       })
-      .catch((e: Error) => {
+      .catch((e: ErrorResponse) => {
         toast({
           variant: 'destructive',
-          title: 'Erro ao consultar chave Pix.',
-          description: e.message
+          title: e.response?.data?.error,
+          description: 'repita o processo.'
         })
       })
       .finally(() => {
@@ -51,24 +54,45 @@ const PixStep: React.FC = () => {
       {stepPix < 2 && (
         <div className="flex flex-col gap-4">
           <Title text="Enviar Pix" back={() => navigate(-1)} />
-          <label className="text-base font-medium">
-            Insira os dados da Chave Pix
-          </label>
-          <div
-            className={cn(
-              'flex h-12 w-full  items-center gap-2 rounded-xl border-2 p-2 px-2 py-1 text-lg font-semibold shadow-none transition-transform duration-300',
-              stepPix > 0 ? 'border-[#008000]' : 'border-colorPrimary-500'
-            )}
-          >
-            <Input
-              className="border-none p-0 text-lg shadow-none"
-              type="text"
-              value={getKeyInput}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setGetKeyInput(e.target.value)
-              }}
-            />
-          </div>
+          {id !== 'copy-paste' ? (
+            <>
+              <label className="text-base font-medium">
+                Insira os dados da Chave Pix
+              </label>
+              {ListMask.filter((item) => item.key === id).map(
+                ({ key, mask, placeholder }, number) => (
+                  <MaskedInput
+                    className={cn(
+                      'flex h-12 w-full  items-center gap-2 rounded-xl border-2 p-2 px-2 py-1 text-lg font-semibold shadow-none transition-transform duration-300',
+                      stepPix > 0 ? 'border-[#008000]' : 'border-colorPrimary-500'
+                    )}
+                    key={`${key + number}`}
+                    mask={mask || ''}
+                    placeholder={placeholder || ''}
+                    value={getKeyInput}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      setGetKeyInput(e.target.value)
+                    }}
+                  />
+                )
+              )}
+            </>
+          ) : (
+            <>
+              <label className="text-base font-medium">Cole aqui o pix</label>
+              <Input
+                className={cn(
+                  'flex h-12 w-full  items-center gap-2 rounded-xl border-2 p-2 px-2 py-1 text-lg font-semibold shadow-none transition-transform duration-300',
+                  stepPix > 0 ? 'border-[#008000]' : 'border-colorPrimary-500'
+                )}
+                placeholder=""
+                value={getKeyInput}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  setGetKeyInput(e.target.value)
+                }}
+              />
+            </>
+          )}
           <div className="mt-1 flex justify-end">
             <ButtonNext
               title="Prosseguir"

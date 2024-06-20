@@ -21,6 +21,7 @@ export const RegistrationForm: React.FC<IRegistrationForm> = ({
   refetch
 }) => {
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [pwdCode, setPwdCode] = useState<string>('')
 
   const [stateChangeAddress, setStateChangeAddress] = useState<{
@@ -42,6 +43,7 @@ export const RegistrationForm: React.FC<IRegistrationForm> = ({
   })
 
   const handleUpdateAddressProfile = async () => {
+    setLoading(true)
     await UserApi.updateAddress({
       code: code,
       city: stateChangeAddress.cidade,
@@ -64,12 +66,15 @@ export const RegistrationForm: React.FC<IRegistrationForm> = ({
         setOpenModalPwd(false)
         step(3)
       })
-      .catch((e: Error) => {
+      .catch((e: ErrorResponse) => {
         toast({
           variant: 'destructive',
-          title: 'Erro ao confirmar código para alteração endereço',
-          description: e.message
+          title: e.response?.data?.error,
+          description: 'Preencha novamente'
         })
+      })
+      .finally(() => {
+        setLoading(true)
       })
   }
 
@@ -146,6 +151,7 @@ export const RegistrationForm: React.FC<IRegistrationForm> = ({
               <ButtonNext
                 disabled={pwdCode.length === 6}
                 title="Enviar agora"
+                loading={loading}
                 func={handleUpdateAddressProfile}
                 classPlus="rounded-xl w-full bg-[#008000]"
               />

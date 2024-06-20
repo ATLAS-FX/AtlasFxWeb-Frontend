@@ -32,7 +32,7 @@ const TwoFactorAuthValidator: React.FC<TwoFactorAuthValidatorProps> = ({
 
   const handleBackspace = (index: number) => {
     if (index > 0) {
-      const updatedCode = code.substr(0, index - 1) + code.substr(index)
+      const updatedCode = code.slice(0, index - 1) + code.slice(index)
       setCode(updatedCode)
       inputRefs.current[index - 1]?.focus()
     } else {

@@ -15,6 +15,7 @@ interface ICreatePix {
 }
 
 const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
+  const [loading, setLoading] = useState<boolean>(false)
   const [formCreateKeyPix, setFormCreateKeyPix] = useState<{
     step: number
     type: string
@@ -28,6 +29,7 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
   const validNames = new Set(['CNPJ', 'CPF', 'Celular', 'E-mail', 'Chave aleatória'])
 
   const handleCreateKeyPix = async (type: string, key: string) => {
+    setLoading(true)
     await PixApi.createdKeyPix({ key_type: type, key_code: key })
       .then((res) => {
         toast({
@@ -38,12 +40,15 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
         refetch()
         step(2)
       })
-      .catch((e: Error) => {
+      .catch((e: ErrorResponse) => {
         toast({
           variant: 'destructive',
-          title: 'Erro ao criada chave pix',
-          description: e.message
+          title: e.response?.data?.error,
+          description: 'Erro ao criada chave pix'
         })
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 
@@ -111,6 +116,7 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
           <div className="flex justify-end">
             <ButtonNext
               title="Prosseguir"
+              loading={loading}
               disabled={formCreateKeyPix.key.length <= 0}
               func={() =>
                 handleCreateKeyPix(formCreateKeyPix.type, formCreateKeyPix.key)
@@ -127,6 +133,7 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
           <div className="flex justify-end">
             <ButtonNext
               title="Prosseguir"
+              loading={loading}
               func={() =>
                 handleCreateKeyPix(formCreateKeyPix.type, formCreateKeyPix.key)
               }

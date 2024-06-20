@@ -1,4 +1,5 @@
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
+import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { IconClose } from '@/components/icons/Close'
 import { IconCopyPaste } from '@/components/icons/CopyPaste'
 import { IconShared } from '@/components/icons/Shared'
@@ -20,6 +21,7 @@ interface IListOfKeys {
 const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
   const navigate = useNavigate()
   const [openModalDeleteKey, setOpenModalDeleteKey] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<
     {
       icon: React.FC<App.IconProps>
@@ -47,6 +49,7 @@ const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
   }, [listMyKeys])
 
   const handleDeleteKeyPix = async (key: string) => {
+    setLoading(true)
     await PixApi.deletePixKey({ id: key })
       .then((res) => {
         toast({
@@ -57,12 +60,15 @@ const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
         data.length >= 1 ? refetch() : navigate(0)
         setOpenModalDeleteKey(false)
       })
-      .catch((e: Error) => {
+      .catch((e: ErrorResponse) => {
         toast({
           variant: 'destructive',
-          title: 'Erro ao deletar chave pix',
-          description: e.message
+          title: e.response?.data?.error,
+          description: 'Erro ao deletar chave pix'
         })
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 
@@ -114,12 +120,12 @@ const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
                   body={<p>Tem certeza que deseja excluir a chave Pix?</p>}
                   ArrayButton={
                     <>
-                      <Button
-                        onClick={() => handleDeleteKeyPix(id)}
-                        className="bg-[#008000] text-base"
-                      >
-                        Sim
-                      </Button>
+                      <ButtonNext
+                        title="Sim"
+                        loading={loading}
+                        func={() => handleDeleteKeyPix(id)}
+                        classPlus="rounded-xl w-full bg-[#008000]"
+                      />
                       <Button
                         onClick={() => setOpenModalDeleteKey(false)}
                         className="bg-[#FF0000] text-base"
