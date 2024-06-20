@@ -44,9 +44,12 @@ const Login: React.FC = () => {
     queryKey: 'check-hash',
     queryFn: async () => {
       const res = await AuthApi.checkHash({ hash: gencode ? gencode?.hash : '' })
-      signIn(res.key)
       setLoginStatusModal(true)
-      navigate('/')
+      setTimeout(() => {
+        signIn(res.key)
+        setLoginStatusModal(false)
+        navigate('/')
+      }, 1250)
     }
   })
 
