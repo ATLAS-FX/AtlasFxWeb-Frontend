@@ -24,7 +24,7 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
       day: '2-digit',
       month: '2-digit',
       year: '2-digit',
-      timeZone: 'UTC'
+      timeZone: 'America/Sao_Paulo'
     })
 
     return dataFormatada

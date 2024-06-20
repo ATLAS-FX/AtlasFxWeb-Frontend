@@ -21,13 +21,19 @@ const Extract: React.FC = () => {
   type GroupedTransactions = Record<string, App.RegisterPixProps[]>
 
   const groupedByDate = user.releases.reduce((acc, transaction) => {
-    const date = transaction.created
-    if (!acc[date]) {
-      acc[date] = []
+    const dateA = new Date(transaction.created)
+      .toLocaleDateString('pt-BR', {
+        timeZone: 'America/Sao_Paulo'
+      })
+      .split(' ')[0]
+    if (!acc[dateA]) {
+      acc[dateA] = []
     }
-    acc[date].push(transaction)
+    acc[dateA].push(transaction)
     return acc
   }, {} as GroupedTransactions)
+
+  console.log(groupedByDate)
 
   return (
     <AdminContainer>

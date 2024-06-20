@@ -8,7 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { DateFormat } from '@/utils/FormattedDate'
+import { DateFormat, invertDate } from '@/utils/FormattedDate'
 import { formatedPrice } from '@/utils/FormattedPrice'
 import { Dispatch, SetStateAction } from 'react'
 
@@ -63,7 +63,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ setAction, data }) => {
         <div className="flex flex-col items-center gap-2" key={index}>
           <div className="mb-2 flex w-full items-center gap-4 rounded-lg border-2 border-colorPrimary-500 fill-colorPrimary-500 px-6 py-3 text-lg font-medium text-colorPrimary-500 shadow-md shadow-slate-400 transition-transform duration-300">
             <IconCalendar className="w-8" />
-            {new Date(date).toLocaleDateString('pt-BR', {
+            {new Date(invertDate(date)).toLocaleDateString('pt-BR', {
               weekday: 'long',
               day: '2-digit',
               month: '2-digit'

@@ -32,7 +32,6 @@ export const Aside: React.FC = () => {
     queryKey: 'get-info-user',
     queryFn: async () => {
       const res = await UserApi.getInfo()
-
       return res
     }
   })
@@ -113,8 +112,9 @@ export const Aside: React.FC = () => {
                   </h2>
                   <li>
                     <Separator className="mb-4 bg-white/30" />
-                    {user.releases.map(
-                      ({ name, amount, method, send, id, created }, number) => (
+                    {user.releases
+                      .sort((a, b) => Date.parse(b.created) - Date.parse(a.created))
+                      .map(({ name, amount, method, send, id, created }, number) => (
                         <Movements
                           key={number}
                           id={id}
@@ -124,8 +124,7 @@ export const Aside: React.FC = () => {
                           send={send}
                           created={created}
                         />
-                      )
-                    )}
+                      ))}
                   </li>
                 </ul>
               }

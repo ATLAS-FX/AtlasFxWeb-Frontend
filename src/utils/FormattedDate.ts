@@ -51,10 +51,15 @@ const DateFormat = (value: string): string => {
     day: '2-digit',
     month: '2-digit',
     year: '2-digit',
-    timeZone: 'UTC'
+    timeZone: 'America/Sao_Paulo'
   })
 
   return dataFormatada
 }
 
-export { DateFormat, formattedDate, formattedTimeAGo }
+const invertDate = (date: string): string => {
+  const [day, month, year] = date.split('/')
+  return `${month}/${day}/${year}`
+}
+
+export { DateFormat, formattedDate, formattedTimeAGo, invertDate }
