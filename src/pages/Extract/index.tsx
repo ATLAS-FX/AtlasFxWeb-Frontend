@@ -33,8 +33,6 @@ const Extract: React.FC = () => {
     return acc
   }, {} as GroupedTransactions)
 
-  console.log(groupedByDate)
-
   return (
     <AdminContainer>
       <Title

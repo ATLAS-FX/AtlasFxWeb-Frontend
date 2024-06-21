@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import PixApi from '@/services/PixApi'
 import { generatePixKey } from '@/utils/GenerateCode'
 import { listPixButton } from '@/utils/PixListButtons'
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 
 interface ICreatePix {
   refetch: () => {}
@@ -51,10 +51,6 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
         setLoading(false)
       })
   }
-
-  useEffect(() => {
-    console.log(formCreateKeyPix)
-  }, [])
 
   return (
     <>

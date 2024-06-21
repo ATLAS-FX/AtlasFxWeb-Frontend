@@ -7,13 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { formattedDoc } from '@/utils/FormattedDoc'
 import { formatedPrice } from '@/utils/FormattedPrice'
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState
-} from 'react'
+import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 
 interface TransferStepProps {
   step: {
@@ -46,10 +40,6 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
   const [stateModalPix, setStateModalPix] = useState<boolean>(false)
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
   const [pwdCode, setPwdCode] = useState<string>('')
-
-  useEffect(() => {
-    console.log('->', pwdCode)
-  }, [pwdCode])
 
   return (
     <>

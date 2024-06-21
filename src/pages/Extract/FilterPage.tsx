@@ -1,11 +1,14 @@
+import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { IconCalendar } from '@/components/icons/Calendar'
 import { IconDoubleArrow } from '@/components/icons/DoubleArrow'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
+import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
-import { Dispatch, SetStateAction } from 'react'
+import ExtractApi from '@/services/ExtractApi'
+import { Dispatch, SetStateAction, useState } from 'react'
 
 interface FilterPageProps {
   state: {
@@ -27,6 +30,8 @@ interface FilterPageProps {
 }
 
 const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
+  const [loading, setLoading] = useState(false)
+
   const periodDays: Array<number> = [7, 15, 30, 60, 90]
 
   const chooseMovee: Array<{ title: string; value: string }> = [
@@ -34,13 +39,51 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
     { title: 'Saída', value: 'saida' }
   ]
 
+  const handleDateRangeChange = (days: number) => {
+    const startDate = new Date()
+    const endDate = new Date()
+    endDate.setDate(startDate.getDate() - days)
+    setState((prev) => ({
+      ...prev,
+      period: days,
+      start: startDate.toLocaleDateString('pt-BR', {
+        timeZone: 'America/Sao_Paulo'
+      }),
+      end: endDate.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+    }))
+  }
+
+  const handleFilterPage = async () => {
+    setLoading(true)
+    await ExtractApi.getExtractInfo({
+      start: state?.start || '',
+      end: state?.end || '',
+      type: state?.type || ''
+    })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((e: ErrorResponse) => {
+        toast({
+          variant: 'destructive',
+          title: e.response?.data?.error,
+          description: 'repita o processo.'
+        })
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
+
   const isDateValid = (dateString: string) => {
     return !isNaN(new Date(dateString).getTime())
   }
 
+  console.log(state)
+
   return (
     <div className="flex flex-col gap-4">
-      <h4 className="text-shadow-3x text-base font-semibold">
+      <h4 className="text-base font-semibold text-shadow-3x">
         Selecione um período
       </h4>
       <div className="grid grid-cols-3 gap-4">
@@ -52,18 +95,13 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
               state.period === item &&
                 'border-primary/90 bg-primary/90 text-white shadow-none drop-shadow-none transition-transform duration-300'
             )}
-            onClick={() =>
-              setState((prev) => ({
-                ...prev,
-                period: item
-              }))
-            }
+            onClick={() => handleDateRangeChange(item)}
           >
             {item} dias
           </Button>
         ))}
       </div>
-      <h4 className="text-shadow-3x text-base font-semibold">ou</h4>
+      <h4 className="text-base font-semibold text-shadow-3x">ou</h4>
       <div className="mb-2 flex justify-around">
         <Popover key="start">
           <PopoverTrigger asChild>
@@ -127,7 +165,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
       <div className="flex flex-row-reverse">
         <Separator className="mt-2 h-[2px] w-[52%] bg-colorSecondary-500" />
       </div>
-      <h4 className="text-shadow-3x text-base font-semibold">
+      <h4 className="text-base font-semibold text-shadow-3x">
         Selecione um tipo de lançamento
       </h4>
       <div className="flex justify-evenly gap-2">
@@ -159,12 +197,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
         ))}
       </div>
       <div className="mt-4 flex justify-end">
-        <Button
-          className="w-6/12 rounded-xl py-6 text-base"
-          // onClick={() => setStep(0)}
-        >
-          Prosseguir
-        </Button>
+        <ButtonNext title="Prosseguir" loading={loading} func={handleFilterPage} />
       </div>
     </div>
   )
