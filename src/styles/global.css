@@ -67,6 +67,10 @@
   input {
     outline: 0;
   }
+  input[type="password" i].security {
+    -webkit-text-security: disc !important;
+    font-size: 36px;
+  }
 }
 
 @layer base {

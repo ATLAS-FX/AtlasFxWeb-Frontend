@@ -126,17 +126,32 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
             </div>
             <Separator className="bg-colorPrimary-500" />
             <div className="text-sm font-normal">
+              <label className="text-lg font-medium">Para</label>
               <div className="flex items-center gap-2">
-                <label>Para:</label>
+                <label>Nome:</label>
                 <h4 className="text-base font-semibold">{step.nameOrtitle}</h4>
               </div>
               <div className="flex items-center gap-2">
-                <label className="uppercase">{step.typeAccount}</label>
+                <label className="uppercase">{step.doc}</label>
                 <h4 className="text-base font-semibold">
-                  {formattedDoc(step.numberDoc, step.typeAccount)}
+                  {formattedDoc(step.numberDoc, step.doc)}
                 </h4>
+              </div>
+              <div className="flex items-center gap-2">
                 <label>Banco:</label>
                 <h4 className="text-base font-semibold">{step.bank}</h4>
+              </div>
+              <div className="flex items-center gap-2">
+                <label>Tipo de conta:</label>
+                <h4 className="text-base font-semibold capitalize">
+                  {step.typeAccount}
+                </h4>
+              </div>
+              <div className="flex items-center gap-2">
+                <label>Ag:</label>
+                <h4 className="text-base font-semibold">{step.agency}</h4>
+                <label>Conta:</label>
+                <h4 className="text-base font-semibold">{step.account}</h4>
               </div>
             </div>
             <Separator className="bg-colorPrimary-500" />

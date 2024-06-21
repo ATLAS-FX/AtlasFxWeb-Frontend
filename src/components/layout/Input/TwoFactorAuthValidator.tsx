@@ -45,12 +45,12 @@ const TwoFactorAuthValidator: React.FC<TwoFactorAuthValidatorProps> = ({
       {Array.from({ length: codeLength }).map((_, index) => (
         <input
           className={cn(
-            'h-12 w-12 rounded-sm bg-[#EFEFEF] text-center shadow-md',
+            'security h-12 w-12 rounded-sm bg-[#EFEFEF] text-center shadow-md',
             className
           )}
           key={index}
           ref={(el) => (inputRefs.current[index] = el)}
-          type="text"
+          type="password"
           maxLength={1}
           value={code[index] || ''}
           onChange={(e) => handleInputChange(index, e.target.value)}

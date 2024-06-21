@@ -117,6 +117,10 @@ const Transfer: React.FC = () => {
               <h4>
                 Banco: <span className="font-normal">{stateForm.bank || ''}</span>
               </h4>
+              <h4>
+                Tipo de conta:{' '}
+                <span className="font-normal">{stateForm.typeAccount || ''}</span>
+              </h4>
               <div className="flex gap-2">
                 <h4>
                   Agência:{' '}
@@ -128,10 +132,6 @@ const Transfer: React.FC = () => {
                   <span className="font-normal">{stateForm.account || ''}</span>
                 </h4>
               </div>
-              <h4>
-                Tipo de conta:{' '}
-                <span className="font-normal">{stateForm.account || ''}</span>
-              </h4>
             </div>
           </div>
           <div className="flex flex-row-reverse">
