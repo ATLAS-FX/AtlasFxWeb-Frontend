@@ -109,7 +109,7 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
             onChange={(e) =>
               setForm((prev) => ({
                 ...prev,
-                agency: e.target.value
+                agency: e.target.value.replace(/\D/g, '')
               }))
             }
           />
@@ -121,7 +121,7 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
             onChange={(e) =>
               setForm((prev) => ({
                 ...prev,
-                account: e.target.value
+                account: e.target.value.replace(/\D/g, '')
               }))
             }
           />

@@ -95,7 +95,7 @@ const Login: React.FC = () => {
       if (checkError) {
         checkRefetch()
       }
-    }, 2500)
+    }, 1500)
   }, [isError, genQRCode, checkHash])
 
   return (

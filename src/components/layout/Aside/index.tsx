@@ -106,27 +106,42 @@ export const Aside: React.FC = () => {
             <BlockPad
               className="bg-[#FFFFFF40]"
               children={
-                <ul>
-                  <h2 className="py-1 text-end font-semibold text-colorSecondary-500">
-                    Últimos Lançamentos
-                  </h2>
-                  <li>
-                    <Separator className="mb-4 bg-white/30" />
-                    {user.releases
-                      .sort((a, b) => Date.parse(b.created) - Date.parse(a.created))
-                      .map(({ name, amount, method, send, id, created }, number) => (
-                        <Movements
-                          key={number}
-                          id={id}
-                          name={name}
-                          amount={amount}
-                          method={method}
-                          send={send}
-                          created={created}
-                        />
-                      ))}
-                  </li>
-                </ul>
+                <>
+                  {user.releases.length >= 1 ? (
+                    <ul>
+                      <h2 className="py-1 text-end font-semibold text-colorSecondary-500">
+                        Últimos Lançamentos
+                      </h2>
+                      <li>
+                        <Separator className="mb-4 bg-white/30" />
+                        {user.releases
+                          .sort(
+                            (a, b) => Date.parse(b.created) - Date.parse(a.created)
+                          )
+                          .map(
+                            (
+                              { name, amount, method, send, id, created },
+                              number
+                            ) => (
+                              <Movements
+                                key={number}
+                                id={id}
+                                name={name}
+                                amount={amount}
+                                method={method}
+                                send={send}
+                                created={created}
+                              />
+                            )
+                          )}
+                      </li>
+                    </ul>
+                  ) : (
+                    <h2 className="py-1 text-end font-semibold text-colorSecondary-500">
+                      Não há lançamentos
+                    </h2>
+                  )}
+                </>
               }
             />
             <BlockPad

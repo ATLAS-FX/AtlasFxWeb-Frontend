@@ -71,7 +71,7 @@ const PixStep: React.FC = () => {
                     placeholder={placeholder || ''}
                     value={getKeyInput}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      setGetKeyInput(e.target.value)
+                      setGetKeyInput(e.target.value.replace(/\D/g, ''))
                     }}
                   />
                 )
