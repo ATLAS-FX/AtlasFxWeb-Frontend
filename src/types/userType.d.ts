@@ -18,17 +18,19 @@ declare namespace App {
   }
   export interface ProfileProps {
     name: string
+    bank: string
     email: string
     account: string
     agency: string
     street: string
     st_comp: string
     st_number: string
+    number: string
     district: string
     city: string
     state: string
     zip: string
     uf: string
-    email_white_label: string
+    emailWhite: string
   }
 }

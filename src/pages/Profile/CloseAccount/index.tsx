@@ -40,7 +40,7 @@ const CloseAccount: React.FC = () => {
         <AdminContainer>
           <Title text="Encerrar Conta" back={() => navigate(-1)} />
           <div className="flex flex-col gap-2 text-justify text-sm font-normal">
-            <h4 className="text-shadow-3x text-lg font-semibold">
+            <h4 className="text-lg font-semibold text-shadow-3x">
               Para Encerrar sua conta,
             </h4>
             <p>Para solicitar o encerramento de sua conta, lembre-se: </p>
@@ -48,7 +48,7 @@ const CloseAccount: React.FC = () => {
               <label className="font-semibold">Solicitação por E-mail: </label>O
               pedido de cancelamento deve ser feito exclusivamente por e-mail. Por
               favor, envie sua solicitação para{' '}
-              <label className="font-semibold">{profile?.email_white_label}</label>
+              <label className="font-semibold">{profile?.emailWhite}</label>
             </p>
             <p>
               É obrigatório que o e-mail de solicitação seja enviado a partir do

@@ -6,41 +6,21 @@ import { Separator } from '@/components/ui/separator'
 import { Dispatch, SetStateAction } from 'react'
 
 interface IRegistratrionChange {
-  name: string
-  agency: string
-  account: string
-  email: string
-  emailWhite: string
-  street: string
-  number: string
-  state: string
-  district: string
-  city: string
-  zip: string
+  profile: App.ProfileProps | null
   step: Dispatch<SetStateAction<number>>
 }
 
 export const RegistratrionChange: React.FC<IRegistratrionChange> = ({
-  name,
-  agency,
-  account,
-  email,
-  emailWhite,
-  street,
-  number,
-  district,
-  city,
-  zip,
-  state,
+  profile,
   step
 }) => {
   return (
     <>
       <div>
-        <h2 className="text-base font-bold">{name}</h2>
-        <h4 className="text-sm">Banco: -</h4>
+        <h2 className="text-base font-bold">{profile?.name}</h2>
+        <h4 className="text-sm">Banco: {profile?.bank}</h4>
         <h4 className="text-sm">
-          Agência {agency} Conta: {account}
+          Agência {profile?.agency} Conta: {profile?.account}
         </h4>
       </div>
       <div className="flex flex-row-reverse">
@@ -50,18 +30,18 @@ export const RegistratrionChange: React.FC<IRegistratrionChange> = ({
         <div className="flex flex-col gap-4">
           <h2 className="flex items-center gap-2 text-sm">
             <IconEmailCircle className="w-6 fill-colorPrimary-500" />
-            {email}
+            {profile?.email}
           </h2>
           <h2 className="flex items-start gap-2 text-sm">
             <IconAddress className="w-6 fill-colorPrimary-500" />
             <div>
               <p>
-                {street}, n. {number}
+                {profile?.street}, n. {profile?.number}
               </p>
               <p>
-                {district} - {city}/{state}
+                {profile?.district} - {profile?.city}/{profile?.state}
               </p>
-              <p>CEP: {zip}</p>
+              <p>CEP: {profile?.zip}</p>
             </div>
           </h2>
         </div>
@@ -88,7 +68,7 @@ export const RegistratrionChange: React.FC<IRegistratrionChange> = ({
         <p>
           Entre em contato conosco através de seu e-mail cadastrado em sua conta para
           nosso endereço eletrônico:{' '}
-          <span className="font-semibold">{emailWhite}</span>.
+          <span className="font-semibold">{profile?.emailWhite}</span>.
         </p>
         <p> Agradecemos sua confiança e estamos à disposição para ajudar.</p>
       </div>

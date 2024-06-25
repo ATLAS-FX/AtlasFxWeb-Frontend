@@ -3,7 +3,6 @@ import { Title } from '@/components/layout/Text/Title'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import UserApi from '@/services/UserApi'
-import { maskOfCep, maskOfEmail } from '@/utils/MaskFunctions'
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
@@ -57,18 +56,8 @@ const RegistrationStep: React.FC = () => {
           {changeAddressStep === 0 ? (
             <RegistratrionChange
               key={1}
-              name={profile?.name || ''}
-              agency={profile?.agency || ''}
-              account={profile?.account || ''}
+              profile={profile || null}
               step={setChangeAddressStep}
-              email={maskOfEmail(profile ? profile.email : '')}
-              emailWhite={profile?.email_white_label || ''}
-              street={profile?.street || ''}
-              number={profile?.st_number || ''}
-              district={profile?.district || ''}
-              city={profile?.city || ''}
-              state={profile?.state || ''}
-              zip={maskOfCep(profile ? profile.zip : 'xxxxxx-xxx')}
             />
           ) : changeAddressStep === 1 ? (
             <RegistratrionCode
