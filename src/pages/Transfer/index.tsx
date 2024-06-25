@@ -23,9 +23,10 @@ const Transfer: React.FC = () => {
     account: string
     amount: string
     typeAccount: string
-    nameOrtitle: string
+    name: string
+    docType: string
     doc: string
-    numberDoc: string
+    desc: string
   }>({
     step: 0,
     bank: '',
@@ -33,9 +34,10 @@ const Transfer: React.FC = () => {
     account: '',
     amount: '',
     typeAccount: '',
+    name: '',
+    docType: '',
     doc: '',
-    nameOrtitle: '',
-    numberDoc: ''
+    desc: ''
   })
 
   const { isError } = useQuery({
@@ -67,13 +69,14 @@ const Transfer: React.FC = () => {
             : setStateForm((prev) => ({
                 step: prev.step - 1,
                 bank: '',
-                account: '',
                 agency: '',
-                doc: '',
-                nameOrtitle: '',
-                numberDoc: '',
+                account: '',
+                amount: '',
                 typeAccount: '',
-                amount: ''
+                name: '',
+                docType: '',
+                doc: '',
+                desc: ''
               }))
         }}
       />
@@ -104,14 +107,13 @@ const Transfer: React.FC = () => {
         <>
           <div className="flex flex-col gap-2 text-lg font-medium">
             <h4 className="font-normal">
-              Titular:{' '}
-              <span className="font-semibold">{stateForm.nameOrtitle || ''}</span>
+              Titular: <span className="font-semibold">{stateForm.name || ''}</span>
             </h4>
             <div className="ml-8">
               <h4>
                 Documento:{' '}
                 <span className="font-normal">
-                  {formattedDoc(stateForm.numberDoc, stateForm.doc) || ''}
+                  {formattedDoc(stateForm.doc, stateForm.docType) || ''}
                 </span>
               </h4>
               <h4>

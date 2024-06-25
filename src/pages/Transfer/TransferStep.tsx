@@ -5,6 +5,8 @@ import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
+import { toast } from '@/components/ui/use-toast'
+import TransferApi from '@/services/TransferApi'
 import { formattedDoc } from '@/utils/FormattedDoc'
 import { formatedPrice } from '@/utils/FormattedPrice'
 import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
@@ -17,9 +19,10 @@ interface TransferStepProps {
     account: string
     amount: string
     typeAccount: string
-    nameOrtitle: string
+    name: string
+    docType: string
     doc: string
-    numberDoc: string
+    desc: string
   }
   setStep: Dispatch<
     SetStateAction<{
@@ -29,9 +32,10 @@ interface TransferStepProps {
       account: string
       amount: string
       typeAccount: string
-      nameOrtitle: string
+      name: string
+      docType: string
       doc: string
-      numberDoc: string
+      desc: string
     }>
   >
 }
@@ -39,7 +43,38 @@ interface TransferStepProps {
 const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
   const [stateModalPix, setStateModalPix] = useState<boolean>(false)
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [pwdCode, setPwdCode] = useState<string>('')
+
+  const handleSendTED = async () => {
+    setLoading(true)
+    await TransferApi.sendTED({
+      account: step.account,
+      account_type: step.typeAccount,
+      agency: step.agency,
+      amount: step.amount,
+      bank: step.bank,
+      category: 'TED',
+      desc: step.desc,
+      doc: step.doc,
+      doc_type: step.docType,
+      name: step.name
+    })
+      .then((res) => {
+        console.log(res)
+        setOpenModalPwd(false)
+      })
+      .catch((e: ErrorResponse) => {
+        toast({
+          variant: 'destructive',
+          title: e.response?.data?.error,
+          description: 'repita o processo.'
+        })
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
 
   return (
     <>
@@ -119,12 +154,12 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
               <label className="text-lg font-medium">Para</label>
               <div className="flex items-center gap-2">
                 <label>Nome:</label>
-                <h4 className="text-base font-semibold">{step.nameOrtitle}</h4>
+                <h4 className="text-base font-semibold">{step.name}</h4>
               </div>
               <div className="flex items-center gap-2">
                 <label className="uppercase">{step.doc}</label>
                 <h4 className="text-base font-semibold">
-                  {formattedDoc(step.numberDoc, step.doc)}
+                  {formattedDoc(step.doc, step.docType)}
                 </h4>
               </div>
               <div className="flex items-center gap-2">
@@ -184,10 +219,10 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
         ArrayButton={
           <>
             <ButtonNext
-              disabled={pwdCode.trim() === ''}
               title="Enviar agora"
-              // func={handleSendPix}
-              func={() => {}}
+              disabled={pwdCode.trim() === ''}
+              loading={loading}
+              func={handleSendTED}
               classPlus="rounded-xl w-full bg-[#008000]"
             />
           </>

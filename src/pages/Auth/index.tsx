@@ -43,7 +43,7 @@ const Login: React.FC = () => {
   } = useQuery({
     queryKey: 'check-hash',
     queryFn: async () => {
-      const res = await AuthApi.checkHash({ hash: gencode ? gencode?.hash : '' })
+      const res = await AuthApi.checkHash({ hash: gencode?.hash || '' })
       setLoginStatusModal(true)
       setTimeout(() => {
         signIn(res.key)
