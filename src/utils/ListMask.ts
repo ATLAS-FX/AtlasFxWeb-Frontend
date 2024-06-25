@@ -26,7 +26,7 @@ export const ListMask = [
   },
   {
     key: 'key-random',
-    mask: '********-****-****-****-************',
-    placeholder: 'xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx'
+    mask: null,
+    placeholder: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
   }
 ]

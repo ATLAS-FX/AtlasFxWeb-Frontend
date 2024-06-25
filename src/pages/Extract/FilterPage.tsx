@@ -35,8 +35,8 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
   const periodDays: Array<number> = [7, 15, 30, 60, 90]
 
   const chooseMovee: Array<{ title: string; value: string }> = [
-    { title: 'Entrada', value: 'entrada' },
-    { title: 'Saída', value: 'saida' }
+    { title: 'Entrada', value: 'in' },
+    { title: 'Saída', value: 'out' }
   ]
 
   const handleDateRangeChange = (days: number) => {

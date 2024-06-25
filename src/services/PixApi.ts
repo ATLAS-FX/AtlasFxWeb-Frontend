@@ -21,6 +21,11 @@ class UserApi {
     return res.data
   }
 
+  public async confirmCreatedKeyPix(params: { type: string; code: string }) {
+    const res = await api.post('portal/pix/confirm_key', params)
+    return res.data
+  }
+
   public async sendPix(params: {
     key: string
     amount: number

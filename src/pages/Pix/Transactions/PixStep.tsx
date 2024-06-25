@@ -49,6 +49,14 @@ const PixStep: React.FC = () => {
       })
   }, [getKeyInput])
 
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    mask: string | null
+  ) => {
+    const value = mask ? e.target.value.replace(/\D/g, '') : e.target.value
+    setGetKeyInput(value)
+  }
+
   return (
     <AdminContainer>
       {stepPix < 2 && (
@@ -63,16 +71,16 @@ const PixStep: React.FC = () => {
                 ({ key, mask, placeholder }, number) => (
                   <MaskedInput
                     className={cn(
-                      'flex h-12 w-full  items-center gap-2 rounded-xl border-2 p-2 px-2 py-1 text-lg font-semibold shadow-none transition-transform duration-300',
+                      'flex h-12 w-full items-center gap-2 rounded-xl border-2 p-2 px-2 py-1 text-lg font-semibold shadow-none transition-transform duration-300',
                       stepPix > 0 ? 'border-[#008000]' : 'border-colorPrimary-500'
                     )}
                     key={`${key + number}`}
                     mask={mask || ''}
-                    placeholder={placeholder || ''}
+                    placeholder={placeholder}
                     value={getKeyInput}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      setGetKeyInput(e.target.value.replace(/\D/g, ''))
-                    }}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      handleInputChange(e, mask)
+                    }
                   />
                 )
               )}
