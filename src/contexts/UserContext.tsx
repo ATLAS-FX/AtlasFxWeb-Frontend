@@ -39,6 +39,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const [token, setToken] = useState<string>('')
   const [user, setUser] = useState<App.UserProps>({
     id: 0,
+    bank: '',
     account: '',
     agency: '',
     amount: '',

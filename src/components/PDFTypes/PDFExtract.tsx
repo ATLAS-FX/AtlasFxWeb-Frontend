@@ -2,7 +2,6 @@ import Atlas_Logo from '@/assets/atlas_logo.png'
 import PoppinsRegular from '@/assets/Poppins-Regular.ttf'
 import PoppinsSemi from '@/assets/Poppins-SemiBold.ttf'
 import { formattedDoc } from '@/utils/FormattedDoc'
-import { generateQRCode } from '@/utils/GenerateCode'
 import {
   Document,
   Font,
@@ -12,39 +11,26 @@ import {
   Text,
   View
 } from '@react-pdf/renderer'
-import { useEffect, useState } from 'react'
 
-interface PdfQRCodeProps {
+interface PdfExtractProps {
   document: string
+  barcode: string
   name: string
-  pix: string
-  amount: string
   bank: string
   agency: string
   account: string
+  date: string
 }
 
-export const PDFQRCode: React.FC<PdfQRCodeProps> = ({
+export const PDFExtract: React.FC<PdfExtractProps> = ({
   document,
+  barcode,
   agency,
   account,
   name,
-  pix,
-  amount,
-  bank
+  bank,
+  date
 }) => {
-  const [qrCode, setQrCode] = useState<string>('')
-
-  // Função para gerar um QR code em base64
-  useEffect(() => {
-    const generateQr = async () => {
-      const qrCodeData = await generateQRCode(pix, '#FFFFFF', '#0000')
-      setQrCode(qrCodeData)
-    }
-
-    generateQr()
-  }, [])
-
   Font.register({
     family: 'Poppins-Regular',
     src: PoppinsRegular
@@ -72,26 +58,39 @@ export const PDFQRCode: React.FC<PdfQRCodeProps> = ({
       fontSize: 12,
       color: '#C8D753'
     },
+    viewFlex: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      padding: 20
+    },
     flex: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
+      columnGap: '4px',
+      rowGap: '4px'
+    },
+    img: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 24
+    },
+    centerText: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+      marginBottom: 24
     },
     Title: {
       color: '#FFF',
       fontSize: 24,
       textAlign: 'center',
-      marginBottom: 10
+      marginBottom: '8px'
     },
     Subtitle: {
       color: '#FFF',
-      fontSize: 18,
-      marginBottom: 10
-    },
-    Value: {
-      color: '#C8D753',
-      fontSize: 18,
-      marginBottom: 10
+      fontSize: 18
     },
     label: {
       color: '#FFF',
@@ -113,10 +112,17 @@ export const PDFQRCode: React.FC<PdfQRCodeProps> = ({
       width: 240,
       height: 240
     },
+    barcode: {
+      width: 672,
+      // height: 78,
+      marginVertical: 10
+    },
     hr: {
       width: '100%',
       height: 1,
-      backgroundColor: '#FFF'
+      backgroundColor: '#FFF',
+      marginVertical: 10,
+      margin: '10 0'
     }
   })
 
@@ -129,42 +135,51 @@ export const PDFQRCode: React.FC<PdfQRCodeProps> = ({
           </Text>
         </View>
         <View style={styles.section}>
-          <View
-            style={{
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: 24
-            }}
-          >
+          <View style={styles.img}>
             <Image src={Atlas_Logo} style={styles.logo} />
+          </View>
+          <View style={styles.centerText}>
             <View style={styles.Title}>
-              <Text>QR Code</Text>
+              <Text>Nome do Cliente</Text>
             </View>
-            {qrCode && <Image style={styles.qrCode} src={qrCode} />}
+            <View style={styles.flex}>
+              <Text style={styles.label}>CPF/CNPJ:</Text>
+              <Text style={styles.value}>{formattedDoc(document, 'cnpj')}</Text>
+            </View>
+            <View style={styles.flex}>
+              <Text style={styles.label}>Agência:</Text>
+              <Text style={styles.value}>{agency}</Text>
+              <Text style={styles.label}>Conta:</Text>
+              <Text style={styles.value}>{account}</Text>
+            </View>
+            <View
+              style={
+                (styles.flex,
+                {
+                  marginTop: '24px',
+                  width: '100%',
+                  justifyContent: 'space-between'
+                })
+              }
+            >
+              <Text style={styles.value}>Extrato do período</Text>
+              <Text style={styles.value}>
+                {date} a {date}
+              </Text>
+            </View>
           </View>
+          <View style={styles.hr} />
           <View>
-            <Text style={styles.Subtitle}>
-              Valor: <Text style={{ color: '#C8D753' }}>R$ {amount}</Text>
-            </Text>
+            <Text style={styles.Subtitle}>Dados de pagamento</Text>
           </View>
-          <View>
-            <Text style={styles.Subtitle}>Dados do favorecido</Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              padding: 20
-            }}
-          >
+          <View style={styles.viewFlex}>
             <View style={{ width: '50%' }}>
               <Text style={styles.label}>Nome:</Text>
               <Text style={styles.value}>{name}</Text>
               <Text style={styles.label}>CPF/CNPJ:</Text>
               <Text style={styles.value}>{formattedDoc(document, 'cnpj')}</Text>
-              <Text style={styles.label}>Chave Pix:</Text>
-              <Text style={styles.value}>{pix}</Text>
+              <Text style={styles.label}>Linha de Código de barras:</Text>
+              <Text style={styles.value}>{barcode}</Text>
             </View>
             <View style={{ width: '50%' }}>
               <Text style={styles.label}>Instuição:</Text>
@@ -176,6 +191,12 @@ export const PDFQRCode: React.FC<PdfQRCodeProps> = ({
             </View>
           </View>
           <View style={styles.hr} />
+          <View style={styles.viewFlex}>
+            <View style={{ width: '50%' }}>
+              <Text style={styles.label}>Data e hora:</Text>
+              <Text style={styles.value}>{date}</Text>
+            </View>
+          </View>
         </View>
       </Page>
     </Document>

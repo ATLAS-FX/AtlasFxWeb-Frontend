@@ -2,6 +2,7 @@ declare namespace App {
   export interface UserProps {
     id: number
     name: string
+    bank: string
     account: string
     agency: string
     doc: string

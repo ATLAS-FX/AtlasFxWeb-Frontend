@@ -2,7 +2,7 @@ import { toast } from '@/components/ui/use-toast'
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: 'https://backendserver.cloud/atlas/'
+  baseURL: 'https://devatlas.cloud/atlas/'
 })
 
 api.interceptors.request.use(

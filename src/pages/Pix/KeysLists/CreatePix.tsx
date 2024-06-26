@@ -219,7 +219,7 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
             </div>
             <Separator className="bg-colorPrimary-500" />
             <div className="text-sm font-normal">
-              <label>Voce está criando uma chave pix</label>
+              <label>Você está criando uma chave pix</label>
               <div className="flex items-center gap-2">
                 <label>Chave:</label>
                 <h4 className="text-base font-semibold">{formCreateKeyPix.key}</h4>

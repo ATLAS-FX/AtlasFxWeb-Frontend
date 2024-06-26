@@ -183,7 +183,7 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
           <MaskedInput
             className="h-12 w-4/12 rounded-xl border-[1px] border-colorPrimary-500 px-4 text-base font-medium"
             mask={'999999'}
-            placeholder="Agencia"
+            placeholder="Agência"
             value={form.agency}
             onChange={(e) =>
               setForm((prev) => ({

@@ -36,18 +36,6 @@ export const Aside: React.FC = () => {
     }
   })
 
-  // const cleanApiResponse = (responseText: any) => {
-  //   try {
-  //     const jsonStartIndex = responseText.indexOf('{')
-  //     const jsonEndIndex = responseText.lastIndexOf('}') + 1
-  //     const jsonString = responseText.slice(jsonStartIndex, jsonEndIndex)
-  //     return JSON.parse(jsonString)
-  //   } catch (error) {
-  //     console.error('Failed to parse API response:', error)
-  //     return null
-  //   }
-  // }
-
   useEffect(() => {
     if (infoUser) {
       setUser(infoUser)

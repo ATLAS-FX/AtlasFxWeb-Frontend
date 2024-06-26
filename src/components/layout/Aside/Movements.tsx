@@ -7,6 +7,12 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { formatedPrice } from '@/utils/FormattedPrice'
+import { PDFViewer } from '@react-pdf/renderer'
+import { useState } from 'react'
+import { ModalPrint } from '../Modal/ModaPrint'
+import { PDFExtract } from '@/components/PDFTypes/PDFExtract'
+import { useAdm } from '@/contexts/UserContext'
+import { formattedDate } from '@/utils/FormattedDate'
 
 export const Movements: React.FC<App.RegisterPixProps> = ({
   id,
@@ -16,7 +22,8 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
   name,
   send
 }) => {
-  // const [openModalPrint, setOpenModalPrint] = useState<boolean>(false)
+  const { user } = useAdm()
+  const [openModalPrint, setOpenModalPrint] = useState<boolean>(false)
   const DateFormat = (value: string): string => {
     const dataObj = new Date(value)
 
@@ -63,9 +70,7 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
       </div>
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger
-          // onClick={() => setOpenModalPrint(!openModalPrint)}
-          >
+          <TooltipTrigger onClick={() => setOpenModalPrint(!openModalPrint)}>
             <IconPDFDownload size={32} className="fill-white" />
           </TooltipTrigger>
           <TooltipContent className="rounded-md bg-colorPrimary-500 p-2 text-sm font-normal text-white">
@@ -73,23 +78,24 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      {/* <ModalPrint
+      <ModalPrint
         openModal={openModalPrint}
         setOpenModal={setOpenModalPrint}
         ArrayButton={<></>}
         body={
           <PDFViewer width="100%" height="700px">
-            <PDFQRCode
-              doc={' - '}
-              name={name}
-              pix={' - '}
-              bank={' - '}
-              agency={' - '}
-              account={' - '}
+            <PDFExtract
+              name={user.name}
+              document={user.doc}
+              barcode={''}
+              bank={user.bank}
+              agency={user.agency}
+              account={user.account}
+              date={new Date().toLocaleDateString()}
             />
           </PDFViewer>
         }
-      /> */}
+      />
     </div>
   )
 }

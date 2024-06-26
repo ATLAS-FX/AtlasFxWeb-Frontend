@@ -56,7 +56,7 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
       icon: IconCopyDatabase,
       func: () =>
         handleCopyClick(
-          `agencia: ${agency || ''} conta: ${account || ''}`,
+          `agência: ${agency || ''} conta: ${account || ''}`,
           'Sucesso ao copiar dados para deposito',
           'Falha ao copiar dados para deposito'
         )
