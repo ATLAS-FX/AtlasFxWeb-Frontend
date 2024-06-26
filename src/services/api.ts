@@ -2,7 +2,7 @@ import { toast } from '@/components/ui/use-toast'
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: 'https://devatlas.cloud/atlas/'
+  baseURL: import.meta.env.VITE_API_BASE_URL
 })
 
 api.interceptors.request.use(
