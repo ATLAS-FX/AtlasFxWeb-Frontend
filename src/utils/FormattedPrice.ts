@@ -1,14 +1,21 @@
 function formatedPrice(value: string | undefined) {
   if (value) {
+    value = value.toString()
+
+    const isNegative = value.includes('-')
+
     const number = parseFloat(value.replace(/[^\d]/g, ''))
-    const numberFormat = new Intl.NumberFormat('pt-br', {
+    const formattedNumber = isNegative ? number : number
+
+    const numberFormat = new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     })
+
     return numberFormat
-      .format(number / 100)
+      .format(formattedNumber / 100)
       .replace('R$', '')
       .trim()
   }

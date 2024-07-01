@@ -1,4 +1,4 @@
-import { PDFExtract } from '@/components/PDFTypes/PDFExtract'
+import { PDFMovements } from '@/components/PDFTypes/PDFMovements'
 import { IconDoubleArrow } from '@/components/icons/DoubleArrow'
 import { IconPDFDownload } from '@/components/icons/PDFDownload'
 import {
@@ -39,7 +39,7 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
   return (
     <div
       id={id.toString()}
-      className="flex items-center justify-between gap-2 text-white"
+      className="grid grid-cols-[4fr,auto,auto] items-center justify-between gap-10 border-b-[1px] border-slate-400 py-2 text-white"
     >
       <div className="flex flex-col items-start justify-center gap-1 text-sm">
         {send > 0 ? (
@@ -83,10 +83,11 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
         ArrayButton={<></>}
         body={
           <PDFViewer width="100%" height="700px">
-            <PDFExtract
+            <PDFMovements
               name={user.name}
               document={user.doc}
-              barcode={''}
+              type={'in'}
+              amount={`R$ ${send > 0 ? '-' : ''} ${formatedPrice(amount.toString())}`}
               bank={user.bank}
               agency={user.agency}
               account={user.account}

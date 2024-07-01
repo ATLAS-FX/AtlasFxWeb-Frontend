@@ -106,13 +106,14 @@ export const Aside: React.FC = () => {
                           .sort(
                             (a, b) => Date.parse(b.created) - Date.parse(a.created)
                           )
+                          .slice(0, 10)
                           .map(
                             (
                               { name, amount, method, send, id, created },
                               number
                             ) => (
                               <Movements
-                                key={number}
+                                key={`${id + number}`}
                                 id={id}
                                 name={name}
                                 amount={amount}
