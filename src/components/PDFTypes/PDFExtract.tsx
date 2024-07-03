@@ -14,9 +14,10 @@ import {
 
 interface PdfExtractProps {
   document: string
-  barcode: string
-  name: string
-  bank: string
+  type: string
+  amount: string
+  bankBalance: string
+  payer: string
   agency: string
   account: string
   date: string
@@ -24,11 +25,12 @@ interface PdfExtractProps {
 
 export const PDFExtract: React.FC<PdfExtractProps> = ({
   document,
-  barcode,
+  type,
+  amount,
+  bankBalance,
   agency,
   account,
-  name,
-  bank,
+  payer,
   date
 }) => {
   Font.register({
@@ -39,7 +41,6 @@ export const PDFExtract: React.FC<PdfExtractProps> = ({
     family: 'Poppins-Semi',
     src: PoppinsSemi
   })
-
   const styles = StyleSheet.create({
     page: {
       fontFamily: 'Poppins-Regular',
@@ -104,23 +105,21 @@ export const PDFExtract: React.FC<PdfExtractProps> = ({
       fontWeight: 300,
       marginBottom: 8
     },
+    valuePix: {
+      color: '#f3f3f3',
+      fontFamily: 'Poppins-Regular',
+      fontWeight: 300,
+      fontSize: 16,
+      marginBottom: 8
+    },
     logo: {
       width: 132,
       height: 48
     },
-    qrCode: {
-      width: 240,
-      height: 240
-    },
-    barcode: {
-      width: 672,
-      // height: 78,
-      marginVertical: 10
-    },
     hr: {
       width: '100%',
       height: 1,
-      backgroundColor: '#FFF',
+      backgroundColor: '#C8D753',
       marginVertical: 10,
       margin: '10 0'
     }
@@ -138,7 +137,7 @@ export const PDFExtract: React.FC<PdfExtractProps> = ({
           <View style={styles.flex}>
             <View style={styles.centerText}>
               <View style={styles.Title}>
-                <Text>Nome do Cliente</Text>
+                <Text style={{ color: '#C8D753' }}>Nome do Cliente</Text>
               </View>
               <View style={styles.flex}>
                 <Text style={styles.label}>CNPJ:</Text>
@@ -156,52 +155,56 @@ export const PDFExtract: React.FC<PdfExtractProps> = ({
               <Image src={Atlas_Logo} style={styles.logo} />
             </View>
           </View>
+          <View style={styles.centerText}>
+            <View style={styles.Title}>
+              <Text>Extrato do período</Text>
+            </View>
+            <View style={styles.Title}>
+              <Text style={{ color: '#C8D753' }}>DD/MM/AAAA a DD/MM/AAAA</Text>
+            </View>
+          </View>
+          <View style={styles.hr} />
           <View
             style={
               (styles.flex,
               {
-                marginTop: '24px',
-                width: '100%',
+                margin: '24px auto',
+                width: '80%',
                 justifyContent: 'space-between'
               })
             }
           >
-            <Text style={styles.value}>Extrato do período</Text>
-            <Text style={styles.value}>
-              {date} a {date}
-            </Text>
+            {type === 'in' && (
+              <View style={styles.flex}>
+                <Text style={styles.valuePix}>PIX recebido</Text>
+                <Text style={styles.valuePix}>{amount}</Text>
+              </View>
+            )}
+            {type === 'out' && (
+              <View style={styles.flex}>
+                <Text style={styles.valuePix}>PIX enviado</Text>
+                <Text style={styles.valuePix}>{payer}</Text>
+                <Text style={styles.valuePix}>{amount}</Text>
+              </View>
+            )}
+          </View>
+          <View
+            style={
+              (styles.flex,
+              {
+                margin: '24px auto',
+                width: '100%',
+                justifyContent: 'space-between',
+                fontSize: 18
+              })
+            }
+          >
+            <View style={styles.flex}>
+              <Text style={styles.valuePix}>{date}</Text>
+              <Text style={styles.valuePix}>Saldo do dia: {bankBalance}</Text>
+            </View>
           </View>
         </View>
-        <View style={styles.hr} />
-        <View>
-          <Text style={styles.Subtitle}>Dados de pagamento</Text>
-        </View>
-        <View style={styles.viewFlex}>
-          <View style={{ width: '50%' }}>
-            <Text style={styles.label}>Nome:</Text>
-            <Text style={styles.value}>{name}</Text>
-            <Text style={styles.label}>CPF/CNPJ:</Text>
-            <Text style={styles.value}>{formattedDoc(document, 'cnpj')}</Text>
-            <Text style={styles.label}>Linha de Código de barras:</Text>
-            <Text style={styles.value}>{barcode}</Text>
-          </View>
-          <View style={{ width: '50%' }}>
-            <Text style={styles.label}>Instuição:</Text>
-            <Text style={styles.value}>{bank}</Text>
-            <Text style={styles.label}>Agência:</Text>
-            <Text style={styles.value}>{agency}</Text>
-            <Text style={styles.label}>Conta:</Text>
-            <Text style={styles.value}>{account}</Text>
-          </View>
-        </View>
-        <View style={styles.hr} />
-        <View style={styles.viewFlex}>
-          <View style={{ width: '50%' }}>
-            <Text style={styles.label}>Data e hora:</Text>
-            <Text style={styles.value}>{date}</Text>
-          </View>
-        </View>
-        {/* </View> */}
       </Page>
     </Document>
   )

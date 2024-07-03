@@ -62,6 +62,10 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
     })
       .then((res) => {
         console.log(res)
+        setState((prev) => ({
+          ...prev,
+          stepPage: 0
+        }))
       })
       .catch((e: ErrorResponse) => {
         toast({

@@ -1,6 +1,8 @@
+import { PDFExtract } from '@/components/PDFTypes/PDFExtract'
 import { IconCalendar } from '@/components/icons/Calendar'
 import { IconDoubleArrow } from '@/components/icons/DoubleArrow'
 import { IconPDFDownload } from '@/components/icons/PDFDownload'
+import { ModalPrint } from '@/components/layout/Modal/ModaPrint'
 import { Separator } from '@/components/ui/separator'
 import {
   Tooltip,
@@ -8,9 +10,11 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
+import { useAdm } from '@/contexts/UserContext'
 import { DateFormat, invertDate } from '@/utils/FormattedDate'
 import { formatedPrice } from '@/utils/FormattedPrice'
-import { Dispatch, SetStateAction } from 'react'
+import { PDFViewer } from '@react-pdf/renderer'
+import { Dispatch, SetStateAction, useState } from 'react'
 
 interface ExtractResumProps {
   setAction: Dispatch<
@@ -26,10 +30,13 @@ interface ExtractResumProps {
 }
 
 const ExtractResum: React.FC<ExtractResumProps> = ({ setAction, data }) => {
+  const { user } = useAdm()
+  const [openModalPrint, setOpenModalPrint] = useState<boolean>(false)
+
   const ButtonsOptions = [
     {
       title: 'Exportar PDF',
-      func: () => {}
+      func: () => setOpenModalPrint(!openModalPrint)
     },
     {
       title: 'Filtrar por data',
@@ -117,6 +124,26 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ setAction, data }) => {
           ))}
 
           <Separator className="bg-colorPrimary-500/85" />
+
+          <ModalPrint
+            openModal={openModalPrint}
+            setOpenModal={setOpenModalPrint}
+            ArrayButton={<></>}
+            body={
+              <PDFViewer width="100%" height="700px">
+                <PDFExtract
+                  document={user.doc}
+                  bankBalance={user.amount}
+                  agency={user.agency}
+                  account={user.account}
+                  type={'out'}
+                  amount={''}
+                  payer={''}
+                  date={new Date().toLocaleDateString()}
+                />
+              </PDFViewer>
+            }
+          />
         </div>
       ))}
     </>

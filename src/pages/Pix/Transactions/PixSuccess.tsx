@@ -2,6 +2,7 @@ import RoboSucess from '@/assets/robo.png'
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { PDFPix } from '@/components/PDFTypes/PDFPix'
 import { Separator } from '@/components/ui/separator'
+import { useAdm } from '@/contexts/UserContext'
 import { downloadPDF } from '@/utils/DownloadPdf'
 import { formattedDate } from '@/utils/FormattedDate'
 import { formatedPrice } from '@/utils/FormattedPrice'
@@ -26,22 +27,23 @@ const PixSuccess: React.FC<IPixSuccess> = ({
   time,
   amount
 }) => {
+  const { user } = useAdm()
   const idTransaction = generateHash()
 
   const handleDownloadPDF = () => {
     const doc = (
       <PDFPix
-        documentSent={'-'}
+        nameSent={user.name}
+        documentSent={user.doc}
+        bankSent={user.bank}
+        agencySent={user.agency}
+        accountSent={user.account}
         amount={formatedPrice(amount) || ''}
-        nameSent={name}
-        bankSent={'-'}
-        agencySent={'-'}
-        accountSent={'-'}
-        nameReceiver={'-'}
+        nameReceiver={name}
         documentReceiver={'-'}
-        bankReceiver={'-'}
-        agencyReceiver={'-'}
-        accountReceiver={'-'}
+        bankReceiver={bank}
+        agencyReceiver={agency}
+        accountReceiver={account}
         idTransaction={idTransaction}
         date={formattedDate(new Date().toString())}
       />

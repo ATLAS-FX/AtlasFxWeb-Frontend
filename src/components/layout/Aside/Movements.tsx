@@ -8,10 +8,8 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { useAdm } from '@/contexts/UserContext'
+import { downloadPDF } from '@/utils/DownloadPdf'
 import { formatedPrice } from '@/utils/FormattedPrice'
-import { PDFViewer } from '@react-pdf/renderer'
-import { useState } from 'react'
-import { ModalPrint } from '../Modal/ModaPrint'
 
 export const Movements: React.FC<App.RegisterPixProps> = ({
   id,
@@ -22,7 +20,6 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
   send
 }) => {
   const { user } = useAdm()
-  const [openModalPrint, setOpenModalPrint] = useState<boolean>(false)
   const DateFormat = (value: string): string => {
     const dataObj = new Date(value)
 
@@ -34,6 +31,23 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
     })
 
     return dataFormatada
+  }
+
+  const handleDownloadPDF = () => {
+    const doc = (
+      <PDFMovements
+        payer={name}
+        document={user.doc}
+        type={send > 0 ? 'out' : 'in'}
+        amount={`R$ ${send > 0 ? '-' : ''} ${formatedPrice(amount.toString())}`}
+        bankBalance={`R$ ${formatedPrice(user?.amount.toString())}`}
+        agency={user.agency}
+        account={user.account}
+        date={new Date(created).toLocaleDateString()}
+      />
+    )
+    console.log('aqui')
+    downloadPDF(doc)
   }
 
   return (
@@ -69,7 +83,7 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
       </div>
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger onClick={() => setOpenModalPrint(!openModalPrint)}>
+          <TooltipTrigger onClick={handleDownloadPDF}>
             <IconPDFDownload size={32} className="fill-white" />
           </TooltipTrigger>
           <TooltipContent className="rounded-md bg-colorPrimary-500 p-2 text-sm font-normal text-white">
@@ -77,25 +91,6 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <ModalPrint
-        openModal={openModalPrint}
-        setOpenModal={setOpenModalPrint}
-        ArrayButton={<></>}
-        body={
-          <PDFViewer width="100%" height="700px">
-            <PDFMovements
-              name={user.name}
-              document={user.doc}
-              type={'in'}
-              amount={`R$ ${send > 0 ? '-' : ''} ${formatedPrice(amount.toString())}`}
-              bank={user.bank}
-              agency={user.agency}
-              account={user.account}
-              date={new Date().toLocaleDateString()}
-            />
-          </PDFViewer>
-        }
-      />
     </div>
   )
 }

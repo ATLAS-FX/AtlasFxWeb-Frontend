@@ -16,8 +16,8 @@ interface PdfMovementsProps {
   document: string
   type: string
   amount: string
-  name: string
-  bank: string
+  bankBalance: string
+  payer: string
   agency: string
   account: string
   date: string
@@ -27,10 +27,10 @@ export const PDFMovements: React.FC<PdfMovementsProps> = ({
   document,
   type,
   amount,
+  bankBalance,
   agency,
   account,
-  name,
-  bank,
+  payer,
   date
 }) => {
   Font.register({
@@ -105,25 +105,16 @@ export const PDFMovements: React.FC<PdfMovementsProps> = ({
       fontWeight: 300,
       marginBottom: 8
     },
+    valuePix: {
+      color: '#f3f3f3',
+      fontFamily: 'Poppins-Regular',
+      fontWeight: 300,
+      fontSize: 16,
+      marginBottom: 8
+    },
     logo: {
       width: 132,
       height: 48
-    },
-    qrCode: {
-      width: 240,
-      height: 240
-    },
-    barcode: {
-      width: 672,
-      // height: 78,
-      marginVertical: 10
-    },
-    hr: {
-      width: '100%',
-      height: 1,
-      backgroundColor: '#FFF',
-      marginVertical: 10,
-      margin: '10 0'
     }
   })
 
@@ -139,7 +130,7 @@ export const PDFMovements: React.FC<PdfMovementsProps> = ({
           <View style={styles.flex}>
             <View style={styles.centerText}>
               <View style={styles.Title}>
-                <Text>Nome do Cliente</Text>
+                <Text style={{ color: '#C8D753' }}>Nome do Cliente</Text>
               </View>
               <View style={styles.flex}>
                 <Text style={styles.label}>CNPJ:</Text>
@@ -161,38 +152,40 @@ export const PDFMovements: React.FC<PdfMovementsProps> = ({
             style={
               (styles.flex,
               {
-                marginTop: '24px',
+                margin: '24px auto',
                 width: '80%',
                 justifyContent: 'space-between'
               })
             }
           >
             {type === 'in' && (
-              <>
-                <Text style={styles.value}>PIX Recebido</Text>
-                <Text style={styles.value}>{amount}</Text>
-              </>
+              <View style={styles.flex}>
+                <Text style={styles.valuePix}>PIX recebido</Text>
+                <Text style={styles.valuePix}>{amount}</Text>
+              </View>
+            )}
+            {type === 'out' && (
+              <View style={styles.flex}>
+                <Text style={styles.valuePix}>PIX enviado</Text>
+                <Text style={styles.valuePix}>{payer}</Text>
+                <Text style={styles.valuePix}>{amount}</Text>
+              </View>
             )}
           </View>
-          <View style={styles.hr} />
-          <View>
-            <Text style={styles.Subtitle}>Dados de pagamento</Text>
-          </View>
-          <View style={styles.viewFlex}>
-            <View style={{ width: '50%' }}>
-              <Text style={styles.label}>Nome:</Text>
-              <Text style={styles.value}>{name}</Text>
-            </View>
-            <View style={{ width: '50%' }}>
-              <Text style={styles.label}>Instuição:</Text>
-              <Text style={styles.value}>{bank}</Text>
-            </View>
-          </View>
-          <View style={styles.hr} />
-          <View style={styles.viewFlex}>
-            <View style={{ width: '50%' }}>
-              <Text style={styles.label}>Data e hora:</Text>
-              <Text style={styles.value}>{date}</Text>
+          <View
+            style={
+              (styles.flex,
+              {
+                margin: '24px auto',
+                width: '100%',
+                justifyContent: 'space-between',
+                fontSize: 18
+              })
+            }
+          >
+            <View style={styles.flex}>
+              <Text style={styles.valuePix}>{date}</Text>
+              <Text style={styles.valuePix}>Saldo do dia: {bankBalance}</Text>
             </View>
           </View>
         </View>
