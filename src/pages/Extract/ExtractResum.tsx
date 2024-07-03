@@ -133,13 +133,16 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ setAction, data }) => {
               <PDFViewer width="100%" height="700px">
                 <PDFExtract
                   document={user.doc}
-                  bankBalance={user.amount}
+                  bankBalance={formatedPrice(user.amount) || '0,00'}
                   agency={user.agency}
                   account={user.account}
                   type={'out'}
+                  controlIn={''}
+                  controlOut={''}
                   amount={''}
                   payer={''}
-                  date={new Date().toLocaleDateString()}
+                  startDate={new Date().toLocaleDateString()}
+                  endDate={new Date().toLocaleDateString()}
                 />
               </PDFViewer>
             }

@@ -20,7 +20,10 @@ interface PdfExtractProps {
   payer: string
   agency: string
   account: string
-  date: string
+  controlIn: string
+  controlOut: string
+  startDate: string
+  endDate: string
 }
 
 export const PDFExtract: React.FC<PdfExtractProps> = ({
@@ -28,10 +31,13 @@ export const PDFExtract: React.FC<PdfExtractProps> = ({
   type,
   amount,
   bankBalance,
+  payer,
   agency,
   account,
-  payer,
-  date
+  controlIn,
+  controlOut,
+  startDate,
+  endDate
 }) => {
   Font.register({
     family: 'Poppins-Regular',
@@ -120,8 +126,8 @@ export const PDFExtract: React.FC<PdfExtractProps> = ({
       width: '100%',
       height: 1,
       backgroundColor: '#C8D753',
-      marginVertical: 10,
-      margin: '10 0'
+      marginVertical: 2,
+      margin: '2 0'
     }
   })
 
@@ -155,15 +161,50 @@ export const PDFExtract: React.FC<PdfExtractProps> = ({
               <Image src={Atlas_Logo} style={styles.logo} />
             </View>
           </View>
-          <View style={styles.centerText}>
-            <View style={styles.Title}>
+          <View style={styles.flex}>
+            <View style={styles.valuePix}>
               <Text>Extrato do período</Text>
             </View>
-            <View style={styles.Title}>
-              <Text style={{ color: '#C8D753' }}>DD/MM/AAAA a DD/MM/AAAA</Text>
+            <View style={styles.valuePix}>
+              <Text>
+                {startDate} a {endDate}
+              </Text>
             </View>
           </View>
           <View style={styles.hr} />
+          <View style={styles.flex}>
+            <Text>Total de entradas</Text>
+            <View style={styles.valuePix}>
+              <Text>`+${controlIn}`</Text>
+            </View>
+            <View style={styles.valuePix}>
+              <Text>Total de saídas</Text>
+            </View>
+            <View style={styles.valuePix}>
+              <Text>`-${controlOut}`</Text>
+            </View>
+          </View>
+          <View
+            style={
+              (styles.flex,
+              {
+                margin: '24px auto',
+                width: '100%',
+                justifyContent: 'space-between',
+                fontSize: 18
+              })
+            }
+          >
+            <View style={styles.flex}>
+              <Text style={styles.valuePix}>
+                Saldo final do período: R$ {bankBalance}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.hr} />
+          <View style={styles.valuePix}>
+            <Text>Transições</Text>
+          </View>
           <View
             style={
               (styles.flex,
@@ -187,22 +228,6 @@ export const PDFExtract: React.FC<PdfExtractProps> = ({
                 <Text style={styles.valuePix}>{amount}</Text>
               </View>
             )}
-          </View>
-          <View
-            style={
-              (styles.flex,
-              {
-                margin: '24px auto',
-                width: '100%',
-                justifyContent: 'space-between',
-                fontSize: 18
-              })
-            }
-          >
-            <View style={styles.flex}>
-              <Text style={styles.valuePix}>{date}</Text>
-              <Text style={styles.valuePix}>Saldo do dia: {bankBalance}</Text>
-            </View>
           </View>
         </View>
       </Page>
