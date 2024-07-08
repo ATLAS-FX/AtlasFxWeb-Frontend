@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
+import { useAdm } from '@/contexts/UserContext'
+import { cn } from '@/lib/utils'
 import PixApi from '@/services/PixApi'
 import { formattedDoc } from '@/utils/FormattedDoc'
 import { formatedPrice } from '@/utils/FormattedPrice'
@@ -22,6 +24,7 @@ interface IPixForm {
 }
 
 const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) => {
+  const { user } = useAdm()
   const [stateModalPix, setStateModalPix] = useState<boolean>(false)
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
@@ -85,7 +88,13 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
         <h1 className="w-[45%] font-Bills_Bold text-3xl uppercase">
           Defina o valor*:
         </h1>
-        <div className='text-colorPrimary-500" flex w-full items-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium'>
+        <div
+          className={cn(
+            'text-colorPrimary-500" flex w-full items-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium',
+            Number(formSendPix.amount.replace(/\D/g, '')) > Number(user.amount) &&
+              'border-2 border-red-600'
+          )}
+        >
           <label>R$</label>
           <Input
             className="border-none p-0 text-lg shadow-none"
@@ -101,6 +110,11 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
           />
         </div>
       </div>
+      {Number(formSendPix.amount.replace(/\D/g, '')) > Number(user.amount) && (
+        <label className="px-4 text-right text-base font-normal text-red-500">
+          Saldo insuficiente
+        </label>
+      )}
       <div className="flex items-center justify-start gap-2">
         <h4 className="w-[45%] text-right text-sm font-normal">
           Gostaria de adicionar alguma informação no comprovante?

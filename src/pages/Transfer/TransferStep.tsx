@@ -6,10 +6,18 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
+import { useAdm } from '@/contexts/UserContext'
+import { cn } from '@/lib/utils'
 import TransferApi from '@/services/TransferApi'
 import { formattedDoc } from '@/utils/FormattedDoc'
 import { formatedPrice } from '@/utils/FormattedPrice'
-import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
+import React, {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState
+} from 'react'
 
 interface TransferStepProps {
   step: {
@@ -41,6 +49,7 @@ interface TransferStepProps {
 }
 
 const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
+  const { user } = useAdm()
   const [stateModalPix, setStateModalPix] = useState<boolean>(false)
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
@@ -75,6 +84,10 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
       })
   }
 
+  useEffect(() => {
+    console.log(Number(step.amount.replace(/\D/g, '')), Number(user.amount))
+  }, [step])
+
   return (
     <>
       <div className="flex items-center justify-start gap-2">
@@ -96,7 +109,13 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
         <h1 className="w-[45%] font-Bills_Bold text-3xl uppercase">
           Defina o valor*:
         </h1>
-        <div className='text-colorPrimary-500" flex w-full items-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium'>
+        <div
+          className={cn(
+            'text-colorPrimary-500" flex w-full items-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium',
+            Number(step.amount.replace(/\D/g, '')) > Number(user.amount) &&
+              'border-2 border-red-600'
+          )}
+        >
           <label>R$</label>
           <Input
             className="border-none p-0 text-lg shadow-none"
@@ -112,6 +131,11 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
           />
         </div>
       </div>
+      {Number(step.amount.replace(/\D/g, '')) > Number(user.amount) && (
+        <label className="px-4 text-right text-base font-normal text-red-500">
+          Saldo insuficiente
+        </label>
+      )}
       <div className="flex items-center justify-start gap-2">
         <h4 className="w-[45%] text-right text-sm font-normal">
           Gostaria de adicionar alguma informação no comprovante?

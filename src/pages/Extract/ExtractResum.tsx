@@ -1,15 +1,8 @@
 import { PDFExtract } from '@/components/PDFTypes/PDFExtract'
 import { IconCalendar } from '@/components/icons/Calendar'
 import { IconDoubleArrow } from '@/components/icons/DoubleArrow'
-import { IconPDFDownload } from '@/components/icons/PDFDownload'
 import { ModalPrint } from '@/components/layout/Modal/ModaPrint'
 import { Separator } from '@/components/ui/separator'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
 import { useAdm } from '@/contexts/UserContext'
 import { downloadPDF } from '@/utils/DownloadPdf'
 import { DateFormat, invertDate } from '@/utils/FormattedDate'
@@ -149,7 +142,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
                   {formatedPrice(extract.amount.toString())}
                 </label>
               </div>
-              <TooltipProvider>
+              {/* <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger
                   // onClick={() => setOpenModalPrint(!openModalPrint)}
@@ -160,7 +153,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
                     Baixar extrato em PDF
                   </TooltipContent>
                 </Tooltip>
-              </TooltipProvider>
+              </TooltipProvider> */}
             </div>
           ))}
 

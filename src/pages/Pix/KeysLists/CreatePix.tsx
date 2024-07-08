@@ -156,19 +156,6 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
               />
             )
           )}
-          {/* <Input
-            className={cn(
-              'h-12 w-full items-center gap-2 rounded-xl border-2 border-colorPrimary-500 p-2 px-2 py-1 text-lg font-medium shadow-none transition-transform duration-300'
-            )}
-            placeholder="+ Cadastrar nova chave"
-            type="text"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              setFormCreateKeyPix((prevState) => ({
-                ...prevState,
-                key: e.target.value
-              }))
-            }}
-          /> */}
           <div className="flex justify-end">
             <ButtonNext
               title="Prosseguir"
