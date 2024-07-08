@@ -46,7 +46,6 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
         date={new Date(created).toLocaleDateString()}
       />
     )
-    console.log('aqui')
     downloadPDF(doc)
   }
 

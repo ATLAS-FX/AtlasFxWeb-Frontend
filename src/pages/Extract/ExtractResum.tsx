@@ -11,6 +11,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { useAdm } from '@/contexts/UserContext'
+import { downloadPDF } from '@/utils/DownloadPdf'
 import { DateFormat, invertDate } from '@/utils/FormattedDate'
 import { formatedPrice } from '@/utils/FormattedPrice'
 import { PDFViewer } from '@react-pdf/renderer'
@@ -51,7 +52,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
   const ButtonsOptions = [
     {
       title: 'Exportar PDF',
-      func: () => setOpenModalPrint(!openModalPrint)
+      func: () => handleDownloadPDF()
     },
     {
       title: 'Filtrar por data',
@@ -67,7 +68,31 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
     ([dateA], [dateB]) => Date.parse(dateB) - Date.parse(dateA)
   )
 
-  console.log(data)
+  const handleDownloadPDF = () => {
+    const doc = (
+      <PDFExtract
+        document={user.doc}
+        bankBalance={formatedPrice(user.amount) || '0.00'}
+        agency={user.agency}
+        account={user.account}
+        extrato={sortedEntries}
+        controlIn={formatedPrice(action.controlIn.toString()) || ''}
+        controlOut={formatedPrice(action.controlOut.toString()) || ''}
+        startDate={
+          action?.start
+            ? new Date(action?.start).toLocaleDateString()
+            : new Date(action?.firstDate).toLocaleDateString()
+        }
+        endDate={
+          action?.end
+            ? new Date(action?.end).toLocaleDateString()
+            : new Date(action?.lastDate).toLocaleDateString()
+        }
+      />
+    )
+    downloadPDF(doc)
+  }
+
   return (
     <>
       <div className="flex justify-end gap-8">

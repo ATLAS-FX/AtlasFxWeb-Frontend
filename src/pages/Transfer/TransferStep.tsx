@@ -60,8 +60,7 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
       doc_type: step.docType,
       name: step.name
     })
-      .then((res) => {
-        console.log(res)
+      .then(() => {
         setOpenModalPwd(false)
       })
       .catch((e: ErrorResponse) => {

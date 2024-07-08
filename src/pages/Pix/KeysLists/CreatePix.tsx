@@ -12,7 +12,7 @@ import PixApi from '@/services/PixApi'
 import { generatePixKey } from '@/utils/GenerateCode'
 import { ListMask } from '@/utils/ListMask'
 import { listPixButton } from '@/utils/PixListButtons'
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 
 interface ICreatePix {
   refetch: () => {}
@@ -97,10 +97,6 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
     }))
   }
 
-  useEffect(() => {
-    console.log(formCreateKeyPix.type)
-  }, [formCreateKeyPix.type])
-
   return (
     <>
       <div className="flex w-full items-center justify-evenly py-4">
@@ -179,7 +175,6 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
               loading={loading}
               disabled={formCreateKeyPix.key.length <= 0}
               func={() => {
-                console.log(formCreateKeyPix)
                 formCreateKeyPix.type === 'email' || formCreateKeyPix.type === 'cel'
                   ? setStateModalPix(true)
                   : handleCreateKeyPix(formCreateKeyPix.type, formCreateKeyPix.key)

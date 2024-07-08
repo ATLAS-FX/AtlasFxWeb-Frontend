@@ -66,8 +66,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
       end: state?.end || '',
       type: state?.type || ''
     })
-      .then((res) => {
-        console.log(res)
+      .then(() => {
         setState((prev) => ({
           ...prev,
           stepPage: 0
@@ -88,8 +87,6 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
   const isDateValid = (dateString: string) => {
     return !isNaN(new Date(dateString).getTime())
   }
-
-  console.log(state)
 
   return (
     <div className="flex flex-col gap-4">
