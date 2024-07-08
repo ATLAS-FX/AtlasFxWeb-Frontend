@@ -17,6 +17,8 @@ interface FilterPageProps {
     type: string
     start: string
     end: string
+    controlIn: number
+    controlOut: number
   }
   setState: Dispatch<
     SetStateAction<{
@@ -25,6 +27,10 @@ interface FilterPageProps {
       type: string
       start: string
       end: string
+      controlIn: number
+      controlOut: number
+      firstDate: string
+      lastDate: string
     }>
   >
 }

@@ -1,7 +1,9 @@
 import Atlas_Logo from '@/assets/atlas_logo.png'
 import PoppinsRegular from '@/assets/Poppins-Regular.ttf'
 import PoppinsSemi from '@/assets/Poppins-SemiBold.ttf'
+import { invertDate } from '@/utils/FormattedDate'
 import { formattedDoc } from '@/utils/FormattedDoc'
+import { formatedPrice } from '@/utils/FormattedPrice'
 import {
   Document,
   Font,
@@ -14,10 +16,8 @@ import {
 
 interface PdfExtractProps {
   document: string
-  type: string
-  amount: string
+  extrato: [string, App.RegisterPixProps[]][]
   bankBalance: string
-  payer: string
   agency: string
   account: string
   controlIn: string
@@ -28,10 +28,8 @@ interface PdfExtractProps {
 
 export const PDFExtract: React.FC<PdfExtractProps> = ({
   document,
-  type,
-  amount,
+  extrato,
   bankBalance,
-  payer,
   agency,
   account,
   controlIn,
@@ -96,7 +94,7 @@ export const PDFExtract: React.FC<PdfExtractProps> = ({
       marginBottom: '8px'
     },
     Subtitle: {
-      color: '#FFF',
+      color: '#C8D753',
       fontSize: 18
     },
     label: {
@@ -127,7 +125,7 @@ export const PDFExtract: React.FC<PdfExtractProps> = ({
       height: 1,
       backgroundColor: '#C8D753',
       marginVertical: 2,
-      margin: '2 0'
+      margin: '10 0'
     }
   })
 
@@ -173,16 +171,12 @@ export const PDFExtract: React.FC<PdfExtractProps> = ({
           </View>
           <View style={styles.hr} />
           <View style={styles.flex}>
-            <Text>Total de entradas</Text>
-            <View style={styles.valuePix}>
-              <Text>`+${controlIn}`</Text>
-            </View>
-            <View style={styles.valuePix}>
-              <Text>Total de saídas</Text>
-            </View>
-            <View style={styles.valuePix}>
-              <Text>`-${controlOut}`</Text>
-            </View>
+            <Text style={styles.valuePix}>Total de entradas</Text>
+            <Text style={styles.valuePix}>R$ {controlIn}</Text>
+          </View>
+          <View style={styles.flex}>
+            <Text style={styles.valuePix}>Total de saídas</Text>
+            <Text style={styles.valuePix}>R$ - {controlOut}</Text>
           </View>
           <View
             style={
@@ -196,39 +190,66 @@ export const PDFExtract: React.FC<PdfExtractProps> = ({
             }
           >
             <View style={styles.flex}>
-              <Text style={styles.valuePix}>
+              <Text style={styles.Subtitle}>
                 Saldo final do período: R$ {bankBalance}
               </Text>
             </View>
+            <View style={styles.hr} />
           </View>
-          <View style={styles.hr} />
           <View style={styles.valuePix}>
             <Text>Transições</Text>
           </View>
-          <View
-            style={
-              (styles.flex,
-              {
-                margin: '24px auto',
-                width: '80%',
-                justifyContent: 'space-between'
-              })
-            }
-          >
-            {type === 'in' && (
+          {extrato.map(([date, extracts], index) => (
+            <View key={index}>
               <View style={styles.flex}>
-                <Text style={styles.valuePix}>PIX recebido</Text>
-                <Text style={styles.valuePix}>{amount}</Text>
+                <Text style={styles.valuePix}>
+                  {new Date(invertDate(date)).toLocaleDateString('pt-BR', {
+                    weekday: 'long',
+                    day: '2-digit',
+                    month: '2-digit'
+                  })}
+                </Text>
               </View>
-            )}
-            {type === 'out' && (
-              <View style={styles.flex}>
-                <Text style={styles.valuePix}>PIX enviado</Text>
-                <Text style={styles.valuePix}>{payer}</Text>
-                <Text style={styles.valuePix}>{amount}</Text>
-              </View>
-            )}
-          </View>
+              {extracts.map((extract, i) => (
+                <View
+                  style={{
+                    ...styles.flex,
+                    ...{ width: '90%', margin: '0 auto' }
+                  }}
+                  key={`${i + extract.id}`}
+                >
+                  <Text
+                    style={{
+                      ...styles.value,
+                      ...{ textTransform: 'capitalize' },
+                      ...(extract.send < 1 && { color: '#C8D753' })
+                    }}
+                  >
+                    {extract.send < 1
+                      ? `${extract.method} enviado`
+                      : `${extract.method} recebido`}
+                  </Text>
+                  <Text
+                    style={{
+                      ...styles.value,
+                      ...{ textTransform: 'capitalize' },
+                      ...(extract.send < 1 && { color: '#C8D753' })
+                    }}
+                  >
+                    {extract.name}
+                  </Text>
+                  <Text
+                    style={{
+                      ...styles.value,
+                      ...(extract.send < 1 && { color: '#C8D753' })
+                    }}
+                  >
+                    {`R$ ${extract.send >= 1 ? '-' : ''}${formatedPrice(extract.amount.toString())}`}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          ))}
         </View>
       </Page>
     </Document>

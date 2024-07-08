@@ -17,6 +17,17 @@ import { PDFViewer } from '@react-pdf/renderer'
 import { Dispatch, SetStateAction, useState } from 'react'
 
 interface ExtractResumProps {
+  action: {
+    stepPage: number
+    period: number
+    type: string
+    start: string
+    end: string
+    controlIn: number
+    controlOut: number
+    firstDate: string
+    lastDate: string
+  }
   setAction: Dispatch<
     SetStateAction<{
       stepPage: number
@@ -24,12 +35,16 @@ interface ExtractResumProps {
       type: string
       start: string
       end: string
+      controlIn: number
+      controlOut: number
+      firstDate: string
+      lastDate: string
     }>
   >
   data: Record<string, App.RegisterPixProps[]>
 }
 
-const ExtractResum: React.FC<ExtractResumProps> = ({ setAction, data }) => {
+const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) => {
   const { user } = useAdm()
   const [openModalPrint, setOpenModalPrint] = useState<boolean>(false)
 
@@ -52,6 +67,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ setAction, data }) => {
     ([dateA], [dateB]) => Date.parse(dateB) - Date.parse(dateA)
   )
 
+  console.log(data)
   return (
     <>
       <div className="flex justify-end gap-8">
@@ -133,16 +149,22 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ setAction, data }) => {
               <PDFViewer width="100%" height="700px">
                 <PDFExtract
                   document={user.doc}
-                  bankBalance={formatedPrice(user.amount) || '0,00'}
+                  bankBalance={formatedPrice(user.amount) || '0.00'}
                   agency={user.agency}
                   account={user.account}
-                  type={'out'}
-                  controlIn={''}
-                  controlOut={''}
-                  amount={''}
-                  payer={''}
-                  startDate={new Date().toLocaleDateString()}
-                  endDate={new Date().toLocaleDateString()}
+                  extrato={sortedEntries}
+                  controlIn={formatedPrice(action.controlIn.toString()) || '1'}
+                  controlOut={formatedPrice(action.controlOut.toString()) || ''}
+                  startDate={
+                    action?.start
+                      ? new Date(action?.start).toLocaleDateString()
+                      : new Date(action?.firstDate).toLocaleDateString()
+                  }
+                  endDate={
+                    action?.end
+                      ? new Date(action?.end).toLocaleDateString()
+                      : new Date(action?.lastDate).toLocaleDateString()
+                  }
                 />
               </PDFViewer>
             }
