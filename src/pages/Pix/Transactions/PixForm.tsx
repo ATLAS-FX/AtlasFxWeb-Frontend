@@ -90,7 +90,7 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
         </h1>
         <div
           className={cn(
-            'text-colorPrimary-500" flex w-full items-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium',
+            'flex w-full items-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium text-colorPrimary-500',
             Number(formSendPix.amount.replace(/\D/g, '')) > Number(user.amount) &&
               'border-2 border-red-600'
           )}
