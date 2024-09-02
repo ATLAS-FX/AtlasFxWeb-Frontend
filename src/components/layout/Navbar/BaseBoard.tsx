@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { useAdm } from '@/contexts/UserContext'
+import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -14,7 +14,7 @@ interface ItemProps {
 export const BaseBoard: React.FC<ItemProps> = ({ icon: Icon, path, title }) => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const { signOut } = useAdm()
+  const { signOut } = useAtlas()
 
   return (
     <li className="flex flex-col items-center justify-center">

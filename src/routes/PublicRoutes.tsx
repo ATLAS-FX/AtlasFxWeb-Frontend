@@ -1,9 +1,9 @@
 import Login from '@/pages/Auth/'
 import React from 'react'
 import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
-import Atlas_Logo from '../assets/atlas_logo.png'
+import Atlas_Logo from '../assets/atlas_logo.svg'
 
-export const AuthRoutes: React.FC = () => {
+export const PublicRoutes: React.FC = () => {
   const StyleAuth = {
     background: 'linear-gradient(358deg, #242F5F 0%, #425EA8 100%)',
     backgroundPosition: 'top',
@@ -18,7 +18,7 @@ export const AuthRoutes: React.FC = () => {
       ></div>
       <div className="flex max-w-[1330px] flex-col items-center  gap-6">
         <img
-          className="h-[72px] object-contain xl:h-16"
+          className="h-12 object-contain xl:h-16"
           src={Atlas_Logo}
           alt="logo_atlas"
         />

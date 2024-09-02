@@ -2,7 +2,7 @@ import RoboSucess from '@/assets/robo.png'
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { PDFPix } from '@/components/PDFTypes/PDFPix'
 import { Separator } from '@/components/ui/separator'
-import { useAdm } from '@/contexts/UserContext'
+import { useAtlas } from '@/contexts/AtlasContext'
 import { downloadPDF } from '@/utils/DownloadPdf'
 import { formattedDate } from '@/utils/FormattedDate'
 import { formatedPrice } from '@/utils/FormattedPrice'
@@ -27,7 +27,7 @@ const PixSuccess: React.FC<IPixSuccess> = ({
   time,
   amount
 }) => {
-  const { user } = useAdm()
+  const { user } = useAtlas()
   const idTransaction = generateHash()
 
   const handleDownloadPDF = () => {

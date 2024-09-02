@@ -11,13 +11,13 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import { Separator } from '@/components/ui/separator'
-import { useAdm } from '@/contexts/UserContext'
+import { useAtlas } from '@/contexts/AtlasContext'
 import { listPixButton } from '@/utils/PixListButtons'
 import { ChevronDown } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 
 const Pix: React.FC = () => {
-  const { setPixCopyPaste } = useAdm()
+  const { setPixCopyPaste } = useAtlas()
   const navigate = useNavigate()
 
   const listPixActions = [

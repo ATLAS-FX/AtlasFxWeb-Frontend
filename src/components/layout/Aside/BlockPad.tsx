@@ -8,10 +8,7 @@ interface IBlockPad {
 export const BlockPad: React.FC<IBlockPad> = ({ className, children }) => {
   return (
     <div
-      className={cn(
-        'mb-2 flex flex-col justify-center rounded-xl p-4 shadow-shadowP',
-        className
-      )}
+      className={cn('mb-2 flex flex-col justify-center rounded-xl p-4', className)}
     >
       {children}
     </div>

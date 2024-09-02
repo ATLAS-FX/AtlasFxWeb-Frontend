@@ -1,6 +1,6 @@
 import { AdminContainer } from '@/components/layout/Container'
 import { Title } from '@/components/layout/Text/Title'
-import { useAdm } from '@/contexts/UserContext'
+import { useAtlas } from '@/contexts/AtlasContext'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ExtractResum from './ExtractResum'
@@ -8,7 +8,7 @@ import FilterPage from './FilterPage'
 
 const Extract: React.FC = () => {
   const navigate = useNavigate()
-  const { user } = useAdm()
+  const { user } = useAtlas()
 
   const [filterOptions, setFilterOptions] = useState<{
     stepPage: number

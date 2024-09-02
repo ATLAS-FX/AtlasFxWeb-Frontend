@@ -1,42 +1,33 @@
-import { Separator } from '@/components/ui/separator'
+import Atlas_Logo from '@/assets/atlas_logo.svg'
+import { cn } from '@/lib/utils'
 import React from 'react'
-import { Item } from './Item'
+import { Link, useLocation } from 'react-router-dom'
 import { checkoutItems } from './checkoutItems'
 
 export const Sidebar: React.FC = () => {
+  const { pathname } = useLocation()
+
   return (
-    <ul
-      className="flex max-h-[calc(100vh-164px)] w-[84px] flex-col items-center justify-start gap-2 overflow-y-auto rounded-lg border-0 bg-[#EFEFEF] py-2"
-      id="sidebar"
-    >
-      {checkoutItems
-        .filter((item) => !item.comming)
-        .map((item) => (
-          <Item
-            key={item.id}
-            icon={item.icon}
-            active={item.active}
-            path={item.path}
-            title={item.title}
-            comming={item.comming}
-          />
+    <nav className="flex h-full flex-col justify-between gap-2 rounded-2xl bg-[#243060] px-2 py-6">
+      <div className="flex w-full items-center justify-center">
+        <img className="w-28" src={Atlas_Logo} alt="logo atlas_fx" />
+      </div>
+      <div className="flex flex-col gap-2">
+        {checkoutItems.map(({ path, title }) => (
+          <Link
+            className={cn(
+              'w-full rounded-lg p-2 text-[#EFEFEF80] transition-all duration-200 ease-in-out',
+              pathname.includes(path)
+                ? 'pointer-events-none bg-[#384578] text-white'
+                : 'bg-transparent'
+            )}
+            to={path}
+          >
+            {title}
+          </Link>
         ))}
-      <Separator className="h-[2px] w-10/12 bg-colorPrimary-500" />
-      <span className="text-center text-xs font-semibold text-colorPrimary-500 xl:text-[10px]">
-        Em Breve
-      </span>
-      {checkoutItems
-        .filter((item) => item.comming)
-        .map((item) => (
-          <Item
-            key={item.id}
-            icon={item.icon}
-            active={item.active}
-            path={item.path}
-            title={item.title}
-            comming={item.comming}
-          />
-        ))}
-    </ul>
+      </div>
+      <div></div>
+    </nav>
   )
 }

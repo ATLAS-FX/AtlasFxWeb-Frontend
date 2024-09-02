@@ -17,8 +17,8 @@ interface UserContextData {
   setCurrentStepEmail: Dispatch<SetStateAction<number>>
   currentStepProfile: number
   setCurrentStepProfile: Dispatch<SetStateAction<number>>
-  isAuthenticated: boolean | undefined
   token: string
+  isAuthenticated: boolean | undefined
   signIn: (token: string) => void
   signOut: () => void
   checkUserIsAuthenticated: () => void
@@ -57,6 +57,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   const signOut = () => {
     setIsAuthenticated(false)
+
     localStorage.removeItem('atlas_token')
     navigate('/login', { replace: true })
   }
@@ -94,6 +95,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   )
 }
 
-export const useAdm = () => {
+export const useAtlas = () => {
   return useContext(UserContext)
 }

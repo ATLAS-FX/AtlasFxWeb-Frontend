@@ -3,7 +3,7 @@ import { IconCalendar } from '@/components/icons/Calendar'
 import { IconDoubleArrow } from '@/components/icons/DoubleArrow'
 import { ModalPrint } from '@/components/layout/Modal/ModaPrint'
 import { Separator } from '@/components/ui/separator'
-import { useAdm } from '@/contexts/UserContext'
+import { useAtlas } from '@/contexts/AtlasContext'
 import { downloadPDF } from '@/utils/DownloadPdf'
 import { DateFormat, invertDate } from '@/utils/FormattedDate'
 import { formatedPrice } from '@/utils/FormattedPrice'
@@ -39,7 +39,7 @@ interface ExtractResumProps {
 }
 
 const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) => {
-  const { user } = useAdm()
+  const { user } = useAtlas()
   const [openModalPrint, setOpenModalPrint] = useState<boolean>(false)
 
   const ButtonsOptions = [

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
-import { useAdm } from '@/contexts/UserContext'
+import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
 import PixApi from '@/services/PixApi'
 import { formattedDoc } from '@/utils/FormattedDoc'
@@ -24,7 +24,7 @@ interface IPixForm {
 }
 
 const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) => {
-  const { user } = useAdm()
+  const { user } = useAtlas()
   const [stateModalPix, setStateModalPix] = useState<boolean>(false)
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)

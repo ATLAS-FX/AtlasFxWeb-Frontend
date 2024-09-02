@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import { Toaster } from './components/ui/toaster.tsx'
-import { UserProvider } from './contexts/UserContext.tsx'
+import { UserProvider } from './contexts/AtlasContext.tsx'
 import './styles/global.css'
 
 const queryClient = new QueryClient({

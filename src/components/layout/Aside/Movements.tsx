@@ -7,7 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { useAdm } from '@/contexts/UserContext'
+import { useAtlas } from '@/contexts/AtlasContext'
 import { downloadPDF } from '@/utils/DownloadPdf'
 import { formatedPrice } from '@/utils/FormattedPrice'
 
@@ -19,7 +19,7 @@ export const Movements: React.FC<App.RegisterPixProps> = ({
   name,
   send
 }) => {
-  const { user } = useAdm()
+  const { user } = useAtlas()
   const DateFormat = (value: string): string => {
     const dataObj = new Date(value)
 

@@ -3,10 +3,9 @@ import { CardForLogin } from '@/components/layout/Card/CardForLogin'
 import ToastLogin from '@/components/layout/Modal/ModalLogin'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
-import { useAdm } from '@/contexts/UserContext'
+import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
 import AuthApi from '@/services/AuthApi'
 import { CheckCircle2, RotateCw } from 'lucide-react'
@@ -17,7 +16,7 @@ import { useNavigate } from 'react-router-dom'
 
 const Login: React.FC = () => {
   const navigate = useNavigate()
-  const { currentStepEmail, signIn } = useAdm()
+  const { currentStepEmail, signIn } = useAtlas()
   const [inputPassword, setInputPassword] = useState<string>('')
   const [inputRef, setInputRef] = useState<string>('')
   const [genQRCode, setGenQRCode] = useState<boolean>(false)
@@ -103,56 +102,48 @@ const Login: React.FC = () => {
       <div>
         {currentStepEmail < 1 ? (
           <CardForLogin
-            title="Acesse"
-            subtitle="Sua Conta"
-            option="Portal PJ"
+            title="Para acessar sua conta, siga os passos abaixo:"
             content={
               <div className="flex items-center justify-between gap-8">
-                <div>
-                  <p className="py-2 pt-0 text-colorPrimary-500">
-                    Para fazer o login, informe seu número de conta e dígito
+                <div className="text-justify text-xs leading-5 text-[#7F828C]">
+                  <p className="mb-4 mr-1">
+                    <strong>
+                      1. Acesse a conta da sua empresa através do celular
+                    </strong>
+                    : Abra o aplicativo no seu celular e faça login na sua conta
+                    empresarial.
                   </p>
-                  <Separator className="mb-4 bg-colorSecondary-500" />
-                  <div className="text-justify text-xs text-colorPrimary-500">
-                    <p className="py-1">
-                      <strong>
-                        1. Acesse a conta da sua empresa através do celular
-                      </strong>
-                      : Abra o aplicativo no seu celular e faça login na sua conta
-                      empresarial.
-                    </p>
-                    <p className="py-1">
-                      <strong>2. Toque em Meu Perfil</strong>: Dentro do aplicativo,
-                      localize a seção "Meu Perfil" no menu principal e toque nela.
-                    </p>
-                    <p className="py-1">
-                      <strong>3. Toque em Acessar Portal PJ</strong>: Dentro da
-                      página do seu perfil, você encontrará a opção "Acessar Portal
-                      PJ". Toque nesta opção para prosseguir.
-                    </p>
-                    <p className="py-1">
-                      <strong>
-                        4. Aponte seu celular para esta tela para escanear o QR Code
-                      </strong>
-                      : Agora, segure seu celular na frente da tela do seu computador
-                      ou dispositivo onde você está visualizando esta mensagem. O
-                      aplicativo do banco abrirá automaticamente a câmera para
-                      escanear o QR Code exibido na tela.
-                    </p>
-                    <p className="py-1">
-                      <strong>
-                        5. Digite o token com 8 dígitos que aparecerá em seu celular
-                      </strong>
-                      : Após escanear o QR Code, seu celular exibirá uma chave de
-                      segurança de 8 dígitos. Digite este token no local indicado na
-                      tela do seu computador ou dispositivo para concluir o acesso ao
-                      Portal PJ.
-                    </p>
-                  </div>
+                  <p className="mb-4 py-1">
+                    <strong>2. Toque em Meu Perfil</strong>: Dentro do aplicativo,
+                    localize a seção "Meu Perfil" no menu principal e toque nela.
+                  </p>
+                  <p className="mb-4 py-1">
+                    <strong>3. Toque em Acessar Portal PJ</strong>: Dentro da página
+                    do seu perfil, você encontrará a opção "Acessar Portal PJ". Toque
+                    nesta opção para prosseguir.
+                  </p>
+                  <p className="mb-4 py-1">
+                    <strong>
+                      4. Aponte seu celular para esta tela para escanear o QR Code
+                    </strong>
+                    : Agora, segure seu celular na frente da tela do seu computador
+                    ou dispositivo onde você está visualizando esta mensagem. O
+                    aplicativo do banco abrirá automaticamente a câmera para escanear
+                    o QR Code exibido na tela.
+                  </p>
+                  <p className="py-1">
+                    <strong>
+                      5. Digite o token com 8 dígitos que aparecerá em seu celular
+                    </strong>
+                    : Após escanear o QR Code, seu celular exibirá uma chave de
+                    segurança de 8 dígitos. Digite este token no local indicado na
+                    tela do seu computador ou dispositivo para concluir o acesso ao
+                    Portal PJ.
+                  </p>
                 </div>
                 <div
                   className={cn(
-                    'relative mt-[-7rem] flex h-fit justify-center rounded-md bg-white p-6 shadow-md transition-all'
+                    'relative flex h-fit justify-start rounded-md bg-white p-6 shadow-md transition-all'
                   )}
                 >
                   {genQRCode && (
@@ -184,8 +175,6 @@ const Login: React.FC = () => {
         ) : (
           <CardForLogin
             title="Acesse"
-            subtitle="Sua Conta"
-            option="Portal PJ"
             content={
               <div className="flex flex-col gap-4">
                 <label className="text-sm text-colorPrimary-500">

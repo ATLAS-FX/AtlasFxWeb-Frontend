@@ -4,7 +4,7 @@ import { PDFQRCode } from '@/components/PDFTypes/PDFQRCode'
 import { IconCopyDatabase } from '@/components/icons/CopyDatabase'
 import { IconExportPDF } from '@/components/icons/ExportPdf'
 import { Separator } from '@/components/ui/separator'
-import { useAdm } from '@/contexts/UserContext'
+import { useAtlas } from '@/contexts/AtlasContext'
 import { handleCopyClick } from '@/utils/Copy&Paste'
 import { downloadPDF } from '@/utils/DownloadPdf'
 import { formattedDate } from '@/utils/FormattedDate'
@@ -25,7 +25,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({
   barcode,
   qrcode
 }) => {
-  const { user } = useAdm()
+  const { user } = useAtlas()
   const idTransaction = generateHash()
 
   const handleDownloadPDF = (type: string) => {

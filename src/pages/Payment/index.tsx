@@ -3,14 +3,14 @@ import { IconBarCode } from '@/components/icons/BarCode'
 import { IconPix } from '@/components/icons/Pix'
 import { AdminContainer } from '@/components/layout/Container'
 import { Title } from '@/components/layout/Text/Title'
-import { useAdm } from '@/contexts/UserContext'
+import { useAtlas } from '@/contexts/AtlasContext'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PaymentForm from './PaymentForm'
 import PaymentSuccess from './PaymentSuccess'
 
 const Payments: React.FC = () => {
-  const { pixCopyPaste, setPixCopyPaste } = useAdm()
+  const { pixCopyPaste, setPixCopyPaste } = useAtlas()
   const navigate = useNavigate()
   const [stepPayment, setStepPayment] = useState<{
     step: number

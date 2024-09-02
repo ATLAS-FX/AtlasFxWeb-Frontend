@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
-import { useAdm } from './contexts/UserContext'
-import { AdminRoutes } from './routes/AdminRoutes'
-import { AuthRoutes } from './routes/AuthRoutes'
+import { useAtlas } from './contexts/AtlasContext'
+import { PrivateRoutes } from './routes/PrivateRoutes'
+import { PublicRoutes } from './routes/PublicRoutes'
 
 function App() {
-  const { checkUserIsAuthenticated, isAuthenticated } = useAdm()
+  const { checkUserIsAuthenticated, isAuthenticated } = useAtlas()
 
   useEffect(() => {
     checkUserIsAuthenticated()
@@ -12,8 +12,8 @@ function App() {
 
   return (
     <>
-      {isAuthenticated === true && <AdminRoutes />}
-      {isAuthenticated === false && <AuthRoutes />}
+      {isAuthenticated === true && <PrivateRoutes />}
+      {isAuthenticated === false && <PublicRoutes />}
     </>
   )
 }
