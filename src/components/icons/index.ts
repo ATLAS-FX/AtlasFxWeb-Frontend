@@ -1,0 +1,6 @@
+export { default as IconDoubleArrow } from './DoubleArrow'
+export { default as IconCalendar } from './Calendar'
+export { default as IconLogout } from './Logout'
+export { default as IconUser } from './User'
+export { default as IconPDFDownload } from './PDFDownload'
+export { default as IconUserCircle } from './UserCircle'

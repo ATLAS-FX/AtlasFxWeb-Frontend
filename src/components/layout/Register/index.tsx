@@ -1,5 +1,4 @@
-import { IconDoubleArrow } from '@/components/icons/DoubleArrow'
-import { IconPDFDownload } from '@/components/icons/PDFDownload'
+import { IconDoubleArrow, IconPDFDownload } from '@/components/icons'
 import {
   Tooltip,
   TooltipContent,

@@ -1,11 +1,6 @@
 import { FC } from 'react'
 
-export const IconUserCircle: FC<App.IconProps> = ({
-  size,
-  color,
-  fill,
-  className
-}) => {
+const UserCircle: FC<App.IconProps> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -23,3 +18,5 @@ export const IconUserCircle: FC<App.IconProps> = ({
     </svg>
   )
 }
+
+export default UserCircle

@@ -1,5 +1,5 @@
 import { IconTrash } from '@/components/icons/Trash'
-import { IconUser } from '@/components/icons/User'
+import { IconUser } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import {
   Tooltip,

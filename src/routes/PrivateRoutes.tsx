@@ -18,7 +18,7 @@ import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
 
 export const PrivateRoutes: React.FC = () => {
   return (
-    <div className="grid h-screen w-screen grid-cols-[240px,auto,400px] items-start justify-between gap-12 overflow-x-hidden bg-[#EFEFEF] p-10">
+    <div className="grid h-screen w-screen grid-cols-[15%,50%,30%] items-start justify-between gap-6 overflow-x-hidden bg-[#EFEFEF] p-10">
       <Sidebar />
       <ReactRoutes>
         {/* welcome */}

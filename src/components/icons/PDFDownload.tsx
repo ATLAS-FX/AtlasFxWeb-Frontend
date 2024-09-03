@@ -1,11 +1,6 @@
 import { FC } from 'react'
 
-export const IconPDFDownload: FC<App.IconProps> = ({
-  size,
-  color,
-  fill,
-  className
-}) => {
+const PDFDownload: FC<App.IconProps> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -46,3 +41,5 @@ export const IconPDFDownload: FC<App.IconProps> = ({
     </svg>
   )
 }
+
+export default PDFDownload

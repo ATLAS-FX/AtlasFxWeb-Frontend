@@ -1,11 +1,6 @@
 import { FC } from 'react'
 
-export const IconCalendar: FC<App.IconProps> = ({
-  size,
-  color,
-  fill,
-  className
-}) => {
+const Calendar: FC<App.IconProps> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -71,3 +66,5 @@ export const IconCalendar: FC<App.IconProps> = ({
     </svg>
   )
 }
+
+export default Calendar

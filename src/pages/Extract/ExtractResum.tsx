@@ -1,6 +1,5 @@
 import { PDFExtract } from '@/components/PDFTypes/PDFExtract'
-import { IconCalendar } from '@/components/icons/Calendar'
-import { IconDoubleArrow } from '@/components/icons/DoubleArrow'
+import { IconCalendar, IconDoubleArrow } from '@/components/icons'
 import { ModalPrint } from '@/components/layout/Modal/ModaPrint'
 import { Separator } from '@/components/ui/separator'
 import { useAtlas } from '@/contexts/AtlasContext'

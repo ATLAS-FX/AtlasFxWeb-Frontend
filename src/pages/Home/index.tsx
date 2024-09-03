@@ -1,102 +1,112 @@
-import Shield from '@/assets/shield.svg'
+import Robo from '@/assets/robo.png'
+import { IconDoubleArrow } from '@/components/icons'
+import CardHome from '@/components/layout/Card/CardHome'
+import { ChartConfig } from '@/components/ui/chart'
 import { Separator } from '@/components/ui/separator'
+import { useAtlas } from '@/contexts/AtlasContext'
+import { formattedDate } from '@/utils/FormattedDate'
+import { formatedPrice } from '@/utils/FormattedPrice'
+import Chart from './Chart'
 
 const Home: React.FC = () => {
+  const { user } = useAtlas()
+
+  const StyleTheme = {
+    backgroundImage: `url(${Robo})`,
+    backgroundSize: '25%',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right 50px bottom -100px'
+  }
+
+  const chartConfig = {
+    desktop: {
+      label: 'amount',
+      color: 'hsl(var(--chart-1))'
+    },
+    mobile: {
+      label: 'amount',
+      color: 'hsl(var(--chart-2))'
+    }
+  } satisfies ChartConfig
+
   return (
-    <div className="flex h-[calc(100vh-164px)] flex-col items-center gap-4 text-xs text-white">
+    <div className="flex h-[calc(100vh-164px)] flex-col gap-4 pt-5 text-xs">
       <div className="flex flex-col gap-2">
-        <h4 className="text-shadow-3x text-base font-semibold xl:text-sm">
-          Seja bem-vindo!
+        <h4 className="text-lg text-colorPrimary-500">
+          Olá, <span className="font-semibold">{user.name}</span>!
         </h4>
-        <p>
-          Onde quer que você esteja, estamos aqui para simplificar suas finanças. Com
-          nosso Portal PJ, você tem o poder de gerenciar as contas da sua empresa,
-          pagar contas, transferir dinheiro e muito mais, tudo com facilidade e
-          segurança.
-        </p>
-        <p>
-          Explore nossos recursos intuitivos e aproveite a conveniência de realizar
-          suas transações financeiras da forma que precisar.
-        </p>
-        <p>
-          Junte-se a nós em nossa jornada para simplificar a vida financeira e
-          experimente o futuro dos serviços bancários hoje mesmo.
-        </p>
-        <p>
-          Estamos aqui para ajudar você a alcançar seus objetivos financeiros, cada
-          passo do caminho.
-        </p>
-        <p>
-          Sua segurança é nossa prioridade, e nossas medidas robustas garantem que
-          suas informações permaneçam protegidas em cada transação.
+        <p className="text-[#7F828C]">
+          Gerencie e monitore as finanças da sua empresa aqui. Tudo em um lugar.
         </p>
       </div>
-      <Separator className="my-3 w-8/12 bg-colorSecondary-500" />
-      <div className="flex flex-col gap-2">
-        <p className="text-justify">
-          Sua segurança é nossa prioridade, e nossas medidas robustas garantem que
-          suas informações permaneçam protegidas em cada transação.
-        </p>
-      </div>
-      <div className="flex flex-col justify-center gap-4">
-        <h4 className="text-shadow-3x text-center text-sm font-medium text-white">
-          Maior Segurança para Contas PJ com Acesso Limitado por IP Fixo
-        </h4>
-        <div className="flex items-start justify-between gap-2">
-          <img
-            src={Shield}
-            alt="imagem do escudo de segurança"
-            className="object-contain"
-          />
-          <div className="flex flex-col items-start justify-between gap-2 text-xs">
-            <p>
-              <strong className="font-bold">
-                Prevenção de Acesso Não Autorizado:{' '}
-              </strong>
-              Um endereço IP fixo restringe o acesso à conta bancária do cliente a um
-              dispositivo específico ou rede confiável. Isso impede que hackers e
-              outros agentes mal-intencionados acessem conta a partir de locais
-              desconhecidos ou não autorizados.
+      <Separator className="my-3 w-full bg-[#7F828C33]" />
+      <CardHome
+        imgBG={StyleTheme}
+        classes="bg-colorSecondary-500"
+        children={
+          <p className="w-5/12 text-3xl font-semibold text-colorPrimary-500">
+            {'O jeito fácil de gerenciar a sua empresa ;)'}
+          </p>
+        }
+      />
+      <CardHome
+        title="Lucro mensal da sua empresa:"
+        classes="border-[1px] border-[#7F828C33]"
+        children={
+          <>
+            <p className=" absolute right-4 top-4 font-semibold text-[#7F828C]">
+              {formattedDate(new Date().toString())}
             </p>
-            <p>
-              <strong className="font-bold">
-                Mitigação de Ataques de Phishing e Pharming:{' '}
-              </strong>
-              Ter um IP fixo dificulta significativamente os ataques de phishing e
-              pharming, nos quais os criminosos tentam enganar os usuários para
-              revelar informações confidenciais ou redirecioná-los para sites falsos.
-            </p>
-            <p>
-              <strong className="font-bold">
-                Redução de Fraudes de Identidade:{' '}
-              </strong>
-              Um IP fixo oferece uma camada adicional de autenticação e validação de
-              identidade, tornando mais difícil para os fraudadores se passarem pelo
-              cliente ou acessarem a conta ilegalmente. Isso ajuda a proteger as
-              informações pessoais e financeiras contra roubo de identidade e outras
-              formas de fraude.
-            </p>
-            <p>
-              <strong className="font-bold">
-                Fortalecimento da Segurança de Dados:{' '}
-              </strong>
-              Com um IP fixo, a instituição financeira pode implementar medidas de
-              segurança mais robustas, como firewalls e sistemas de detecção de
-              intrusos, para proteger a conta contra ataques cibernéticos. Isso
-              garante a integridade e a confidencialidade dos dados financeiros.
-            </p>
-            <p>
-              <strong className="font-bold">
-                Conformidade com Normas de Segurança:{' '}
-              </strong>
-              A utilização de um IP fixo é uma prática recomendada para estar em
-              conformidade com as normas e regulamentações de segurança cibernética
-              do setor financeiro. Ao adotar essa medida, a instituição financeira
-              demonstra seu compromisso com a proteção dos interesses e da
-              privacidade de seus clientes.
-            </p>
-          </div>
-        </div>
+            <h3 className="text-xl">
+              R$ <strong>{formatedPrice('0')}</strong>
+            </h3>
+            <div className="flex items-center justify-center">
+              <Chart
+                classes="h-72"
+                data={user.releases}
+                options={chartConfig}
+                dataKeyAxis={'created'}
+                dataKeyBarOne={'amount'}
+                dataKeyBarTwo={'amount'}
+                colorOne={'#C8D753'}
+                colorTwo={'#405CA5'}
+              />
+            </div>
+          </>
+        }
+      />
+      <div className="flex items-center gap-4">
+        <CardHome
+          classes="bg-[#DDE2F0] w-6/12"
+          children={
+            <>
+              <h3 className="flex items-center gap-2 text-sm">
+                <IconDoubleArrow className="fill-[#008000]" size={12} />
+                Entradas
+              </h3>
+              <h3 className="text-xl">
+                R$ <strong>{formatedPrice('0')}</strong>
+              </h3>
+            </>
+          }
+        />
+        <CardHome
+          classes="bg-[#DDE2F0] w-6/12"
+          children={
+            <>
+              <h3 className="flex items-center gap-2 text-sm">
+                <IconDoubleArrow
+                  className="scale-x-[-1] transform fill-[#EF4444]"
+                  size={12}
+                />
+                Saídas
+              </h3>
+              <h3 className="text-xl">
+                R$ <strong>{formatedPrice('0')}</strong>
+              </h3>
+            </>
+          }
+        />
       </div>
     </div>
   )

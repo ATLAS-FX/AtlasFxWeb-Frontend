@@ -16,7 +16,7 @@ export const checkoutItems = [
   },
   {
     id: 3,
-    title: 'Pagamentos',
+    title: 'Pagar',
     path: '/payments'
   },
   {

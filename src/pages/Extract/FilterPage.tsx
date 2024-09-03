@@ -1,6 +1,5 @@
 import { ButtonNext } from '@/components/Buttons/ButtonNext'
-import { IconCalendar } from '@/components/icons/Calendar'
-import { IconDoubleArrow } from '@/components/icons/DoubleArrow'
+import { IconCalendar, IconDoubleArrow } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'

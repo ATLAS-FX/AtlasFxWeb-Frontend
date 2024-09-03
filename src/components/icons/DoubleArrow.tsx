@@ -1,11 +1,6 @@
 import { FC } from 'react'
 
-export const IconDoubleArrow: FC<App.IconProps> = ({
-  size,
-  color,
-  fill,
-  className
-}) => {
+const DoubleArrow: FC<App.IconProps> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -26,3 +21,5 @@ export const IconDoubleArrow: FC<App.IconProps> = ({
     </svg>
   )
 }
+
+export default DoubleArrow
