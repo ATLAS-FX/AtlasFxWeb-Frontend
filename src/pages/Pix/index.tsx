@@ -1,7 +1,5 @@
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
-import { IconDepositCoin } from '@/components/icons/DepositCoin'
-import { IconGroupUser } from '@/components/icons/GroupUser'
-import { IconKey } from '@/components/icons/Key'
+import { IconDepositCoin, IconGroupUser, IconKey } from '@/components/icons'
 import { AdminContainer } from '@/components/layout/Container'
 import { Title } from '@/components/layout/Text/Title'
 import {

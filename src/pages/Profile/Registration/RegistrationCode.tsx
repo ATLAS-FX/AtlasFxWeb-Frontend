@@ -1,6 +1,6 @@
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { ButtonNext } from '@/components/Buttons/ButtonNext'
-import { IconMovingCar } from '@/components/icons/MovingCar'
+import { IconMovingCar } from '@/components/icons'
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'

@@ -1,7 +1,5 @@
-declare namespace App {
-  export interface ExtractProps {
-    start: string
-    end: string
-    type: string
-  }
+export type ExtractType = {
+  start: string
+  end: string
+  type: string
 }

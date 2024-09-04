@@ -1,6 +1,7 @@
+import { IconType } from '@/types/iconType'
 import { FC } from 'react'
 
-export const IconAddress: FC<App.IconProps> = ({ size, color, fill, className }) => {
+const Address: FC<IconType> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -47,3 +48,5 @@ export const IconAddress: FC<App.IconProps> = ({ size, color, fill, className })
     </svg>
   )
 }
+
+export default Address

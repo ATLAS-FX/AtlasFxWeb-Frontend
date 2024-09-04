@@ -1,3 +1,4 @@
+import { UserType } from '@/types/userType'
 import {
   Dispatch,
   ReactNode,
@@ -9,8 +10,8 @@ import {
 import { useNavigate } from 'react-router-dom'
 
 interface UserContextData {
-  user: App.UserProps
-  setUser: Dispatch<SetStateAction<App.UserProps>>
+  user: UserType
+  setUser: Dispatch<SetStateAction<UserType>>
   pixCopyPaste: boolean
   setPixCopyPaste: Dispatch<SetStateAction<boolean>>
   currentStepEmail: number
@@ -37,7 +38,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>()
   const [pixCopyPaste, setPixCopyPaste] = useState<boolean>(false)
   const [token, setToken] = useState<string>('')
-  const [user, setUser] = useState<App.UserProps>({
+  const [user, setUser] = useState<UserType>({
     id: 0,
     bank: '',
     account: '',

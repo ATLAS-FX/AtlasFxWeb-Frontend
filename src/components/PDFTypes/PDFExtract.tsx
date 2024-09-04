@@ -1,6 +1,7 @@
 import Atlas_Logo from '@/assets/atlas_logo.png'
 import PoppinsRegular from '@/assets/Poppins-Regular.ttf'
 import PoppinsSemi from '@/assets/Poppins-SemiBold.ttf'
+import { RegisterPixType } from '@/types/userType'
 import { invertDate } from '@/utils/FormattedDate'
 import { formattedDoc } from '@/utils/FormattedDoc'
 import { formatedPrice } from '@/utils/FormattedPrice'
@@ -16,7 +17,7 @@ import {
 
 interface PdfExtractProps {
   document: string
-  extrato: [string, App.RegisterPixProps[]][]
+  extrato: [string, RegisterPixType[]][]
   bankBalance: string
   agency: string
   account: string

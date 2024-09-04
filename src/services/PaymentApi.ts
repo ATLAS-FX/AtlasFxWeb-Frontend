@@ -1,10 +1,11 @@
+import { PaymentType } from '@/types/PaymentType'
 import { api } from './api'
 
 class PaymentApi {
   public async consultPayment(params: {
     number: string
     type: string
-  }): Promise<App.PaymentProps> {
+  }): Promise<PaymentType> {
     const res = await api.post('portal/payment/consult', params)
     return res.data
   }

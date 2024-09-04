@@ -1,6 +1,7 @@
+import { IconType } from '@/types/iconType'
 import { FC } from 'react'
 
-export const IconPayment: FC<App.IconProps> = ({ size, color, fill, className }) => {
+const Payment: FC<IconType> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -61,3 +62,5 @@ export const IconPayment: FC<App.IconProps> = ({ size, color, fill, className })
     </svg>
   )
 }
+
+export default Payment

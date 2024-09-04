@@ -1,11 +1,7 @@
+import { IconType } from '@/types/iconType'
 import { FC } from 'react'
 
-export const IconEmailSquare: FC<App.IconProps> = ({
-  size,
-  color,
-  fill,
-  className
-}) => {
+const EmailSquare: FC<IconType> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -35,3 +31,5 @@ export const IconEmailSquare: FC<App.IconProps> = ({
     </svg>
   )
 }
+
+export default EmailSquare

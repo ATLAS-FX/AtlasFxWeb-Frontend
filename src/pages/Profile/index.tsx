@@ -1,7 +1,5 @@
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
-import { IconClose } from '@/components/icons/Close'
-import { IconPadLock } from '@/components/icons/PadLock'
-import { IconRegistration } from '@/components/icons/Registration'
+import { IconClose, IconPadLock, IconRegistration } from '@/components/icons'
 import { AdminContainer } from '@/components/layout/Container'
 import { Title } from '@/components/layout/Text/Title'
 import { Separator } from '@/components/ui/separator'

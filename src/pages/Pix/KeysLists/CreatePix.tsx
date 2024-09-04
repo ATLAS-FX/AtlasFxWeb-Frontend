@@ -1,6 +1,6 @@
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { ButtonNext } from '@/components/Buttons/ButtonNext'
-import { IconAlert } from '@/components/icons/Alert'
+import { IconAlert } from '@/components/icons'
 import MaskedInput from '@/components/layout/Input/MaskedInput'
 import TwoFactorAuthValidator from '@/components/layout/Input/TwoFactorAuthValidator'
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'

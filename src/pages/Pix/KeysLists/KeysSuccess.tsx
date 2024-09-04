@@ -1,6 +1,6 @@
 import RoboSucess from '@/assets/robo.png'
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
-import { IconKey } from '@/components/icons/Key'
+import { IconKey } from '@/components/icons'
 import { CircleCheck } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
 

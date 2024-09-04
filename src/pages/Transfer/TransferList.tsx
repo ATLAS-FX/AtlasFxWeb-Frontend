@@ -7,11 +7,12 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
+import { ContactsPixType } from '@/types/PixType'
 import { ChevronDown } from 'lucide-react'
 import React, { useState } from 'react'
 
 interface TransferListProps {
-  data: App.ContactsPixProps[]
+  data: ContactsPixType[]
 }
 
 const TransferList: React.FC<TransferListProps> = ({ data }) => {

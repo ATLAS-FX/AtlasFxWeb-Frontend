@@ -1,11 +1,7 @@
+import { IconType } from '@/types/iconType'
 import { FC } from 'react'
 
-export const IconCopyPaste: FC<App.IconProps> = ({
-  size,
-  color,
-  fill,
-  className
-}) => {
+const CopyPaste: FC<IconType> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -35,3 +31,5 @@ export const IconCopyPaste: FC<App.IconProps> = ({
     </svg>
   )
 }
+
+export default CopyPaste

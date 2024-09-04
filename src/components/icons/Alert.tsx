@@ -1,6 +1,7 @@
+import { IconType } from '@/types/iconType'
 import { FC } from 'react'
 
-export const IconAlert: FC<App.IconProps> = ({ size, color, fill, className }) => {
+const Alert: FC<IconType> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -22,3 +23,5 @@ export const IconAlert: FC<App.IconProps> = ({ size, color, fill, className }) =
     </svg>
   )
 }
+
+export default Alert

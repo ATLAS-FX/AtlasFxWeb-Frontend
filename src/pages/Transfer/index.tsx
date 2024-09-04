@@ -1,10 +1,11 @@
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
-import { IconPaperPlane } from '@/components/icons/PapelPlane'
+import { IconPaperPlane } from '@/components/icons'
 import { AdminContainer } from '@/components/layout/Container'
 import { Title } from '@/components/layout/Text/Title'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import PixApi from '@/services/PixApi'
+import { ContactsPixType } from '@/types/PixType'
 import { formattedDoc } from '@/utils/FormattedDoc'
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
@@ -15,7 +16,7 @@ import TransferStep from './TransferStep'
 
 const Transfer: React.FC = () => {
   const navigate = useNavigate()
-  const [data, setData] = useState<App.ContactsPixProps[]>([])
+  const [data, setData] = useState<ContactsPixType[]>([])
   const [stateForm, setStateForm] = useState<{
     step: number
     bank: string

@@ -1,17 +1,18 @@
+import { ContactsPixType, KeyPixType, PixType } from '@/types/PixType'
 import { api } from './api'
 
 class UserApi {
-  public async getKeyInfo(params: { key: string }): Promise<App.PixProps> {
+  public async getKeyInfo(params: { key: string }): Promise<PixType> {
     const res = await api.post('portal/pix/key_info', params)
     return res.data
   }
 
-  public async listPixKeys(): Promise<App.KeyPixProps[]> {
+  public async listPixKeys(): Promise<KeyPixType[]> {
     const res = await api.get('portal/pix/my_keys')
     return res.data
   }
 
-  public async listPixContacts(): Promise<App.ContactsPixProps[]> {
+  public async listPixContacts(): Promise<ContactsPixType[]> {
     const res = await api.get('portal/contacts/list')
     return res.data
   }

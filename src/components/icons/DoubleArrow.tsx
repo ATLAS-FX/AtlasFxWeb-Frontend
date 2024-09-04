@@ -1,6 +1,7 @@
+import { IconType } from '@/types/iconType'
 import { FC } from 'react'
 
-const DoubleArrow: FC<App.IconProps> = ({ size, color, fill, className }) => {
+const DoubleArrow: FC<IconType> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}

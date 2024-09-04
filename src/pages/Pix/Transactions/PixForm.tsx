@@ -1,5 +1,5 @@
 import { ButtonNext } from '@/components/Buttons/ButtonNext'
-import { IconAlert } from '@/components/icons/Alert'
+import { IconAlert } from '@/components/icons'
 import TwoFactorAuthValidator from '@/components/layout/Input/TwoFactorAuthValidator'
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Button } from '@/components/ui/button'

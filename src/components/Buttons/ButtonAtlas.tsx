@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { IconType } from '@/types/iconType'
 import React from 'react'
 import {
   Tooltip,
@@ -11,11 +12,11 @@ interface ButtonAtlasProps {
   title: string
   classButton?: string
   classDiv?: string
-  icon?: React.FC<App.IconProps>
+  icon?: React.FC<IconType>
   sizeIcon?: number
   click?: () => void
   listAction?: {
-    icon: React.FC<App.IconProps>
+    icon: React.FC<IconType>
     tooltip: string
     func: () => void
   }[]

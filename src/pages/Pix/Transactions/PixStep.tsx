@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import PixApi from '@/services/PixApi'
+import { PixType } from '@/types/PixType'
 import { formattedDate } from '@/utils/FormattedDate'
 import { formattedDoc } from '@/utils/FormattedDoc'
 import { generateHash } from '@/utils/GenerateCode'
@@ -23,7 +24,7 @@ const PixStep: React.FC = () => {
   const [getKeyInput, setGetKeyInput] = useState<string>('')
   const [getAmountForm, setGetAmountForm] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
-  const [data, setData] = useState<App.PixProps>({
+  const [data, setData] = useState<PixType>({
     bank: '',
     doc: '',
     key: '',

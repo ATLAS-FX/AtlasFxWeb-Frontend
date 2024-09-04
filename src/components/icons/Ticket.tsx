@@ -1,6 +1,7 @@
+import { IconType } from '@/types/iconType'
 import { FC } from 'react'
 
-export const IconTicket: FC<App.IconProps> = ({ size, color, fill, className }) => {
+const Ticket: FC<IconType> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -19,3 +20,5 @@ export const IconTicket: FC<App.IconProps> = ({ size, color, fill, className }) 
     </svg>
   )
 }
+
+export default Ticket

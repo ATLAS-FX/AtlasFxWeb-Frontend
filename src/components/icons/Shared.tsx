@@ -1,6 +1,7 @@
+import { IconType } from '@/types/iconType'
 import { FC } from 'react'
 
-export const IconShared: FC<App.IconProps> = ({ size, color, fill, className }) => {
+const Shared: FC<IconType> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -46,3 +47,5 @@ export const IconShared: FC<App.IconProps> = ({ size, color, fill, className }) 
     </svg>
   )
 }
+
+export default Shared

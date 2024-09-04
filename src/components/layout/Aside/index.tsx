@@ -1,9 +1,9 @@
-import { IconEyeReveal } from '@/components/icons/EyeReval'
-import { Separator } from '@/components/ui/separator'
+import { IconEyeReveal } from '@/components/icons'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import UserApi from '@/services/UserApi'
+import { UserType } from '@/types/userType'
 import { formatedHideValue, formatedPrice } from '@/utils/FormattedPrice'
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
@@ -18,7 +18,7 @@ export const Aside: React.FC = () => {
     data: infoUser,
     isLoading,
     isError
-  } = useQuery<App.UserProps>({
+  } = useQuery<UserType>({
     queryKey: 'get-info-user',
     queryFn: async () => {
       const res = await UserApi.getInfo()
@@ -44,15 +44,15 @@ export const Aside: React.FC = () => {
       {isLoading ? (
         <Skeleton className="h-[70vh] w-full rounded-lg" />
       ) : (
-        <div className="flex h-[calc(100vh-10%)] flex-col overflow-y-auto overflow-x-hidden rounded-2xl bg-[#DDE2F0] p-4">
+        <div className="flex h-[calc(100vh-10%)] flex-col overflow-y-auto overflow-x-hidden rounded-2xl bg-[#DDE2F0] px-4 pt-4">
           <ul>
             <BlockPad
-              className="bg-colorPrimary-500"
+              className="rounded-2xl bg-colorPrimary-500"
               children={
                 <div className="flex w-full items-center justify-between">
                   <div className="flex flex-col justify-center gap-2 text-white">
                     <h2 className="text-sm font-medium">Saldo em conta: </h2>
-                    <h3 className="text-lg font-medium">
+                    <h3 className="text-lg font-medium  ">
                       R${' '}
                       {!hideValue
                         ? formatedPrice(user.amount) || '0,00'
@@ -64,8 +64,8 @@ export const Aside: React.FC = () => {
                   </div>
                   <button onClick={() => setHideValue(!hideValue)}>
                     <IconEyeReveal
-                      size={48}
-                      className="mr-2 fill-colorPrimary-500"
+                      size={24}
+                      className="mr-2 fill-white transition-all duration-200 ease-in-out hover:scale-125 hover:fill-white/70"
                     />
                   </button>
                 </div>
@@ -77,11 +77,10 @@ export const Aside: React.FC = () => {
                 <>
                   {user.releases.length >= 1 ? (
                     <ul>
-                      <h2 className="py-1 text-end font-semibold text-colorSecondary-500">
-                        Últimos Lançamentos
+                      <h2 className="py-2 text-start font-semibold text-colorPrimary-500">
+                        Últimos Lançamentos:
                       </h2>
                       <li>
-                        <Separator className="mb-4 bg-white/30" />
                         {user.releases
                           .sort(
                             (a, b) => Date.parse(b.created) - Date.parse(a.created)

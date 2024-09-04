@@ -1,11 +1,12 @@
 import { ButtonNext } from '@/components/Buttons/ButtonNext'
-import { IconAlert } from '@/components/icons/Alert'
+import { IconAlert } from '@/components/icons'
 import TwoFactorAuthValidator from '@/components/layout/Input/TwoFactorAuthValidator'
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import PaymentApi from '@/services/PaymentApi'
+import { PaymentType } from '@/types/PaymentType'
 import { formattedDoc } from '@/utils/FormattedDoc'
 import md5 from 'md5'
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
@@ -27,8 +28,8 @@ interface IPaymentForm {
       loading: boolean
     }>
   >
-  data: App.PaymentProps | undefined
-  setData: Dispatch<SetStateAction<App.PaymentProps | undefined>>
+  data: PaymentType | undefined
+  setData: Dispatch<SetStateAction<PaymentType | undefined>>
 }
 
 const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) => {

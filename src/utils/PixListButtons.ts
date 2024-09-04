@@ -1,12 +1,15 @@
-import { IconBuilding } from '@/components/icons/Building'
-import { IconCoding } from '@/components/icons/Coding'
-import { IconCopyPaste } from '@/components/icons/CopyPaste'
-import { IconEmailSquare } from '@/components/icons/EmailSquare'
-import { IconSmartphone } from '@/components/icons/Smartphone'
-import { IconUserSquare } from '@/components/icons/UserSquare'
+import {
+  IconBuilding,
+  IconCoding,
+  IconCopyPaste,
+  IconEmailSquare,
+  IconSmartphone,
+  IconUserSquare
+} from '@/components/icons'
+import { IconType } from '@/types/iconType'
 
 export const listPixButton: {
-  icon: React.FC<App.IconProps>
+  icon: React.FC<IconType>
   name: string
   type: string
 }[] = [

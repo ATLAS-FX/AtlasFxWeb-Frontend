@@ -3,6 +3,7 @@ import { Title } from '@/components/layout/Text/Title'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import PixApi from '@/services/PixApi'
+import { ContactsPixType } from '@/types/PixType'
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
@@ -11,7 +12,7 @@ import ListContact from './ListContacts'
 const PixContacts: React.FC = () => {
   const navigate = useNavigate()
 
-  const [data, setData] = useState<App.ContactsPixProps[]>([])
+  const [data, setData] = useState<ContactsPixType[]>([])
 
   const {
     data: listMyContatcs,

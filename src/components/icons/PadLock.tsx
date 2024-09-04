@@ -1,6 +1,7 @@
+import { IconType } from '@/types/iconType'
 import { FC } from 'react'
 
-export const IconPadLock: FC<App.IconProps> = ({ size, color, fill, className }) => {
+const PadLock: FC<IconType> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -30,3 +31,5 @@ export const IconPadLock: FC<App.IconProps> = ({ size, color, fill, className })
     </svg>
   )
 }
+
+export default PadLock

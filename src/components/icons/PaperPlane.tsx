@@ -1,11 +1,7 @@
+import { IconType } from '@/types/iconType'
 import { FC } from 'react'
 
-export const IconPaperPlane: FC<App.IconProps> = ({
-  size,
-  color,
-  fill,
-  className
-}) => {
+const PaperPlane: FC<IconType> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -61,3 +57,5 @@ export const IconPaperPlane: FC<App.IconProps> = ({
     </svg>
   )
 }
+
+export default PaperPlane

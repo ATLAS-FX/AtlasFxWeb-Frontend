@@ -1,9 +1,9 @@
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
-import { IconBarCode } from '@/components/icons/BarCode'
-import { IconPix } from '@/components/icons/Pix'
+import { IconBarCode, IconPix } from '@/components/icons'
 import { AdminContainer } from '@/components/layout/Container'
 import { Title } from '@/components/layout/Text/Title'
 import { useAtlas } from '@/contexts/AtlasContext'
+import { PaymentType } from '@/types/PaymentType'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PaymentForm from './PaymentForm'
@@ -25,7 +25,7 @@ const Payments: React.FC = () => {
     pwdCode: '',
     loading: false
   })
-  const [dataPayment, setDataPayment] = useState<App.PaymentProps | undefined>()
+  const [dataPayment, setDataPayment] = useState<PaymentType | undefined>()
 
   const listPaymentsActions = [
     {

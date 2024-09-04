@@ -1,6 +1,7 @@
+import { IconType } from '@/types/iconType'
 import { FC } from 'react'
 
-export const IconInvestment: FC<App.IconProps> = ({ size, color, fill, className }) => {
+const Investment: FC<IconType> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -18,3 +19,5 @@ export const IconInvestment: FC<App.IconProps> = ({ size, color, fill, className
     </svg>
   )
 }
+
+export default Investment

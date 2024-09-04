@@ -1,11 +1,7 @@
+import { IconType } from '@/types/iconType'
 import { FC } from 'react'
 
-export const IconCopyDatabase: FC<App.IconProps> = ({
-  size,
-  color,
-  fill,
-  className
-}) => {
+const CopyDatabase: FC<IconType> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -27,3 +23,5 @@ export const IconCopyDatabase: FC<App.IconProps> = ({
     </svg>
   )
 }
+
+export default CopyDatabase

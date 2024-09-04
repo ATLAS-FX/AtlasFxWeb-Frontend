@@ -1,8 +1,9 @@
+import { BankDepositType } from '@/types/DepositType'
 import { api } from './api'
 
 class BankDepositApi {
   public async getBankDepositInfo() {
-    const res = await api.post<App.BankDepositProps>('portal/deposit/info')
+    const res = await api.post<BankDepositType>('portal/deposit/info')
     return res.data
   }
 

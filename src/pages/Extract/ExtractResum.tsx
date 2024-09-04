@@ -3,6 +3,7 @@ import { IconCalendar, IconDoubleArrow } from '@/components/icons'
 import { ModalPrint } from '@/components/layout/Modal/ModaPrint'
 import { Separator } from '@/components/ui/separator'
 import { useAtlas } from '@/contexts/AtlasContext'
+import { RegisterPixType } from '@/types/userType'
 import { downloadPDF } from '@/utils/DownloadPdf'
 import { DateFormat, invertDate } from '@/utils/FormattedDate'
 import { formatedPrice } from '@/utils/FormattedPrice'
@@ -34,7 +35,7 @@ interface ExtractResumProps {
       lastDate: string
     }>
   >
-  data: Record<string, App.RegisterPixProps[]>
+  data: Record<string, RegisterPixType[]>
 }
 
 const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) => {

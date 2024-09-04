@@ -1,11 +1,7 @@
+import { IconType } from '@/types/iconType'
 import { FC } from 'react'
 
-export const IconExportPDF: FC<App.IconProps> = ({
-  size,
-  color,
-  fill,
-  className
-}) => {
+const ExportPDF: FC<IconType> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -43,3 +39,5 @@ export const IconExportPDF: FC<App.IconProps> = ({
     </svg>
   )
 }
+
+export default ExportPDF

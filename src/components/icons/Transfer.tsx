@@ -1,6 +1,7 @@
+import { IconType } from '@/types/iconType'
 import { FC } from 'react'
 
-export const IconTransfer: FC<App.IconProps> = ({ size, color, fill, className }) => {
+const Transfer: FC<IconType> = ({ size, color, fill, className }) => {
   return (
     <svg
       width={size}
@@ -42,3 +43,5 @@ export const IconTransfer: FC<App.IconProps> = ({ size, color, fill, className }
     </svg>
   )
 }
+
+export default Transfer

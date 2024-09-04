@@ -3,11 +3,12 @@ import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
+import { ContactsPixType } from '@/types/PixType'
 import { ChevronDown, Search } from 'lucide-react'
 import React, { useState } from 'react'
 
 interface IContact {
-  data: App.ContactsPixProps[]
+  data: ContactsPixType[]
 }
 
 const ListContact: React.FC<IContact> = ({ data }) => {

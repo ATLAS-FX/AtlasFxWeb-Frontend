@@ -1,12 +1,11 @@
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
-import { IconAddress } from '@/components/icons/Address'
-import { IconEmailCircle } from '@/components/icons/EmailCircle'
-import { IconMovingCar } from '@/components/icons/MovingCar'
+import { IconAddress, IconEmailCircle, IconMovingCar } from '@/components/icons'
 import { Separator } from '@/components/ui/separator'
+import { ProfileType } from '@/types/userType'
 import { Dispatch, SetStateAction } from 'react'
 
 interface IRegistratrionChange {
-  profile: App.ProfileProps | null
+  profile: ProfileType | null
   step: Dispatch<SetStateAction<number>>
 }
 

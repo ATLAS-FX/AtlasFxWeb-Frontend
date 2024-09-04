@@ -1,20 +1,19 @@
 import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { ButtonNext } from '@/components/Buttons/ButtonNext'
-import { IconClose } from '@/components/icons/Close'
-import { IconCopyPaste } from '@/components/icons/CopyPaste'
-import { IconShared } from '@/components/icons/Shared'
-import { IconTrash } from '@/components/icons/Trash'
+import { IconClose, IconCopyPaste, IconShared, IconTrash } from '@/components/icons'
 import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import PixApi from '@/services/PixApi'
+import { IconType } from '@/types/iconType'
+import { KeyPixType } from '@/types/PixType'
 import { handleCopyClick } from '@/utils/Copy&Paste'
 import { listPixButton } from '@/utils/PixListButtons'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 interface IListOfKeys {
-  listMyKeys: App.KeyPixProps[]
+  listMyKeys: KeyPixType[]
   refetch: () => {}
 }
 
@@ -24,7 +23,7 @@ const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<
     {
-      icon: React.FC<App.IconProps>
+      icon: React.FC<IconType>
       title: string | string
       id: string
       type: string

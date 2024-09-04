@@ -4,19 +4,13 @@ import CardHome from '@/components/layout/Card/CardHome'
 import { ChartConfig } from '@/components/ui/chart'
 import { Separator } from '@/components/ui/separator'
 import { useAtlas } from '@/contexts/AtlasContext'
+import { RegisterPixType } from '@/types/userType'
 import { formattedDate } from '@/utils/FormattedDate'
 import { formatedPrice } from '@/utils/FormattedPrice'
 import Chart from './Chart'
 
 const Home: React.FC = () => {
   const { user } = useAtlas()
-
-  const StyleTheme = {
-    backgroundImage: `url(${Robo})`,
-    backgroundSize: '25%',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'right 50px bottom -100px'
-  }
 
   const chartConfig = {
     desktop: {
@@ -29,24 +23,53 @@ const Home: React.FC = () => {
     }
   } satisfies ChartConfig
 
+  const calcTotalSendAmount = (
+    releases: RegisterPixType[],
+    number: number
+  ): number => {
+    return releases
+      .filter((item: { send: number }) => item.send === number)
+      .reduce(
+        (acc: { amount: number }, item: { amount: number }) => ({
+          amount: acc.amount + item.amount
+        }),
+        { amount: 0 }
+      ).amount
+  }
+
+  const calcTotalProfitAmount = (releases: RegisterPixType[]): number => {
+    return releases.reduce(
+      (acc: { amount: number }, item: { amount: number }) => ({
+        amount: acc.amount + item.amount
+      }),
+      { amount: 0 }
+    ).amount
+  }
+
   return (
-    <div className="flex h-[calc(100vh-164px)] flex-col gap-4 pt-5 text-xs">
+    <div className="flex h-[calc(100vh-10%)] flex-col justify-between gap-4 text-xs">
       <div className="flex flex-col gap-2">
-        <h4 className="text-lg text-colorPrimary-500">
+        <h4 className="pt-5 text-2xl text-colorPrimary-500">
           Olá, <span className="font-semibold">{user.name}</span>!
         </h4>
-        <p className="text-[#7F828C]">
+        <p className="text-base text-[#7F828C]">
           Gerencie e monitore as finanças da sua empresa aqui. Tudo em um lugar.
         </p>
       </div>
       <Separator className="my-3 w-full bg-[#7F828C33]" />
       <CardHome
-        imgBG={StyleTheme}
-        classes="bg-colorSecondary-500"
+        classes="bg-colorSecondary-500 z-10 mb-10"
         children={
-          <p className="w-5/12 text-3xl font-semibold text-colorPrimary-500">
-            {'O jeito fácil de gerenciar a sua empresa ;)'}
-          </p>
+          <div className="relative flex">
+            <p className="w-5/12 text-3xl font-semibold text-colorPrimary-500 xl:text-2xl">
+              {'O jeito fácil de gerenciar a sua empresa ;)'}
+            </p>
+            <img
+              className="absolute right-10 z-0 size-48 object-contain"
+              src={Robo}
+              alt="Robo_svg"
+            />
+          </div>
         }
       />
       <CardHome
@@ -54,15 +77,18 @@ const Home: React.FC = () => {
         classes="border-[1px] border-[#7F828C33]"
         children={
           <>
-            <p className=" absolute right-4 top-4 font-semibold text-[#7F828C]">
+            <p className="absolute right-4 top-4 font-semibold text-[#7F828C]">
               {formattedDate(new Date().toString())}
             </p>
             <h3 className="text-xl">
-              R$ <strong>{formatedPrice('0')}</strong>
+              R${' '}
+              <strong>
+                {formatedPrice(calcTotalProfitAmount(user.releases).toString())}
+              </strong>
             </h3>
             <div className="flex items-center justify-center">
               <Chart
-                classes="h-72"
+                classes="h-60 w-full p-2"
                 data={user.releases}
                 options={chartConfig}
                 dataKeyAxis={'created'}
@@ -85,7 +111,10 @@ const Home: React.FC = () => {
                 Entradas
               </h3>
               <h3 className="text-xl">
-                R$ <strong>{formatedPrice('0')}</strong>
+                R${' '}
+                <strong>
+                  {formatedPrice(calcTotalSendAmount(user.releases, 1).toString())}
+                </strong>
               </h3>
             </>
           }
@@ -102,7 +131,10 @@ const Home: React.FC = () => {
                 Saídas
               </h3>
               <h3 className="text-xl">
-                R$ <strong>{formatedPrice('0')}</strong>
+                R${' '}
+                <strong>
+                  {formatedPrice(calcTotalSendAmount(user.releases, 0).toString())}
+                </strong>
               </h3>
             </>
           }

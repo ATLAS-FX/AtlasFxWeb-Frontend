@@ -1,6 +1,7 @@
 import { AdminContainer } from '@/components/layout/Container'
 import { Title } from '@/components/layout/Text/Title'
 import { useAtlas } from '@/contexts/AtlasContext'
+import { RegisterPixType } from '@/types/userType'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ExtractResum from './ExtractResum'
@@ -31,7 +32,7 @@ const Extract: React.FC = () => {
     firstDate: '',
     lastDate: ''
   })
-  type GroupedTransactions = Record<string, App.RegisterPixProps[]>
+  type GroupedTransactions = Record<string, RegisterPixType[]>
 
   const groupedByDate = user.releases.reduce((acc, transaction) => {
     const dateA = new Date(transaction.created)
@@ -46,7 +47,7 @@ const Extract: React.FC = () => {
     return acc
   }, {} as GroupedTransactions)
 
-  const sumBySend = (data: Record<string, App.RegisterPixProps[]>) => {
+  const sumBySend = (data: Record<string, RegisterPixType[]>) => {
     return Object.values(data).reduce(
       (acc, group) => {
         group.forEach((release) => {
