@@ -1,13 +1,16 @@
-import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { IconAlert } from '@/components/icons'
-import TwoFactorAuthValidator from '@/components/layout/Input/TwoFactorAuthValidator'
-import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
+import {
+  ButtonNext,
+  ModalDefault,
+  TwoFactorAuthValidator
+} from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import PaymentApi from '@/services/PaymentApi'
 import { PaymentType } from '@/types/PaymentType'
-import { formattedDoc } from '@/utils/FormattedDoc'
+import { ErrorResponse } from '@/utils/ErrorResponse'
+import { formattedDoc } from '@/utils/GenerateFormatted'
 import md5 from 'md5'
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 
@@ -120,7 +123,7 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
       <div className="flex flex-col gap-2 p-2">
         <textarea
           className={cn(
-            'w-full rounded-xl border-2 border-colorPrimary-500 p-2 font-medium shadow-none',
+            'w-full rounded-xl border-2 border-primary-default p-2 font-medium shadow-none',
             flow.type === 'boleto' ? 'text-3xl' : 'text-2xl'
           )}
           maxLength={flow.type === 'boleto' ? 51 : 2000}
@@ -146,7 +149,7 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
         title="Para seguir, verifique e confirme as informações."
         body={
           <>
-            <Separator className="h-[2px] bg-colorPrimary-500" />
+            <Separator className="h-[2px] bg-primary-default" />
             <div className="flex items-center justify-between gap-2">
               <IconAlert className="w-56" />
               <h4 className="text-sm font-medium">
@@ -155,8 +158,8 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
                 revertido.
               </h4>
             </div>
-            <Separator className="h-[2px] bg-colorPrimary-500" />
-            <div className="flex flex-col gap-2 text-sm font-normal text-colorPrimary-500">
+            <Separator className="h-[2px] bg-primary-default" />
+            <div className="flex flex-col gap-2 text-sm font-normal text-primary-default">
               <div className="flex flex-col gap-1">
                 <label>
                   {flow.type === 'boleto' ? 'Código de barras: ' : 'Código do Pix'}
@@ -210,7 +213,7 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
                 </h4>
               </div>
             </div>
-            <Separator className="bg-colorPrimary-500" />
+            <Separator className="bg-primary-default" />
           </>
         }
         openModal={stateModalPayment}
@@ -224,7 +227,7 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
                 setStateModalPayment(!stateModalPayment)
                 setOpenModalPwd(!openModalPwd)
               }}
-              classPlus="w-full rounded-xl bg-[#C8D753] text-base font-bold text-colorPrimary-500 hover:bg-colorPrimary-500 hover:text-colorSecondary-500"
+              classPlus="w-full rounded-xl bg-[#C8D753] text-base font-bold text-primary-default hover:bg-primary-default hover:text-secondary-default"
             />
           </>
         }
@@ -237,9 +240,9 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
             <h4 className="text-sm font-semibold">
               Para seguir, insira sua senha de 6 dígitos.
             </h4>
-            <Separator className="bg-colorPrimary-500" />
+            <Separator className="bg-primary-default" />
             <TwoFactorAuthValidator
-              className="text-colorPrimary-500"
+              className="text-primary-default"
               codeLength={6}
               onValidCode={(code) =>
                 setFlow((prev) => ({
@@ -248,7 +251,7 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
                 }))
               }
             />
-            <Separator className="bg-colorPrimary-500" />
+            <Separator className="bg-primary-default" />
           </>
         }
         ArrayButton={

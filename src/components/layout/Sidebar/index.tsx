@@ -6,16 +6,19 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
+import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { checkoutItems } from './checkoutItems'
 
-export const Sidebar: React.FC = () => {
+const Sidebar: React.FC = () => {
   const { pathname } = useLocation()
+  const { signOut } = useAtlas()
+  const navigate = useNavigate()
 
   return (
-    <nav className="flex h-full flex-col justify-between gap-2 rounded-2xl bg-[#243060] px-2 py-6">
+    <nav className="flex h-[calc(100dvh-80px)] flex-col justify-between gap-2 rounded-2xl bg-[#243060] px-2 py-6">
       <div className="flex w-full items-center justify-center">
         <img className="w-20" src={Atlas_Logo} alt="logo atlas_fx" />
       </div>
@@ -38,7 +41,10 @@ export const Sidebar: React.FC = () => {
       <div className="flex justify-around">
         <TooltipProvider key={'logout'}>
           <Tooltip>
-            <TooltipTrigger className="flex size-5 items-center fill-[#EF4444] transition-all duration-200 ease-in-out hover:scale-125 hover:opacity-90">
+            <TooltipTrigger
+              className="flex size-5 items-center fill-[#EF4444] transition-all duration-200 ease-in-out hover:scale-125 hover:opacity-90"
+              onClick={signOut}
+            >
               <IconLogout />
             </TooltipTrigger>
             <TooltipContent>
@@ -48,7 +54,10 @@ export const Sidebar: React.FC = () => {
         </TooltipProvider>
         <TooltipProvider key={'perfil'}>
           <Tooltip>
-            <TooltipTrigger className="flex size-5 items-center rounded-full fill-[#EFEFEF80] transition-all duration-200 ease-in-out hover:scale-125">
+            <TooltipTrigger
+              className="flex size-5 items-center rounded-full fill-[#EFEFEF80] transition-all duration-200 ease-in-out hover:scale-125"
+              onClick={() => navigate('profile')}
+            >
               <IconUser />
             </TooltipTrigger>
             <TooltipContent>
@@ -60,3 +69,5 @@ export const Sidebar: React.FC = () => {
     </nav>
   )
 }
+
+export default Sidebar

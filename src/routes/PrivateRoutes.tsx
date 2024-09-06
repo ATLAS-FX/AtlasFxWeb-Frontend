@@ -1,5 +1,4 @@
-import { Aside } from '@/components/layout/Aside'
-import { Sidebar } from '@/components/layout/Sidebar'
+import { Aside, Sidebar } from '@/components/layout'
 import BankDeposit from '@/pages/BankDeposit'
 import Extract from '@/pages/Extract'
 import Home from '@/pages/Home'
@@ -18,7 +17,7 @@ import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
 
 export const PrivateRoutes: React.FC = () => {
   return (
-    <div className="grid h-screen w-screen grid-cols-[15%,50%,30%] items-start justify-between gap-6 overflow-x-hidden bg-[#EFEFEF] p-10">
+    <div className="grid h-screen w-screen grid-cols-[15%,50%,30%] items-start justify-between gap-4 overflow-hidden bg-[#EFEFEF] p-10">
       <Sidebar />
       <ReactRoutes>
         {/* welcome */}

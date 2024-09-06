@@ -1,26 +1,30 @@
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { ChevronLeft } from 'lucide-react'
+import { MoveLeft } from 'lucide-react'
 
 interface ITitle {
-  text: string
+  title: string
+  subtitle?: string
   back: () => void
 }
 
-export const Title: React.FC<ITitle> = ({ text, back }) => {
+const Title: React.FC<ITitle> = ({ title, subtitle, back }) => {
   return (
-    <>
-      <div className="flex items-center justify-start gap-1">
+    <div className="flex flex-col pt-4">
+      <div className="flex items-center justify-start gap-2">
         <Button
-          className="m-0 w-fit p-0 hover:bg-transparent hover:text-colorSecondary-500"
+          className="m-0 w-fit p-0 text-system-cinza transition-all duration-200 ease-in-out hover:scale-125 hover:bg-transparent hover:text-primary-hover"
           variant="ghost"
           onClick={back}
         >
-          <ChevronLeft size={28} strokeWidth={3} />
+          <MoveLeft size={18} />
         </Button>
-        <h1 className="text-shadow-3x font-Bills_Bold text-3xl uppercase">{text}</h1>
+        <h2 className="text-xl text-primary-default">{title}</h2>
       </div>
-      <Separator className="w-[52%] bg-colorSecondary-500" />
-    </>
+      <h3 className="mb-6 pl-6 text-sm text-system-cinza">{subtitle}</h3>
+      <Separator className="h-0.5 w-full bg-system-cinza/25" />
+    </div>
   )
 }
+
+export default Title

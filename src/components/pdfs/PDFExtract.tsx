@@ -2,9 +2,7 @@ import Atlas_Logo from '@/assets/atlas_logo.png'
 import PoppinsRegular from '@/assets/Poppins-Regular.ttf'
 import PoppinsSemi from '@/assets/Poppins-SemiBold.ttf'
 import { RegisterPixType } from '@/types/userType'
-import { invertDate } from '@/utils/FormattedDate'
-import { formattedDoc } from '@/utils/FormattedDoc'
-import { formatedPrice } from '@/utils/FormattedPrice'
+import { formatedPrice, formattedDoc, invertDate } from '@/utils/GenerateFormatted'
 import {
   Document,
   Font,
@@ -27,7 +25,7 @@ interface PdfExtractProps {
   endDate: string
 }
 
-export const PDFExtract: React.FC<PdfExtractProps> = ({
+const PDFExtract: React.FC<PdfExtractProps> = ({
   document,
   extrato,
   bankBalance,
@@ -256,3 +254,5 @@ export const PDFExtract: React.FC<PdfExtractProps> = ({
     </Document>
   )
 }
+
+export default PDFExtract

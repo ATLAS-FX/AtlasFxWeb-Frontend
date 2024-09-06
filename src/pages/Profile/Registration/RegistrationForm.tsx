@@ -1,11 +1,14 @@
-import { ButtonNext } from '@/components/Buttons/ButtonNext'
-import TwoFactorAuthValidator from '@/components/layout/Input/TwoFactorAuthValidator'
-import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
+import {
+  ButtonNext,
+  ModalDefault,
+  TwoFactorAuthValidator
+} from '@/components/layout'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import UserApi from '@/services/UserApi'
+import { ErrorResponse } from '@/utils/ErrorResponse'
 import md5 from 'md5'
 import { Dispatch, SetStateAction, useState } from 'react'
 
@@ -99,7 +102,7 @@ export const RegistrationForm: React.FC<IRegistrationForm> = ({
         {Object.keys(stateChangeAddress).map((key, index) => (
           <div
             key={index}
-            className='text-colorPrimary-500" flex items-center gap-2 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-sm font-medium'
+            className='text-primary-default" flex items-center gap-2 rounded-xl border-2 border-primary-default fill-primary-default px-2 py-1 text-sm font-medium'
           >
             <label
               className={cn(
@@ -137,13 +140,13 @@ export const RegistrationForm: React.FC<IRegistrationForm> = ({
               <h4 className="text-sm font-semibold">
                 Para seguir, insira sua senha de 6 dígitos.
               </h4>
-              <Separator className="bg-colorPrimary-500" />
+              <Separator className="bg-primary-default" />
               <TwoFactorAuthValidator
-                className="text-colorPrimary-500"
+                className="text-primary-default"
                 codeLength={6}
                 onValidCode={(code) => setPwdCode(code)}
               />
-              <Separator className="bg-colorPrimary-500" />
+              <Separator className="bg-primary-default" />
             </>
           }
           ArrayButton={

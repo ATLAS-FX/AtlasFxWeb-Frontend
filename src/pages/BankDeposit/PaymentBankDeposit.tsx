@@ -1,14 +1,12 @@
-import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
-import { PDFBoleto } from '@/components/PDFTypes/PDFBoleto'
-import { PDFQRCode } from '@/components/PDFTypes/PDFQRCode'
 import { IconCopyDatabase, IconExportPDF } from '@/components/icons'
+import { ButtonAtlas } from '@/components/layout'
+import { PDFBoleto, PDFQRCode } from '@/components/pdfs'
 import { Separator } from '@/components/ui/separator'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { handleCopyClick } from '@/utils/Copy&Paste'
 import { downloadPDF } from '@/utils/DownloadPdf'
-import { formattedDate } from '@/utils/FormattedDate'
-import { formatedPrice } from '@/utils/FormattedPrice'
 import { generateHash } from '@/utils/GenerateCode'
+import { formatedPrice, formattedDate } from '@/utils/GenerateFormatted'
 import QRCode from 'qrcode.react'
 
 interface StepBankDepositProps {
@@ -106,7 +104,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({
             Valor: R$ {amount}
           </h4>
           <div className="flex flex-row-reverse">
-            <Separator className="w-[52%] bg-colorSecondary-500" />
+            <Separator className="w-[52%] bg-secondary-default" />
           </div>
           <div className="flex flex-col gap-2 p-2">
             {listPaymentQrCodeActions.map(({ title, icon: Icon, func }, number) => (
@@ -118,7 +116,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({
       {type === 'bar' && (
         <>
           <h4 className="text-lg">Número do código de barras:</h4>
-          <div className='text-colorPrimary-500" flex w-full items-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium'>
+          <div className='text-primary-default" flex w-full items-center gap-1 rounded-xl border-2 border-primary-default fill-primary-default px-2 py-1 text-lg font-medium'>
             <h4 className="text-3xl">{barcode}</h4>
           </div>
           <h4 className="text-lg font-medium">
@@ -126,19 +124,19 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({
             CIP e reconhecido pelos demais bancos.
           </h4>
           <div className="flex flex-row-reverse">
-            <Separator className="w-[52%] bg-colorSecondary-500" />
+            <Separator className="w-[52%] bg-secondary-default" />
           </div>
           <div className="flex flex-col gap-2 p-2">
             {listPaymentBarCodeActions.map(({ title, icon: Icon, func }, number) => (
               <ButtonAtlas key={number} title={title} icon={Icon} click={func} />
             ))}
           </div>
-          <Separator className="w-[52%] bg-colorSecondary-500" />
+          <Separator className="w-[52%] bg-secondary-default" />
           <h4 className="px-8 text-2xl font-semibold">
             Após o pagamento, o saldo é liberado em até 3 dias úteis.
           </h4>
           <div className="flex flex-row-reverse">
-            <Separator className="w-[52%] bg-colorSecondary-500" />
+            <Separator className="w-[52%] bg-secondary-default" />
           </div>
         </>
       )}

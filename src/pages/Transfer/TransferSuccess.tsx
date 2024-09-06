@@ -1,13 +1,14 @@
 import RoboSucess from '@/assets/robo.png'
-import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
-import { PDFBoleto } from '@/components/PDFTypes/PDFBoleto'
-import { PDFPix } from '@/components/PDFTypes/PDFPix'
+import { ButtonAtlas } from '@/components/layout'
+import { PDFBoleto, PDFPix } from '@/components/pdfs'
 import { Separator } from '@/components/ui/separator'
 import { downloadPDF } from '@/utils/DownloadPdf'
-import { formattedDate } from '@/utils/FormattedDate'
-import { formattedDoc } from '@/utils/FormattedDoc'
-import { formatedPrice } from '@/utils/FormattedPrice'
 import { generateHash } from '@/utils/GenerateCode'
+import {
+  formatedPrice,
+  formattedDate,
+  formattedDoc
+} from '@/utils/GenerateFormatted'
 import { CircleCheck } from 'lucide-react'
 
 interface ITransferSuccess {
@@ -92,7 +93,7 @@ const TransferSuccess: React.FC<ITransferSuccess> = ({
           <h4 className="text-2xl font-bold">{document}</h4>
         </div>
       </div>
-      <Separator className="bg-colorPrimary-500" />
+      <Separator className="bg-primary-default" />
       <div className="flex items-center gap-2 font-medium">
         <label>ID da transação:</label>
         <h4 className="text-base font-semibold">{idTransaction}</h4>
@@ -103,7 +104,7 @@ const TransferSuccess: React.FC<ITransferSuccess> = ({
           {formattedDate(new Date().toString())}
         </h4>
       </div>
-      <Separator className="bg-colorPrimary-500" />
+      <Separator className="bg-primary-default" />
       <ButtonAtlas
         title="Baixa comprovante em PDF"
         classButton="w-fit px-4 text-bold"

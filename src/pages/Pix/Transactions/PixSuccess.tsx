@@ -1,12 +1,11 @@
 import RoboSucess from '@/assets/robo.png'
-import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
-import { PDFPix } from '@/components/PDFTypes/PDFPix'
+import { ButtonAtlas } from '@/components/layout'
+import { PDFPix } from '@/components/pdfs'
 import { Separator } from '@/components/ui/separator'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { downloadPDF } from '@/utils/DownloadPdf'
-import { formattedDate } from '@/utils/FormattedDate'
-import { formatedPrice } from '@/utils/FormattedPrice'
 import { generateHash } from '@/utils/GenerateCode'
+import { formatedPrice, formattedDate } from '@/utils/GenerateFormatted'
 import { CircleCheck } from 'lucide-react'
 
 interface IPixSuccess {
@@ -78,7 +77,7 @@ const PixSuccess: React.FC<IPixSuccess> = ({
           <h4 className="text-base font-semibold">{account}</h4>
         </div>
       </div>
-      <Separator className="bg-colorPrimary-500" />
+      <Separator className="bg-primary-default" />
       <div className="flex items-center gap-2 font-medium">
         <label>ID da transação:</label>
         <h4 className="text-base font-semibold">{idTransaction}</h4>
@@ -87,7 +86,7 @@ const PixSuccess: React.FC<IPixSuccess> = ({
         <label>Data e hora da transação:</label>
         <h4 className="text-base font-semibold">{time}</h4>
       </div>
-      <Separator className="bg-colorPrimary-500" />
+      <Separator className="bg-primary-default" />
       <ButtonAtlas
         title="Baixa comprovante em PDF"
         classButton="w-fit px-4 text-bold"

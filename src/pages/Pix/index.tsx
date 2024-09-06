@@ -1,7 +1,5 @@
-import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { IconDepositCoin, IconGroupUser, IconKey } from '@/components/icons'
-import { AdminContainer } from '@/components/layout/Container'
-import { Title } from '@/components/layout/Text/Title'
+import { ButtonAtlas, Container, Title } from '@/components/layout'
 import {
   Accordion,
   AccordionContent,
@@ -37,8 +35,8 @@ const Pix: React.FC = () => {
   ]
 
   return (
-    <AdminContainer>
-      <Title text="Área Pix" back={() => navigate(-1)} />
+    <Container>
+      <Title title="Área Pix" back={() => navigate(-1)} />
       <div className="flex flex-col gap-2">
         <h4 className="text-lg font-bold">Enviar Pix</h4>
         <p className="text-sm font-medium">
@@ -47,7 +45,7 @@ const Pix: React.FC = () => {
         <div className="flex w-full items-center justify-evenly gap-2 py-4">
           {listPixButton.map(({ type, name, icon: Icon }, number) => (
             <Link
-              className="flex h-20 w-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-colorPrimary-500 bg-transparent fill-colorPrimary-500 text-colorPrimary-500 shadow-md shadow-slate-400 drop-shadow-md transition-all duration-300 ease-out hover:bg-colorPrimary-500 hover:fill-white hover:text-white"
+              className="flex h-20 w-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-primary-default bg-transparent fill-primary-default text-primary-default shadow-md shadow-slate-400 drop-shadow-md transition-all duration-300 ease-out hover:bg-primary-default hover:fill-white hover:text-white"
               key={`${type + number}`}
               onClick={() => type === 'copy-paste' && setPixCopyPaste(true)}
               to={type === 'copy-paste' ? `/payments` : `/pix/${type}`}
@@ -59,7 +57,7 @@ const Pix: React.FC = () => {
         </div>
       </div>
       <div className="flex flex-row-reverse">
-        <Separator className="w-[52%] bg-colorSecondary-500" />
+        <Separator className="w-[52%] bg-secondary-default" />
       </div>
       <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
         <AccordionItem value="item-1" className="border-0">
@@ -101,7 +99,7 @@ const Pix: React.FC = () => {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-    </AdminContainer>
+    </Container>
   )
 }
 

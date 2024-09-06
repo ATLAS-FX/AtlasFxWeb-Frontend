@@ -1,5 +1,5 @@
-import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { IconAddress, IconEmailCircle, IconMovingCar } from '@/components/icons'
+import { ButtonAtlas } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 import { ProfileType } from '@/types/userType'
 import { Dispatch, SetStateAction } from 'react'
@@ -23,16 +23,16 @@ export const RegistratrionChange: React.FC<IRegistratrionChange> = ({
         </h4>
       </div>
       <div className="flex flex-row-reverse">
-        <Separator className="w-[52%] bg-colorSecondary-500" />
+        <Separator className="w-[52%] bg-secondary-default" />
       </div>
       <div className="flex items-center justify-around">
         <div className="flex flex-col gap-4">
           <h2 className="flex items-center gap-2 text-sm">
-            <IconEmailCircle className="w-6 fill-colorPrimary-500" />
+            <IconEmailCircle className="w-6 fill-primary-default" />
             {profile?.email}
           </h2>
           <h2 className="flex items-start gap-2 text-sm">
-            <IconAddress className="w-6 fill-colorPrimary-500" />
+            <IconAddress className="w-6 fill-primary-default" />
             <div>
               <p>
                 {profile?.street}, n. {profile?.number}
@@ -51,7 +51,7 @@ export const RegistratrionChange: React.FC<IRegistratrionChange> = ({
           classButton="w-5/12"
         />
       </div>
-      <Separator className="w-[52%] bg-colorSecondary-500" />
+      <Separator className="w-[52%] bg-secondary-default" />
       <div className="flex flex-col gap-2">
         <h4 className="text-sm font-semibold">
           Canal de Comunicação com os titulares de dados pessoais

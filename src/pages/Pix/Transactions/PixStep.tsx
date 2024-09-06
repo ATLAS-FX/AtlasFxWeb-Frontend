@@ -1,16 +1,13 @@
-import { ButtonNext } from '@/components/Buttons/ButtonNext'
-import { AdminContainer } from '@/components/layout/Container'
-import MaskedInput from '@/components/layout/Input/MaskedInput'
-import { Title } from '@/components/layout/Text/Title'
+import { ButtonNext, Container, MaskedInput, Title } from '@/components/layout'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import PixApi from '@/services/PixApi'
 import { PixType } from '@/types/PixType'
-import { formattedDate } from '@/utils/FormattedDate'
-import { formattedDoc } from '@/utils/FormattedDoc'
+import { ErrorResponse } from '@/utils/ErrorResponse'
 import { generateHash } from '@/utils/GenerateCode'
+import { formattedDate, formattedDoc } from '@/utils/GenerateFormatted'
 import { ListMask } from '@/utils/ListMask'
 import { ChangeEvent, useCallback, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -59,10 +56,10 @@ const PixStep: React.FC = () => {
   }
 
   return (
-    <AdminContainer>
+    <Container>
       {stepPix < 2 && (
         <div className="flex flex-col gap-4">
-          <Title text="Enviar Pix" back={() => navigate(-1)} />
+          <Title title="Enviar Pix" back={() => navigate(-1)} />
           {id !== 'copy-paste' ? (
             <>
               <label className="text-base font-medium">
@@ -73,7 +70,7 @@ const PixStep: React.FC = () => {
                   <MaskedInput
                     className={cn(
                       'flex h-12 w-full items-center gap-2 rounded-xl border-2 p-2 px-2 py-1 text-lg font-semibold shadow-none transition-transform duration-300',
-                      stepPix > 0 ? 'border-[#008000]' : 'border-colorPrimary-500'
+                      stepPix > 0 ? 'border-[#008000]' : 'border-primary-default'
                     )}
                     key={`${key + number}`}
                     mask={mask || ''}
@@ -92,7 +89,7 @@ const PixStep: React.FC = () => {
               <Input
                 className={cn(
                   'flex h-12 w-full  items-center gap-2 rounded-xl border-2 p-2 px-2 py-1 text-lg font-semibold shadow-none transition-transform duration-300',
-                  stepPix > 0 ? 'border-[#008000]' : 'border-colorPrimary-500'
+                  stepPix > 0 ? 'border-[#008000]' : 'border-primary-default'
                 )}
                 placeholder=""
                 value={getKeyInput}
@@ -111,7 +108,7 @@ const PixStep: React.FC = () => {
             />
           </div>
           <div className={cn('flex', stepPix > 0 ? 'flex-row' : 'flex-row-reverse')}>
-            <Separator className="w-[72%] bg-colorSecondary-500" />
+            <Separator className="w-[72%] bg-secondary-default" />
           </div>
         </div>
       )}
@@ -159,7 +156,7 @@ const PixStep: React.FC = () => {
           amount={getAmountForm}
         />
       )}
-    </AdminContainer>
+    </Container>
   )
 }
 

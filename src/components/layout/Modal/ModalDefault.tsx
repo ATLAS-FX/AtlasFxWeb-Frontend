@@ -15,7 +15,7 @@ interface ModalDeleteProps {
   ArrayButton: ReactNode
 }
 
-export const ModalDefault: React.FC<ModalDeleteProps> = ({
+const ModalDefault: React.FC<ModalDeleteProps> = ({
   openModal,
   setOpenModal,
   title,
@@ -38,3 +38,5 @@ export const ModalDefault: React.FC<ModalDeleteProps> = ({
     </Dialog>
   )
 }
+
+export default ModalDefault

@@ -12,15 +12,11 @@ interface ICardForLogin {
   footer: React.ReactNode
 }
 
-export const CardForLogin: React.FC<ICardForLogin> = ({
-  title,
-  content,
-  footer
-}) => {
+const CardForLogin: React.FC<ICardForLogin> = ({ title, content, footer }) => {
   return (
     <Card className="flex max-w-[824px] flex-col items-center rounded-2xl bg-white px-4 py-2 shadow-md transition-all">
       <CardHeader>
-        <CardTitle className="flex justify-between text-lg text-colorPrimary-500">
+        <CardTitle className="flex justify-between text-lg text-primary-default">
           {title}
         </CardTitle>
       </CardHeader>
@@ -29,3 +25,5 @@ export const CardForLogin: React.FC<ICardForLogin> = ({
     </Card>
   )
 }
+
+export default CardForLogin

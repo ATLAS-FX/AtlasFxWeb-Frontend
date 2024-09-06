@@ -1,12 +1,11 @@
-import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
-import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { IconMovingCar } from '@/components/icons'
-import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
+import { ButtonAtlas, ButtonNext, ModalDefault } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import UserApi from '@/services/UserApi'
+import { ErrorResponse } from '@/utils/ErrorResponse'
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 
 interface IRegistrationCode {
@@ -78,9 +77,9 @@ export const RegistratrionCode: React.FC<IRegistrationCode> = ({
         </h4>
       </div>
       <div className="flex flex-row-reverse">
-        <Separator className="w-[52%] bg-colorSecondary-500" />
+        <Separator className="w-[52%] bg-secondary-default" />
       </div>
-      <div className="flex flex-col gap-4 text-base text-colorPrimary-500">
+      <div className="flex flex-col gap-4 text-base text-primary-default">
         <p>
           Para evitar fraudes, enviaremos um código para seu e-mail cadastrado.
           Insira-o para prosseguir com a alteração de seu endereço de cadastro.
@@ -97,7 +96,7 @@ export const RegistratrionCode: React.FC<IRegistrationCode> = ({
             <>
               <h4>Digite o código de verificação enviado em seu e-mail</h4>
               <Input
-                className="text-xl font-semibold text-colorPrimary-500"
+                className="text-xl font-semibold text-primary-default"
                 value={code || ''}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setCode(e.target.value)

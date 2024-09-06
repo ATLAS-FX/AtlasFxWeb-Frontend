@@ -1,6 +1,6 @@
 import { IconDoubleArrow } from '@/components/icons'
 import { RegisterPixType } from '@/types/userType'
-import { formatedPrice } from '@/utils/FormattedPrice'
+import { formatedPrice } from '@/utils/GenerateFormatted'
 import { ChevronRight } from 'lucide-react'
 
 export const Movements: React.FC<RegisterPixType> = ({
@@ -44,7 +44,7 @@ export const Movements: React.FC<RegisterPixType> = ({
   return (
     <div
       id={id.toString()}
-      className="grid grid-cols-[1rem,auto,auto,1rem] items-center gap-1 border-b-[2px] border-slate-300 py-2 text-colorPrimary-500 last:border-b-0"
+      className="grid grid-cols-[1rem,auto,auto,1rem] items-center gap-1 border-b-[2px] border-slate-300 py-2 text-primary-default last:border-b-0"
     >
       <IconDoubleArrow size={12} className="scale-x-[-1] transform fill-[#EF4444]" />
       <div className="flex flex-col items-start justify-center gap-1 text-sm">
@@ -54,7 +54,7 @@ export const Movements: React.FC<RegisterPixType> = ({
           </h2>
         ) : (
           <h2 className="flex items-center justify-start gap-1 font-semibold capitalize">
-            <IconDoubleArrow className="fill-colorSecondary-500" size={12} />
+            <IconDoubleArrow className="fill-secondary-default" size={12} />
             {method} Recebido
           </h2>
         )}
@@ -77,7 +77,7 @@ export const Movements: React.FC<RegisterPixType> = ({
           <TooltipTrigger onClick={handleDownloadPDF}>
             <IconPDFDownload size={32} className="fill-white" />
           </TooltipTrigger>
-          <TooltipContent className="rounded-md bg-colorPrimary-500 p-2 text-sm font-normal text-white">
+          <TooltipContent className="rounded-md bg-primary-default p-2 text-sm font-normal text-white">
             Baixar extrato em PDF
           </TooltipContent>
         </Tooltip>

@@ -4,13 +4,13 @@ import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import UserApi from '@/services/UserApi'
 import { UserType } from '@/types/userType'
-import { formatedHideValue, formatedPrice } from '@/utils/FormattedPrice'
+import { formatedHideValue, formatedPrice } from '@/utils/GenerateFormatted'
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { BlockPad } from './BlockPad'
 import { Movements } from './Movements'
 
-export const Aside: React.FC = () => {
+const Aside: React.FC = () => {
   const { user, setUser } = useAtlas()
   const [hideValue, setHideValue] = useState<boolean>(false)
 
@@ -44,10 +44,10 @@ export const Aside: React.FC = () => {
       {isLoading ? (
         <Skeleton className="h-[70vh] w-full rounded-lg" />
       ) : (
-        <div className="flex h-[calc(100vh-10%)] flex-col overflow-y-auto overflow-x-hidden rounded-2xl bg-[#DDE2F0] px-4 pt-4">
+        <div className="flex h-[calc(100dvh-80px)] flex-col rounded-2xl bg-[#DDE2F0] pt-4">
           <ul>
             <BlockPad
-              className="rounded-2xl bg-colorPrimary-500"
+              className="mx-4 rounded-2xl bg-primary-default"
               children={
                 <div className="flex w-full items-center justify-between">
                   <div className="flex flex-col justify-center gap-2 text-white">
@@ -72,15 +72,15 @@ export const Aside: React.FC = () => {
               }
             />
             <BlockPad
-              className=""
+              className="p-0"
               children={
                 <>
                   {user.releases.length >= 1 ? (
                     <ul>
-                      <h2 className="py-2 text-start font-semibold text-colorPrimary-500">
+                      <h2 className="py-2 pl-6 text-start font-semibold text-primary-default">
                         Últimos Lançamentos:
                       </h2>
-                      <li>
+                      <li className="h-[calc(100dvh-280px)] overflow-y-auto overflow-x-hidden px-6">
                         {user.releases
                           .sort(
                             (a, b) => Date.parse(b.created) - Date.parse(a.created)
@@ -105,7 +105,7 @@ export const Aside: React.FC = () => {
                       </li>
                     </ul>
                   ) : (
-                    <h2 className="py-1 text-end font-semibold text-colorSecondary-500">
+                    <h2 className="py-1 text-end font-semibold text-secondary-default">
                       Não há lançamentos
                     </h2>
                   )}
@@ -118,3 +118,5 @@ export const Aside: React.FC = () => {
     </>
   )
 }
+
+export default Aside

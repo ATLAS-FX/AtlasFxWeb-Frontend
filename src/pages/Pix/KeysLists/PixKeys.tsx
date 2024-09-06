@@ -1,5 +1,4 @@
-import { AdminContainer } from '@/components/layout/Container'
-import { Title } from '@/components/layout/Text/Title'
+import { Container, Title } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -44,18 +43,18 @@ const PixKeys: React.FC = () => {
       {isLoading ? (
         <Skeleton className="h-[calc(100vh-164px)] w-full rounded-lg" />
       ) : (
-        <AdminContainer>
-          <Title text="Minhas Chaves Pix" back={() => navigate(-1)} />
+        <Container>
+          <Title title="Minhas Chaves Pix" back={() => navigate(-1)} />
           {stepKeyPix === 0 && (
             <>
               <Button
                 onClick={() => setStepKeyPix(1)}
-                className="my-2 h-10 rounded-xl border-2 border-colorPrimary-500 bg-transparent text-lg font-semibold text-colorPrimary-500 transition-transform duration-300 hover:bg-colorPrimary-500 hover:text-white"
+                className="my-2 h-10 rounded-xl border-2 border-primary-default bg-transparent text-lg font-semibold text-primary-default transition-transform duration-300 hover:bg-primary-default hover:text-white"
               >
                 Criar nova chave Pix
               </Button>
               <div className="flex flex-row-reverse">
-                <Separator className="w-[52%] bg-colorSecondary-500" />
+                <Separator className="w-[52%] bg-secondary-default" />
               </div>
               <ListOfKeys
                 refetch={refetch}
@@ -65,7 +64,7 @@ const PixKeys: React.FC = () => {
           )}
           {stepKeyPix === 1 && <CreatePix refetch={refetch} step={setStepKeyPix} />}
           {stepKeyPix === 2 && <KeyPixSuccess step={setStepKeyPix} />}
-        </AdminContainer>
+        </Container>
       )}
     </>
   )

@@ -1,13 +1,15 @@
 import React, { ReactNode } from 'react'
 
-interface IAdminContainer {
+interface IContainer {
   children: ReactNode
 }
 
-export const AdminContainer: React.FC<IAdminContainer> = ({ children }) => {
+const Container: React.FC<IContainer> = ({ children }) => {
   return (
-    <div className="flex min-h-[calc(100vh-164px)] flex-col gap-4 rounded-2xl bg-white p-8 text-sm font-light text-colorPrimary-500 xl:text-xs">
+    <div className="relative flex h-[calc(100dvh-80px)] flex-col gap-4 overflow-y-auto overflow-x-hidden px-4">
       {children}
     </div>
   )
 }
+
+export default Container

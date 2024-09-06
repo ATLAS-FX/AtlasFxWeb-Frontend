@@ -1,5 +1,4 @@
-import { AdminContainer } from '@/components/layout/Container'
-import { Title } from '@/components/layout/Text/Title'
+import { Container, Title } from '@/components/layout'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import PixApi from '@/services/PixApi'
@@ -42,10 +41,10 @@ const PixContacts: React.FC = () => {
       {isLoading ? (
         <Skeleton className="h-[calc(100vh-164px)] w-full rounded-lg" />
       ) : (
-        <AdminContainer>
-          <Title text="Meus Contatos Salvos" back={() => navigate(-1)} />
+        <Container>
+          <Title title="Meus Contatos Salvos" back={() => navigate(-1)} />
           <ListContact data={data} />
-        </AdminContainer>
+        </Container>
       )}
     </>
   )

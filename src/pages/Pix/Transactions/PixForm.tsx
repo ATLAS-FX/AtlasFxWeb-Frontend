@@ -1,7 +1,9 @@
-import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { IconAlert } from '@/components/icons'
-import TwoFactorAuthValidator from '@/components/layout/Input/TwoFactorAuthValidator'
-import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
+import {
+  ButtonNext,
+  ModalDefault,
+  TwoFactorAuthValidator
+} from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
@@ -9,8 +11,8 @@ import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
 import PixApi from '@/services/PixApi'
-import { formattedDoc } from '@/utils/FormattedDoc'
-import { formatedPrice } from '@/utils/FormattedPrice'
+import { ErrorResponse } from '@/utils/ErrorResponse'
+import { formatedPrice, formattedDoc } from '@/utils/GenerateFormatted'
 import md5 from 'md5'
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 
@@ -90,7 +92,7 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
         </h1>
         <div
           className={cn(
-            'flex w-full items-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium text-colorPrimary-500',
+            'flex w-full items-center gap-1 rounded-xl border-2 border-primary-default fill-primary-default px-2 py-1 text-lg font-medium text-primary-default',
             Number(formSendPix.amount.replace(/\D/g, '')) > Number(user.amount) &&
               'border-2 border-red-600'
           )}
@@ -120,7 +122,7 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
           Gostaria de adicionar alguma informação no comprovante?
         </h4>
         <textarea
-          className="w-full rounded-xl border-2 border-colorPrimary-500 p-2 text-base font-medium shadow-none"
+          className="w-full rounded-xl border-2 border-primary-default p-2 text-base font-medium shadow-none"
           style={{ resize: 'none' }}
           rows={5}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
@@ -142,7 +144,7 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
         title="Para seguir, verifique e confirme as informações."
         body={
           <>
-            <Separator className="bg-colorPrimary-500" />
+            <Separator className="bg-primary-default" />
             <div className="flex items-center justify-between gap-2">
               <IconAlert className="w-32" />
               <h4 className="text-xs">
@@ -151,7 +153,7 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
                 revertido.
               </h4>
             </div>
-            <Separator className="bg-colorPrimary-500" />
+            <Separator className="bg-primary-default" />
             <div className="text-sm font-normal">
               <div className="flex items-center gap-2">
                 <label>Para:</label>
@@ -174,7 +176,7 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
               </h4>
               <label>Data: {new Date().toLocaleDateString()}</label>
             </div>
-            <Separator className="bg-colorPrimary-500" />
+            <Separator className="bg-primary-default" />
           </>
         }
         openModal={stateModalPix}
@@ -202,13 +204,13 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
             <h4 className="text-sm font-semibold">
               Para seguir, insira sua senha de 6 dígitos.
             </h4>
-            <Separator className="bg-colorPrimary-500" />
+            <Separator className="bg-primary-default" />
             <TwoFactorAuthValidator
-              className="text-colorPrimary-500"
+              className="text-primary-default"
               codeLength={6}
               onValidCode={(code) => setPwdCode(code)}
             />
-            <Separator className="bg-colorPrimary-500" />
+            <Separator className="bg-primary-default" />
           </>
         }
         ArrayButton={

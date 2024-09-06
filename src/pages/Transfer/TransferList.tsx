@@ -1,5 +1,5 @@
+import { ModalDefault } from '@/components/layout'
 import Contact from '@/components/layout/Contact'
-import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import {
   Accordion,
   AccordionContent,

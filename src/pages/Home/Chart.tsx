@@ -1,7 +1,3 @@
-'use client'
-
-import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
-
 import {
   ChartConfig,
   ChartContainer,
@@ -9,6 +5,7 @@ import {
   ChartTooltipContent
 } from '@/components/ui/chart'
 import { cn } from '@/lib/utils'
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 
 interface ChartProps {
   classes?: string

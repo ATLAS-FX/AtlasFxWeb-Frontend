@@ -1,7 +1,5 @@
-import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { IconBarCode, IconPix } from '@/components/icons'
-import { AdminContainer } from '@/components/layout/Container'
-import { Title } from '@/components/layout/Text/Title'
+import { ButtonAtlas, Container, Title } from '@/components/layout'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { PaymentType } from '@/types/PaymentType'
 import { useState } from 'react'
@@ -50,9 +48,9 @@ const Payments: React.FC = () => {
   ]
 
   return (
-    <AdminContainer>
+    <Container>
       <Title
-        text="Pagamentos"
+        title="Pagamentos"
         back={() =>
           pixCopyPaste
             ? setPixCopyPaste(false)
@@ -102,7 +100,7 @@ const Payments: React.FC = () => {
           time={''}
         />
       )}
-    </AdminContainer>
+    </Container>
   )
 }
 

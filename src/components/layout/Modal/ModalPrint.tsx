@@ -9,7 +9,7 @@ interface ModalPrintProps {
   ArrayButton: ReactNode
 }
 
-export const ModalPrint: React.FC<ModalPrintProps> = ({
+const ModalPrint: React.FC<ModalPrintProps> = ({
   openModal,
   setOpenModal,
   body,
@@ -26,3 +26,5 @@ export const ModalPrint: React.FC<ModalPrintProps> = ({
     </Dialog>
   )
 }
+
+export default ModalPrint

@@ -35,17 +35,22 @@ module.exports = {
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
-        colorPrimary: {
-          500: '#253161'
-        },
-        colorSecondary: {
-          500: '#C8D753'
+        system: {
+          neutro: '#EFEFEF',
+          light: '#EFEFEF80',
+          cinza: '#7F828C',
+          red: '#EF4444',
+          green: '#10B981'
         },
         primary: {
+          default: '#243060',
+          hover: '#161d3b',
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))'
         },
         secondary: {
+          default: '#C8D753',
+          hover: '#b7c82f',
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))'
         },

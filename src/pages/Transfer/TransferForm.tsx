@@ -1,5 +1,4 @@
-import { ButtonNext } from '@/components/Buttons/ButtonNext'
-import MaskedInput from '@/components/layout/Input/MaskedInput'
+import { ButtonNext, MaskedInput } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -137,7 +136,7 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className="w-full rounded-xl border-[1px] border-colorPrimary-500 bg-transparent px-4 py-6 text-start text-base font-medium"
+              className="w-full rounded-xl border-[1px] border-primary-default bg-transparent px-4 py-6 text-start text-base font-medium"
             >
               {isLoading
                 ? 'Carregando lista de bancos'
@@ -155,7 +154,7 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
                   {listBanks.map(({ name }, number: number) => (
                     <CommandItem
                       key={`${name ? name + number : number}`}
-                      className="w-full rounded-none border-b-2 border-colorSecondary-500 py-4"
+                      className="w-full rounded-none border-b-2 border-secondary-default py-4"
                       value={name}
                       onSelect={(e) => {
                         setForm((prev) => ({
@@ -181,7 +180,7 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
         </Popover>
         <div className="flex w-full items-center justify-between gap-4">
           <MaskedInput
-            className="h-12 w-4/12 rounded-xl border-[1px] border-colorPrimary-500 px-4 text-base font-medium"
+            className="h-12 w-4/12 rounded-xl border-[1px] border-primary-default px-4 text-base font-medium"
             mask={'999999'}
             placeholder="Agência"
             value={form.agency}
@@ -193,7 +192,7 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
             }
           />
           <MaskedInput
-            className="h-12 w-8/12 rounded-xl border-[1px] border-colorPrimary-500 px-4 text-base font-medium"
+            className="h-12 w-8/12 rounded-xl border-[1px] border-primary-default px-4 text-base font-medium"
             mask={'9999999-9'}
             placeholder="Conta"
             value={form.account}
@@ -213,7 +212,7 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
             }))
           }
         >
-          <SelectTrigger className="rounded-xl border-colorPrimary-500 p-6 text-base font-medium">
+          <SelectTrigger className="rounded-xl border-primary-default p-6 text-base font-medium">
             <SelectValue placeholder="Tipo de conta" />
           </SelectTrigger>
           <SelectContent>
@@ -227,14 +226,14 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
                   >
                     {item.title}
                   </SelectItem>
-                  <Separator className="bg-colorSecondary-500" />
+                  <Separator className="bg-secondary-default" />
                 </>
               ))}
             </SelectGroup>
           </SelectContent>
         </Select>
         <Input
-          className="rounded-xl border-colorPrimary-500 p-6 text-base font-medium"
+          className="rounded-xl border-primary-default p-6 text-base font-medium"
           placeholder="Nome completo ou razão social do titular"
           type="text"
           min={0}
@@ -255,7 +254,7 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
               }))
             }
           >
-            <SelectTrigger className="h-12 w-4/12 rounded-xl border-colorPrimary-500 px-4 text-base font-medium">
+            <SelectTrigger className="h-12 w-4/12 rounded-xl border-primary-default px-4 text-base font-medium">
               <SelectValue placeholder="Documento" />
             </SelectTrigger>
             <SelectContent>
@@ -269,7 +268,7 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
             </SelectContent>
           </Select>
           <MaskedInput
-            className="h-12 w-8/12 rounded-xl border-[1px] border-colorPrimary-500 px-4 text-base font-medium"
+            className="h-12 w-8/12 rounded-xl border-[1px] border-primary-default px-4 text-base font-medium"
             mask={ListMask.find((e) => e.key === form.docType)?.mask || ''}
             placeholder="Número do documento"
             value={form.doc}
@@ -283,7 +282,7 @@ const TransferForm: React.FC<TransferFormProps> = ({ form, setForm }) => {
         </div>
       </div>
       <div className="flex">
-        <Separator className="w-[52%] bg-colorSecondary-500" />
+        <Separator className="w-[52%] bg-secondary-default" />
       </div>
       <div className="mt-1 flex justify-end">
         <ButtonNext

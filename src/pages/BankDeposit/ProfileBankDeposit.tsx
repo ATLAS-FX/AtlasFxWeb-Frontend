@@ -1,12 +1,12 @@
-import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
-import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { IconCopyDatabase, IconQRCode, IconTicket } from '@/components/icons'
+import { ButtonAtlas, ButtonNext } from '@/components/layout'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import BankDepositApi from '@/services/BankDepositApi'
 import { handleCopyClick } from '@/utils/Copy&Paste'
-import { formatedPrice } from '@/utils/FormattedPrice'
+import { ErrorResponse } from '@/utils/ErrorResponse'
+import { formatedPrice } from '@/utils/GenerateFormatted'
 import { ChangeEvent, Dispatch, SetStateAction } from 'react'
 
 interface ProfileBankDepositProps {
@@ -147,7 +147,7 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
         </div>
       </div>
       <div className="flex flex-row-reverse">
-        <Separator className="w-[52%] bg-colorSecondary-500" />
+        <Separator className="w-[52%] bg-secondary-default" />
       </div>
       {state.selectPayment === 0 && (
         <>
@@ -162,7 +162,7 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
         <>
           <div className="flex items-center gap-2">
             <div className="w-4/12 font-Bills_Bold text-2xl">Define o valor</div>
-            <div className='text-colorPrimary-500" flex w-full items-center gap-1 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-lg font-medium'>
+            <div className='text-primary-default" flex w-full items-center gap-1 rounded-xl border-2 border-primary-default fill-primary-default px-2 py-1 text-lg font-medium'>
               <label>R$</label>
               <Input
                 className="border-none p-0 text-lg shadow-none"

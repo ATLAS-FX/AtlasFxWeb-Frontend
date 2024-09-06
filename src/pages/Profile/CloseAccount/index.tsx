@@ -1,5 +1,4 @@
-import { AdminContainer } from '@/components/layout/Container'
-import { Title } from '@/components/layout/Text/Title'
+import { Container, Title } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
@@ -37,8 +36,8 @@ const CloseAccount: React.FC = () => {
       {isLoading ? (
         <Skeleton className="h-[calc(100vh-164px)] w-full rounded-lg" />
       ) : (
-        <AdminContainer>
-          <Title text="Encerrar Conta" back={() => navigate(-1)} />
+        <Container>
+          <Title title="Encerrar Conta" back={() => navigate(-1)} />
           <div className="flex flex-col gap-2 text-justify text-sm font-normal">
             <h4 className="text-lg font-semibold text-shadow-3x">
               Para Encerrar sua conta,
@@ -84,9 +83,9 @@ const CloseAccount: React.FC = () => {
             </p>
           </div>
           <div className="flex flex-row-reverse">
-            <Separator className="w-[52%] bg-colorSecondary-500" />
+            <Separator className="w-[52%] bg-secondary-default" />
           </div>
-        </AdminContainer>
+        </Container>
       )}
     </>
   )

@@ -1,5 +1,4 @@
-import { AdminContainer } from '@/components/layout/Container'
-import { Title } from '@/components/layout/Text/Title'
+import { Container, Title } from '@/components/layout'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { RegisterPixType } from '@/types/userType'
 import { useEffect, useState } from 'react'
@@ -77,9 +76,9 @@ const Extract: React.FC = () => {
   }, [])
 
   return (
-    <AdminContainer>
+    <Container>
       <Title
-        text="Extrato"
+        title="Extrato"
         back={() => {
           filterOptions.stepPage <= 0
             ? navigate(-1)
@@ -106,7 +105,7 @@ const Extract: React.FC = () => {
       {filterOptions.stepPage === 1 && (
         <FilterPage state={filterOptions} setState={setFilterOptions} />
       )}
-    </AdminContainer>
+    </Container>
   )
 }
 

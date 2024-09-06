@@ -1,12 +1,10 @@
-import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
 import { IconPaperPlane } from '@/components/icons'
-import { AdminContainer } from '@/components/layout/Container'
-import { Title } from '@/components/layout/Text/Title'
+import { ButtonAtlas, Container, Title } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import PixApi from '@/services/PixApi'
 import { ContactsPixType } from '@/types/PixType'
-import { formattedDoc } from '@/utils/FormattedDoc'
+import { formattedDoc } from '@/utils/GenerateFormatted'
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
@@ -61,9 +59,9 @@ const Transfer: React.FC = () => {
   }, [isError])
 
   return (
-    <AdminContainer>
+    <Container>
       <Title
-        text="Transferir"
+        title="Transferir"
         back={() => {
           stateForm.step === 0
             ? navigate(-1)
@@ -98,7 +96,7 @@ const Transfer: React.FC = () => {
         </div>
       )}
       <div className="flex flex-row-reverse">
-        <Separator className="w-[52%] bg-colorSecondary-500" />
+        <Separator className="w-[52%] bg-secondary-default" />
       </div>
       {stateForm.step === 0 && <TransferList data={data} />}
       {stateForm.step === 1 && (
@@ -138,12 +136,12 @@ const Transfer: React.FC = () => {
             </div>
           </div>
           <div className="flex flex-row-reverse">
-            <Separator className="w-[52%] bg-colorSecondary-500" />
+            <Separator className="w-[52%] bg-secondary-default" />
           </div>
           <TransferStep step={stateForm} setStep={setStateForm} />
         </>
       )}
-    </AdminContainer>
+    </Container>
   )
 }
 

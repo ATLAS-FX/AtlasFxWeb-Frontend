@@ -1,4 +1,5 @@
 import { toast } from '@/components/ui/use-toast'
+import { ErrorResponse } from './ErrorResponse'
 
 export const handleCopyClick = (
   value: string,

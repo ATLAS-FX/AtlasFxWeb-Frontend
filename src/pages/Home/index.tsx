@@ -1,12 +1,11 @@
 import Robo from '@/assets/robo.png'
 import { IconDoubleArrow } from '@/components/icons'
-import CardHome from '@/components/layout/Card/CardHome'
+import { CardHome, Container } from '@/components/layout'
 import { ChartConfig } from '@/components/ui/chart'
 import { Separator } from '@/components/ui/separator'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { RegisterPixType } from '@/types/userType'
-import { formattedDate } from '@/utils/FormattedDate'
-import { formatedPrice } from '@/utils/FormattedPrice'
+import { formatedPrice, formattedDate } from '@/utils/GenerateFormatted'
 import Chart from './Chart'
 
 const Home: React.FC = () => {
@@ -47,25 +46,25 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className="flex h-[calc(100vh-10%)] flex-col justify-between gap-4 text-xs">
+    <Container>
       <div className="flex flex-col gap-2">
-        <h4 className="pt-5 text-2xl text-colorPrimary-500">
+        <h4 className="pt-5 text-xl text-primary-default">
           Olá, <span className="font-semibold">{user.name}</span>!
         </h4>
-        <p className="text-base text-[#7F828C]">
+        <p className="text-sm text-[#7F828C]">
           Gerencie e monitore as finanças da sua empresa aqui. Tudo em um lugar.
         </p>
       </div>
-      <Separator className="my-3 w-full bg-[#7F828C33]" />
+      <Separator className="bg-system-cinza/33 my-3 w-full" />
       <CardHome
-        classes="bg-colorSecondary-500 z-10 mb-10"
+        classes="bg-secondary-default z-10 mb-10"
         children={
           <div className="relative flex">
-            <p className="w-5/12 text-3xl font-semibold text-colorPrimary-500 xl:text-2xl">
+            <p className="w-5/12 text-2xl font-semibold text-primary-default xl:text-2xl">
               {'O jeito fácil de gerenciar a sua empresa ;)'}
             </p>
             <img
-              className="absolute right-10 z-0 size-48 object-contain"
+              className="absolute right-10 z-0 h-40 object-contain"
               src={Robo}
               alt="Robo_svg"
             />
@@ -77,7 +76,7 @@ const Home: React.FC = () => {
         classes="border-[1px] border-[#7F828C33]"
         children={
           <>
-            <p className="absolute right-4 top-4 font-semibold text-[#7F828C]">
+            <p className="absolute right-4 top-8 text-xs font-semibold text-[#7F828C]">
               {formattedDate(new Date().toString())}
             </p>
             <h3 className="text-xl">
@@ -86,9 +85,9 @@ const Home: React.FC = () => {
                 {formatedPrice(calcTotalProfitAmount(user.releases).toString())}
               </strong>
             </h3>
-            <div className="flex items-center justify-center">
+            <div className="h- flex items-center justify-center">
               <Chart
-                classes="h-60 w-full p-2"
+                classes="h-56 w-full p-2"
                 data={user.releases}
                 options={chartConfig}
                 dataKeyAxis={'created'}
@@ -140,7 +139,7 @@ const Home: React.FC = () => {
           }
         />
       </div>
-    </div>
+    </Container>
   )
 }
 

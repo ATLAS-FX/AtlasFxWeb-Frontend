@@ -27,7 +27,7 @@ interface PdfPixProps {
   date: string
 }
 
-export const PDFPix: React.FC<PdfPixProps> = ({
+const PDFPix: React.FC<PdfPixProps> = ({
   amount,
   nameReceiver,
   documentReceiver,
@@ -205,3 +205,5 @@ export const PDFPix: React.FC<PdfPixProps> = ({
     </Document>
   )
 }
+
+export default PDFPix

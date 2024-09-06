@@ -18,7 +18,7 @@ const ToastLogin: React.FC<ToastLoginProps> = ({
       <DialogContent className="h-72 w-72 gap-4 rounded-xl bg-white" isFalseClose>
         <DialogTitle className="m-auto text-center text-xl">{title}</DialogTitle>
         <div className="flex items-center justify-center">
-          <LoaderCircle className="h-48 w-48 animate-spin text-colorPrimary-500 transition-transform" />
+          <LoaderCircle className="h-48 w-48 animate-spin text-primary-default transition-transform" />
         </div>
       </DialogContent>
     </Dialog>

@@ -1,5 +1,5 @@
-import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { IconCalendar, IconDoubleArrow } from '@/components/icons'
+import { ButtonNext } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import ExtractApi from '@/services/ExtractApi'
+import { ErrorResponse } from '@/utils/ErrorResponse'
 import { Dispatch, SetStateAction, useState } from 'react'
 
 interface FilterPageProps {
@@ -97,7 +98,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
           <Button
             key={number}
             className={cn(
-              'rounded-xl border-2 border-colorPrimary-500 bg-transparent p-6 text-base text-colorPrimary-500 shadow-md shadow-slate-400 drop-shadow-md transition-transform duration-300 hover:border-colorPrimary-500 hover:bg-colorPrimary-500 hover:text-white',
+              'rounded-xl border-2 border-primary-default bg-transparent p-6 text-base text-primary-default shadow-md shadow-slate-400 drop-shadow-md transition-transform duration-300 hover:border-primary-default hover:bg-primary-default hover:text-white',
               state.period === item &&
                 'border-primary/90 bg-primary/90 text-white shadow-none drop-shadow-none transition-transform duration-300'
             )}
@@ -114,7 +115,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
             <Button
               variant={'outline'}
               className={cn(
-                'w-[280px] items-center justify-between rounded-none border-0 border-b-2 border-colorPrimary-500 bg-transparent fill-colorPrimary-500 py-6 text-base font-normal text-colorPrimary-500'
+                'w-[280px] items-center justify-between rounded-none border-0 border-b-2 border-primary-default bg-transparent fill-primary-default py-6 text-base font-normal text-primary-default'
               )}
             >
               {state.start ? `${state.start}` : <span>De</span>}
@@ -143,7 +144,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
             <Button
               variant={'outline'}
               className={cn(
-                'w-[280px] items-center justify-between rounded-none border-0 border-b-2 border-colorPrimary-500 bg-transparent fill-colorPrimary-500 py-6 text-base font-normal text-colorPrimary-500'
+                'w-[280px] items-center justify-between rounded-none border-0 border-b-2 border-primary-default bg-transparent fill-primary-default py-6 text-base font-normal text-primary-default'
               )}
             >
               {state.end ? `${state.end}` : <span>Até</span>}
@@ -169,7 +170,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
         </Popover>
       </div>
       <div className="flex flex-row-reverse">
-        <Separator className="mt-2 h-[2px] w-[52%] bg-colorSecondary-500" />
+        <Separator className="mt-2 h-[2px] w-[52%] bg-secondary-default" />
       </div>
       <h4 className="text-base font-semibold text-shadow-3x">
         Selecione um tipo de lançamento
@@ -179,7 +180,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
           <Button
             key={`button-${number}`}
             className={cn(
-              'flex w-[280px] items-center justify-evenly rounded-xl border-2 border-colorPrimary-500 bg-transparent p-6 text-base text-colorPrimary-500 shadow-md shadow-slate-400 drop-shadow-md transition-transform duration-300 hover:border-colorPrimary-500 hover:bg-colorPrimary-500 hover:text-white ',
+              'flex w-[280px] items-center justify-evenly rounded-xl border-2 border-primary-default bg-transparent p-6 text-base text-primary-default shadow-md shadow-slate-400 drop-shadow-md transition-transform duration-300 hover:border-primary-default hover:bg-primary-default hover:text-white ',
               state.type === value &&
                 'border-primary/90 bg-primary/90 text-white shadow-none drop-shadow-none transition-transform duration-300'
             )}

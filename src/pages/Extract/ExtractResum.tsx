@@ -1,12 +1,15 @@
-import { PDFExtract } from '@/components/PDFTypes/PDFExtract'
+import { PDFExtract } from '@/components/pdfs'
 import { IconCalendar, IconDoubleArrow } from '@/components/icons'
-import { ModalPrint } from '@/components/layout/Modal/ModaPrint'
+import { ModalPrint } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { RegisterPixType } from '@/types/userType'
 import { downloadPDF } from '@/utils/DownloadPdf'
-import { DateFormat, invertDate } from '@/utils/FormattedDate'
-import { formatedPrice } from '@/utils/FormattedPrice'
+import {
+  formatedPrice,
+  formattedDateSample,
+  invertDate
+} from '@/utils/GenerateFormatted'
 import { PDFViewer } from '@react-pdf/renderer'
 import { Dispatch, SetStateAction, useState } from 'react'
 
@@ -102,7 +105,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
 
       {sortedEntries.map(([date, extracts], index) => (
         <div className="flex flex-col items-center gap-2" key={index}>
-          <div className="mb-2 flex w-full items-center gap-4 rounded-lg border-2 border-colorPrimary-500 fill-colorPrimary-500 px-6 py-3 text-lg font-medium text-colorPrimary-500 shadow-md shadow-slate-400 transition-transform duration-300">
+          <div className="mb-2 flex w-full items-center gap-4 rounded-lg border-2 border-primary-default fill-primary-default px-6 py-3 text-lg font-medium text-primary-default shadow-md shadow-slate-400 transition-transform duration-300">
             <IconCalendar className="w-8" />
             {new Date(invertDate(date)).toLocaleDateString('pt-BR', {
               weekday: 'long',
@@ -126,7 +129,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
                   </h2>
                 ) : (
                   <h2 className="flex items-center justify-start gap-1 font-semibold capitalize">
-                    <IconDoubleArrow className="fill-colorSecondary-500" size={12} />
+                    <IconDoubleArrow className="fill-secondary-default" size={12} />
                     {extract.method} Recebido
                   </h2>
                 )}
@@ -136,7 +139,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
                 </h4>
               </div>
               <div className="flex flex-col gap-1 text-end text-xs">
-                <p>{DateFormat(extract.created)}</p>
+                <p>{formattedDateSample(extract.created)}</p>
                 <label className="font-semibold">
                   R$ {extract.send > 0 ? '-' : ''}{' '}
                   {formatedPrice(extract.amount.toString())}
@@ -147,9 +150,9 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
                   <TooltipTrigger
                   // onClick={() => setOpenModalPrint(!openModalPrint)}
                   >
-                    <IconPDFDownload size={32} className="fill-colorPrimary-500" />
+                    <IconPDFDownload size={32} className="fill-primary-default" />
                   </TooltipTrigger>
-                  <TooltipContent className="rounded-md bg-colorPrimary-500 p-2 text-sm font-normal text-white">
+                  <TooltipContent className="rounded-md bg-primary-default p-2 text-sm font-normal text-white">
                     Baixar extrato em PDF
                   </TooltipContent>
                 </Tooltip>
@@ -157,7 +160,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
             </div>
           ))}
 
-          <Separator className="bg-colorPrimary-500/85" />
+          <Separator className="bg-primary-default/85" />
 
           <ModalPrint
             openModal={openModalPrint}

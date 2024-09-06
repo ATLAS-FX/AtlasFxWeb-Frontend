@@ -1,5 +1,4 @@
-import { AdminContainer } from '@/components/layout/Container'
-import { Title } from '@/components/layout/Text/Title'
+import { Container, Title } from '@/components/layout'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import BankDepositApi from '@/services/BankDepositApi'
@@ -58,9 +57,9 @@ const BankDeposit: React.FC = () => {
       {isLoading ? (
         <Skeleton className="h-[calc(100vh-164px)] w-full rounded-lg" />
       ) : (
-        <AdminContainer>
+        <Container>
           <Title
-            text="Depositar"
+            title="Depositar"
             back={() =>
               stepBankDeposit.selectPayment === 0 && stepBankDeposit.stepPage === 0
                 ? navigate(-1)
@@ -106,7 +105,7 @@ const BankDeposit: React.FC = () => {
               qrcode={stepBankDeposit.qrcode}
             />
           )}
-        </AdminContainer>
+        </Container>
       )}
     </>
   )

@@ -1,7 +1,7 @@
 import Atlas_Logo from '@/assets/atlas_logo.png'
 import PoppinsRegular from '@/assets/Poppins-Regular.ttf'
 import PoppinsSemi from '@/assets/Poppins-SemiBold.ttf'
-import { formattedDoc } from '@/utils/FormattedDoc'
+import { formattedDoc } from '@/utils/GenerateFormatted'
 import {
   Document,
   Font,
@@ -23,7 +23,7 @@ interface PdfMovementsProps {
   date: string
 }
 
-export const PDFMovements: React.FC<PdfMovementsProps> = ({
+const PDFMovements: React.FC<PdfMovementsProps> = ({
   document,
   type,
   amount,
@@ -193,3 +193,5 @@ export const PDFMovements: React.FC<PdfMovementsProps> = ({
     </Document>
   )
 }
+
+export default PDFMovements

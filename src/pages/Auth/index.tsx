@@ -1,6 +1,4 @@
-import { ButtonNext } from '@/components/Buttons/ButtonNext'
-import { CardForLogin } from '@/components/layout/Card/CardForLogin'
-import ToastLogin from '@/components/layout/Modal/ModalLogin'
+import { ButtonNext, CardForLogin, ToastLogin } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -8,6 +6,7 @@ import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
 import AuthApi from '@/services/AuthApi'
+import { ErrorResponse } from '@/utils/ErrorResponse'
 import { CheckCircle2, RotateCw } from 'lucide-react'
 import QRCode from 'qrcode.react'
 import { ChangeEvent, useEffect, useState } from 'react'
@@ -105,7 +104,7 @@ const Login: React.FC = () => {
             title="Para acessar sua conta, siga os passos abaixo:"
             content={
               <div className="flex items-center justify-between gap-8">
-                <div className="text-justify text-xs leading-5 text-[#7F828C]">
+                <div className="text-justify text-xs leading-5 text-system-cinza">
                   <p className="mb-4 mr-1">
                     <strong>
                       1. Acesse a conta da sua empresa através do celular
@@ -155,7 +154,7 @@ const Login: React.FC = () => {
                     <>
                       {genQRCode && (
                         <button
-                          className="absolute bottom-auto left-auto right-auto top-auto z-20 flex h-48 w-48 flex-col items-center justify-center gap-4 rounded-[50%] bg-colorPrimary-500 text-white"
+                          className="bg-prtext-primary-default absolute bottom-auto left-auto right-auto top-auto z-20 flex h-48 w-48 flex-col items-center justify-center gap-4 rounded-[50%] text-white"
                           onClick={generateNewQRCode}
                         >
                           <RotateCw size={42} />
@@ -177,15 +176,15 @@ const Login: React.FC = () => {
             title="Acesse"
             content={
               <div className="flex flex-col gap-4">
-                <label className="text-sm text-colorPrimary-500">
+                <label className="text-sm text-primary-default">
                   Digite o a Chave de Segurança de 8 dígitos
                 </label>
                 <Input
                   className={cn(
-                    'flex h-16 w-full justify-center rounded-lg border-2 pt-[2.5%] text-center align-baseline text-5xl font-bold text-colorPrimary-500',
+                    'flex h-16 w-full justify-center rounded-lg border-2 pt-[2.5%] text-center align-baseline text-5xl font-bold text-primary-default',
                     inputPassword.length < 8
-                      ? 'border-colorPrimary-500'
-                      : 'border-[#008000]'
+                      ? 'border-prtext-primary-default'
+                      : 'border-system-green'
                   )}
                   value={inputPassword.replace(/./g, '*')}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -194,12 +193,12 @@ const Login: React.FC = () => {
                   maxLength={8}
                   type="text"
                 />
-                <div className="flex justify-end">
+                <div className="flex justify-end ">
                   <ButtonNext
                     title="Enviar agora"
                     func={() => {}}
                     disabled={inputPassword.length < 8}
-                    classPlus={`h-12 w-5/12 rounded-lg bg-colorSecondary-500 text-base font-bold text-colorPrimary-500',
+                    classPlus={`h-12 w-5/12 rounded-lg bg-se text-base font-bold text-primary-default',
                     ${inputPassword.length < 8 && 'bg-[#BEBEBE] text-[#7E7E7E]'}`}
                   />
                 </div>
@@ -208,9 +207,9 @@ const Login: React.FC = () => {
             footer={<></>}
           />
         )}
-        <div className="justify-star mt-2 flex items-center justify-end gap-1 text-colorPrimary-500">
+        <div className="justify-star mt-2 flex items-center justify-end gap-1 text-primary-default">
           <div className="flex cursor-pointer items-center gap-2">
-            <span className="text-xs italic text-colorPrimary-500">
+            <span className="text-xs italic text-primary-default">
               Digita seu código:
             </span>
             <Input
@@ -220,12 +219,12 @@ const Login: React.FC = () => {
                 setInputRef(e.target.value)
               }}
             />
-            <span className="text-xs italic text-colorPrimary-500">
+            <span className="text-xs italic text-primary-default">
               clique para validar:
             </span>
             <Button
               variant="ghost"
-              className="w-fit p-0 hover:text-colorSecondary-500"
+              className="w-fit p-0 hover:text-primary-default"
               disabled={inputRef.length < 1}
               onClick={checkValidate}
             >

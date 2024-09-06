@@ -11,7 +11,7 @@ interface CardHomeProps {
 const CardHome: React.FC<CardHomeProps> = ({ title, classes, children, imgBG }) => {
   return (
     <div
-      className={cn('relative flex flex-col gap-2 rounded-xl p-8', classes)}
+      className={cn('relative flex flex-col gap-2 rounded-xl p-6', classes)}
       style={imgBG ? imgBG : undefined}
     >
       {title && <h3 className="text-sm">{title}</h3>}

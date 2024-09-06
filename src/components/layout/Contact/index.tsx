@@ -7,6 +7,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { toast } from '@/components/ui/use-toast'
+import { ErrorResponse } from '@/utils/ErrorResponse'
 import { Dispatch, SetStateAction } from 'react'
 
 interface IContact {
@@ -36,9 +37,9 @@ const Contact: React.FC<IContact> = ({ name, keyPix, openModal }) => {
   }
 
   return (
-    <div className="flex items-center justify-between border-b-2 border-colorPrimary-500 py-2 ">
+    <div className="flex items-center justify-between border-b-2 border-primary-default py-2 ">
       <Button
-        className="flex cursor-pointer items-center gap-2 fill-colorPrimary-500 text-lg font-semibold text-colorPrimary-500 hover:fill-colorSecondary-500 hover:text-colorSecondary-500"
+        className="flex cursor-pointer items-center gap-2 fill-primary-default text-lg font-semibold text-primary-default hover:fill-secondary-default hover:text-secondary-default"
         onClick={() => handleCopyClick(keyPix)}
         variant="ghost"
       >
@@ -50,10 +51,10 @@ const Contact: React.FC<IContact> = ({ name, keyPix, openModal }) => {
           <TooltipTrigger onClick={() => openModal(true)}>
             <IconTrash
               size={24}
-              className="fill-colorPrimary-500 hover:fill-colorSecondary-500"
+              className="fill-primary-default hover:fill-secondary-default"
             />
           </TooltipTrigger>
-          <TooltipContent className="rounded-md bg-colorPrimary-500 p-2 text-sm font-normal text-white">
+          <TooltipContent className="rounded-md bg-primary-default p-2 text-sm font-normal text-white">
             clique para deletar contato
           </TooltipContent>
         </Tooltip>

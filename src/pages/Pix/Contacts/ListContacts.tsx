@@ -1,5 +1,4 @@
-import Contact from '@/components/layout/Contact'
-import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
+import { Contact, ModalDefault } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
@@ -26,7 +25,7 @@ const ListContact: React.FC<IContact> = ({ data }) => {
     <>
       <div className="flex flex-col gap-2 text-sm">
         <h4 className="font-medium">Buscar por nome</h4>
-        <div className='text-colorPrimary-500" flex items-center gap-2 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 px-2 py-1 text-sm font-medium'>
+        <div className='text-primary-default" flex items-center gap-2 rounded-xl border-2 border-primary-default fill-primary-default px-2 py-1 text-sm font-medium'>
           <label className="">
             <Search />
           </label>
@@ -39,7 +38,7 @@ const ListContact: React.FC<IContact> = ({ data }) => {
         </div>
       </div>
       <div className="flex flex-row-reverse">
-        <Separator className="w-[52%] bg-colorSecondary-500" />
+        <Separator className="w-[52%] bg-secondary-default" />
       </div>
       <div className="flex flex-col gap-2 text-sm">
         <h4 className="flex items-center gap-1 font-medium">

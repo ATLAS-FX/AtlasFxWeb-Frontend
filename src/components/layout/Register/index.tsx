@@ -6,8 +6,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
-import { DateFormat } from '@/utils/FormattedDate'
-import { formatedPrice } from '@/utils/FormattedPrice'
+import { formatedPrice, formattedDateSample } from '@/utils/GenerateFormatted'
 
 interface RegistersProps {
   id: number
@@ -34,8 +33,8 @@ const Registers: React.FC<RegistersProps> = ({
     <div
       id={id.toString()}
       className={cn(
-        'flex items-center justify-between gap-2 border-b-2 border-colorPrimary-500/75 py-4',
-        textColor ? '' : 'text-colorPrimary-500'
+        'flex items-center justify-between gap-2 border-b-2 border-primary-default/75 py-4',
+        textColor ? '' : 'text-primary-default'
       )}
     >
       <div className="flex flex-col items-start justify-center gap-1 text-base">
@@ -43,13 +42,13 @@ const Registers: React.FC<RegistersProps> = ({
           <h2 className="flex items-center justify-start gap-1 font-semibold capitalize">
             <IconDoubleArrow
               size={12}
-              className="scale-x-[-1] transform fill-colorSecondary-500"
+              className="scale-x-[-1] transform fill-secondary-default"
             />
             {method} Enviado
           </h2>
         ) : (
           <h2 className="flex items-center justify-start gap-1 font-semibold capitalize">
-            <IconDoubleArrow className="fill-colorSecondary-500" size={12} />
+            <IconDoubleArrow className="fill-secondary-default" size={12} />
             {method} Recebido
           </h2>
         )}
@@ -59,7 +58,7 @@ const Registers: React.FC<RegistersProps> = ({
         </h4>
       </div>
       <div className="flex flex-col gap-1 text-end text-xs font-light">
-        <p>{DateFormat(created)}</p>
+        <p>{formattedDateSample(created)}</p>
         <label className="font-semibold">
           R$ {send > 0 ? '-' : ''} {formatedPrice(amount.toString())}
         </label>
@@ -69,9 +68,9 @@ const Registers: React.FC<RegistersProps> = ({
           <TooltipTrigger
           // onClick={() => setOpenModalPrint(!openModalPrint)}
           >
-            <IconPDFDownload size={32} className="fill-colorPrimary-500" />
+            <IconPDFDownload size={32} className="fill-primary-default" />
           </TooltipTrigger>
-          <TooltipContent className="rounded-md bg-colorPrimary-500 p-2 text-sm font-normal text-white">
+          <TooltipContent className="rounded-md bg-primary-default p-2 text-sm font-normal text-white">
             Baixar extrato em PDF
           </TooltipContent>
         </Tooltip>

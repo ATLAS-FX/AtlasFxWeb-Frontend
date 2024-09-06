@@ -1,7 +1,7 @@
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { LoaderCircle } from 'lucide-react'
 import React from 'react'
-import { Button } from '../ui/button'
 
 interface ButtonNextProps {
   title: string
@@ -11,7 +11,7 @@ interface ButtonNextProps {
   func: () => void
 }
 
-export const ButtonNext: React.FC<ButtonNextProps> = ({
+const ButtonNext: React.FC<ButtonNextProps> = ({
   title,
   classPlus,
   disabled,
@@ -32,3 +32,5 @@ export const ButtonNext: React.FC<ButtonNextProps> = ({
     </Button>
   )
 }
+
+export default ButtonNext

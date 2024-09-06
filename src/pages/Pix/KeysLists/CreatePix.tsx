@@ -1,14 +1,17 @@
-import { ButtonAtlas } from '@/components/Buttons/ButtonAtlas'
-import { ButtonNext } from '@/components/Buttons/ButtonNext'
 import { IconAlert } from '@/components/icons'
-import MaskedInput from '@/components/layout/Input/MaskedInput'
+import {
+  ButtonAtlas,
+  ButtonNext,
+  MaskedInput,
+  ModalDefault
+} from '@/components/layout'
 import TwoFactorAuthValidator from '@/components/layout/Input/TwoFactorAuthValidator'
-import { ModalDefault } from '@/components/layout/Modal/ModalDefault'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import PixApi from '@/services/PixApi'
+import { ErrorResponse } from '@/utils/ErrorResponse'
 import { generatePixKey } from '@/utils/GenerateCode'
 import { ListMask } from '@/utils/ListMask'
 import { listPixButton } from '@/utils/PixListButtons'
@@ -108,7 +111,7 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
               title={name}
               icon={Icon}
               sizeIcon={number === 4 ? 28 : 32}
-              classButton={`flex h-20 w-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-colorPrimary-500 bg-transparent fill-colorPrimary-500 text-colorPrimary-500 shadow-md shadow-slate-400 drop-shadow-md transition-all duration-300 ease-out hover:bg-colorPrimary-500 hover:fill-white hover:text-white text-center,
+              classButton={`flex h-20 w-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-primary-default bg-transparent fill-primary-default text-primary-default shadow-md shadow-slate-400 drop-shadow-md transition-all duration-300 ease-out hover:bg-primary-default hover:fill-white hover:text-white text-center,
                  ${
                    formCreateKeyPix.type === type &&
                    'border-primary/90 bg-primary/90 text-white shadow-none drop-shadow-none transition-transform duration-300 fill-white'
@@ -135,7 +138,7 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
           ))}
       </div>
       <div className="flex flex-row-reverse">
-        <Separator className="w-[52%] bg-colorSecondary-500" />
+        <Separator className="w-[52%] bg-secondary-default" />
       </div>
       {formCreateKeyPix.step === 1 && (
         <>
@@ -144,7 +147,7 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
             ({ key, mask, placeholder }, number) => (
               <MaskedInput
                 className={cn(
-                  'flex h-12 w-full items-center gap-2 rounded-xl border-2 border-colorPrimary-500 p-2 px-2 py-1 text-lg font-semibold shadow-none transition-transform duration-300'
+                  'flex h-12 w-full items-center gap-2 rounded-xl border-2 border-primary-default p-2 px-2 py-1 text-lg font-semibold shadow-none transition-transform duration-300'
                 )}
                 key={`${key + number}`}
                 mask={mask || ''}
@@ -190,7 +193,7 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
         title="Para seguir, verifique e confirme as informações."
         body={
           <>
-            <Separator className="bg-colorPrimary-500" />
+            <Separator className="bg-primary-default" />
             <div className="flex items-center justify-between gap-2">
               <IconAlert className="w-32" />
               <h4 className="text-xs">
@@ -199,7 +202,7 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
                 revertido.
               </h4>
             </div>
-            <Separator className="bg-colorPrimary-500" />
+            <Separator className="bg-primary-default" />
             <div className="text-sm font-normal">
               <label>Você está criando uma chave pix</label>
               <div className="flex items-center gap-2">
@@ -212,7 +215,7 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
               </div>
               <label>Data: {new Date().toLocaleDateString()}</label>
             </div>
-            <Separator className="bg-colorPrimary-500" />
+            <Separator className="bg-primary-default" />
           </>
         }
         openModal={stateModalPix}
@@ -240,13 +243,13 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
             <h4 className="text-sm font-semibold">
               Para seguir, insira sua senha de 6 dígitos.
             </h4>
-            <Separator className="bg-colorPrimary-500" />
+            <Separator className="bg-primary-default" />
             <TwoFactorAuthValidator
-              className="text-colorPrimary-500"
+              className="text-primary-default"
               codeLength={6}
               onValidCode={(code) => setPwdCode(code)}
             />
-            <Separator className="bg-colorPrimary-500" />
+            <Separator className="bg-primary-default" />
           </>
         }
         ArrayButton={

@@ -1,12 +1,13 @@
-import { cn } from '@/lib/utils'
-import { IconType } from '@/types/iconType'
-import React from 'react'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger
-} from '../ui/tooltip'
+} from '@/components/ui/tooltip'
+import { cn } from '@/lib/utils'
+import { IconType } from '@/types/iconType'
+import { ChevronRight } from 'lucide-react'
+import React from 'react'
 
 interface ButtonAtlasProps {
   title: string
@@ -22,27 +23,24 @@ interface ButtonAtlasProps {
   }[]
 }
 
-export const ButtonAtlas: React.FC<ButtonAtlasProps> = ({
+const ButtonAtlas: React.FC<ButtonAtlasProps> = ({
   title,
   classButton,
   classDiv,
   icon: Icon,
-  sizeIcon = 30,
+  sizeIcon = 20,
   click,
   listAction
 }) => {
   return (
     <div
-      onClick={click}
       className={cn(
-        'flex w-full cursor-pointer items-center gap-2 rounded-xl border-2 border-colorPrimary-500 fill-colorPrimary-500 p-2 text-base font-medium text-colorPrimary-500 shadow-md shadow-slate-400 drop-shadow-md transition-transform duration-300',
+        'flex items-center gap-4 rounded-xl fill-primary-default p-2 text-base font-medium text-primary-default transition-transform duration-300',
         classButton,
-        listAction
-          ? 'justify-between'
-          : 'hover:bg-colorPrimary-500 hover:fill-white hover:text-white'
+        listAction ? 'justify-between' : ''
       )}
     >
-      <div className={cn('flex items-center justify-start gap-2', classDiv)}>
+      <div className={cn('flex items-center justify-start gap-3 text-lg', classDiv)}>
         {Icon && <Icon size={sizeIcon} />}
         {title}
       </div>
@@ -54,10 +52,10 @@ export const ButtonAtlas: React.FC<ButtonAtlasProps> = ({
                 <TooltipTrigger onClick={func}>
                   <Icon
                     size={20}
-                    className="fill-colorPrimary-500 transition-transform duration-300 hover:fill-colorSecondary-500"
+                    className="fill-primary-default transition-transform duration-300 hover:fill-secondary-default"
                   />
                 </TooltipTrigger>
-                <TooltipContent className="rounded-md bg-colorPrimary-500 p-2 text-sm font-normal text-white">
+                <TooltipContent className="rounded-md bg-primary-default p-2 text-sm font-normal text-white">
                   {tooltip}
                 </TooltipContent>
               </Tooltip>
@@ -65,6 +63,13 @@ export const ButtonAtlas: React.FC<ButtonAtlasProps> = ({
           ))}
         </div>
       )}
+      <ChevronRight
+        onClick={click}
+        className="cursor-pointer text-system-cinza transition-all duration-200 ease-in-out hover:scale-125 hover:rounded-full hover:bg-primary-hover hover:text-white"
+        size={24}
+      />
     </div>
   )
 }
+
+export default ButtonAtlas

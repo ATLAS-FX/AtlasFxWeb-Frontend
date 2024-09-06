@@ -1,8 +1,8 @@
 import Atlas_Logo from '@/assets/atlas_logo.png'
 import PoppinsRegular from '@/assets/Poppins-Regular.ttf'
 import PoppinsSemi from '@/assets/Poppins-SemiBold.ttf'
-import { formattedDoc } from '@/utils/FormattedDoc'
-import { generateBarcode } from '@/utils/GenerateCode'
+import { generateQRCode } from '@/utils/GenerateCode'
+import { formattedDoc } from '@/utils/GenerateFormatted'
 import {
   Document,
   Font,
@@ -12,30 +12,39 @@ import {
   Text,
   View
 } from '@react-pdf/renderer'
+import { useEffect, useState } from 'react'
 
-interface PdfBoletoProps {
+interface PdfQRCodeProps {
   document: string
-  amount: string
-  barcode: string
   name: string
+  pix: string
+  amount: string
   bank: string
   agency: string
   account: string
-  idTransaction: string
-  date: string
 }
 
-export const PDFBoleto: React.FC<PdfBoletoProps> = ({
+const PDFQRCode: React.FC<PdfQRCodeProps> = ({
   document,
-  amount,
-  barcode,
   agency,
   account,
   name,
-  bank,
-  idTransaction,
-  date
+  pix,
+  amount,
+  bank
 }) => {
+  const [qrCode, setQrCode] = useState<string>('')
+
+  // Função para gerar um QR code em base64
+  useEffect(() => {
+    const generateQr = async () => {
+      const qrCodeData = await generateQRCode(pix, '#FFFFFF', '#0000')
+      setQrCode(qrCodeData)
+    }
+
+    generateQr()
+  }, [])
+
   Font.register({
     family: 'Poppins-Regular',
     src: PoppinsRegular
@@ -63,36 +72,26 @@ export const PDFBoleto: React.FC<PdfBoletoProps> = ({
       fontSize: 12,
       color: '#C8D753'
     },
-    viewFlex: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      padding: 20
-    },
     flex: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center'
     },
-    img: {
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: 24
-    },
-    centerText: {
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-      marginBottom: 24
-    },
     Title: {
       color: '#FFF',
       fontSize: 24,
-      textAlign: 'center'
+      textAlign: 'center',
+      marginBottom: 10
     },
     Subtitle: {
       color: '#FFF',
-      fontSize: 18
+      fontSize: 18,
+      marginBottom: 10
+    },
+    Value: {
+      color: '#C8D753',
+      fontSize: 18,
+      marginBottom: 10
     },
     label: {
       color: '#FFF',
@@ -114,21 +113,12 @@ export const PDFBoleto: React.FC<PdfBoletoProps> = ({
       width: 240,
       height: 240
     },
-    barcode: {
-      width: 672,
-      // height: 78,
-      marginVertical: 10
-    },
     hr: {
       width: '100%',
       height: 1,
-      backgroundColor: '#FFF',
-      marginVertical: 10,
-      margin: '10 0'
+      backgroundColor: '#FFF'
     }
   })
-
-  const barcodeImg = generateBarcode(barcode)
 
   return (
     <Document>
@@ -139,29 +129,42 @@ export const PDFBoleto: React.FC<PdfBoletoProps> = ({
           </Text>
         </View>
         <View style={styles.section}>
-          <View style={styles.img}>
+          <View
+            style={{
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: 24
+            }}
+          >
             <Image src={Atlas_Logo} style={styles.logo} />
-          </View>
-          <View style={styles.centerText}>
             <View style={styles.Title}>
-              <Text>Pagamentos</Text>
+              <Text>QR Code</Text>
             </View>
-            <View style={styles.Title}>
-              <Text style={{ color: '#C8D753' }}>R$ {amount}</Text>
-            </View>
+            {qrCode && <Image style={styles.qrCode} src={qrCode} />}
           </View>
-          <View style={styles.hr} />
           <View>
-            <Text style={styles.Subtitle}>Dados de pagamento</Text>
+            <Text style={styles.Subtitle}>
+              Valor: <Text style={{ color: '#C8D753' }}>R$ {amount}</Text>
+            </Text>
           </View>
-          <View style={styles.viewFlex}>
+          <View>
+            <Text style={styles.Subtitle}>Dados do favorecido</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              padding: 20
+            }}
+          >
             <View style={{ width: '50%' }}>
               <Text style={styles.label}>Nome:</Text>
               <Text style={styles.value}>{name}</Text>
               <Text style={styles.label}>CPF/CNPJ:</Text>
               <Text style={styles.value}>{formattedDoc(document, 'cnpj')}</Text>
-              <Text style={styles.label}>Linha de Código de barras:</Text>
-              <Text style={styles.value}>{barcode}</Text>
+              <Text style={styles.label}>Chave Pix:</Text>
+              <Text style={styles.value}>{pix}</Text>
             </View>
             <View style={{ width: '50%' }}>
               <Text style={styles.label}>Instuição:</Text>
@@ -173,23 +176,10 @@ export const PDFBoleto: React.FC<PdfBoletoProps> = ({
             </View>
           </View>
           <View style={styles.hr} />
-          <View style={styles.viewFlex}>
-            <View style={{ width: '50%' }}>
-              <Text style={styles.label}>ID de transação:</Text>
-              <Text style={styles.value}>{idTransaction}</Text>
-            </View>
-            <View style={{ width: '50%' }}>
-              <Text style={styles.label}>Data e hora:</Text>
-              <Text style={styles.value}>{date}</Text>
-            </View>
-          </View>
-          <View style={styles.hr} />
-          <View style={styles.centerText}>
-            <Text style={styles.label}>Código de barras:</Text>
-            <Image src={barcodeImg} style={styles.barcode} />
-          </View>
         </View>
       </Page>
     </Document>
   )
 }
+
+export default PDFQRCode
