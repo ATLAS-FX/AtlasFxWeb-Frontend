@@ -44,8 +44,7 @@ const Profile: React.FC = () => {
   const {
     data: profile,
     isLoading,
-    isError,
-    refetch
+    isError
   } = useQuery({
     queryKey: 'get-profile',
     queryFn: async () => {
