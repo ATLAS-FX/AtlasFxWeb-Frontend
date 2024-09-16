@@ -27,7 +27,7 @@ const Sidebar: React.FC = () => {
           <Link
             key={number}
             className={cn(
-              'w-full rounded-lg p-2 text-sm text-[#EFEFEF80] transition-all duration-200 ease-in-out hover:bg-[#efefef3f] hover:text-white',
+              'w-full rounded-lg p-2 px-6 text-base text-[#EFEFEF80] transition-all duration-200 ease-in-out hover:bg-[#efefef3f] hover:text-white',
               pathname.includes(path)
                 ? 'pointer-events-none bg-[#384578] text-white'
                 : 'bg-transparent'

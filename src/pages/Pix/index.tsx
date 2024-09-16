@@ -1,19 +1,24 @@
-import { IconDepositCoin, IconGroupUser, IconKey } from '@/components/icons'
-import { ButtonAtlas, Container, Title } from '@/components/layout'
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion'
+  IconCopyPaste,
+  IconDepositCoin,
+  IconGroupUser,
+  IconKey
+} from '@/components/icons'
+import { Container, Title } from '@/components/layout'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { useAtlas } from '@/contexts/AtlasContext'
-import { listPixButton } from '@/utils/PixListButtons'
-import { ChevronDown } from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const Pix: React.FC = () => {
-  const { setPixCopyPaste } = useAtlas()
   const navigate = useNavigate()
 
   const listPixActions = [
@@ -36,69 +41,50 @@ const Pix: React.FC = () => {
 
   return (
     <Container>
-      <Title title="Área Pix" back={() => navigate(-1)} />
-      <div className="flex flex-col gap-2">
-        <h4 className="text-lg font-bold">Enviar Pix</h4>
-        <p className="text-sm font-medium">
-          Escolha a chave para identificar quem vai receber
-        </p>
-        <div className="flex w-full items-center justify-evenly gap-2 py-4">
-          {listPixButton.map(({ type, name, icon: Icon }, number) => (
-            <Link
-              className="flex h-20 w-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-primary-default bg-transparent fill-primary-default text-primary-default shadow-md shadow-slate-400 drop-shadow-md transition-all duration-300 ease-out hover:bg-primary-default hover:fill-white hover:text-white"
-              key={`${type + number}`}
-              onClick={() => type === 'copy-paste' && setPixCopyPaste(true)}
-              to={type === 'copy-paste' ? `/payments` : `/pix/${type}`}
-            >
-              <Icon size={number === 4 ? 28 : 32} />
-              <span className="text-center text-xs font-medium">{name}</span>
-            </Link>
-          ))}
+      <Title
+        title="Área Pix"
+        subtitle="Envie seus PIX. Simples e rápido."
+        back={() => navigate(-1)}
+      />
+      <div className="flex flex-col gap-4">
+        <h4 className="text-sm text-system-cinza">Insira a chave pix:</h4>
+        <Input
+          type="text"
+          placeholder="Digite a chave pix"
+          className="w-full rounded-md border-[1px] border-system-cinza/25 p-6"
+        />
+        <div className="flex justify-end">
+          <Button className="flex items-center gap-2 bg-primary-default fill-system-neutro px-4 py-6 text-system-neutro">
+            <IconCopyPaste className="size-5" />
+            Copia e cola
+          </Button>
         </div>
       </div>
-      <div className="flex flex-row-reverse">
-        <Separator className="w-[52%] bg-secondary-default" />
-      </div>
-      <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
-        <AccordionItem value="item-1" className="border-0">
-          <AccordionTrigger>
-            <h2 className="text-xl font-bold">Use também</h2>
-            <ChevronDown size={24} className="transition-transform duration-300" />
-          </AccordionTrigger>
-          <AccordionContent>
-            <div className="flex items-start justify-between gap-2">
-              <div className="flex w-6/12 flex-col gap-2">
-                {listPixActions.map(({ title, icon: Icon, path }, number) => (
-                  <ButtonAtlas
-                    key={number}
-                    title={title}
-                    icon={Icon}
-                    click={() => navigate(path)}
-                  />
-                ))}
-              </div>
-              <div className="flex w-6/12 flex-col gap-4 px-4 text-xs font-normal">
-                <p>
-                  Bem-vindo à sua Área Pix, onde você pode aproveitar ao máximo essa
-                  revolucionária forma de transferência instantânea. Com o Pix, suas
-                  transações são mais rápidas, seguras e acessíveis do que nunca.
-                </p>
-                <p>
-                  Navegue por nossa plataforma intuitiva para enviar e receber
-                  pagamentos em segundos, sem a necessidade de informações tediosas
-                  como números de conta. É simples assim!
-                </p>
-                <p>
-                  Além disso, você pode gerenciar seus contatos favoritos, configurar
-                  pagamentos recorrentes e visualizar seu histórico de transações,
-                  tudo em um só lugar.
-                </p>
-                <p>Descubra uma nova maneira de fazer transações financeiras.</p>
-              </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      <Separator className="my-4 h-0.5 w-full bg-system-cinza/25" />
+      <Select>
+        <SelectTrigger className="border-system-cinza/25 p-6">
+          <SelectValue placeholder="Minhas chaves" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {listPixActions.map(({ title, icon: Icon, path }, number) => (
+              <SelectItem
+                value={title}
+                key={`button-${number}`}
+                onClick={() => navigate(path)}
+              >
+                <label className="flex items-center gap-4 fill-primary-default text-lg text-primary-default">
+                  <Icon className="size-6" />
+                  {title}
+                </label>
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <h4 className="rounded-md border-[1px] border-system-cinza/25 p-2 text-lg text-system-cinza">
+        Contatos
+      </h4>
     </Container>
   )
 }

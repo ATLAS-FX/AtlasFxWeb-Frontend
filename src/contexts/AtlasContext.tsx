@@ -64,13 +64,13 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   }
 
   const checkUserIsAuthenticated = () => {
-    const localToken = localStorage.getItem('atlas_token')
-    if (localToken !== null) {
-      setToken(localToken)
-      setIsAuthenticated(true)
-    } else {
-      setIsAuthenticated(false)
-    }
+    // const localToken = localStorage.getItem('atlas_token')
+    // if (localToken !== null) {
+    //   setToken(localToken)
+    setIsAuthenticated(true)
+    // } else {
+    // setIsAuthenticated(false)
+    // }
   }
 
   return (
