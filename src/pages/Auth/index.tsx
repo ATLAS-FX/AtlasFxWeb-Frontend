@@ -5,12 +5,10 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
-import AuthApi from '@/services/AuthApi'
-import { ErrorResponse } from '@/utils/ErrorResponse'
+import { useCheckHash, useGetCode, useGetKey } from '@/services/AuthApi'
 import { CheckCircle2, RotateCw } from 'lucide-react'
 import QRCode from 'qrcode.react'
-import { ChangeEvent, useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Login: React.FC = () => {
@@ -20,61 +18,61 @@ const Login: React.FC = () => {
   const [inputRef, setInputRef] = useState<string>('')
   const [genQRCode, setGenQRCode] = useState<boolean>(false)
   const [loginStatusModal, setLoginStatusModal] = useState<boolean>(false)
-
+  const { mutate: getKey, isLoading: loadGetKey, isError: errorGetKey } = useGetKey()
   const {
     data: gencode,
-    isLoading,
-    isError,
-    refetch
-  } = useQuery({
-    queryKey: 'get-qrcode',
-    queryFn: async () => {
-      const res = await AuthApi.getCode()
-      return res
-    }
-  })
-
+    isLoading: loadGetCode,
+    isError: errorGet,
+    refetch: GetCodeRefetch
+  } = useGetCode()
   const {
-    data: checkHash,
-    refetch: checkRefetch,
-    isError: checkError
-  } = useQuery({
-    queryKey: 'check-hash',
-    queryFn: async () => {
-      const res = await AuthApi.checkHash({ hash: gencode?.hash || '' })
-      setLoginStatusModal(true)
-      setTimeout(() => {
-        signIn(res.key)
-        setLoginStatusModal(false)
-        navigate('/')
-      }, 1250)
-    }
-  })
+    mutate: checkHash,
+    isLoading: loadCheck,
+    isError: errorCheck
+  } = useCheckHash()
 
-  const generateNewQRCode = () => {
-    refetch()
-    setGenQRCode(false)
-  }
+  const handleCheckHash = useCallback(() => {
+    checkHash(
+      { hash: gencode?.hash || '' },
+      {
+        onSuccess: (res) => {
+          if (res.key) {
+            signIn(res.key)
+            navigate('/')
+          }
+        },
+        onError: (e: any) => {
+          toast({
+            variant: 'destructive',
+            title: e.response?.data?.error,
+            description: 'Falha ao acessar sua conta PJ.'
+          })
+        }
+      }
+    )
+  }, [])
 
-  const checkValidate = async () => {
-    setLoginStatusModal(true)
+  const handleGetKey = useCallback(() => {
     const id_key = Number(inputRef)
-    await AuthApi.getKey({ id: id_key })
-      .then((res) => {
-        signIn(res.key)
-        navigate('/')
-      })
-      .catch((e: ErrorResponse) => {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.error,
-          description: 'Falha ao acessar sua conta PJ.'
-        })
-      })
-      .finally(() => {
-        setLoginStatusModal(false)
-      })
-  }
+    getKey(
+      { id: id_key },
+      {
+        onSuccess: (res) => {
+          if (res.key) {
+            signIn(res.key)
+            navigate('/')
+          }
+        },
+        onError: (e: any) => {
+          toast({
+            variant: 'destructive',
+            title: e.response?.data?.error,
+            description: 'Falha ao acessar sua conta PJ.'
+          })
+        }
+      }
+    )
+  }, [])
 
   useEffect(() => {
     if (!genQRCode) {
@@ -82,7 +80,7 @@ const Login: React.FC = () => {
         setGenQRCode(!genQRCode)
       }, 48000)
     }
-    if (isError) {
+    if (errorGet) {
       toast({
         variant: 'destructive',
         title: 'Falha ao carregar dados de usuários.',
@@ -90,11 +88,11 @@ const Login: React.FC = () => {
       })
     }
     setTimeout(() => {
-      if (checkError) {
-        checkRefetch()
+      if (errorCheck) {
+        GetCodeRefetch()
       }
     }, 1500)
-  }, [isError, genQRCode, checkHash])
+  }, [errorGet, genQRCode, checkHash])
 
   return (
     <>
@@ -148,14 +146,14 @@ const Login: React.FC = () => {
                   {genQRCode && (
                     <div className="absolute bottom-0 left-0 right-0 top-0 z-10 bg-background/80 backdrop-blur-[3px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div>
                   )}
-                  {isLoading ? (
+                  {loadGetCode ? (
                     <Skeleton className="h-[180px] w-[180px] rounded-md bg-primary/20" />
                   ) : (
                     <>
                       {genQRCode && (
                         <button
                           className="bg-prtext-primary-default absolute bottom-auto left-auto right-auto top-auto z-20 flex h-48 w-48 flex-col items-center justify-center gap-4 rounded-[50%] text-white"
-                          onClick={generateNewQRCode}
+                          onClick={() => GetCodeRefetch()}
                         >
                           <RotateCw size={42} />
                           <span className="w-10/12 text-center">
@@ -226,7 +224,7 @@ const Login: React.FC = () => {
               variant="ghost"
               className="w-fit p-0 hover:text-primary-default"
               disabled={inputRef.length < 1}
-              onClick={checkValidate}
+              onClick={handleGetKey}
             >
               <CheckCircle2 size={32} />
             </Button>

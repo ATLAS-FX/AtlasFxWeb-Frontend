@@ -6,7 +6,6 @@ import {
 } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
 import { IconType } from '@/types/iconType'
-import { ChevronRight } from 'lucide-react'
 import React from 'react'
 
 interface ButtonAtlasProps {
@@ -35,12 +34,15 @@ const ButtonAtlas: React.FC<ButtonAtlasProps> = ({
   return (
     <div
       className={cn(
-        'flex items-center gap-4 rounded-xl fill-primary-default p-2 text-base font-medium text-primary-default transition-transform duration-300',
+        'flex w-fit cursor-pointer items-center gap-3 rounded-md bg-primary-default fill-system-neutro p-3 text-base font-medium text-system-neutro transition-transform duration-300',
         classButton,
         listAction ? 'justify-between' : ''
       )}
+      onClick={click}
     >
-      <div className={cn('flex items-center justify-start gap-3 text-lg', classDiv)}>
+      <div
+        className={cn('flex items-center justify-start gap-3 text-base', classDiv)}
+      >
         {Icon && <Icon size={sizeIcon} />}
         {title}
       </div>
@@ -63,11 +65,6 @@ const ButtonAtlas: React.FC<ButtonAtlasProps> = ({
           ))}
         </div>
       )}
-      <ChevronRight
-        onClick={click}
-        className="cursor-pointer text-system-cinza transition-all duration-200 ease-in-out hover:scale-125 hover:rounded-full hover:bg-primary-hover hover:text-white"
-        size={24}
-      />
     </div>
   )
 }

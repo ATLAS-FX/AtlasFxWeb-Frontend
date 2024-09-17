@@ -1,18 +1,18 @@
-import { IconAlert } from '@/components/icons'
-import {
-  ButtonNext,
-  ModalDefault,
-  TwoFactorAuthValidator
-} from '@/components/layout'
-import { Separator } from '@/components/ui/separator'
+import { ButtonNext } from '@/components/layout'
+import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
-import PaymentApi from '@/services/PaymentApi'
+import { useConsultPayment, useSendPayment } from '@/services/PaymentApi'
 import { PaymentType } from '@/types/PaymentType'
-import { ErrorResponse } from '@/utils/ErrorResponse'
-import { formattedDoc } from '@/utils/GenerateFormatted'
 import md5 from 'md5'
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
+import React, {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState
+} from 'react'
+import ModalPayment from './ModalPayment'
 
 interface IPaymentForm {
   flow: {
@@ -37,8 +37,8 @@ interface IPaymentForm {
 
 const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) => {
   const [stateModalPayment, setStateModalPayment] = useState<boolean>(false)
-  const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
+  const { mutate: consultPayment, isLoading: sendConsult } = useConsultPayment()
+  const { mutate: sendPayment, isLoading: sendLoad } = useSendPayment()
 
   const formatLineDigit = (value: string): string => {
     // Remover todos os caracteres não numéricos
@@ -67,71 +67,85 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
   }
 
   const handleConsultPayment = async () => {
-    setLoading(true)
-    await PaymentApi.consultPayment({
-      number: flow.textValue,
-      type: flow.type
-    })
-      .then((res) => {
-        setData(res)
-        setStateModalPayment(true)
-      })
-      .catch((e: ErrorResponse) => {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.error,
-          description: 'repita o processo.'
-        })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    consultPayment(
+      {
+        number: flow.textValue,
+        type: flow.type
+      },
+      {
+        onSuccess: (res) => {
+          setData(res)
+          setStateModalPayment(true)
+        },
+        onError: (e: any) => {
+          setStateModalPayment(true)
+          toast({
+            variant: 'destructive',
+            title: e?.message || '',
+            description: 'repita o processo.'
+          })
+        }
+      }
+    )
   }
 
   const handleSendPayment = async () => {
-    setLoading(true)
-    await PaymentApi.sendPayment({
-      number: flow.textValue,
-      type: flow.type,
-      pwd: md5(flow.pwdCode)
-    })
-      .then((res) => {
-        toast({
-          variant: 'success',
-          title: 'Pagamento feito com sucesso!',
-          description: res.success
-        })
-        setFlow((prev) => ({ ...prev, step: 2, openModalPwd: false }))
-      })
-      .catch((e: ErrorResponse) => {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.error,
-          description: 'repita o processo.'
-        })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    sendPayment(
+      {
+        number: flow.textValue,
+        type: flow.type,
+        pwd: md5(flow.pwdCode)
+      },
+      {
+        onSuccess: (res: any) => {
+          console.log(res)
+          setFlow((prev) => ({ ...prev, step: 2, openModalPwd: false }))
+        },
+        onError: (e: any) => {
+          setStateModalPayment(true)
+          toast({
+            variant: 'destructive',
+            title: e?.message || '',
+            description: 'repita o processo.'
+          })
+        }
+      }
+    )
   }
+
+  useEffect(() => {
+    console.log('flow', flow)
+    console.log(stateModalPayment)
+  }, [flow, stateModalPayment])
 
   return (
     <>
-      <h4 className="text-base font-medium">
+      <h4 className="text-base font-medium text-system-cinza">
         {flow.type === 'boleto' ? 'Digite o código de barras' : 'Cole o Pix'}
       </h4>
-      <div className="flex flex-col gap-2 p-2">
-        <textarea
-          className={cn(
-            'w-full rounded-xl border-2 border-primary-default p-2 font-medium shadow-none',
-            flow.type === 'boleto' ? 'text-3xl' : 'text-2xl'
-          )}
-          maxLength={flow.type === 'boleto' ? 51 : 2000}
-          style={{ resize: 'none' }}
-          rows={5}
-          value={flow.textValue}
-          onChange={handleTextChange}
-        />
+      <div className="flex flex-col gap-2">
+        {flow.type === 'boleto' ? (
+          <textarea
+            className={cn(
+              'w-full rounded-md border-2 border-system-cinza bg-transparent p-2 text-2xl font-medium shadow-none'
+            )}
+            maxLength={flow.type === 'boleto' ? 51 : 2000}
+            style={{ resize: 'none' }}
+            rows={5}
+            value={flow.textValue}
+            onChange={handleTextChange}
+          />
+        ) : (
+          <Input
+            className={cn(
+              'w-full rounded-md border-2 border-system-cinza bg-transparent p-2 text-xl font-medium shadow-none'
+            )}
+            value={flow.textValue}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setFlow((prev) => ({ ...prev, textValue: e.target.value }))
+            }
+          />
+        )}
       </div>
       <div className="mt-1 flex justify-end">
         <ButtonNext
@@ -141,131 +155,30 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
               ? flow.textValue.length <= 50
               : flow.textValue.length <= 1
           }
-          loading={loading}
+          loading={sendConsult}
           func={handleConsultPayment}
         />
       </div>
-      <ModalDefault
-        title="Para seguir, verifique e confirme as informações."
-        body={
-          <>
-            <Separator className="h-[2px] bg-primary-default" />
-            <div className="flex items-center justify-between gap-2">
-              <IconAlert className="w-56" />
-              <h4 className="text-sm font-medium">
-                Antes de finalizar a operação, confirme as informações
-                cuidadosamente, uma vez que o débito realizado não poderá ser
-                revertido.
-              </h4>
-            </div>
-            <Separator className="h-[2px] bg-primary-default" />
-            <div className="flex flex-col gap-2 text-sm font-normal text-primary-default">
-              <div className="flex flex-col gap-1">
-                <label>
-                  {flow.type === 'boleto' ? 'Código de barras: ' : 'Código do Pix'}
-                </label>
-                <h4 className="text-xl font-bold">{flow.textValue}</h4>
-              </div>
-              {flow.type === 'boleto' ? (
-                <>
-                  <div className="flex items-center gap-2">
-                    <label>Data de Vencimento:</label>
-                    <h4 className="text-base font-semibold">
-                      {new Date(data?.expired_date || '').toLocaleDateString()}
-                    </h4>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label>Data de Pagamento:</label>
-                    <h4 className="text-base font-semibold">
-                      {new Date().toLocaleDateString()}
-                    </h4>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label>Valor nominal:</label>
-                    <h4 className="text-base font-semibold">R$ {data?.price}</h4>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label>Descontos:</label>
-                    <h4 className="text-base font-semibold">{data?.fee}</h4>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label>Encargos:</label>
-                    <h4 className="text-base font-semibold">{data?.charges}</h4>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <label>Valor total a receber:</label>
-                    <h4 className="text-base font-semibold">
-                      R$ {data?.receviePrice}
-                    </h4>
-                  </div>
-                </>
-              ) : (
-                <></>
-              )}
-              <div className="flex items-center gap-2">
-                <label>Nome do Beneficiário:</label>
-                <h4 className="text-base font-semibold">{data?.owner}</h4>
-              </div>
-              <div className="flex items-center gap-2">
-                <label>Documento:</label>
-                <h4 className="text-base font-semibold">
-                  {formattedDoc(data?.document || '', 'cnpj')}
-                </h4>
-              </div>
-            </div>
-            <Separator className="bg-primary-default" />
-          </>
-        }
+      <ModalPayment
+        data={data}
+        state={flow}
+        setState={setFlow}
         openModal={stateModalPayment}
         setOpenModal={setStateModalPayment}
-        key={'modal-pix'}
-        ArrayButton={
-          <>
-            <ButtonNext
-              title="Prosseguir para a senha"
-              func={() => {
-                setStateModalPayment(!stateModalPayment)
-                setOpenModalPwd(!openModalPwd)
-              }}
-              classPlus="w-full rounded-xl bg-[#C8D753] text-base font-bold text-primary-default hover:bg-primary-default hover:text-secondary-default"
-            />
-          </>
-        }
+        ConsultPaymentFunc={handleConsultPayment}
+        SendPaymentFunc={handleSendPayment}
       />
-      <ModalDefault
-        openModal={openModalPwd}
-        setOpenModal={setOpenModalPwd}
-        body={
-          <>
-            <h4 className="text-sm font-semibold">
-              Para seguir, insira sua senha de 6 dígitos.
-            </h4>
-            <Separator className="bg-primary-default" />
-            <TwoFactorAuthValidator
-              className="text-primary-default"
-              codeLength={6}
-              onValidCode={(code) =>
-                setFlow((prev) => ({
-                  ...prev,
-                  pwdCode: code
-                }))
-              }
-            />
-            <Separator className="bg-primary-default" />
-          </>
-        }
-        ArrayButton={
-          <>
-            <ButtonNext
-              title="Enviar agora"
-              disabled={flow.pwdCode.trim() === ''}
-              func={handleSendPayment}
-              loading={!loading}
-              classPlus="rounded-xl w-full bg-[#008000]"
-            />
-          </>
-        }
-      />
+      {/* {stepPayment.step === 2 && (
+        <PaymentSuccess
+          type={stepPayment.type}
+          amount={dataPayment?.price.toString() || ''}
+          name={dataPayment?.owner.toString() || ''}
+          document={dataPayment?.document || ''}
+          barcode={dataPayment?.barcode || ''}
+          expired=""
+          time={''}
+        />
+      )} */}
     </>
   )
 }

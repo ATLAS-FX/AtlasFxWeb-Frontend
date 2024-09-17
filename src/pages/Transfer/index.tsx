@@ -1,12 +1,11 @@
 import { IconPaperPlane } from '@/components/icons'
 import { ButtonAtlas, Container, Title } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
+import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
-import PixApi from '@/services/PixApi'
-import { ContactsPixType } from '@/types/PixType'
+import { useListContacts } from '@/services/PixApi'
 import { formattedDoc } from '@/utils/GenerateFormatted'
 import React, { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import TransferForm from './TransferForm'
 import TransferList from './TransferList'
@@ -14,7 +13,7 @@ import TransferStep from './TransferStep'
 
 const Transfer: React.FC = () => {
   const navigate = useNavigate()
-  const [data, setData] = useState<ContactsPixType[]>([])
+  const { data: listContacts, isLoading, isError } = useListContacts()
   const [stateForm, setStateForm] = useState<{
     step: number
     bank: string
@@ -37,15 +36,6 @@ const Transfer: React.FC = () => {
     docType: '',
     doc: '',
     desc: ''
-  })
-
-  const { isError } = useQuery({
-    queryKey: 'list-pix-keys',
-    queryFn: async () => {
-      const res = await PixApi.listPixContacts()
-      setData(res)
-      return res
-    }
   })
 
   useEffect(() => {
@@ -98,7 +88,11 @@ const Transfer: React.FC = () => {
       <div className="flex flex-row-reverse">
         <Separator className="w-[52%] bg-secondary-default" />
       </div>
-      {stateForm.step === 0 && <TransferList data={data} />}
+      {stateForm.step === 0 && isLoading ? (
+        <Skeleton className="h-8 w-5/12 max-w-[1330px] rounded-md" />
+      ) : (
+        <TransferList data={listContacts || []} />
+      )}
       {stateForm.step === 1 && (
         <TransferForm form={stateForm} setForm={setStateForm} />
       )}

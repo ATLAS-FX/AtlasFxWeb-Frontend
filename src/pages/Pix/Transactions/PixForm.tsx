@@ -10,11 +10,17 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
-import PixApi from '@/services/PixApi'
-import { ErrorResponse } from '@/utils/ErrorResponse'
+import { useSendPix } from '@/services/PixApi'
 import { formatedPrice, formattedDoc } from '@/utils/GenerateFormatted'
 import md5 from 'md5'
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState
+} from 'react'
 
 interface IPixForm {
   keyPix: string
@@ -29,45 +35,57 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
   const { user } = useAtlas()
   const [stateModalPix, setStateModalPix] = useState<boolean>(false)
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
   const [pwdCode, setPwdCode] = useState<string>('')
+  const { mutate: sendPix, isLoading, isError } = useSendPix()
   const [formSendPix, setFormSendPix] = useState<{
     amount: string
     desc: string
     save: number
   }>({ amount: '0,00', desc: '', save: 0 })
 
-  const handleSendPix = async () => {
-    setLoading(true)
+  const handleSendPix = useCallback(async () => {
     const reversePrice = Number(formSendPix.amount.replace(',', '').replace('.', ''))
-    await PixApi.sendPix({
-      amount: reversePrice,
-      desc: formSendPix.desc || '',
-      key: keyPix,
-      save: formSendPix.save,
-      pwd: md5(pwdCode)
-    })
-      .then((res) => {
-        toast({
-          variant: 'success',
-          title: 'Seu código foi confirmado com sucesso!',
-          description: res.success
-        })
-        amount(formSendPix.amount !== null ? formSendPix.amount.toString() : '')
-        setOpenModalPwd(false)
-        step(2)
+    sendPix(
+      {
+        amount: reversePrice,
+        desc: formSendPix.desc || '',
+        key: keyPix,
+        save: formSendPix.save,
+        pwd: md5(pwdCode)
+      },
+      {
+        onSuccess: (res) => {
+          toast({
+            variant: 'success',
+            title: 'Seu código foi confirmado com sucesso!',
+            description: res.success
+          })
+          amount(
+            formSendPix.amount !== null ? formSendPix.amount.toString() : '0,00'
+          )
+          setOpenModalPwd(false)
+          step(2)
+        },
+        onError: (e: any) => {
+          toast({
+            variant: 'destructive',
+            title: e.response?.data?.error,
+            description: 'repita o processo.'
+          })
+        }
+      }
+    )
+  }, [sendPix])
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        variant: 'destructive',
+        title: 'Falha.',
+        description: 'Por favor tente mais tarde!'
       })
-      .catch((e: ErrorResponse) => {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.error,
-          description: 'repita o processo.'
-        })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }
+    }
+  }, [isError])
 
   return (
     <>
@@ -218,7 +236,7 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
             <ButtonNext
               title="Enviar agora"
               disabled={pwdCode.trim() === ''}
-              loading={loading}
+              loading={isLoading}
               func={handleSendPix}
               classPlus="rounded-xl w-full bg-[#008000]"
             />

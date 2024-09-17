@@ -1,30 +1,17 @@
-import { IconEyeReveal } from '@/components/icons'
+import { IconEyeReveal, IconPoint } from '@/components/icons'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
-import UserApi from '@/services/UserApi'
-import { UserType } from '@/types/userType'
+import { getInfoUser } from '@/services/UserApi'
 import { formatedHideValue, formatedPrice } from '@/utils/GenerateFormatted'
 import React, { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
 import { BlockPad } from './BlockPad'
 import { Movements } from './Movements'
 
 const Aside: React.FC = () => {
   const { user, setUser } = useAtlas()
   const [hideValue, setHideValue] = useState<boolean>(false)
-
-  const {
-    data: infoUser,
-    isLoading,
-    isError
-  } = useQuery<UserType>({
-    queryKey: 'get-info-user',
-    queryFn: async () => {
-      const res = await UserApi.getInfo()
-      return res
-    }
-  })
+  const { data: infoUser, isLoading, isError } = getInfoUser()
 
   useEffect(() => {
     if (infoUser) {
@@ -50,7 +37,7 @@ const Aside: React.FC = () => {
               className="mx-4 rounded-2xl bg-primary-default"
               children={
                 <div className="flex w-full items-center justify-between">
-                  <div className="flex flex-col justify-center gap-2 text-white">
+                  <div className="flex flex-col justify-center gap-2 text-system-neutro">
                     <h2 className="text-sm font-medium">Saldo em conta: </h2>
                     <h3 className="text-lg font-medium  ">
                       R${' '}
@@ -58,14 +45,16 @@ const Aside: React.FC = () => {
                         ? formatedPrice(user.amount) || '0,00'
                         : formatedHideValue(user.amount || '0,00')}
                     </h3>
-                    <h3>
-                      Agência {user.agency} Conta: {user.account}
+                    <h3 className="flex items-center gap-2">
+                      Agência {user.agency}
+                      <IconPoint className="size-1" />
+                      Conta: {user.account}
                     </h3>
                   </div>
                   <button onClick={() => setHideValue(!hideValue)}>
                     <IconEyeReveal
                       size={24}
-                      className="mr-2 fill-white transition-all duration-200 ease-in-out hover:scale-125 hover:fill-white/70"
+                      className="mr-2 fill-system-neutro transition-all duration-200 ease-in-out hover:scale-125 hover:fill-white/70"
                     />
                   </button>
                 </div>
@@ -105,7 +94,7 @@ const Aside: React.FC = () => {
                       </li>
                     </ul>
                   ) : (
-                    <h2 className="py-1 text-center font-semibold text-secondary-default">
+                    <h2 className="py-1 text-center font-semibold text-system-cinza">
                       Não há lançamentos
                     </h2>
                   )}

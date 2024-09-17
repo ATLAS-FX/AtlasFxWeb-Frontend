@@ -10,8 +10,7 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
-import TransferApi from '@/services/TransferApi'
-import { ErrorResponse } from '@/utils/ErrorResponse'
+import { useTransferApi } from '@/services/TransferApi'
 import { formatedPrice, formattedDoc } from '@/utils/GenerateFormatted'
 import React, {
   ChangeEvent,
@@ -54,41 +53,52 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
   const { user } = useAtlas()
   const [stateModalPix, setStateModalPix] = useState<boolean>(false)
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
   const [pwdCode, setPwdCode] = useState<string>('')
+  const { mutate: SendApi, isLoading, isError } = useTransferApi()
 
   const handleSendTED = async () => {
-    setLoading(true)
-    await TransferApi.sendTED({
-      account: step.account,
-      account_type: step.typeAccount,
-      agency: step.agency,
-      amount: step.amount,
-      bank: step.bank,
-      category: 'TED',
-      desc: step.desc,
-      doc: step.doc,
-      doc_type: step.docType,
-      name: step.name
-    })
-      .then(() => {
-        setOpenModalPwd(false)
-      })
-      .catch((e: ErrorResponse) => {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.error,
-          description: 'repita o processo.'
-        })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    SendApi(
+      {
+        account: step.account,
+        account_type: step.typeAccount,
+        agency: step.agency,
+        amount: step.amount,
+        bank: step.bank,
+        category: 'TED',
+        desc: step.desc,
+        doc: step.doc,
+        doc_type: step.docType,
+        name: step.name
+      },
+      {
+        onSuccess: (res: any) => {
+          console.log(res)
+          setOpenModalPwd(false)
+        },
+        onError: (e: any) => {
+          toast({
+            variant: 'destructive',
+            title: e.response?.data?.error,
+            description: 'repita o processo.'
+          })
+        }
+      }
+    )
   }
 
   useEffect(() => {
     console.log(Number(step.amount.replace(/\D/g, '')), Number(user.amount))
   }, [step])
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        variant: 'destructive',
+        title: 'Falha.',
+        description: 'Por favor tente mais tarde!'
+      })
+    }
+  }, [isError])
 
   return (
     <>
@@ -246,7 +256,7 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
             <ButtonNext
               title="Enviar agora"
               disabled={pwdCode.trim() === ''}
-              loading={loading}
+              loading={isLoading}
               func={handleSendTED}
               classPlus="rounded-xl w-full bg-[#008000]"
             />

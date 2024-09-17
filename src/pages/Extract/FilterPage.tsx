@@ -6,9 +6,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
-import ExtractApi from '@/services/ExtractApi'
-import { ErrorResponse } from '@/utils/ErrorResponse'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { useExtractInfo } from '@/services/ExtractApi'
+import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
 
 interface FilterPageProps {
   state: {
@@ -36,7 +35,7 @@ interface FilterPageProps {
 }
 
 const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
-  const [loading, setLoading] = useState(false)
+  const { mutate: getExtractInfo, isLoading, isError } = useExtractInfo()
 
   const periodDays: Array<number> = [7, 15, 30, 60, 90]
 
@@ -59,34 +58,44 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
     }))
   }
 
-  const handleFilterPage = async () => {
-    setLoading(true)
-    await ExtractApi.getExtractInfo({
-      start: state?.start || '',
-      end: state?.end || '',
-      type: state?.type || ''
-    })
-      .then(() => {
-        setState((prev) => ({
-          ...prev,
-          stepPage: 0
-        }))
-      })
-      .catch((e: ErrorResponse) => {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.error,
-          description: 'repita o processo.'
-        })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }
+  const handleFilterPage = useCallback(async () => {
+    getExtractInfo(
+      {
+        start: state?.start || '',
+        end: state?.end || '',
+        type: state?.type || ''
+      },
+      {
+        onSuccess: () => {
+          setState((prev) => ({
+            ...prev,
+            stepPage: 0
+          }))
+        },
+        onError: (e: any) => {
+          toast({
+            variant: 'destructive',
+            title: e.response?.data?.error,
+            description: 'repita o processo.'
+          })
+        }
+      }
+    )
+  }, [getExtractInfo])
 
   const isDateValid = (dateString: string) => {
     return !isNaN(new Date(dateString).getTime())
   }
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        variant: 'destructive',
+        title: 'Falha ao carregar lista de contatos.',
+        description: 'Por favor tente mais tarde!'
+      })
+    }
+  }, [isError])
 
   return (
     <div className="flex flex-col gap-4">
@@ -204,7 +213,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
         ))}
       </div>
       <div className="mt-4 flex justify-end">
-        <ButtonNext title="Prosseguir" loading={loading} func={handleFilterPage} />
+        <ButtonNext title="Prosseguir" loading={isLoading} func={handleFilterPage} />
       </div>
     </div>
   )

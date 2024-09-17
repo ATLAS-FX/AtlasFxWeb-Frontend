@@ -5,11 +5,13 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
+import { cn } from '@/lib/utils'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 
 interface ModalDeleteProps {
   openModal: boolean
   setOpenModal: Dispatch<SetStateAction<boolean>>
+  classPlus?: string
   title?: string
   body: ReactNode
   ArrayButton: ReactNode
@@ -18,16 +20,21 @@ interface ModalDeleteProps {
 const ModalDefault: React.FC<ModalDeleteProps> = ({
   openModal,
   setOpenModal,
+  classPlus,
   title,
   body,
   ArrayButton
 }) => {
   return (
     <Dialog open={openModal} onOpenChange={() => setOpenModal(false)}>
-      <DialogContent className="min-w-96 max-w-96 gap-4 rounded-xl bg-white sm:max-w-56">
+      <DialogContent
+        className={cn('min-w-96 max-w-96 gap-4 rounded-xl bg-white', classPlus)}
+      >
         {title && (
           <DialogHeader className="flex flex-col gap-1">
-            <DialogTitle className="m-auto text-center text-xl">{title}</DialogTitle>
+            <DialogTitle className="text-start text-base text-primary-default">
+              {title}
+            </DialogTitle>
           </DialogHeader>
         )}
         {body}

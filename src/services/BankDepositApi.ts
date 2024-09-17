@@ -1,21 +1,32 @@
 import { BankDepositType } from '@/types/DepositType'
+import { useMutation } from 'react-query'
 import { api } from './api'
 
-class BankDepositApi {
-  public async getBankDepositInfo() {
-    const res = await api.post<BankDepositType>('portal/deposit/info')
-    return res.data
-  }
-
-  public async createBarCode(params: { amount: string }) {
-    const res = await api.post('portal/deposit/barcode', params)
-    return res.data
-  }
-
-  public async createQrCode(params: { amount: string }) {
-    const res = await api.post('portal/deposit/qrcode', params)
-    return res.data
-  }
+const useBankDepositInfo = () => {
+  return useMutation(async (): Promise<BankDepositType> => {
+    const { data } = await api.post('/portal/deposit/info')
+    return data
+  })
 }
 
-export default new BankDepositApi()
+const useCreateBarCode = () => {
+  return useMutation(async (params: { amount: string }) => {
+    const { data } = await api.post<BankDepositType>(
+      '/portal/deposit/barcode',
+      params
+    )
+    return data
+  })
+}
+
+const useCreateQrCode = () => {
+  return useMutation(async (params: { amount: string }) => {
+    const { data } = await api.post<BankDepositType>(
+      '/portal/deposit/qrcode',
+      params
+    )
+    return data
+  })
+}
+
+export { useBankDepositInfo, useCreateBarCode, useCreateQrCode }

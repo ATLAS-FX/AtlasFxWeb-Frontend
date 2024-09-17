@@ -1,11 +1,12 @@
 import { TransferType } from '@/types/TransferType'
+import { useMutation } from 'react-query'
 import { api } from './api'
 
-class TransferApi {
-  public async sendTED(params: TransferType) {
-    const res = await api.post('portal/ted/send', params)
-    return res.data
-  }
+const useTransferApi = () => {
+  return useMutation(async (params: TransferType) => {
+    const { data } = await api.post('/portal/ted/send', params)
+    return data
+  })
 }
 
-export default new TransferApi()
+export { useTransferApi }

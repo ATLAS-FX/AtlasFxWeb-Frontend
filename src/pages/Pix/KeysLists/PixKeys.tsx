@@ -3,9 +3,8 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
-import PixApi from '@/services/PixApi'
+import { useListKeys } from '@/services/PixApi'
 import { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import CreatePix from './CreatePix'
 import KeyPixSuccess from './KeysSuccess'
@@ -14,19 +13,7 @@ import ListOfKeys from './ListOfKeys'
 const PixKeys: React.FC = () => {
   const navigate = useNavigate()
   const [stepKeyPix, setStepKeyPix] = useState<number>(0)
-
-  const {
-    data: listMyKeys,
-    isLoading,
-    isError,
-    refetch
-  } = useQuery({
-    queryKey: 'list-pix-keys',
-    queryFn: async () => {
-      const res = await PixApi.listPixKeys()
-      return res
-    }
-  })
+  const { data: listMyKeys, isLoading, isError, refetch } = useListKeys()
 
   useEffect(() => {
     if (isError) {

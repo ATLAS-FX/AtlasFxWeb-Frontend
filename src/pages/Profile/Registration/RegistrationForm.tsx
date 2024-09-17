@@ -7,10 +7,9 @@ import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
-import UserApi from '@/services/UserApi'
-import { ErrorResponse } from '@/utils/ErrorResponse'
+import { updateAddress } from '@/services/UserApi'
 import md5 from 'md5'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react'
 
 interface IRegistrationForm {
   code: string
@@ -24,8 +23,8 @@ export const RegistrationForm: React.FC<IRegistrationForm> = ({
   refetch
 }) => {
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
   const [pwdCode, setPwdCode] = useState<string>('')
+  const { mutate: update, isLoading, isError } = updateAddress()
 
   const [stateChangeAddress, setStateChangeAddress] = useState<{
     cep: string
@@ -45,41 +44,51 @@ export const RegistrationForm: React.FC<IRegistrationForm> = ({
     uf: ''
   })
 
-  const handleUpdateAddressProfile = async () => {
-    setLoading(true)
-    await UserApi.updateAddress({
-      code: code,
-      city: stateChangeAddress.cidade,
-      district: stateChangeAddress.bairro,
-      pwd: md5(pwdCode),
-      st_comp: stateChangeAddress.complemento,
-      st_number: stateChangeAddress.numero,
-      state: stateChangeAddress.cidade,
-      street: stateChangeAddress.logradouro,
-      uf: stateChangeAddress.uf,
-      zip: stateChangeAddress.cep
-    })
-      .then((res) => {
-        toast({
-          variant: 'success',
-          title: 'Seu código foi confirmado com sucesso!',
-          description: res.success
-        })
-        refetch()
-        setOpenModalPwd(false)
-        step(3)
+  const handleUpdateAddressProfile = useCallback(async () => {
+    update(
+      {
+        code: code,
+        city: stateChangeAddress.cidade,
+        district: stateChangeAddress.bairro,
+        pwd: md5(pwdCode),
+        st_comp: stateChangeAddress.complemento,
+        st_number: stateChangeAddress.numero,
+        state: stateChangeAddress.cidade,
+        street: stateChangeAddress.logradouro,
+        uf: stateChangeAddress.uf,
+        zip: stateChangeAddress.cep
+      },
+      {
+        onSuccess: (res) => {
+          toast({
+            variant: 'success',
+            title: 'Seu código foi confirmado com sucesso!',
+            description: res.success
+          })
+          refetch()
+          setOpenModalPwd(false)
+          step(3)
+        },
+        onError: (e: any) => {
+          toast({
+            variant: 'destructive',
+            title: e.response?.data?.error,
+            description: 'Preencha novamente'
+          })
+        }
+      }
+    )
+  }, [update])
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        variant: 'destructive',
+        title: 'Falha.',
+        description: 'Por favor tente mais tarde!'
       })
-      .catch((e: ErrorResponse) => {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.error,
-          description: 'Preencha novamente'
-        })
-      })
-      .finally(() => {
-        setLoading(true)
-      })
-  }
+    }
+  }, [isError])
 
   const isFormValid = Object.values(stateChangeAddress).every(
     (value) => value.trim() !== ''
@@ -154,7 +163,7 @@ export const RegistrationForm: React.FC<IRegistrationForm> = ({
               <ButtonNext
                 disabled={pwdCode.length === 6}
                 title="Enviar agora"
-                loading={loading}
+                loading={isLoading}
                 func={handleUpdateAddressProfile}
                 classPlus="rounded-xl w-full bg-[#008000]"
               />

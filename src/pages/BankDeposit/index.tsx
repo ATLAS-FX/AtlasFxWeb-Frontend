@@ -1,15 +1,15 @@
 import { Container, Title } from '@/components/layout'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
-import BankDepositApi from '@/services/BankDepositApi'
+import { useBankDepositInfo } from '@/services/BankDepositApi'
 import { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import PaymentBankDeposit from './PaymentBankDeposit'
 import ProfileBankDeposit from './ProfileBankDeposit'
 
 const BankDeposit: React.FC = () => {
   const navigate = useNavigate()
+  const { data: infoBankDeposit, isLoading, isError } = useBankDepositInfo()
   const [stepBankDeposit, setStepBankDeposit] = useState<{
     typePayment: string
     stepPage: number
@@ -18,7 +18,6 @@ const BankDeposit: React.FC = () => {
     key: string
     barcode: string
     qrcode: string
-    loading: boolean
   }>({
     typePayment: '',
     stepPage: 0,
@@ -26,20 +25,7 @@ const BankDeposit: React.FC = () => {
     amount: '0,00',
     key: '',
     barcode: '',
-    qrcode: '',
-    loading: false
-  })
-
-  const {
-    data: infoBankDeposit,
-    isLoading,
-    isError
-  } = useQuery({
-    queryKey: 'list-deposit',
-    queryFn: async () => {
-      const res = await BankDepositApi.getBankDepositInfo()
-      return res
-    }
+    qrcode: ''
   })
 
   useEffect(() => {

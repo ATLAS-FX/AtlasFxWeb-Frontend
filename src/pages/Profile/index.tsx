@@ -9,10 +9,9 @@ import { ButtonAtlas, Container, Title } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
-import UserApi from '@/services/UserApi'
+import { getProfile } from '@/services/UserApi'
 import { handleCopyClick } from '@/utils/Copy&Paste'
 import { useEffect } from 'react'
-import { useQuery } from 'react-query'
 import { Link, useNavigate } from 'react-router-dom'
 
 const listLinks = [
@@ -40,18 +39,7 @@ const listLinks = [
 
 const Profile: React.FC = () => {
   const navigate = useNavigate()
-
-  const {
-    data: profile,
-    isLoading,
-    isError
-  } = useQuery({
-    queryKey: 'get-profile',
-    queryFn: async () => {
-      const res = await UserApi.getProfile()
-      return res
-    }
-  })
+  const { data: profile, isLoading, isError } = getProfile()
 
   useEffect(() => {
     if (isError) {

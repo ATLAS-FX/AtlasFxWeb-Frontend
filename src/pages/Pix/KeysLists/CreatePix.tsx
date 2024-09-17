@@ -10,12 +10,18 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
-import PixApi from '@/services/PixApi'
-import { ErrorResponse } from '@/utils/ErrorResponse'
+import { useConfirmCreatedKeyPix, useCreatedKeyPix } from '@/services/PixApi'
 import { generatePixKey } from '@/utils/GenerateCode'
 import { ListMask } from '@/utils/ListMask'
 import { listPixButton } from '@/utils/PixListButtons'
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState
+} from 'react'
 
 interface ICreatePix {
   refetch: () => {}
@@ -23,10 +29,19 @@ interface ICreatePix {
 }
 
 const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
-  const [loading, setLoading] = useState<boolean>(false)
   const [stateModalPix, setStateModalPix] = useState<boolean>(false)
   const [openModalPwd, setOpenModalPwd] = useState<boolean>(false)
   const [pwdCode, setPwdCode] = useState<string>('')
+  const {
+    mutate: createdKeyPix,
+    isLoading: loadCreated,
+    isError: errorCreated
+  } = useCreatedKeyPix()
+  const {
+    mutate: confirmCreatedKeyPix,
+    isLoading: loadConfirm,
+    isError: errorConfirm
+  } = useConfirmCreatedKeyPix()
   const [formCreateKeyPix, setFormCreateKeyPix] = useState<{
     step: number
     type: string
@@ -41,53 +56,59 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
 
   const validNames = new Set(['CNPJ', 'CPF', 'Celular', 'E-mail', 'Chave aleatória'])
 
-  const handleCreateKeyPix = async (type: string, key: string) => {
-    setLoading(true)
-    await PixApi.createdKeyPix({ key_type: type, key_code: key })
-      .then((res) => {
-        toast({
-          variant: 'success',
-          title: 'Seu chave pix foi criada com sucesso!',
-          description: res.success
-        })
-        refetch()
-        step(2)
-      })
-      .catch((e: ErrorResponse) => {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.error,
-          description: 'Erro ao criada chave pix'
-        })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }
+  const handleCreateKeyPix = useCallback(
+    async (type: string, key: string) => {
+      createdKeyPix(
+        { key_type: type, key_code: key },
+        {
+          onSuccess: (res) => {
+            toast({
+              variant: 'success',
+              title: 'Seu chave pix foi criada com sucesso!',
+              description: res.success
+            })
+            refetch()
+            step(2)
+          },
+          onError: (e: any) => {
+            toast({
+              variant: 'destructive',
+              title: e.response?.data?.error,
+              description: 'Erro ao criada chave pix'
+            })
+          }
+        }
+      )
+    },
+    [createdKeyPix, refetch, step]
+  )
 
-  const handleConfirmCreatePix = async (type: string) => {
-    setLoading(true)
-    await PixApi.confirmCreatedKeyPix({ type: type, code: pwdCode })
-      .then((res) => {
-        toast({
-          variant: 'success',
-          title: 'Seu chave pix foi criada com sucesso!',
-          description: res.success
-        })
-        refetch()
-        step(2)
-      })
-      .catch((e: ErrorResponse) => {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.error,
-          description: 'Erro ao criada chave pix'
-        })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }
+  const handleConfirmCreatePix = useCallback(
+    async (type: string) => {
+      confirmCreatedKeyPix(
+        { type: type, code: pwdCode },
+        {
+          onSuccess: (res) => {
+            toast({
+              variant: 'success',
+              title: 'Seu chave pix foi criada com sucesso!',
+              description: res.success
+            })
+            refetch()
+            step(2)
+          },
+          onError: (e: any) => {
+            toast({
+              variant: 'destructive',
+              title: e.response?.data?.error,
+              description: 'Erro ao criada chave pix'
+            })
+          }
+        }
+      )
+    },
+    [confirmCreatedKeyPix, refetch, step]
+  )
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -99,6 +120,16 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
       key: value
     }))
   }
+
+  useEffect(() => {
+    if (errorConfirm || errorCreated) {
+      toast({
+        variant: 'destructive',
+        title: 'Falha ao carregar lista de contatos.',
+        description: 'Por favor tente mais tarde!'
+      })
+    }
+  }, [errorConfirm, errorCreated])
 
   return (
     <>
@@ -162,7 +193,7 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
           <div className="flex justify-end">
             <ButtonNext
               title="Prosseguir"
-              loading={loading}
+              loading={loadCreated}
               disabled={formCreateKeyPix.key.length <= 0}
               func={() => {
                 formCreateKeyPix.type === 'email' || formCreateKeyPix.type === 'cel'
@@ -181,7 +212,7 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
           <div className="flex justify-end">
             <ButtonNext
               title="Prosseguir"
-              loading={loading}
+              loading={loadConfirm}
               func={() =>
                 handleCreateKeyPix(formCreateKeyPix.type, formCreateKeyPix.key)
               }
@@ -257,7 +288,7 @@ const CreatePix: React.FC<ICreatePix> = ({ refetch, step }) => {
             <ButtonNext
               title="Enviar agora"
               disabled={pwdCode.trim() === ''}
-              loading={loading}
+              loading={loadCreated}
               func={() => handleConfirmCreatePix(formCreateKeyPix.key)}
               classPlus="rounded-xl w-full bg-[#008000]"
             />

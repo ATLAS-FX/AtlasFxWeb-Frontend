@@ -4,9 +4,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
-import UserApi from '@/services/UserApi'
-import { ErrorResponse } from '@/utils/ErrorResponse'
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
+import { checkAddressCode, getAddressCode } from '@/services/UserApi'
+import { ChangeEvent, Dispatch, SetStateAction, useCallback, useState } from 'react'
 
 interface IRegistrationCode {
   name: string
@@ -26,46 +25,48 @@ export const RegistratrionCode: React.FC<IRegistrationCode> = ({
   step
 }) => {
   const [openModalValidation, setOpenModalValidation] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
+  const { mutate: getAddress, isLoading: loadGetAddress } = getAddressCode()
+  const { mutate: checkAddress, isLoading: loadCheckAddress } = checkAddressCode()
 
-  const handleChangeAddress = async () => {
-    await UserApi.getAddressCode()
-      .then((res) => {
+  const handleChangeAddress = useCallback(async () => {
+    getAddress(undefined, {
+      onSuccess: (res) => {
         setCode(res.success.match(/:\s*(\w+)/)?.[1])
         setOpenModalValidation(!openModalValidation)
-      })
-      .catch((e: ErrorResponse) => {
+      },
+      onError: (e: any) => {
         toast({
           variant: 'destructive',
           title: e.response?.data?.error,
           description: 'por favor tente novamente.'
         })
-      })
-  }
+      }
+    })
+  }, [getAddress])
 
-  const handleCheckCode = async () => {
-    setLoading(true)
-    await UserApi.checkAddressCode({ code: code })
-      .then((res) => {
-        toast({
-          variant: 'success',
-          title: 'Seu código foi confirmado com sucesso!',
-          description: res.success
-        })
-        setOpenModalValidation(false)
-        step(2)
-      })
-      .catch((e: ErrorResponse) => {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.error,
-          description: 'Tente novamente código.'
-        })
-      })
-      .finally(() => {
-        setLoading(true)
-      })
-  }
+  const handleCheckCode = useCallback(async () => {
+    checkAddress(
+      { code: code },
+      {
+        onSuccess: (res: any) => {
+          toast({
+            variant: 'success',
+            title: 'Seu código foi confirmado com sucesso!',
+            description: res.success
+          })
+          setOpenModalValidation(false)
+          step(2)
+        },
+        onError: (e: any) => {
+          toast({
+            variant: 'destructive',
+            title: e.response?.data?.error,
+            description: 'Tente novamente código.'
+          })
+        }
+      }
+    )
+  }, [code])
 
   return (
     <>
@@ -109,7 +110,7 @@ export const RegistratrionCode: React.FC<IRegistrationCode> = ({
               <ButtonNext
                 title="Confirmar"
                 disabled={code.trim() !== ''}
-                loading={loading}
+                loading={loadCheckAddress || loadGetAddress}
                 func={handleCheckCode}
                 classPlus="rounded-xl w-full bg-[#008000]"
               />

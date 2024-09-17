@@ -20,12 +20,15 @@ const ButtonNext: React.FC<ButtonNextProps> = ({
 }) => {
   return (
     <Button
-      className={cn('w-6/12 rounded-xl py-6 text-base', classPlus)}
+      className={cn(
+        'min-w-32 rounded-md bg-primary-default p-5 text-base transition-all duration-300 ease-in-out hover:scale-110 hover:bg-primary-hover hover:text-system-neutro',
+        classPlus
+      )}
       disabled={disabled}
       onClick={func}
     >
       {loading ? (
-        <LoaderCircle className="h-10 w-10 animate-spin text-white transition-transform" />
+        <LoaderCircle className="size-8 animate-spin text-system-neutro transition-transform" />
       ) : (
         title
       )}

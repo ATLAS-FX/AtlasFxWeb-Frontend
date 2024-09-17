@@ -2,13 +2,12 @@ import { IconClose, IconCopyPaste, IconShared, IconTrash } from '@/components/ic
 import { ButtonAtlas, ButtonNext, ModalDefault } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
-import PixApi from '@/services/PixApi'
+import { useDeletePixKey } from '@/services/PixApi'
 import { IconType } from '@/types/iconType'
 import { KeyPixType } from '@/types/PixType'
 import { handleCopyClick } from '@/utils/Copy&Paste'
-import { ErrorResponse } from '@/utils/ErrorResponse'
 import { listPixButton } from '@/utils/PixListButtons'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 interface IListOfKeys {
@@ -18,8 +17,8 @@ interface IListOfKeys {
 
 const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
   const navigate = useNavigate()
+  const { mutate: deletePixKey, isLoading, isError } = useDeletePixKey()
   const [openModalDeleteKey, setOpenModalDeleteKey] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<
     {
       icon: React.FC<IconType>
@@ -46,29 +45,42 @@ const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
     }
   }, [listMyKeys])
 
-  const handleDeleteKeyPix = async (key: string) => {
-    setLoading(true)
-    await PixApi.deletePixKey({ id: key })
-      .then((res) => {
-        toast({
-          variant: 'success',
-          title: 'Seu chave pix foi deletada com sucesso!',
-          description: res.success
-        })
-        data.length >= 1 ? refetch() : navigate(0)
-        setOpenModalDeleteKey(false)
+  const handleDeleteKeyPix = useCallback(
+    async (id: string) => {
+      deletePixKey(
+        { id },
+        {
+          onSuccess: (res) => {
+            toast({
+              variant: 'success',
+              title: 'Seu chave pix foi deletada com sucesso!',
+              description: res.success
+            })
+            data.length >= 1 ? refetch() : navigate(0)
+            setOpenModalDeleteKey(false)
+          },
+          onError: (e: any) => {
+            toast({
+              variant: 'destructive',
+              title: e.response?.data?.error,
+              description: 'Erro ao deletar chave pix'
+            })
+          }
+        }
+      )
+    },
+    [data.length, deletePixKey, navigate, refetch]
+  )
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        variant: 'destructive',
+        title: 'Falha.',
+        description: 'Por favor tente mais tarde!'
       })
-      .catch((e: ErrorResponse) => {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.error,
-          description: 'Erro ao deletar chave pix'
-        })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }
+    }
+  }, [isError])
 
   return (
     <div>
@@ -120,7 +132,7 @@ const ListOfKeys: React.FC<IListOfKeys> = ({ refetch, listMyKeys }) => {
                     <>
                       <ButtonNext
                         title="Sim"
-                        loading={loading}
+                        loading={isLoading}
                         func={() => handleDeleteKeyPix(id)}
                         classPlus="rounded-xl w-full bg-[#008000]"
                       />

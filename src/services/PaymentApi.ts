@@ -1,18 +1,20 @@
-import { PaymentType } from '@/types/PaymentType'
+import { useMutation } from 'react-query'
 import { api } from './api'
 
-class PaymentApi {
-  public async consultPayment(params: {
-    number: string
-    type: string
-  }): Promise<PaymentType> {
-    const res = await api.post('portal/payment/consult', params)
-    return res.data
-  }
-  public async sendPayment(params: { number: string; type: string; pwd: string }) {
-    const res = await api.post('portal/payment/pay', params)
-    return res.data
-  }
+const useConsultPayment = () => {
+  return useMutation(async (params: { number: string; type: string }) => {
+    const { data } = await api.post('/portal/payment/consult', params)
+    return data
+  })
 }
 
-export default new PaymentApi()
+const useSendPayment = () => {
+  return useMutation(
+    async (params: { number: string; type: string; pwd: string }) => {
+      const { data } = await api.post('/portal/payment/pay', params)
+      return data
+    }
+  )
+}
+
+export { useConsultPayment, useSendPayment }

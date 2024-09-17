@@ -3,13 +3,12 @@ import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
-import PixApi from '@/services/PixApi'
+import { useGetKeyInfo } from '@/services/PixApi'
 import { PixType } from '@/types/PixType'
-import { ErrorResponse } from '@/utils/ErrorResponse'
 import { generateHash } from '@/utils/GenerateCode'
 import { formattedDate, formattedDoc } from '@/utils/GenerateFormatted'
 import { ListMask } from '@/utils/ListMask'
-import { ChangeEvent, useCallback, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import PixForm from './PixForm'
 import PixSuccess from './PixSuccess'
@@ -20,7 +19,7 @@ const PixStep: React.FC = () => {
   const [stepPix, setStepPix] = useState<number>(0)
   const [getKeyInput, setGetKeyInput] = useState<string>('')
   const [getAmountForm, setGetAmountForm] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
+  const { mutate: getKeyInfo, isLoading, isError } = useGetKeyInfo()
   const [data, setData] = useState<PixType>({
     bank: '',
     doc: '',
@@ -29,23 +28,33 @@ const PixStep: React.FC = () => {
   })
 
   const CheckKeyInputPix = useCallback(async () => {
-    setLoading(true)
-    await PixApi.getKeyInfo({ key: getKeyInput })
-      .then((res) => {
-        setData(res)
-        setStepPix(1)
-      })
-      .catch((e: ErrorResponse) => {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.error,
-          description: 'repita o processo.'
-        })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    getKeyInfo(
+      { key: getKeyInput },
+      {
+        onSuccess: (res) => {
+          setData(res)
+          setStepPix(1)
+        },
+        onError: (e: any) => {
+          toast({
+            variant: 'destructive',
+            title: e.response?.data?.error,
+            description: 'repita o processo.'
+          })
+        }
+      }
+    )
   }, [getKeyInput])
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        variant: 'destructive',
+        title: 'Falha.',
+        description: 'Por favor tente mais tarde!'
+      })
+    }
+  }, [isError])
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -104,7 +113,7 @@ const PixStep: React.FC = () => {
               title="Prosseguir"
               disabled={getKeyInput.length <= 0}
               func={CheckKeyInputPix}
-              loading={loading}
+              loading={isLoading}
             />
           </div>
           <div className={cn('flex', stepPix > 0 ? 'flex-row' : 'flex-row-reverse')}>

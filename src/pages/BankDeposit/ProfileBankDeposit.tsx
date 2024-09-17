@@ -3,11 +3,10 @@ import { ButtonAtlas, ButtonNext } from '@/components/layout'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
-import BankDepositApi from '@/services/BankDepositApi'
+import { useCreateBarCode, useCreateQrCode } from '@/services/BankDepositApi'
 import { handleCopyClick } from '@/utils/Copy&Paste'
-import { ErrorResponse } from '@/utils/ErrorResponse'
 import { formatedPrice } from '@/utils/GenerateFormatted'
-import { ChangeEvent, Dispatch, SetStateAction } from 'react'
+import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect } from 'react'
 
 interface ProfileBankDepositProps {
   state: {
@@ -18,7 +17,6 @@ interface ProfileBankDepositProps {
     barcode: string
     qrcode: string
     key: string
-    loading: boolean
   }
   setState: Dispatch<
     SetStateAction<{
@@ -29,7 +27,6 @@ interface ProfileBankDepositProps {
       barcode: string
       qrcode: string
       key: string
-      loading: boolean
     }>
   >
   name: string
@@ -48,6 +45,17 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
   agency,
   account
 }) => {
+  const {
+    mutate: createBarCode,
+    isLoading: loadBarCode,
+    isError: errorBarCode
+  } = useCreateBarCode()
+  const {
+    mutate: createQrCode,
+    isLoading: loadQrCode,
+    isError: errorQrCode
+  } = useCreateQrCode()
+
   const listBankDepositActions = [
     {
       title: 'Copiar dados',
@@ -75,55 +83,66 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
     }
   ]
 
-  const handleCreateBarCode = async () => {
-    setState((prev) => ({ ...prev, loading: true }))
-    await BankDepositApi.createBarCode({ amount: state.amount })
-      .then((res) => {
-        setState((prev) => ({ ...prev, barcode: res.barcode, stepPage: 1 }))
-        toast({
-          variant: 'success',
-          title: 'Seu boleto foi gerado com sucesso!',
-          description: res.success
-        })
-      })
-      .catch((e: ErrorResponse) => {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.error,
-          description: 'repita o processo.'
-        })
-      })
-      .finally(() => {
-        setState((prev) => ({ ...prev, stepPage: 1, loading: false }))
-      })
-  }
+  const handleCreateBarCode = useCallback(async () => {
+    createBarCode(
+      { amount: state.amount },
+      {
+        onSuccess: (res) => {
+          setState((prev) => ({ ...prev, barcode: res.toString(), stepPage: 1 }))
+          toast({
+            variant: 'success',
+            title: 'Seu boleto foi gerado com sucesso!',
+            description: res.toString()
+          })
+        },
+        onError: (e: any) => {
+          toast({
+            variant: 'destructive',
+            title: e.response?.data?.error,
+            description: 'repita o processo.'
+          })
+        }
+      }
+    )
+  }, [createBarCode])
 
-  const handleCreateQrCode = async () => {
-    setState((prev) => ({ ...prev, loading: true }))
-    await BankDepositApi.createQrCode({ amount: state.amount })
-      .then((res) => {
-        setState((prev) => ({
-          ...prev,
-          key: res.key,
-          qrcode: res.qrcode
-        }))
-        toast({
-          variant: 'success',
-          title: 'Seu QrCode foi gerado com sucesso!',
-          description: res.success
-        })
+  const handleCreateQrCode = useCallback(async () => {
+    createQrCode(
+      { amount: state.amount },
+      {
+        onSuccess: (res) => {
+          setState((prev) => ({
+            ...prev,
+            qrcode: res.toString(),
+            key: res.toString(),
+            stepPage: 1
+          }))
+          toast({
+            variant: 'success',
+            title: 'Seu QrCode foi gerado com sucesso!',
+            description: res.toString()
+          })
+        },
+        onError: (e: any) => {
+          toast({
+            variant: 'destructive',
+            title: e.response?.data?.error,
+            description: 'repita o processo.'
+          })
+        }
+      }
+    )
+  }, [createQrCode])
+
+  useEffect(() => {
+    if (errorBarCode || errorQrCode) {
+      toast({
+        variant: 'destructive',
+        title: 'Falha ao carregar lista de contatos.',
+        description: 'Por favor tente mais tarde!'
       })
-      .catch((e: ErrorResponse) => {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.error,
-          description: 'repita o processo.'
-        })
-      })
-      .finally(() => {
-        setState((prev) => ({ ...prev, stepPage: 1, loading: false }))
-      })
-  }
+    }
+  }, [errorBarCode, errorQrCode])
 
   return (
     <>
@@ -182,7 +201,7 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
             <ButtonNext
               title="Prosseguir"
               disabled={Number(state.amount.replace(/[.,]/g, '')) <= 0}
-              loading={state.loading}
+              loading={loadBarCode || loadQrCode}
               func={() => {
                 state.typePayment === 'qrcode'
                   ? handleCreateQrCode()
