@@ -1,4 +1,4 @@
-import { ContactsPixType } from '@/types/PixType'
+import { ContactsPixType, PixType } from '@/types/PixType'
 import { useMutation, useQuery } from 'react-query'
 import { api } from './api'
 
@@ -18,7 +18,7 @@ const useListContacts = () => {
 
 const useGetKeyInfo = () => {
   return useMutation(async (params: { key: string }) => {
-    const { data } = await api.post('/portal/pix/key_info', params)
+    const { data } = await api.post<PixType>('/portal/pix/key_info', params)
     return data
   })
 }

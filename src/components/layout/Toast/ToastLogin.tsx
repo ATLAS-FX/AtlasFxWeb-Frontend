@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from 'react'
 interface ToastLoginProps {
   title: string
   openModal: boolean
-  setOpenModal: Dispatch<SetStateAction<boolean>>
+  setOpenModal: Dispatch<SetStateAction<boolean>> | null
 }
 
 const ToastLogin: React.FC<ToastLoginProps> = ({
@@ -14,7 +14,10 @@ const ToastLogin: React.FC<ToastLoginProps> = ({
   title
 }) => {
   return (
-    <Dialog open={openModal} onOpenChange={() => setOpenModal(false)}>
+    <Dialog
+      open={openModal}
+      onOpenChange={setOpenModal ? () => setOpenModal(false) : undefined}
+    >
       <DialogContent className="h-72 w-72 gap-4 rounded-xl bg-white" isFalseClose>
         <DialogTitle className="m-auto text-center text-xl">{title}</DialogTitle>
         <div className="flex items-center justify-center">

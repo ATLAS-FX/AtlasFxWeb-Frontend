@@ -1,4 +1,6 @@
 export type PixType = {
+  account: string
+  agency: string
   bank: string
   doc: string
   key: string

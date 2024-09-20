@@ -20,12 +20,7 @@ const PixStep: React.FC = () => {
   const [getKeyInput, setGetKeyInput] = useState<string>('')
   const [getAmountForm, setGetAmountForm] = useState<string>('')
   const { mutate: getKeyInfo, isLoading, isError } = useGetKeyInfo()
-  const [data, setData] = useState<PixType>({
-    bank: '',
-    doc: '',
-    key: '',
-    name: ''
-  })
+  const [data, setData] = useState<PixType>({} as PixType)
 
   const CheckKeyInputPix = useCallback(async () => {
     getKeyInfo(

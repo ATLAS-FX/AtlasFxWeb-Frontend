@@ -1,5 +1,5 @@
 import { PDFExtract } from '@/components/pdfs'
-import { IconCalendar, IconDoubleArrow } from '@/components/icons'
+import { IconCalendar, IconDoubleArrow, IconFilter } from '@/components/icons'
 import { ModalPrint } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
 import { useAtlas } from '@/contexts/AtlasContext'
@@ -60,6 +60,8 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
     }
   ]
 
+  console.log(ButtonsOptions)
+
   const sortedEntries = Object.entries(data).sort(
     ([dateA], [dateB]) => Date.parse(dateB) - Date.parse(dateA)
   )
@@ -91,7 +93,11 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
 
   return (
     <>
-      <div className="flex justify-end gap-8">
+      <button className="flex items-center gap-2 fill-system-cinza text-system-cinza">
+        <IconFilter className="size-5" />
+        Filtro
+      </button>
+      {/* <div className="flex justify-end gap-8">
         {ButtonsOptions.map((buton, number) => (
           <button
             key={number}
@@ -101,7 +107,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
             {buton.title}
           </button>
         ))}
-      </div>
+      </div> */}
 
       {sortedEntries.map(([date, extracts], index) => (
         <div className="flex flex-col items-center gap-2" key={index}>

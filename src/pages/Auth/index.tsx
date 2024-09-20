@@ -18,8 +18,7 @@ const Login: React.FC = () => {
   const [inputRef, setInputRef] = useState<string>('')
   const [genQRCode, setGenQRCode] = useState<boolean>(false)
   const [checkValidate, setCheckValidade] = useState<boolean>(true)
-  const [loginStatusModal, setLoginStatusModal] = useState<boolean>(false)
-  const { mutate: getKey } = useGetKey()
+  const { mutate: getKey, isLoading } = useGetKey()
   const {
     data: genCode,
     isLoading: loadGetCode,
@@ -233,8 +232,8 @@ const Login: React.FC = () => {
       </div>
       <ToastLogin
         title="Realizando Login..."
-        openModal={loginStatusModal}
-        setOpenModal={setLoginStatusModal}
+        openModal={isLoading}
+        setOpenModal={null}
       />
     </>
   )
