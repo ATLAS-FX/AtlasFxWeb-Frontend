@@ -1,6 +1,6 @@
 import { IconDoubleArrow } from '@/components/icons'
 import { RegisterPixType } from '@/types/userType'
-import { formattedPrice } from '@/utils/GenerateFormatted'
+import { formattedDateSample, formattedPrice } from '@/utils/GenerateFormatted'
 import { ChevronRight } from 'lucide-react'
 
 export const Movements: React.FC<RegisterPixType> = ({
@@ -12,18 +12,6 @@ export const Movements: React.FC<RegisterPixType> = ({
   send
 }) => {
   // const { user } = useAtlas()
-  const DateFormat = (value: string): string => {
-    const dataObj = new Date(value)
-
-    const dataFormatada = dataObj.toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: '2-digit',
-      timeZone: 'America/Sao_Paulo'
-    })
-
-    return dataFormatada
-  }
 
   // const handleDownloadPDF = () => {
   //   const doc = (
@@ -66,7 +54,7 @@ export const Movements: React.FC<RegisterPixType> = ({
         </h4>
       </div>
       <div className="flex flex-col gap-1 text-end text-xs font-light">
-        <p>{DateFormat(created)}</p>
+        <p>{formattedDateSample(created)}</p>
         <label className="font-semibold">
           R$ {send > 0 ? '-' : ''} {formattedPrice(amount.toString())}
         </label>

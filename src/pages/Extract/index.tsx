@@ -79,6 +79,7 @@ const Extract: React.FC = () => {
     <Container>
       <Title
         title="Extrato"
+        subtitle="Fique de olho nas suas movimentações e confira os comprovantes."
         back={() => {
           filterOptions.stepPage <= 0
             ? navigate(-1)
