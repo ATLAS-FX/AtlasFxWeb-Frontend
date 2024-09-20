@@ -5,7 +5,7 @@ import {
   IconKey,
   IconStar
 } from '@/components/icons'
-import { Container, Title } from '@/components/layout'
+import { ButtonNext, Container, Title } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -19,13 +19,20 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
-import { useListContacts } from '@/services/PixApi'
-import { useEffect } from 'react'
+import { useAtlas } from '@/contexts/AtlasContext'
+import { useGetKeyInfo, useListContacts } from '@/services/PixApi'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Pix: React.FC = () => {
+  const { setPixCopyPaste } = useAtlas()
   const navigate = useNavigate()
   const { data: listMyContatcs, isLoading, isError } = useListContacts()
+  const { mutate: getKeyInfo } = useGetKeyInfo()
+
+  const [flow, setFlow] = useState({
+    inputPix: ''
+  })
 
   useEffect(() => {
     if (isError) {
@@ -55,6 +62,24 @@ const Pix: React.FC = () => {
     }
   ]
 
+  const handleConsultPix = async () => {
+    getKeyInfo(
+      { key: flow.inputPix },
+      {
+        onSuccess: (res: any) => {
+          console.log(res)
+        },
+        onError: (e: any) => {
+          toast({
+            variant: 'destructive',
+            title: e?.message || '',
+            description: 'repita o processo.'
+          })
+        }
+      }
+    )
+  }
+
   return (
     <Container>
       <Title
@@ -66,14 +91,26 @@ const Pix: React.FC = () => {
         <h4 className="text-sm text-system-cinza">Insira a chave pix:</h4>
         <Input
           type="text"
+          value={flow.inputPix}
+          onChange={(e) => setFlow({ ...flow, inputPix: e.target.value })}
           placeholder="Digite a chave pix"
           className="w-full rounded-md border-[1px] border-system-cinza/25 p-6"
         />
         <div className="flex justify-end">
-          <Button className="flex items-center gap-2 bg-primary-default fill-system-neutro px-4 py-6 text-system-neutro">
-            <IconCopyPaste className="size-5" />
-            Copia e cola
-          </Button>
+          {flow.inputPix.length > 0 ? (
+            <ButtonNext title="Prosseguir" func={handleConsultPix} />
+          ) : (
+            <Button
+              className="flex items-center gap-2 bg-primary-default fill-system-neutro px-4 py-6 text-system-neutro"
+              onClick={() => {
+                setPixCopyPaste(true)
+                navigate('/payments')
+              }}
+            >
+              <IconCopyPaste className="size-5" />
+              Copia e cola
+            </Button>
+          )}
         </div>
       </div>
       <Separator className="my-4 h-0.5 w-full bg-system-cinza/25" />

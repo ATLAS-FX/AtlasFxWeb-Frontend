@@ -85,18 +85,26 @@ const Home: React.FC = () => {
                 {formatedPrice(calcTotalProfitAmount(user.releases).toString())}
               </strong>
             </h3>
-            <div className="h- flex items-center justify-center">
-              <Chart
-                classes="h-56 w-full p-2"
-                data={user.releases}
-                options={chartConfig}
-                dataKeyAxis={'created'}
-                dataKeyBarOne={'amount'}
-                dataKeyBarTwo={'amount'}
-                colorOne={'#C8D753'}
-                colorTwo={'#405CA5'}
-              />
-            </div>
+            {user.releases.length >= 1 ? (
+              <div className="flex items-center justify-center">
+                <Chart
+                  classes="h-56 w-full p-2"
+                  data={user.releases}
+                  options={chartConfig}
+                  dataKeyAxis={'created'}
+                  dataKeyBarOne={'amount'}
+                  dataKeyBarTwo={'amount'}
+                  colorOne={'#C8D753'}
+                  colorTwo={'#405CA5'}
+                />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center py-4">
+                <h3 className="text-base italic text-system-cinza">
+                  Sem dados para grafico
+                </h3>
+              </div>
+            )}
           </>
         }
       />

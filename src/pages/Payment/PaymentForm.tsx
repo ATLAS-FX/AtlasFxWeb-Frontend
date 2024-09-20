@@ -5,13 +5,7 @@ import { cn } from '@/lib/utils'
 import { useConsultPayment, useSendPayment } from '@/services/PaymentApi'
 import { PaymentType } from '@/types/PaymentType'
 import md5 from 'md5'
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState
-} from 'react'
+import { ChangeEvent, Dispatch, SetStateAction } from 'react'
 import ModalPayment from './ModalPayment'
 
 interface IPaymentForm {
@@ -20,7 +14,7 @@ interface IPaymentForm {
     type: string
     textValue: string
     pwdCode: string
-    loading: boolean
+    stateModal: boolean
   }
   setFlow: Dispatch<
     SetStateAction<{
@@ -28,7 +22,7 @@ interface IPaymentForm {
       type: string
       textValue: string
       pwdCode: string
-      loading: boolean
+      stateModal: boolean
     }>
   >
   data: PaymentType | undefined
@@ -36,9 +30,8 @@ interface IPaymentForm {
 }
 
 const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) => {
-  const [stateModalPayment, setStateModalPayment] = useState<boolean>(false)
   const { mutate: consultPayment, isLoading: sendConsult } = useConsultPayment()
-  const { mutate: sendPayment, isLoading: sendLoad } = useSendPayment()
+  const { mutate: sendPayment } = useSendPayment()
 
   const formatLineDigit = (value: string): string => {
     // Remover todos os caracteres não numéricos
@@ -74,11 +67,10 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
       },
       {
         onSuccess: (res) => {
+          setFlow((prev) => ({ ...prev, stateModal: true }))
           setData(res)
-          setStateModalPayment(true)
         },
         onError: (e: any) => {
-          setStateModalPayment(true)
           toast({
             variant: 'destructive',
             title: e?.message || '',
@@ -99,10 +91,9 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
       {
         onSuccess: (res: any) => {
           console.log(res)
-          setFlow((prev) => ({ ...prev, step: 2, openModalPwd: false }))
+          setFlow({ ...flow, step: 2, stateModal: true })
         },
         onError: (e: any) => {
-          setStateModalPayment(true)
           toast({
             variant: 'destructive',
             title: e?.message || '',
@@ -112,11 +103,6 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
       }
     )
   }
-
-  useEffect(() => {
-    console.log('flow', flow)
-    console.log(stateModalPayment)
-  }, [flow, stateModalPayment])
 
   return (
     <>
@@ -163,8 +149,6 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
         data={data}
         state={flow}
         setState={setFlow}
-        openModal={stateModalPayment}
-        setOpenModal={setStateModalPayment}
         ConsultPaymentFunc={handleConsultPayment}
         SendPaymentFunc={handleSendPayment}
       />

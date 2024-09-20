@@ -11,7 +11,7 @@ interface ModalConfirmProps {
   agency: string
   account: string
   keyType: string
-  key: string
+  keyValue: string
   handleFunc: () => void
   back: () => void
 }
@@ -25,12 +25,12 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
   agency,
   account,
   keyType,
-  key,
+  keyValue,
   handleFunc,
   back
 }) => {
   return (
-    <section>
+    <section className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <Button
           className="m-0 w-fit p-0 text-system-cinza transition-all duration-200 ease-in-out hover:scale-125 hover:bg-transparent hover:text-primary-hover"
@@ -39,7 +39,7 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
         >
           <MoveLeft size={18} />
         </Button>
-        <h4 className="text-sm font-semibold text-primary-default">{title}</h4>
+        <h4 className="text-base font-semibold text-primary-default">{title}</h4>
       </div>
       <div className="flex flex-col gap-4 text-sm font-normal text-system-cinza">
         <div className="m-auto flex w-5/6 flex-col items-center rounded-md border-[1px] border-system-cinza/25 p-4">
@@ -72,10 +72,14 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
           <label className="font-medium text-primary-default">
             {keyType === 'boleto' ? 'Código de barras:' : 'Chave Pix:'}
           </label>
-          <span>{key}</span>
+          <span>
+            {keyValue.length > 28 ? `${keyValue.substring(0, 28)}...` : keyValue}
+          </span>
         </div>
       </div>
-      <ButtonNext title="Prosseguir" func={() => handleFunc} />
+      <div className="mt-4 flex items-center justify-end">
+        <ButtonNext title="Prosseguir" func={handleFunc} />
+      </div>
     </section>
   )
 }

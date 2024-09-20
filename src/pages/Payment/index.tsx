@@ -14,13 +14,13 @@ const Payments: React.FC = () => {
     type: string
     textValue: string
     pwdCode: string
-    loading: boolean
+    stateModal: boolean
   }>({
     step: 0,
     type: pixCopyPaste ? 'pix' : '',
     textValue: '',
     pwdCode: '',
-    loading: false
+    stateModal: false
   })
   const [dataPayment, setDataPayment] = useState<PaymentType | undefined>()
 
@@ -77,16 +77,16 @@ const Payments: React.FC = () => {
         <PaymentForm
           flow={stepPayment}
           setFlow={setStepPayment}
-          setData={setDataPayment}
           data={dataPayment}
+          setData={setDataPayment}
         />
       )}
       {pixCopyPaste && (
         <PaymentForm
           flow={stepPayment}
           setFlow={setStepPayment}
-          setData={setDataPayment}
           data={dataPayment}
+          setData={setDataPayment}
         />
       )}
     </Container>

@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { useCheckHash, useGetCode, useGetKey } from '@/services/AuthApi'
 import { CheckCircle2, RotateCw } from 'lucide-react'
 import QRCode from 'qrcode.react'
-import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Login: React.FC = () => {
@@ -17,42 +17,18 @@ const Login: React.FC = () => {
   const [inputPassword, setInputPassword] = useState<string>('')
   const [inputRef, setInputRef] = useState<string>('')
   const [genQRCode, setGenQRCode] = useState<boolean>(false)
+  const [checkValidate, setCheckValidade] = useState<boolean>(true)
   const [loginStatusModal, setLoginStatusModal] = useState<boolean>(false)
-  const { mutate: getKey, isLoading: loadGetKey, isError: errorGetKey } = useGetKey()
+  const { mutate: getKey } = useGetKey()
   const {
-    data: gencode,
+    data: genCode,
     isLoading: loadGetCode,
     isError: errorGet,
     refetch: GetCodeRefetch
   } = useGetCode()
-  const {
-    mutate: checkHash,
-    isLoading: loadCheck,
-    isError: errorCheck
-  } = useCheckHash()
+  const { mutate: checkHash } = useCheckHash()
 
-  const handleCheckHash = useCallback(() => {
-    checkHash(
-      { hash: gencode?.hash || '' },
-      {
-        onSuccess: (res) => {
-          if (res.key) {
-            signIn(res.key)
-            navigate('/')
-          }
-        },
-        onError: (e: any) => {
-          toast({
-            variant: 'destructive',
-            title: e.response?.data?.error,
-            description: 'Falha ao acessar sua conta PJ.'
-          })
-        }
-      }
-    )
-  }, [])
-
-  const handleGetKey = useCallback(() => {
+  const handleGetKey = () => {
     const id_key = Number(inputRef)
     getKey(
       { id: id_key },
@@ -64,6 +40,7 @@ const Login: React.FC = () => {
           }
         },
         onError: (e: any) => {
+          setCheckValidade(true)
           toast({
             variant: 'destructive',
             title: e.response?.data?.error,
@@ -72,14 +49,18 @@ const Login: React.FC = () => {
         }
       }
     )
-  }, [])
+  }
 
   useEffect(() => {
     if (!genQRCode) {
-      setTimeout(() => {
-        setGenQRCode(!genQRCode)
+      const qrCodeTimeout = setTimeout(() => {
+        setGenQRCode(true)
       }, 48000)
+      return () => clearTimeout(qrCodeTimeout)
     }
+  }, [genQRCode])
+
+  useEffect(() => {
     if (errorGet) {
       toast({
         variant: 'destructive',
@@ -87,12 +68,31 @@ const Login: React.FC = () => {
         description: 'Por favor tente mais tarde!'
       })
     }
-    setTimeout(() => {
-      if (errorCheck) {
-        GetCodeRefetch()
+  }, [errorGet])
+
+  useEffect(() => {
+    const checkHashInterval = setInterval(() => {
+      if (checkValidate) {
+        checkHash(
+          { hash: genCode?.hash || '' },
+          {
+            onSuccess: (res) => {
+              setCheckValidade(false)
+              clearInterval(checkHashInterval)
+              if (res.key) {
+                signIn(res.key)
+                navigate('/')
+              }
+            },
+            onError: () => {
+              // Optionally handle error here
+            }
+          }
+        )
       }
-    }, 1500)
-  }, [errorGet, genQRCode, checkHash])
+    }, 1250)
+    return () => clearInterval(checkHashInterval)
+  }, [checkValidate])
 
   return (
     <>
@@ -152,7 +152,7 @@ const Login: React.FC = () => {
                     <>
                       {genQRCode && (
                         <button
-                          className="bg-prtext-primary-default absolute bottom-auto left-auto right-auto top-auto z-20 flex h-48 w-48 flex-col items-center justify-center gap-4 rounded-[50%] text-white"
+                          className="absolute bottom-auto left-auto right-auto top-auto z-20 flex h-48 w-48 flex-col items-center justify-center gap-4 rounded-[50%] bg-primary-default text-white"
                           onClick={() => GetCodeRefetch()}
                         >
                           <RotateCw size={42} />
@@ -161,7 +161,7 @@ const Login: React.FC = () => {
                           </span>
                         </button>
                       )}
-                      <QRCode value={gencode ? gencode?.hash : ''} size={180} />
+                      <QRCode value={genCode ? genCode?.hash : ''} size={180} />
                     </>
                   )}
                 </div>
