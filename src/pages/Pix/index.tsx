@@ -6,10 +6,12 @@ import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
-import { useGetKeyInfo, useListContacts } from '@/services/PixApi'
+import { useGetKeyInfo, useListContacts, useSendPix } from '@/services/PixApi'
 import { PixType } from '@/types/PixType'
-import { useEffect, useState } from 'react'
+import { formattedPrice } from '@/utils/GenerateFormatted'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ModalPix from './ModalPix'
 
 const Pix: React.FC = () => {
   const { setPixCopyPaste } = useAtlas()
@@ -17,24 +19,62 @@ const Pix: React.FC = () => {
   const [pixData, setPixData] = useState<PixType | null>(null)
   const { data: listMyContatcs, isLoading, isError } = useListContacts()
   const { mutate: getKeyInfo, isLoading: loadGetKeyInfo } = useGetKeyInfo()
+  const { mutate: sendPix, isLoading: loadSendPix } = useSendPix()
 
   const [flow, setFlow] = useState<{
     step: number
-    value: string
-    inputPix: string
+    keyPix: string
+    amount: string
+    desc: string
+    save: number
+    pwd: string
+    stateModal: boolean
   }>({
     step: 0,
-    value: '',
-    inputPix: ''
+    keyPix: '',
+    amount: '',
+    desc: '',
+    save: 0,
+    pwd: '',
+    stateModal: false
   })
 
   const handleConsultPix = async () => {
     getKeyInfo(
-      { key: flow.inputPix },
+      { key: flow.keyPix },
       {
         onSuccess: (res: PixType) => {
           setPixData(res)
           setFlow({ ...flow, step: 1 })
+        },
+        onError: (e: any) => {
+          toast({
+            variant: 'destructive',
+            title: e?.message || '',
+            description: 'repita o processo.'
+          })
+        }
+      }
+    )
+  }
+
+  const handleSendPix = async () => {
+    sendPix(
+      {
+        amount: Number(flow.amount.replace(',', '').replace('.', '')),
+        desc: flow.desc || '',
+        key: flow.keyPix,
+        save: flow.save,
+        pwd: flow.pwd
+      },
+      {
+        onSuccess: (res) => {
+          setFlow({ ...flow, step: 3 })
+          toast({
+            variant: 'success',
+            title: 'Seu código foi confirmado com sucesso!',
+            description: res.success
+          })
         },
         onError: (e: any) => {
           toast({
@@ -70,13 +110,13 @@ const Pix: React.FC = () => {
             <h4 className="text-sm text-system-cinza">Insira a chave pix:</h4>
             <Input
               type="text"
-              value={flow.inputPix}
-              onChange={(e) => setFlow({ ...flow, inputPix: e.target.value })}
+              value={flow.keyPix}
+              onChange={(e) => setFlow({ ...flow, keyPix: e.target.value })}
               placeholder="Digite a chave pix"
               className="w-full rounded-md border-[1px] border-system-cinza/25 px-4 py-6 text-base"
             />
             <div className="flex justify-end">
-              {flow.inputPix.length > 0 ? (
+              {flow.keyPix.length > 0 ? (
                 <ButtonNext
                   title="Prosseguir"
                   func={handleConsultPix}
@@ -117,7 +157,7 @@ const Pix: React.FC = () => {
       )}
       {flow.step === 1 && (
         <>
-          <div className="mb-4 flex flex-col gap-4 rounded-md border-[1px] border-system-cinza/25 p-4 text-system-cinza">
+          <div className="flex flex-col gap-4 rounded-xl border-[1px] border-system-cinza/25 p-4 text-system-cinza">
             <div className="flex items-center gap-2">
               <IconStar className="size-5 fill-transparent stroke-system-cinza" />
               <h4 className="font-semibold text-primary-default">Destinatário</h4>
@@ -152,8 +192,14 @@ const Pix: React.FC = () => {
               <h4 className="text-base text-system-cinza">Insira o valor:</h4>
               <Input
                 type="text"
-                value={flow.value}
-                onChange={(e) => setFlow({ ...flow, value: e.target.value })}
+                value={flow.amount}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  const format = formattedPrice(e.target.value) || ''
+                  setFlow({
+                    ...flow,
+                    amount: format
+                  })
+                }}
                 placeholder="R$ 0,00"
                 className="w-full rounded-md border-[1px] border-system-cinza/25 px-4 py-6 text-base"
               />
@@ -161,7 +207,7 @@ const Pix: React.FC = () => {
             <div className="flex flex-col gap-2">
               <h4 className="text-base text-system-cinza">{`Observação (opcional):`}</h4>
               <textarea
-                className="w-full rounded-md border-[1px] border-system-cinza/25 bg-transparent px-4 py-6 text-base"
+                className="w-full rounded-md border-[1px] border-system-cinza/25 bg-transparent text-base"
                 placeholder=""
                 rows={3}
               />
@@ -169,14 +215,20 @@ const Pix: React.FC = () => {
             <div className="flex justify-end">
               <ButtonNext
                 title="Prosseguir"
-                disabled={flow.value.length < 1}
-                func={() => {}}
-                loading={false}
+                disabled={flow.amount.length < 1}
+                func={() => setFlow({ ...flow, stateModal: true })}
               />
             </div>
           </div>
         </>
       )}
+      <ModalPix
+        state={flow}
+        setState={setFlow}
+        data={pixData}
+        SendPixFunc={handleSendPix}
+        loadPix={loadSendPix}
+      />
     </Container>
   )
 }

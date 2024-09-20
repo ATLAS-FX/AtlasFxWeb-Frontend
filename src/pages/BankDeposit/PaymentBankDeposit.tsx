@@ -6,7 +6,7 @@ import { useAtlas } from '@/contexts/AtlasContext'
 import { handleCopyClick } from '@/utils/Copy&Paste'
 import { downloadPDF } from '@/utils/DownloadPdf'
 import { generateHash } from '@/utils/GenerateCode'
-import { formatedPrice, formattedDate } from '@/utils/GenerateFormatted'
+import { formattedDate, formattedPrice } from '@/utils/GenerateFormatted'
 import QRCode from 'qrcode.react'
 
 interface StepBankDepositProps {
@@ -30,7 +30,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({
       type === 'bar' ? (
         <PDFBoleto
           document={user.doc}
-          amount={formatedPrice(amount) || ''}
+          amount={formattedPrice(amount) || ''}
           name={user.name}
           barcode={barcode}
           bank={'Atlas Finance'}
@@ -43,7 +43,7 @@ const PaymentBankDeposit: React.FC<StepBankDepositProps> = ({
         <PDFQRCode
           document={user.doc}
           name={user.name}
-          amount={formatedPrice(amount) || ''}
+          amount={formattedPrice(amount) || ''}
           pix={qrcode}
           bank={'Atlas Finance'}
           agency={user.agency}

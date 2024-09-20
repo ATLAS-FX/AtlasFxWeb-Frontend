@@ -5,9 +5,9 @@ import { Separator } from '@/components/ui/separator'
 import { downloadPDF } from '@/utils/DownloadPdf'
 import { generateHash } from '@/utils/GenerateCode'
 import {
-  formatedPrice,
   formattedDate,
-  formattedDoc
+  formattedDoc,
+  formattedPrice
 } from '@/utils/GenerateFormatted'
 import { CircleCheck } from 'lucide-react'
 
@@ -36,7 +36,7 @@ const TransferSuccess: React.FC<ITransferSuccess> = ({
       type === 'boleto' ? (
         <PDFBoleto
           document={formattedDoc(document, 'cnpj') || ''}
-          amount={formatedPrice(amount) || ''}
+          amount={formattedPrice(amount) || ''}
           name={name}
           barcode={barcode}
           bank={'-'}
@@ -48,7 +48,7 @@ const TransferSuccess: React.FC<ITransferSuccess> = ({
       ) : (
         <PDFPix
           documentSent={formattedDoc(document, 'cnpj') || ''}
-          amount={formatedPrice(amount) || ''}
+          amount={formattedPrice(amount) || ''}
           nameSent={name}
           bankSent={'-'}
           agencySent={'-'}

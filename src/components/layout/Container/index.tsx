@@ -6,7 +6,7 @@ interface IContainer {
 
 const Container: React.FC<IContainer> = ({ children }) => {
   return (
-    <div className="relative flex h-[calc(100dvh-80px)] flex-col gap-4 overflow-y-auto overflow-x-hidden px-4">
+    <div className="relative flex h-[calc(100dvh-80px)] flex-col gap-8 overflow-y-auto overflow-x-hidden px-4">
       {children}
     </div>
   )

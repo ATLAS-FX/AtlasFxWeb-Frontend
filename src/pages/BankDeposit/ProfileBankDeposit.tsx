@@ -5,7 +5,7 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { useCreateBarCode, useCreateQrCode } from '@/services/BankDepositApi'
 import { handleCopyClick } from '@/utils/Copy&Paste'
-import { formatedPrice } from '@/utils/GenerateFormatted'
+import { formattedPrice } from '@/utils/GenerateFormatted'
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect } from 'react'
 
 interface ProfileBankDepositProps {
@@ -188,7 +188,7 @@ const ProfileBankDeposit: React.FC<ProfileBankDepositProps> = ({
                 type="string"
                 value={state.amount}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  const format = formatedPrice(e.target.value) || ''
+                  const format = formattedPrice(e.target.value) || ''
                   setState((prev) => ({
                     ...prev,
                     amount: format

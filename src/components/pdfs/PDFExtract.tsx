@@ -2,7 +2,7 @@ import Atlas_Logo from '@/assets/atlas_logo.png'
 import PoppinsRegular from '@/assets/Poppins-Regular.ttf'
 import PoppinsSemi from '@/assets/Poppins-SemiBold.ttf'
 import { RegisterPixType } from '@/types/userType'
-import { formatedPrice, formattedDoc, invertDate } from '@/utils/GenerateFormatted'
+import { formattedDoc, formattedPrice, invertDate } from '@/utils/GenerateFormatted'
 import {
   Document,
   Font,
@@ -243,7 +243,7 @@ const PDFExtract: React.FC<PdfExtractProps> = ({
                       ...(extract.send < 1 && { color: '#C8D753' })
                     }}
                   >
-                    {`R$ ${extract.send >= 1 ? '-' : ''}${formatedPrice(extract.amount.toString())}`}
+                    {`R$ ${extract.send >= 1 ? '-' : ''}${formattedPrice(extract.amount.toString())}`}
                   </Text>
                 </View>
               ))}

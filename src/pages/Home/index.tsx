@@ -5,7 +5,7 @@ import { ChartConfig } from '@/components/ui/chart'
 import { Separator } from '@/components/ui/separator'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { RegisterPixType } from '@/types/userType'
-import { formatedPrice, formattedDate } from '@/utils/GenerateFormatted'
+import { formattedDate, formattedPrice } from '@/utils/GenerateFormatted'
 import Chart from './Chart'
 
 const Home: React.FC = () => {
@@ -82,7 +82,7 @@ const Home: React.FC = () => {
             <h3 className="text-xl">
               R${' '}
               <strong>
-                {formatedPrice(calcTotalProfitAmount(user.releases).toString())}
+                {formattedPrice(calcTotalProfitAmount(user.releases).toString())}
               </strong>
             </h3>
             {user.releases.length >= 1 ? (
@@ -120,7 +120,7 @@ const Home: React.FC = () => {
               <h3 className="text-xl">
                 R${' '}
                 <strong>
-                  {formatedPrice(calcTotalSendAmount(user.releases, 1).toString())}
+                  {formattedPrice(calcTotalSendAmount(user.releases, 1).toString())}
                 </strong>
               </h3>
             </>
@@ -140,7 +140,7 @@ const Home: React.FC = () => {
               <h3 className="text-xl">
                 R${' '}
                 <strong>
-                  {formatedPrice(calcTotalSendAmount(user.releases, 0).toString())}
+                  {formattedPrice(calcTotalSendAmount(user.releases, 0).toString())}
                 </strong>
               </h3>
             </>

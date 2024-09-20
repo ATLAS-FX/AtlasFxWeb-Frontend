@@ -11,7 +11,7 @@ import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
 import { useTransferApi } from '@/services/TransferApi'
-import { formatedPrice, formattedDoc } from '@/utils/GenerateFormatted'
+import { formattedDoc, formattedPrice } from '@/utils/GenerateFormatted'
 import React, {
   ChangeEvent,
   Dispatch,
@@ -134,7 +134,7 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
             type="string"
             value={step.amount}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              const format = formatedPrice(e.target.value) || ''
+              const format = formattedPrice(e.target.value) || ''
               setStep((prevState) => ({
                 ...prevState,
                 amount: format

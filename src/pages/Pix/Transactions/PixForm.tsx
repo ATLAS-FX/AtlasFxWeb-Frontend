@@ -11,7 +11,7 @@ import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
 import { useSendPix } from '@/services/PixApi'
-import { formatedPrice, formattedDoc } from '@/utils/GenerateFormatted'
+import { formattedDoc, formattedPrice } from '@/utils/GenerateFormatted'
 import md5 from 'md5'
 import {
   ChangeEvent,
@@ -121,7 +121,7 @@ const PixForm: React.FC<IPixForm> = ({ step, keyPix, amount, name, bank, doc }) 
             type="string"
             value={formSendPix.amount}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              const format = formatedPrice(e.target.value) || ''
+              const format = formattedPrice(e.target.value) || ''
               setFormSendPix((prevState) => ({
                 ...prevState,
                 amount: format

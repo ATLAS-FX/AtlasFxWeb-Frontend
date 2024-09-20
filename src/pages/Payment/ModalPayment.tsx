@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
 import { PaymentType } from '@/types/PaymentType'
-import { formatedPrice } from '@/utils/GenerateFormatted'
+import { formattedPrice } from '@/utils/GenerateFormatted'
 import { Dispatch, SetStateAction } from 'react'
 
 interface ModalPayment {
@@ -84,7 +84,7 @@ const ModalPayment: React.FC<ModalPayment> = ({
             key="confirm-modal"
             back={() => setState({ ...state, step: 1 })}
             title={'Confira as informações do pagamento'}
-            balance={`R$ ${formatedPrice(user?.amount || '0,00')?.toString()}`}
+            balance={`R$ ${formattedPrice(user?.amount || '0,00')?.toString()}`}
             nameRecipient={data?.owner || ''}
             document={data?.document || ''}
             bank={data?.bank || ''}

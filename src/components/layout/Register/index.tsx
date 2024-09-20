@@ -6,7 +6,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
-import { formatedPrice, formattedDateSample } from '@/utils/GenerateFormatted'
+import { formattedDateSample, formattedPrice } from '@/utils/GenerateFormatted'
 
 interface RegistersProps {
   id: number
@@ -60,7 +60,7 @@ const Registers: React.FC<RegistersProps> = ({
       <div className="flex flex-col gap-1 text-end text-xs font-light">
         <p>{formattedDateSample(created)}</p>
         <label className="font-semibold">
-          R$ {send > 0 ? '-' : ''} {formatedPrice(amount.toString())}
+          R$ {send > 0 ? '-' : ''} {formattedPrice(amount.toString())}
         </label>
       </div>
       <TooltipProvider>

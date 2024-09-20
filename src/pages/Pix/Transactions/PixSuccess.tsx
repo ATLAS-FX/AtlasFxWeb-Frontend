@@ -5,7 +5,7 @@ import { Separator } from '@/components/ui/separator'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { downloadPDF } from '@/utils/DownloadPdf'
 import { generateHash } from '@/utils/GenerateCode'
-import { formatedPrice, formattedDate } from '@/utils/GenerateFormatted'
+import { formattedDate, formattedPrice } from '@/utils/GenerateFormatted'
 import { CircleCheck } from 'lucide-react'
 
 interface IPixSuccess {
@@ -37,7 +37,7 @@ const PixSuccess: React.FC<IPixSuccess> = ({
         bankSent={user.bank}
         agencySent={user.agency}
         accountSent={user.account}
-        amount={formatedPrice(amount) || ''}
+        amount={formattedPrice(amount) || ''}
         nameReceiver={name}
         documentReceiver={'-'}
         bankReceiver={bank}

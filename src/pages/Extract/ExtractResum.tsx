@@ -6,7 +6,7 @@ import { useAtlas } from '@/contexts/AtlasContext'
 import { RegisterPixType } from '@/types/userType'
 import { downloadPDF } from '@/utils/DownloadPdf'
 import {
-  formatedPrice,
+  formattedPrice,
   formattedDateSample,
   invertDate
 } from '@/utils/GenerateFormatted'
@@ -70,12 +70,12 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
     const doc = (
       <PDFExtract
         document={user.doc}
-        bankBalance={formatedPrice(user.amount) || '0.00'}
+        bankBalance={formattedPrice(user.amount) || '0.00'}
         agency={user.agency}
         account={user.account}
         extrato={sortedEntries}
-        controlIn={formatedPrice(action.controlIn.toString()) || ''}
-        controlOut={formatedPrice(action.controlOut.toString()) || ''}
+        controlIn={formattedPrice(action.controlIn.toString()) || ''}
+        controlOut={formattedPrice(action.controlOut.toString()) || ''}
         startDate={
           action?.start
             ? new Date(action?.start).toLocaleDateString()
@@ -148,7 +148,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
                 <p>{formattedDateSample(extract.created)}</p>
                 <label className="font-semibold">
                   R$ {extract.send > 0 ? '-' : ''}{' '}
-                  {formatedPrice(extract.amount.toString())}
+                  {formattedPrice(extract.amount.toString())}
                 </label>
               </div>
               {/* <TooltipProvider>
@@ -176,12 +176,12 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
               <PDFViewer width="100%" height="700px">
                 <PDFExtract
                   document={user.doc}
-                  bankBalance={formatedPrice(user.amount) || '0.00'}
+                  bankBalance={formattedPrice(user.amount) || '0.00'}
                   agency={user.agency}
                   account={user.account}
                   extrato={sortedEntries}
-                  controlIn={formatedPrice(action.controlIn.toString()) || '1'}
-                  controlOut={formatedPrice(action.controlOut.toString()) || ''}
+                  controlIn={formattedPrice(action.controlIn.toString()) || '1'}
+                  controlOut={formattedPrice(action.controlOut.toString()) || ''}
                   startDate={
                     action?.start
                       ? new Date(action?.start).toLocaleDateString()

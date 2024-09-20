@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { getInfoUser } from '@/services/UserApi'
-import { formatedHideValue, formatedPrice } from '@/utils/GenerateFormatted'
+import { formattedHideValue, formattedPrice } from '@/utils/GenerateFormatted'
 import React, { useEffect, useState } from 'react'
 import { BlockPad } from './BlockPad'
 import { Movements } from './Movements'
@@ -42,8 +42,8 @@ const Aside: React.FC = () => {
                     <h3 className="text-lg font-medium  ">
                       R${' '}
                       {!hideValue
-                        ? formatedPrice(user.amount) || '0,00'
-                        : formatedHideValue(user.amount || '0,00')}
+                        ? formattedPrice(user.amount) || '0,00'
+                        : formattedHideValue(user.amount || '0,00')}
                     </h3>
                     <h3 className="flex items-center gap-2">
                       Agência {user.agency}

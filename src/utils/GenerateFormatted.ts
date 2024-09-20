@@ -86,7 +86,7 @@ const formattedDoc = (value: string, type: string) => {
   }
 }
 
-function formatedPrice(value: string | undefined) {
+function formattedPrice(value: string | undefined) {
   if (value) {
     value = value.toString()
 
@@ -109,7 +109,7 @@ function formatedPrice(value: string | undefined) {
   }
 }
 
-function formatedHideValue(value: string | undefined) {
+function formattedHideValue(value: string | undefined) {
   if (value) {
     const number = parseFloat(value.replace(/[^\d]/g, ''))
     const numberFormat = new Intl.NumberFormat('pt-br', {
@@ -127,7 +127,7 @@ function formatedHideValue(value: string | undefined) {
   }
 }
 
-function formatedPriceAbbreviate(value: string | undefined) {
+function formattedPriceAbbreviate(value: string | undefined) {
   if (value) {
     const number = parseFloat(value.replace(/[^\d]/g, ''))
     if (isNaN(number)) {
@@ -151,12 +151,12 @@ function formatedPriceAbbreviate(value: string | undefined) {
 }
 
 export {
-  formatedHideValue,
-  formatedPrice,
-  formatedPriceAbbreviate,
   formattedDate,
   formattedDateSample,
   formattedDoc,
+  formattedHideValue,
+  formattedPrice,
+  formattedPriceAbbreviate,
   formattedTimeAGo,
   invertDate
 }
