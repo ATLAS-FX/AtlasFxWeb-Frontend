@@ -22,7 +22,6 @@ const Login: React.FC = () => {
   const {
     data: genCode,
     isLoading: loadGetCode,
-    isError: errorGet,
     refetch: GetCodeRefetch
   } = useGetCode()
   const { mutate: checkHash } = useCheckHash()
@@ -58,16 +57,6 @@ const Login: React.FC = () => {
       return () => clearTimeout(qrCodeTimeout)
     }
   }, [genQRCode])
-
-  useEffect(() => {
-    if (errorGet) {
-      toast({
-        variant: 'destructive',
-        title: 'Falha ao carregar dados de usuários.',
-        description: 'Por favor tente mais tarde!'
-      })
-    }
-  }, [errorGet])
 
   useEffect(() => {
     const checkHashInterval = setInterval(() => {

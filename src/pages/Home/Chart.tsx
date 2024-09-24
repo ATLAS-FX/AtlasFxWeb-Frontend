@@ -34,6 +34,7 @@ const Chart: React.FC<ChartProps> = ({
         <BarChart accessibilityLayer data={data}>
           <CartesianGrid vertical={false} />
           <XAxis
+            stroke="red"
             dataKey={dataKeyAxis}
             tickLine={false}
             tickMargin={10}

@@ -1,15 +1,10 @@
-import { Container, Title } from '@/components/layout'
-import { Separator } from '@/components/ui/separator'
-import { useNavigate } from 'react-router-dom'
-
 const Password: React.FC = () => {
-  const navigate = useNavigate()
-
   return (
-    <Container>
-      <Title title="alterar Senha" back={() => navigate(-1)} />
-      <div className="mb-2 flex flex-col gap-2 text-justify text-sm font-normal">
-        <h4 className="text-lg font-semibold text-shadow-3x">Aviso de segurança</h4>
+    <article className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 rounded-xl border-[1px] border-system-cinza">
+        <h4 className="text-base font-semibold text-primary-default">
+          Aviso de segurança
+        </h4>
         <p>
           Para garantir a máxima segurança de sua conta e proteger suas informações
           financeiras, informamos que a alteração de senha de acesso à sua conta
@@ -35,11 +30,8 @@ const Password: React.FC = () => {
           conta, garantindo uma resposta rápida e eficiente.
         </p>
       </div>
-      <div className="flex flex-row-reverse">
-        <Separator className="w-[52%] bg-secondary-default" />
-      </div>
-      <div className="flex flex-col gap-2 text-justify text-sm font-normal">
-        <h4 className="text-lg font-semibold text-shadow-3x">
+      <div className="flex flex-col gap-2 rounded-xl border-[1px] border-system-cinza">
+        <h4 className="text-base font-semibold text-primary-default">
           Como alterar sua senha:
         </h4>
         <p>
@@ -62,7 +54,7 @@ const Password: React.FC = () => {
           instruções na tela para completar a alteração de senha.
         </p>
       </div>
-    </Container>
+    </article>
   )
 }
 

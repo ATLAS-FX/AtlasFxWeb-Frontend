@@ -46,6 +46,17 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     amount: '',
     doc: '',
     name: '',
+    email: '',
+    street: '',
+    st_comp: '',
+    st_number: '',
+    number: '',
+    district: '',
+    city: '',
+    state: '',
+    zip: '',
+    uf: '',
+    emailWhite: '',
     releases: []
   })
 
@@ -53,20 +64,20 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     setIsAuthenticated(true)
 
     setToken(token)
-    localStorage.setItem('atlas_token', token)
+    sessionStorage.setItem('atlas_token', token)
   }
 
   const signOut = () => {
     setIsAuthenticated(false)
 
-    localStorage.removeItem('atlas_token')
+    sessionStorage.removeItem('atlas_token')
     navigate('/login', { replace: true })
   }
 
   const checkUserIsAuthenticated = () => {
-    const localToken = localStorage.getItem('atlas_token')
-    if (localToken !== null) {
-      setToken(localToken)
+    const sessionToken = sessionStorage.getItem('atlas_token')
+    if (sessionToken !== null) {
+      setToken(sessionToken)
       setIsAuthenticated(true)
     } else {
       setIsAuthenticated(false)

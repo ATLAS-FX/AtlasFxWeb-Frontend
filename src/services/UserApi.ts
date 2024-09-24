@@ -1,4 +1,4 @@
-import { ProfileType, UserType } from '@/types/userType'
+import { UserType } from '@/types/userType'
 import { useMutation, useQuery } from 'react-query'
 import { api } from './api'
 
@@ -11,7 +11,7 @@ const getInfoUser = () => {
 
 const getProfile = () => {
   return useQuery('get-info-user', async () => {
-    const { data } = await api.get<ProfileType>('/portal/perfil/list')
+    const { data } = await api.get<UserType>('/portal/perfil/list')
     return data
   })
 }

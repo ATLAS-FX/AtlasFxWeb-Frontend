@@ -2,7 +2,6 @@ import Robo from '@/assets/robo.png'
 import { IconDoubleArrow } from '@/components/icons'
 import { CardHome, Container } from '@/components/layout'
 import { ChartConfig } from '@/components/ui/chart'
-import { Separator } from '@/components/ui/separator'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { RegisterPixType } from '@/types/userType'
 import { formattedDate, formattedPrice } from '@/utils/GenerateFormatted'
@@ -55,9 +54,8 @@ const Home: React.FC = () => {
           Gerencie e monitore as finanças da sua empresa aqui. Tudo em um lugar.
         </p>
       </div>
-      <Separator className="bg-system-cinza/33 my-3 w-full" />
       <CardHome
-        classes="bg-secondary-default z-10 mb-10"
+        classes="bg-secondary-default z-10 mb-6"
         children={
           <div className="relative flex">
             <p className="w-5/12 text-2xl font-semibold text-primary-default xl:text-2xl">

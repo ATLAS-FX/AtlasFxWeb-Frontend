@@ -111,7 +111,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
 
       {sortedEntries.map(([date, extracts], index) => (
         <div className="flex flex-col items-center gap-4" key={index}>
-          <div className="grid w-full grid-cols-[1fr,75%] items-center gap-2 text-sm text-system-cinza">
+          <div className="grid w-full grid-cols-[auto,75%] items-center gap-4 text-sm text-system-cinza">
             {new Date(invertDate(date)).toLocaleDateString('pt-BR', {
               weekday: 'long',
               day: '2-digit',
@@ -164,8 +164,6 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
               </TooltipProvider> */}
             </div>
           ))}
-
-          <Separator className="bg-system-cinza" />
 
           <ModalPrint
             openModal={openModalPrint}

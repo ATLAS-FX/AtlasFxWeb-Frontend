@@ -43,18 +43,13 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
           pattern="\d*"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             const value = e.target.value.replace(/\D/g, '') // Remove non-digit characters
-            if (value.length <= 6) {
+            if (value.length <= 5) {
               token(value)
             }
           }}
         />
       </div>
-      <ButtonNext
-        title="Prosseguir"
-        disabled={token.length < 6}
-        loading={loading}
-        func={() => handleFunc()}
-      />
+      <ButtonNext title="Prosseguir" loading={loading} func={() => handleFunc()} />
     </section>
   )
 }

@@ -1,6 +1,5 @@
 import { IconEyeReveal, IconPoint } from '@/components/icons'
 import { Skeleton } from '@/components/ui/skeleton'
-import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { getInfoUser } from '@/services/UserApi'
 import { formattedHideValue, formattedPrice } from '@/utils/GenerateFormatted'
@@ -10,21 +9,20 @@ import { Movements } from './Movements'
 
 const Aside: React.FC = () => {
   const { user, setUser } = useAtlas()
-  const [hideValue, setHideValue] = useState<boolean>(false)
-  const { data: infoUser, isLoading, isError } = getInfoUser()
+  const [hideValue, setHideValue] = useState<boolean>(
+    localStorage.getItem('hideValue') === 'hide' ? true : false
+  )
+  const { data: infoUser, isLoading } = getInfoUser()
+
+  useEffect(() => {
+    localStorage.setItem('hideValue', hideValue ? 'hide' : 'visible')
+  }, [hideValue])
 
   useEffect(() => {
     if (infoUser) {
-      setUser(infoUser)
+      setUser((prev) => ({ ...prev, ...infoUser }))
     }
-    if (isError) {
-      toast({
-        variant: 'destructive',
-        title: 'Falha ao carregar dados da conta.',
-        description: 'Por favor tente mais tarde!'
-      })
-    }
-  }, [infoUser, isError])
+  }, [infoUser])
 
   return (
     <>
@@ -39,16 +37,16 @@ const Aside: React.FC = () => {
                 <div className="flex w-full items-center justify-between">
                   <div className="flex flex-col justify-center gap-2 text-system-neutro">
                     <h2 className="text-sm font-medium">Saldo em conta: </h2>
-                    <h3 className="text-lg font-medium  ">
+                    <h3 className="text-lg font-medium">
                       R${' '}
                       {!hideValue
-                        ? formattedPrice(user.amount) || '0,00'
-                        : formattedHideValue(user.amount || '0,00')}
+                        ? formattedPrice(user?.amount.toString() || '0,00')
+                        : formattedHideValue(user?.amount.toString() || '0,00')}
                     </h3>
                     <h3 className="flex items-center gap-2">
-                      Agência {user.agency}
+                      Agência {user?.agency}
                       <IconPoint className="size-1" />
-                      Conta: {user.account}
+                      Conta: {user?.account}
                     </h3>
                   </div>
                   <button onClick={() => setHideValue(!hideValue)}>
@@ -64,7 +62,7 @@ const Aside: React.FC = () => {
               className="p-0"
               children={
                 <>
-                  {user.releases.length >= 1 ? (
+                  {user?.releases.length >= 1 ? (
                     <ul>
                       <h2 className="py-2 pl-6 text-start font-semibold text-primary-default">
                         Últimos Lançamentos:

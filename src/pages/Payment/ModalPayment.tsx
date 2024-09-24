@@ -6,7 +6,7 @@ import { PaymentType } from '@/types/PaymentType'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import { Dispatch, SetStateAction } from 'react'
 
-interface ModalPayment {
+interface ModalPaymentProps {
   state: {
     step: number
     type: string
@@ -28,7 +28,7 @@ interface ModalPayment {
   SendPaymentFunc: () => void
 }
 
-const ModalPayment: React.FC<ModalPayment> = ({
+const ModalPayment: React.FC<ModalPaymentProps> = ({
   state,
   setState,
   data,
