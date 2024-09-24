@@ -1,60 +1,35 @@
-import { Separator } from '@/components/ui/separator'
-
 const FrequentQuestions: React.FC = () => {
   return (
-    <article className="flex flex-col gap-2">
-      <div className="mb-2 flex flex-col gap-2 text-justify text-sm font-normal">
-        <h4 className="text-lg font-semibold text-shadow-3x">Aviso de segurança</h4>
+    <article className="flex flex-col gap-4 text-system-cinza">
+      <h3 className="text-base font-semibold text-primary-default">
+        Dúvidas frequentes
+      </h3>
+      <div className="flex flex-col gap-2 rounded-xl border-[1px] border-[#7F828C33] p-3 text-xs">
+        <h3 className="text-sm font-semibold text-primary-default">
+          Como cadastrar uma chave pix?
+        </h3>
         <p>
-          Para garantir a máxima segurança de sua conta e proteger suas informações
-          financeiras, informamos que a alteração de senha de acesso à sua conta
-          bancária deve ser realizada exclusivamente através do nosso aplicativo
-          móvel.
-        </p>
-        <h4 className="font-semibold">por que via app?</h4>
-        <p>
-          <label className="font-semibold">Segurança Reforçada: </label>O aplicativo
-          móvel oferece camadas adicionais de segurança, como autenticação
-          multifatorial e criptografia avançada, para proteger suas informações
-          contra acessos não autorizados.
-        </p>
-        <p>
-          <label className="font-semibold">Controle Total: </label>
-          Ao alterar sua senha pelo aplicativo, você tem controle total sobre o
-          processo, garantindo que a transação seja realizada de maneira segura e
-          confiável.
-        </p>
-        <p>
-          <label className="font-semibold">Atualizações Instantâneas: </label>
-          Qualquer alteração feita no aplicativo é instantaneamente refletida em sua
-          conta, garantindo uma resposta rápida e eficiente.
+          {
+            'Na tela inicial, entre em Área PIX > Gerenciar chaves > Cadastrar nova chave.'
+          }
         </p>
       </div>
-      <div className="flex flex-row-reverse">
-        <Separator className="w-[52%] bg-secondary-default" />
+      <div className="flex flex-col gap-2 rounded-xl border-[1px] border-[#7F828C33] p-3 text-xs">
+        <h3 className="text-sm font-semibold text-primary-default">
+          Como alterar meu endereço?
+        </h3>
+        <p>
+          {
+            'Na barra de navegação inferior, clique, entre em Perfil > Dados cadastrais > Editar endereço e siga as instruções para alterar seu endereço.'
+          }
+        </p>
       </div>
-      <div className="flex flex-col gap-2 text-justify text-sm font-normal">
-        <h4 className="text-lg font-semibold text-shadow-3x">
-          Como alterar sua senha:
-        </h4>
+      <div className="flex flex-col gap-2 rounded-xl border-[1px] border-[#7F828C33] p-3 text-xs">
+        <h3 className="text-sm font-semibold text-primary-default">
+          Como receber por QR code?
+        </h3>
         <p>
-          1. Acesse Sua Conta Via APP: Abra o aplicativo móvel de nosso banco e faça
-          login em sua conta utilizando suas credenciais de acesso.
-        </p>
-        <p>
-          2. Navegue até "Meu Perfil": No menu principal do aplicativo, localize a
-          seção denominada "Meu Perfil" ou similar. Geralmente, essa opção está
-          localizada no menu lateral ou no menu de configurações.
-        </p>
-        <p>
-          3. Selecione "Alterar Senha": Dentro da seção "Meu Perfil", procure a opção
-          para alterar sua senha. Em alguns aplicativos, essa opção pode estar
-          listada como "Segurança", "Configurações de Conta" ou algo semelhante.
-        </p>
-        <p>
-          4. Siga o Fluxo de Alteração de Senha: Ao selecionar "Alterar Senha", você
-          será direcionado para uma nova tela ou fluxo de processo. Siga as
-          instruções na tela para completar a alteração de senha.
+          {'Na tela inicial, entre em Depósito > Gerar QR code e siga as instruções'}
         </p>
       </div>
     </article>
