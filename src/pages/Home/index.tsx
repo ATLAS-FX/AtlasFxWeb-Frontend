@@ -100,7 +100,10 @@ const Home: React.FC = () => {
                     Entradas
                   </h3>
                   <h3 className="text-xl">
-                    R$ <strong>{dash?.money_in?.toString() || '0'}</strong>
+                    R${' '}
+                    <strong>
+                      {formattedPrice(dash?.money_in?.toString() || '0')}
+                    </strong>
                   </h3>
                 </>
               }
@@ -119,7 +122,7 @@ const Home: React.FC = () => {
                   <h3 className="text-xl">
                     R${' '}
                     <strong>
-                      {formattedPrice(dash?.money_in?.toString() || '0')}
+                      {formattedPrice(dash?.money_out?.toString() || '0')}
                     </strong>
                   </h3>
                 </>
