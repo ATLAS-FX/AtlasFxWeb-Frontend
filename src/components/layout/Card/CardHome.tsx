@@ -15,7 +15,7 @@ const CardHome: React.FC<CardHomeProps> = ({ title, classes, children, imgBG }) 
       style={imgBG ? imgBG : undefined}
     >
       {title && <h3 className="text-sm">{title}</h3>}
-      <div>{children}</div>
+      {children}
     </div>
   )
 }

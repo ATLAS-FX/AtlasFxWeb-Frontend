@@ -2,19 +2,31 @@ import Robo from '@/assets/robo.png'
 import { IconDoubleArrow } from '@/components/icons'
 import { CardHome, Container } from '@/components/layout'
 import { ChartConfig } from '@/components/ui/chart'
+import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { useDashboard } from '@/services/DashApi'
 import { DashBoardType } from '@/types/DashType'
-import { formattedDate, formattedPrice } from '@/utils/GenerateFormatted'
+import { formattedPrice } from '@/utils/GenerateFormatted'
+import { format, subDays } from 'date-fns'
 import { useEffect, useState } from 'react'
 import Chart from './Chart'
-import { Skeleton } from '@/components/ui/skeleton'
 
 const Home: React.FC = () => {
   const { user } = useAtlas()
   const { mutate: dashboard, isLoading: loadDash } = useDashboard()
   const [dash, setDash] = useState<DashBoardType | null>(null)
+  const [date, _] = useState<{ start: Date; end: Date }>({
+    end: new Date(),
+    start: subDays(new Date(), 30)
+  })
+
+  const StyleBot = {
+    backgroundImage: `url('${Robo}')`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: '85% 24px',
+    backgroundSize: '172px'
+  }
 
   const chartConfig = {
     desktop: {
@@ -28,13 +40,10 @@ const Home: React.FC = () => {
   } satisfies ChartConfig
 
   const handleDashboard = async () => {
-    const startDate = new Date()
-    startDate.setDate(startDate.getDate() - 15)
-
     dashboard(
       {
-        end: new Date().toISOString(),
-        start: startDate.toISOString()
+        end: format(date.end, 'yyyy-MM-dd'),
+        start: format(date.start, 'yyyy-MM-dd')
       },
       {
         onSuccess: (res: any) => {
@@ -76,18 +85,12 @@ const Home: React.FC = () => {
       ) : (
         <>
           <CardHome
-            classes="bg-secondary-default z-10 mb-6"
+            classes="bg-secondary-default"
+            imgBG={StyleBot}
             children={
-              <div className="relative flex">
-                <p className="h-28 w-5/12 text-2xl font-semibold text-primary-default xl:text-2xl">
-                  {'O jeito fácil de gerenciar a sua empresa ;)'}
-                </p>
-                <img
-                  className="absolute right-10 z-0 h-40 object-contain"
-                  src={Robo}
-                  alt="Robo_svg"
-                />
-              </div>
+              <p className="h-32 w-6/12 text-2xl font-semibold text-primary-default xl:text-2xl">
+                {'O jeito fácil de gerenciar a sua empresa ;)'}
+              </p>
             }
           />
           <div className="flex items-center gap-4">
@@ -135,7 +138,7 @@ const Home: React.FC = () => {
             children={
               <>
                 <p className="absolute right-4 top-8 text-xs font-semibold text-[#7F828C]">
-                  {formattedDate(new Date().toString())}
+                  {`${format(date.start, 'dd/MM/yyyy')} - ${format(date.end, 'dd/MM/yyyy')}`}
                 </p>
                 <h3 className="text-xl">
                   R${' '}

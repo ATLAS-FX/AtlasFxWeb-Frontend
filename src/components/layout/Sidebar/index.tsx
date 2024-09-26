@@ -20,7 +20,7 @@ const Sidebar: React.FC = () => {
   return (
     <nav className="flex h-[calc(100dvh-80px)] flex-col justify-between gap-2 rounded-2xl bg-[#243060] px-2 py-6">
       <div className="flex w-full items-center justify-center">
-        <img className="w-20" src={Atlas_Logo} alt="logo atlas_fx" />
+        <img className="w-28" src={Atlas_Logo} alt="logo atlas_fx" />
       </div>
       <div className="flex flex-col gap-2">
         {checkoutItems.map(({ path, title }, number) => (

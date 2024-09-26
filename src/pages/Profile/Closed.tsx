@@ -2,21 +2,22 @@ import Robo_Triste from '@/assets/robo_triste.png'
 import { CardHome } from '@/components/layout'
 
 const CloseAccount: React.FC = () => {
+  const StyleBot = {
+    backgroundImage: `url('${Robo_Triste}')`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: '85% 16px',
+    backgroundSize: '142px'
+  }
+
   return (
     <section className="flex flex-col gap-4 text-xs text-system-cinza">
       <CardHome
-        classes="bg-primary-default z-10 mb-6"
+        classes="bg-primary-default"
+        imgBG={StyleBot}
         children={
-          <div className="relative flex">
-            <p className="w-5/12 text-2xl font-semibold text-secondary-default xl:text-2xl">
-              {'É uma pena que esteja nos deixando... :('}
-            </p>
-            <img
-              className="absolute right-10 z-0 h-36 object-contain"
-              src={Robo_Triste}
-              alt="Robo_svg"
-            />
-          </div>
+          <p className="h-32 w-6/12 text-2xl font-semibold text-secondary-default xl:text-2xl">
+            {'É uma pena que esteja nos deixando... :('}
+          </p>
         }
       />
       <div className="m-auto flex w-9/12 flex-col gap-2">

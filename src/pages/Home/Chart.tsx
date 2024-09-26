@@ -5,6 +5,7 @@ import {
   ChartTooltipContent
 } from '@/components/ui/chart'
 import { cn } from '@/lib/utils'
+import { format } from 'date-fns'
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 
 interface ChartProps {
@@ -39,7 +40,7 @@ const Chart: React.FC<ChartProps> = ({
             tickLine={false}
             tickMargin={10}
             axisLine={false}
-            tickFormatter={(value) => new Date(value).getUTCDay().toString()}
+            tickFormatter={(value) => format(value, 'dd/MM')}
           />
           <ChartTooltip
             cursor={false}

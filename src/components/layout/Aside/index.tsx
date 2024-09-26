@@ -52,7 +52,7 @@ const Aside: React.FC = () => {
                   <button onClick={() => setHideValue(!hideValue)}>
                     <IconEyeReveal
                       size={24}
-                      className="mr-2 fill-system-neutro transition-all duration-200 ease-in-out hover:scale-125 hover:fill-white/70"
+                      className="mr-2 fill-system-neutro transition-all duration-300 ease-in-out hover:fill-white/50"
                     />
                   </button>
                 </div>
