@@ -49,14 +49,54 @@ const ModalPix: React.FC<ModalPix> = ({
             key="confirm-modal"
             back={() => setState({ ...state, stateModal: false })}
             title={'Confira as informações do pagamento'}
-            balance={`R$ ${formattedPrice(state?.amount) || ''}`}
-            nameRecipient={data?.name || ''}
-            document={data?.doc || ''}
-            bank={data?.bank || ''}
-            agency={data?.agency || ''}
-            account={data?.account || ''}
-            keyValue={state?.keyPix || ''}
-            keyType={'pix'}
+            contain={
+              <div className="flex flex-col gap-4 text-sm font-normal text-system-cinza">
+                <div className="m-auto flex w-5/6 flex-col items-center rounded-md border-[1px] border-system-cinza/25 p-4">
+                  <h4 className="text-base font-semibold">
+                    {`R$ ${formattedPrice(state?.amount || '0,00')?.toString()}`}
+                  </h4>
+                  <label className="font-bold text-primary-default">
+                    {data?.name || ''}
+                  </label>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <label className="font-medium text-primary-default">
+                    Nome do destinatário:
+                  </label>
+                  <span>{data?.name || ''}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <label className="font-medium text-primary-default">CPF:</label>
+                  <span>{data?.doc || ''}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <label className="font-medium text-primary-default">
+                    Instituição:
+                  </label>
+                  <span>{data?.bank || ''}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <label className="font-medium text-primary-default">Conta:</label>
+                  <span>{data?.account || ''}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <label className="font-medium text-primary-default">
+                    Agência:
+                  </label>
+                  <span>{data?.agency || ''}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <label className="font-medium text-primary-default">
+                    Chave Pix:
+                  </label>
+                  <span>
+                    {state?.keyPix.length > 28
+                      ? `${state?.keyPix.substring(0, 28)}...`
+                      : state?.keyPix}
+                  </span>
+                </div>
+              </div>
+            }
             handleFunc={() => setState({ ...state, step: 2 })}
           />
         )}

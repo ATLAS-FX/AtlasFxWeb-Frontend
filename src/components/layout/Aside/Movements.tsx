@@ -32,7 +32,7 @@ export const Movements: React.FC<RegisterPixType> = ({
   return (
     <div
       id={id.toString()}
-      className="flex items-center gap-1 border-b-[2px] border-slate-300 py-2 text-primary-default last:border-b-0"
+      className="grid grid-cols-[70%,25%,5%] items-center gap-1 border-b-[2px] border-slate-300 py-2 text-primary-default last:border-b-0"
     >
       <div className="flex w-10/12 flex-col items-start justify-center gap-1 text-sm">
         {send > 0 ? (
@@ -41,16 +41,16 @@ export const Movements: React.FC<RegisterPixType> = ({
               size={12}
               className="scale-x-[-1] transform fill-[#EF4444]"
             />
-            {method} Enviado
+            {method === 'TAX' ? 'Tarifa' : `${method} Enviado`}
           </h2>
         ) : (
           <h2 className="flex items-center justify-start gap-4 font-semibold capitalize">
             <IconDoubleArrow className="fill-secondary-default" size={12} />
-            {method} Recebido
+            {method === 'TAX' ? 'Tarifa' : `${method} Recebido`}
           </h2>
         )}
         <h4 className="ml-7 flex items-center justify-start gap-1 text-slate-500">
-          {name}
+          {method === 'TAX' ? '-' : name}
         </h4>
       </div>
       <div className="flex flex-col gap-1 text-end text-xs font-light">

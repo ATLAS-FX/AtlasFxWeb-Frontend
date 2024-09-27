@@ -1,4 +1,4 @@
-export type BankDepositType = {
+export type DepositType = {
   account: string
   agency: string
   amount: string

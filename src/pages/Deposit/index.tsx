@@ -1,16 +1,15 @@
 import { Container, Title } from '@/components/layout'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
-import { useBankDepositInfo } from '@/services/BankDepositApi'
+import { useDepositInfo } from '@/services/DepositApi'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import PaymentBankDeposit from './PaymentBankDeposit'
-import ProfileBankDeposit from './ProfileBankDeposit'
+import ProfileDeposit from './ProfileDeposit'
 
-const BankDeposit: React.FC = () => {
+const Deposit: React.FC = () => {
   const navigate = useNavigate()
-  const { data: infoBankDeposit, isLoading, isError } = useBankDepositInfo()
-  const [stepBankDeposit, setStepBankDeposit] = useState<{
+  const { data: deposit, isLoading, isError } = useDepositInfo()
+  const [stepDeposit, setStepDeposit] = useState<{
     typePayment: string
     stepPage: number
     selectPayment: number
@@ -18,6 +17,7 @@ const BankDeposit: React.FC = () => {
     key: string
     barcode: string
     qrcode: string
+    modal: boolean
   }>({
     typePayment: '',
     stepPage: 0,
@@ -25,7 +25,8 @@ const BankDeposit: React.FC = () => {
     amount: '0,00',
     key: '',
     barcode: '',
-    qrcode: ''
+    qrcode: '',
+    modal: false
   })
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const BankDeposit: React.FC = () => {
         description: '  Por favor tente mais tarde!'
       })
     }
-  }, [isError, stepBankDeposit])
+  }, [isError, stepDeposit])
 
   return (
     <>
@@ -46,11 +47,12 @@ const BankDeposit: React.FC = () => {
         <Container>
           <Title
             title="Depositar"
+            subtitle="Deposite seu dinheiro com segurança."
             back={() =>
-              stepBankDeposit.selectPayment === 0 && stepBankDeposit.stepPage === 0
+              stepDeposit.selectPayment === 0 && stepDeposit.stepPage === 0
                 ? navigate(-1)
-                : stepBankDeposit.selectPayment > 0 && stepBankDeposit.stepPage > 0
-                  ? setStepBankDeposit((prev) => ({
+                : stepDeposit.selectPayment > 0 && stepDeposit.stepPage > 0
+                  ? setStepDeposit((prev) => ({
                       ...prev,
                       typePayment: '',
                       selectPayment: 1,
@@ -60,7 +62,7 @@ const BankDeposit: React.FC = () => {
                       key: '',
                       qrcode: ''
                     }))
-                  : setStepBankDeposit((prev) => ({
+                  : setStepDeposit((prev) => ({
                       ...prev,
                       selectPayment: 0,
                       stepPage: 0,
@@ -71,24 +73,16 @@ const BankDeposit: React.FC = () => {
                     }))
             }
           />
-          {stepBankDeposit.stepPage === 0 && (
-            <ProfileBankDeposit
-              key={infoBankDeposit?.id}
-              state={stepBankDeposit}
-              setState={setStepBankDeposit}
-              name={infoBankDeposit?.name || ''}
-              cnpj={infoBankDeposit?.doc || ''}
-              bank={infoBankDeposit?.bank || ''}
-              agency={infoBankDeposit?.agency || ''}
-              account={infoBankDeposit?.account || ''}
-            />
-          )}
-          {stepBankDeposit.stepPage === 1 && (
-            <PaymentBankDeposit
-              amount={stepBankDeposit.amount}
-              type={stepBankDeposit.typePayment}
-              barcode={stepBankDeposit.barcode}
-              qrcode={stepBankDeposit.qrcode}
+          {stepDeposit.stepPage === 0 && (
+            <ProfileDeposit
+              key={deposit?.id}
+              state={stepDeposit}
+              setState={setStepDeposit}
+              name={deposit?.name || ''}
+              cnpj={deposit?.doc || ''}
+              bank={deposit?.bank || ''}
+              agency={deposit?.agency || ''}
+              account={deposit?.account || ''}
             />
           )}
         </Container>
@@ -97,4 +91,4 @@ const BankDeposit: React.FC = () => {
   )
 }
 
-export default BankDeposit
+export default Deposit

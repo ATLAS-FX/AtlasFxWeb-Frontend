@@ -4,28 +4,14 @@ import { MoveLeft } from 'lucide-react'
 
 interface ModalConfirmProps {
   title: string
-  balance: string
-  nameRecipient: string
-  document: string
-  bank: string
-  agency: string
-  account: string
-  keyType: string
-  keyValue: string
-  handleFunc: () => void
+  contain: React.ReactNode
+  handleFunc?: () => void
   back: () => void
 }
 
 const ModalConfirm: React.FC<ModalConfirmProps> = ({
   title,
-  balance,
-  nameRecipient,
-  document,
-  bank,
-  agency,
-  account,
-  keyType,
-  keyValue,
+  contain,
   handleFunc,
   back
 }) => {
@@ -41,45 +27,12 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
         </Button>
         <h4 className="text-base font-semibold text-primary-default">{title}</h4>
       </div>
-      <div className="flex flex-col gap-4 text-sm font-normal text-system-cinza">
-        <div className="m-auto flex w-5/6 flex-col items-center rounded-md border-[1px] border-system-cinza/25 p-4">
-          <h4 className="text-base font-semibold">{balance}</h4>
-          <label className="font-bold text-primary-default">{nameRecipient}</label>
+      {contain}
+      {handleFunc && (
+        <div className="mt-4 flex items-center justify-end">
+          <ButtonNext title="Prosseguir" func={handleFunc} />
         </div>
-        <div className="flex items-center justify-between text-sm">
-          <label className="font-medium text-primary-default">
-            Nome do destinatário:
-          </label>
-          <span>{nameRecipient}</span>
-        </div>
-        <div className="flex items-center justify-between text-sm">
-          <label className="font-medium text-primary-default">CPF:</label>
-          <span>{document}</span>
-        </div>
-        <div className="flex items-center justify-between text-sm">
-          <label className="font-medium text-primary-default">Instituição:</label>
-          <span>{bank}</span>
-        </div>
-        <div className="flex items-center justify-between text-sm">
-          <label className="font-medium text-primary-default">Conta:</label>
-          <span>{account}</span>
-        </div>
-        <div className="flex items-center justify-between text-sm">
-          <label className="font-medium text-primary-default">Agência:</label>
-          <span>{agency}</span>
-        </div>
-        <div className="flex items-center justify-between text-sm">
-          <label className="font-medium text-primary-default">
-            {keyType === 'boleto' ? 'Código de barras:' : 'Chave Pix:'}
-          </label>
-          <span>
-            {keyValue.length > 28 ? `${keyValue.substring(0, 28)}...` : keyValue}
-          </span>
-        </div>
-      </div>
-      <div className="mt-4 flex items-center justify-end">
-        <ButtonNext title="Prosseguir" func={handleFunc} />
-      </div>
+      )}
     </section>
   )
 }
