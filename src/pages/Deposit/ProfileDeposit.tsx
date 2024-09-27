@@ -103,8 +103,7 @@ const ProfileDeposit: React.FC<ProfileDepositProps> = ({
           }))
           toast({
             variant: 'success',
-            title: 'Seu boleto foi gerado com sucesso!',
-            description: res.toString()
+            title: 'Seu boleto foi gerado com sucesso!'
           })
         },
         onError: (e: any) => {
@@ -125,14 +124,13 @@ const ProfileDeposit: React.FC<ProfileDepositProps> = ({
         onSuccess: (res: any) => {
           setState((prev) => ({
             ...prev,
-            qrcode: res.toString(),
+            qrcode: res.qrcode.toString(),
             key: res.toString(),
             selectPayment: 2
           }))
           toast({
             variant: 'success',
-            title: 'Seu QrCode foi gerado com sucesso!',
-            description: res.toString()
+            title: 'Seu QrCode foi gerado com sucesso!'
           })
         },
         onError: (e: any) => {
