@@ -131,16 +131,20 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, setAction, data }) 
                       size={12}
                       className="scale-x-[-1] transform fill-[#EF4444]"
                     />
-                    {extract?.method} Enviado
+                    {extract?.method === 'TAX'
+                      ? 'Tarifa'
+                      : `${extract?.method} Enviado`}
                   </h2>
                 ) : (
                   <h2 className="flex items-center justify-start gap-4 font-semibold capitalize">
                     <IconDoubleArrow className="fill-secondary-default" size={12} />
-                    {extract?.method} Recebido
+                    {extract?.method === 'TAX'
+                      ? 'Tarifa'
+                      : `${extract?.method} Recebido`}
                   </h2>
                 )}
                 <h4 className="ml-7 flex items-center justify-start gap-1 text-slate-500">
-                  {extract?.name}
+                  {extract?.method === 'TAX' ? '-' : extract?.name}
                 </h4>
               </div>
               <div className="flex flex-col gap-1 text-end text-xs font-light">
