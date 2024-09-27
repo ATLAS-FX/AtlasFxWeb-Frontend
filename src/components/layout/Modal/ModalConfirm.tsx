@@ -7,13 +7,15 @@ interface ModalConfirmProps {
   contain: React.ReactNode
   handleFunc?: () => void
   back: () => void
+  loading?: boolean
 }
 
 const ModalConfirm: React.FC<ModalConfirmProps> = ({
   title,
   contain,
   handleFunc,
-  back
+  back,
+  loading = false
 }) => {
   return (
     <section className="flex flex-col gap-2">
@@ -30,7 +32,7 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
       {contain}
       {handleFunc && (
         <div className="mt-4 flex items-center justify-end">
-          <ButtonNext title="Prosseguir" func={handleFunc} />
+          <ButtonNext title="Prosseguir" func={handleFunc} loading={loading} />
         </div>
       )}
     </section>

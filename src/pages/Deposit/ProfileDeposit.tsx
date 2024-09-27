@@ -55,12 +55,12 @@ const ProfileDeposit: React.FC<ProfileDepositProps> = ({
 }) => {
   const {
     mutate: createBarCode,
-    // isLoading: loadBarCode,
+    isLoading: loadBarCode,
     isError: errorBarCode
   } = useCreateBarCode()
   const {
     mutate: createQrCode,
-    // isLoading: loadQrCode,
+    isLoading: loadQrCode,
     isError: errorQrCode
   } = useCreateQrCode()
 
@@ -218,7 +218,9 @@ const ProfileDeposit: React.FC<ProfileDepositProps> = ({
                     ? 'Gerar Código de Barras'
                     : 'Gerar QR Code'
                 }
-                back={() => setState((prev) => ({ ...prev, modal: false }))}
+                back={() =>
+                  setState((prev) => ({ ...prev, modal: false, amount: '' }))
+                }
                 contain={
                   <section className="flex flex-col gap-2">
                     <h4 className="text-base text-system-cinza">
@@ -239,6 +241,7 @@ const ProfileDeposit: React.FC<ProfileDepositProps> = ({
                     ? handleCreateQrCode()
                     : handleCreateBarCode()
                 }}
+                loading={state.typePayment === 'qrcode' ? loadQrCode : loadBarCode}
               />
             )}
             {state.selectPayment === 2 && (
@@ -250,7 +253,9 @@ const ProfileDeposit: React.FC<ProfileDepositProps> = ({
                       ? 'Gerar Código de Barras'
                       : 'Gerar QR Code'
                   }
-                  back={() => setState((prev) => ({ ...prev, selectPayment: 1 }))}
+                  back={() =>
+                    setState((prev) => ({ ...prev, selectPayment: 1, amount: '' }))
+                  }
                   contain={
                     <section className="flex max-w-[512px] flex-col gap-2">
                       {state.typePayment === 'bar' ? (
@@ -269,7 +274,16 @@ const ProfileDeposit: React.FC<ProfileDepositProps> = ({
                             </li>
                           </ul>
                           <div className="flex justify-center gap-2 py-2">
-                            <Button className="min-w-32 items-center gap-2 rounded-md bg-primary-default fill-white p-2 text-base transition-all duration-300 ease-in-out hover:scale-110 hover:bg-primary-hover hover:text-system-neutro">
+                            <Button
+                              className="min-w-32 items-center gap-2 rounded-md bg-primary-default fill-white p-2 text-base transition-all duration-300 ease-in-out hover:scale-110 hover:bg-primary-hover hover:text-system-neutro"
+                              onClick={() => {
+                                handleCopyClick(
+                                  state.barcode,
+                                  'Sucesso ao copiar código de barras',
+                                  'Falha ao copiar código de barras'
+                                )
+                              }}
+                            >
                               <IconCopyDatabase className="size-5" />
                               Copiar código de barras
                             </Button>
@@ -287,7 +301,16 @@ const ProfileDeposit: React.FC<ProfileDepositProps> = ({
                             size={250}
                           />
                           <div className="flex gap-2 py-2">
-                            <Button className="min-w-32 items-center gap-2 rounded-md bg-primary-default fill-white p-2 text-base transition-all duration-300 ease-in-out hover:scale-110 hover:bg-primary-hover hover:text-system-neutro">
+                            <Button
+                              className="min-w-32 items-center gap-2 rounded-md bg-primary-default fill-white p-2 text-base transition-all duration-300 ease-in-out hover:scale-110 hover:bg-primary-hover hover:text-system-neutro"
+                              onClick={() => {
+                                handleCopyClick(
+                                  state.qrcode,
+                                  'Sucesso ao copiar código QRCode',
+                                  'Falha ao copiar código QRCode'
+                                )
+                              }}
+                            >
                               <IconCopyDatabase className="size-5" />
                               Copiar QR Code
                             </Button>
