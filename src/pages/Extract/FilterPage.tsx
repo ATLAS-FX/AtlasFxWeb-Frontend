@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import { useExtractInfo } from '@/services/ExtractApi'
-import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 
 interface FilterPageProps {
   state: {
@@ -58,7 +58,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
     }))
   }
 
-  const handleFilterPage = useCallback(async () => {
+  const handleFilterPage = async () => {
     getExtractInfo(
       {
         start: state?.start || '',
@@ -81,7 +81,7 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
         }
       }
     )
-  }, [getExtractInfo])
+  }
 
   const isDateValid = (dateString: string) => {
     return !isNaN(new Date(dateString).getTime())

@@ -4,9 +4,6 @@ import Extract from '@/pages/Extract'
 import Home from '@/pages/Home'
 import Payments from '@/pages/Payment'
 import Pix from '@/pages/Pix'
-import PixContacts from '@/pages/Pix/Contacts/PixContacts'
-import PixKeys from '@/pages/Pix/KeysLists/PixKeys'
-import PixStep from '@/pages/Pix/Transactions/PixStep'
 import Profile from '@/pages/Profile'
 import Transfer from '@/pages/Transfer'
 import React from 'react'
@@ -31,12 +28,7 @@ export const PrivateRoutes: React.FC = () => {
         {/* profile */}
         <Route path="profile" Component={Profile} />
         {/* pix */}
-        <Route path="pix">
-          <Route index Component={Pix} />
-          <Route path=":id" Component={PixStep} />
-          <Route path="my-keys" Component={PixKeys} />
-          <Route path="my-contacts" Component={PixContacts} />
-        </Route>
+        <Route path="pix" Component={Pix} />
       </ReactRoutes>
       <Aside />
     </div>

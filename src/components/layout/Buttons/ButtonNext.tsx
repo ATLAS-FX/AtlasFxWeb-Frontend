@@ -21,7 +21,7 @@ const ButtonNext: React.FC<ButtonNextProps> = ({
   return (
     <Button
       className={cn(
-        'min-w-32 rounded-md bg-primary-default p-5 text-base transition-all duration-300 ease-in-out hover:scale-110 hover:bg-primary-hover hover:text-system-neutro',
+        'min-w-32 rounded-md bg-primary-default p-5 text-base transition-all duration-300 ease-in-out hover:bg-primary-hover hover:text-system-neutro',
         classPlus
       )}
       disabled={disabled}

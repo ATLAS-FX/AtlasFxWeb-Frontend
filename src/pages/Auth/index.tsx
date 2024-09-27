@@ -1,12 +1,10 @@
-import { ButtonNext, CardForLogin, ToastLogin } from '@/components/layout'
-import { Button } from '@/components/ui/button'
+import { ButtonNext, CardForLogin } from '@/components/layout'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
-import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
-import { useCheckHash, useGetCode, useGetKey } from '@/services/AuthApi'
-import { CheckCircle2, RotateCw } from 'lucide-react'
+import { useCheckHash, useGetCode } from '@/services/AuthApi'
+import { RotateCw } from 'lucide-react'
 import QRCode from 'qrcode.react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -15,10 +13,10 @@ const Login: React.FC = () => {
   const navigate = useNavigate()
   const { currentStepEmail, signIn } = useAtlas()
   const [inputPassword, setInputPassword] = useState<string>('')
-  const [inputRef, setInputRef] = useState<string>('')
+  // const [inputRef, setInputRef] = useState<string>('')
   const [genQRCode, setGenQRCode] = useState<boolean>(false)
   const [checkValidate, setCheckValidade] = useState<boolean>(true)
-  const { mutate: getKey, isLoading } = useGetKey()
+  // const { mutate: getKey, isLoading } = useGetKey()
   const {
     data: genCode,
     isLoading: loadGetCode,
@@ -26,28 +24,28 @@ const Login: React.FC = () => {
   } = useGetCode()
   const { mutate: checkHash } = useCheckHash()
 
-  const handleGetKey = () => {
-    const id_key = Number(inputRef)
-    getKey(
-      { id: id_key },
-      {
-        onSuccess: (res) => {
-          if (res.key) {
-            signIn(res.key)
-            navigate('/')
-          }
-        },
-        onError: (e: any) => {
-          setCheckValidade(true)
-          toast({
-            variant: 'destructive',
-            title: e.response?.data?.error,
-            description: 'Falha ao acessar sua conta PJ.'
-          })
-        }
-      }
-    )
-  }
+  // const handleGetKey = () => {
+  //   const id_key = Number(inputRef)
+  //   getKey(
+  //     { id: id_key },
+  //     {
+  //       onSuccess: (res) => {
+  //         if (res.key) {
+  //           signIn(res.key)
+  //           navigate('/')
+  //         }
+  //       },
+  //       onError: (e: any) => {
+  //         setCheckValidade(true)
+  //         toast({
+  //           variant: 'destructive',
+  //           title: e.response?.data?.error,
+  //           description: 'Falha ao acessar sua conta PJ.'
+  //         })
+  //       }
+  //     }
+  //   )
+  // }
 
   useEffect(() => {
     if (!genQRCode) {
@@ -193,7 +191,7 @@ const Login: React.FC = () => {
             footer={<></>}
           />
         )}
-        <div className="justify-star mt-2 flex items-center justify-end gap-1 text-primary-default">
+        {/* <div className="justify-star mt-2 flex items-center justify-end gap-1 text-primary-default">
           <div className="flex cursor-pointer items-center gap-2">
             <span className="text-xs italic text-primary-default">
               Digita seu código:
@@ -217,13 +215,13 @@ const Login: React.FC = () => {
               <CheckCircle2 size={32} />
             </Button>
           </div>
-        </div>
+        </div> */}
       </div>
-      <ToastLogin
+      {/* <ToastLogin
         title="Realizando Login..."
         openModal={isLoading}
         setOpenModal={null}
-      />
+      /> */}
     </>
   )
 }

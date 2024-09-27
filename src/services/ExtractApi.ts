@@ -1,4 +1,4 @@
-import { ExtractType } from '@/types/Extract'
+import { ExtractType, TransactionType } from '@/types/Extract'
 import { useMutation } from 'react-query'
 import { api } from './api'
 
@@ -11,4 +11,14 @@ const useExtractInfo = () => {
   )
 }
 
-export { useExtractInfo }
+const useTransactionInfo = () => {
+  return useMutation(async (params: { id: string }) => {
+    const { data } = await api.post<TransactionType>(
+      '/portal/transaction/detail',
+      params
+    )
+    return data
+  })
+}
+
+export { useExtractInfo, useTransactionInfo }

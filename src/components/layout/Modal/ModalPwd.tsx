@@ -2,6 +2,7 @@ import { ButtonNext } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { MoveLeft } from 'lucide-react'
+import { ChangeEvent } from 'react'
 
 interface ModalConfirmProps {
   title: string
@@ -41,15 +42,14 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
           type="password"
           maxLength={6}
           pattern="\d*"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            const value = e.target.value.replace(/\D/g, '') // Remove non-digit characters
-            if (value.length <= 5) {
-              token(value)
-            }
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            token(e.target.value)
           }}
         />
       </div>
-      <ButtonNext title="Prosseguir" loading={loading} func={() => handleFunc()} />
+      <div className="flex justify-end">
+        <ButtonNext title="Prosseguir" loading={loading} func={() => handleFunc()} />
+      </div>
     </section>
   )
 }

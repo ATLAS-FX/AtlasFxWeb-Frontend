@@ -1,11 +1,13 @@
 import { IconCopyPaste, IconStar } from '@/components/icons'
 import { ButtonNext, Container, Title } from '@/components/layout'
+import { Selects } from '@/components/layout/Select'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
+import { cn } from '@/lib/utils'
 import { useGetKeyInfo, useListContacts, useSendPix } from '@/services/PixApi'
 import { PixType } from '@/types/PixType'
 import { formattedPrice } from '@/utils/GenerateFormatted'
@@ -136,6 +138,26 @@ const Pix: React.FC = () => {
               )}
             </div>
           </div>
+          <Selects
+            classTrigger="rounded-md border-[1px] border-system-cinza/25 px-2 text-base shadow-sm data-[placeholder]:text-slate-400 bg-transparent"
+            place={'Minhas Chaves'}
+            items={[
+              {
+                text: 'Chave 1',
+                value: '1'
+              },
+              {
+                text: 'Chave 2',
+                value: '2'
+              },
+              {
+                text: 'Chave 3',
+                value: '3'
+              }
+            ]}
+            value={flow.keyPix}
+            setValue={() => setFlow({ ...flow, keyPix: '' })}
+          />
           <Separator className="my-4 h-0.5 w-full bg-system-cinza/25" />
           {isLoading ? (
             <Skeleton className="h-[calc(100vh-164px)] w-full rounded-lg" />
@@ -155,11 +177,22 @@ const Pix: React.FC = () => {
           )}
         </>
       )}
-      {flow.step === 1 && (
+      {flow.step >= 1 && (
         <>
-          <div className="flex flex-col gap-4 rounded-xl border-[1px] border-system-cinza/25 p-4 text-system-cinza">
+          <div className="relative flex flex-col gap-4 rounded-xl border-[1px] border-system-cinza/25 p-4 text-system-cinza">
+            <Button
+              className="absolute right-2 top-2 flex h-fit w-fit items-center gap-2 border-[1px] border-primary-hover bg-transparent p-2 text-xs text-primary-hover shadow-none transition-all duration-300 ease-in-out hover:fill-white hover:text-white"
+              onClick={() => setFlow({ ...flow, save: flow.save === 0 ? 1 : 0 })}
+            >
+              {flow?.save === 0 ? 'Salvar Contato' : 'Não Salvar'}
+            </Button>
             <div className="flex items-center gap-2">
-              <IconStar className="size-5 fill-transparent stroke-system-cinza" />
+              <IconStar
+                className={cn(
+                  'size-5 fill-transparent stroke-system-cinza',
+                  flow.save === 1 && 'fill-primary-default stroke-primary-default'
+                )}
+              />
               <h4 className="font-semibold text-primary-default">Destinatário</h4>
             </div>
             <div className="flex flex-col gap-2 pl-7">
@@ -207,9 +240,11 @@ const Pix: React.FC = () => {
             <div className="flex flex-col gap-2">
               <h4 className="text-base text-system-cinza">{`Observação (opcional):`}</h4>
               <textarea
-                className="w-full rounded-md border-[1px] border-system-cinza/25 bg-transparent text-base"
+                className="w-full rounded-md border-[1px] border-system-cinza/25 bg-transparent p-4 text-base"
                 placeholder=""
                 rows={3}
+                value={flow.desc}
+                onChange={(e) => setFlow({ ...flow, desc: e.target.value })}
               />
             </div>
             <div className="flex justify-end">
