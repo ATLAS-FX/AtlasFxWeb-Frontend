@@ -1,6 +1,5 @@
-import { IconCopyPaste, IconStar } from '@/components/icons'
+import { IconCopyPaste, IconKey, IconStar, IconTrash } from '@/components/icons'
 import { ButtonNext, Container, Title } from '@/components/layout'
-import { Selects } from '@/components/layout/Select'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
@@ -8,18 +7,35 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
-import { useGetKeyInfo, useListContacts, useSendPix } from '@/services/PixApi'
+import {
+  useGetKeyInfo,
+  useListContacts,
+  useListKeys,
+  useSendPix
+} from '@/services/PixApi'
 import { PixType } from '@/types/PixType'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ModalPix from './ModalPix'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from '@/components/ui/accordion'
+import { LoaderCircle } from 'lucide-react'
 
 const Pix: React.FC = () => {
   const { setPixCopyPaste } = useAtlas()
   const navigate = useNavigate()
   const [pixData, setPixData] = useState<PixType | null>(null)
-  const { data: listMyContatcs, isLoading, isError } = useListContacts()
+  const {
+    data: myContatcs,
+    isLoading: loadContacts,
+    isError: errorContacts
+  } = useListContacts()
+  const { data: myKeys, isLoading: loadKeys, isError: errorKeys } = useListKeys()
   const { mutate: getKeyInfo, isLoading: loadGetKeyInfo } = useGetKeyInfo()
   const { mutate: sendPix, isLoading: loadSendPix } = useSendPix()
 
@@ -90,14 +106,21 @@ const Pix: React.FC = () => {
   }
 
   useEffect(() => {
-    if (isError) {
+    if (errorContacts) {
       toast({
         variant: 'destructive',
         title: 'Falha ao carregar lista de contatos.',
         description: 'Por favor tente mais tarde!'
       })
     }
-  }, [isError, listMyContatcs])
+    if (errorKeys) {
+      toast({
+        variant: 'destructive',
+        title: 'Falha ao carregar minhas chaves pix.',
+        description: 'Por favor tente mais tarde!'
+      })
+    }
+  }, [errorContacts, errorKeys])
 
   return (
     <Container>
@@ -138,32 +161,42 @@ const Pix: React.FC = () => {
               )}
             </div>
           </div>
-          <Selects
-            classTrigger="rounded-md border-[1px] border-system-cinza/25 px-2 text-base shadow-sm data-[placeholder]:text-slate-400 bg-transparent"
-            place={'Minhas Chaves'}
-            items={[
-              {
-                text: 'Chave 1',
-                value: '1'
-              },
-              {
-                text: 'Chave 2',
-                value: '2'
-              },
-              {
-                text: 'Chave 3',
-                value: '3'
-              }
-            ]}
-            value={flow.keyPix}
-            setValue={() => setFlow({ ...flow, keyPix: '' })}
-          />
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="keypix-1">
+              <AccordionTrigger className="flex items-center justify-start gap-2">
+                <IconKey className="size-5 fill-system-cinza" />
+                Minhas Chaves
+                {loadKeys && (
+                  <LoaderCircle className="size-5 animate-spin text-primary-default transition-transform" />
+                )}
+              </AccordionTrigger>
+              {myKeys &&
+                myKeys.map(({ id, code, type }, number) => (
+                  <AccordionContent
+                    key={`pixkey-${number}+${id}`}
+                    className="flex justify-between"
+                  >
+                    <span>
+                      {type}: {code}
+                    </span>
+                    <div className="flex items-center gap-2 fill-primary-default">
+                      <button>
+                        <IconCopyPaste className="size-4" />
+                      </button>
+                      <button>
+                        <IconTrash className="size-4" />
+                      </button>
+                    </div>
+                  </AccordionContent>
+                ))}
+            </AccordionItem>
+          </Accordion>
           <Separator className="my-4 h-0.5 w-full bg-system-cinza/25" />
-          {isLoading ? (
+          {loadContacts ? (
             <Skeleton className="h-[calc(100vh-164px)] w-full rounded-lg" />
           ) : (
             <>
-              {(listMyContatcs ?? []).length < 1 ? (
+              {(myContatcs ?? []).length < 1 ? (
                 <h4 className="flex items-center gap-3 rounded-md border-[1px] border-system-cinza/25 p-2 text-lg text-system-cinza">
                   Sem Contatos
                 </h4>

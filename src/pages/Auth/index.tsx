@@ -56,15 +56,13 @@ const Login: React.FC = () => {
       }, 48000)
       return () => clearTimeout(qrCodeTimeout)
     }
-  }, [genQRCode])
-
-  console.log(typeof import.meta.env.VITE_NODE_ENV)
+  }, [genQRCode, genCode])
 
   useEffect(() => {
     const checkHashInterval = setInterval(() => {
       if (checkValidate) {
         checkHash(
-          { hash: genCode?.hash || '' },
+          { hash: genCode.hash },
           {
             onSuccess: (res) => {
               setCheckValidade(false)
@@ -143,7 +141,10 @@ const Login: React.FC = () => {
                       {genQRCode && (
                         <button
                           className="absolute bottom-auto left-auto right-auto top-auto z-20 flex h-48 w-48 flex-col items-center justify-center gap-4 rounded-[50%] bg-primary-default text-white"
-                          onClick={() => GetCodeRefetch()}
+                          onClick={() => {
+                            GetCodeRefetch()
+                            setGenQRCode(false)
+                          }}
                         >
                           <RotateCw size={42} />
                           <span className="w-10/12 text-center">
