@@ -7,7 +7,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { toast } from '@/components/ui/use-toast'
-import { ErrorResponse } from '@/utils/ErrorResponse'
+import { ErrorResponse } from '@/types/ErrorResponse'
 import { Dispatch, SetStateAction } from 'react'
 
 interface IContact {
@@ -27,10 +27,10 @@ const Contact: React.FC<IContact> = ({ name, keyPix, openModal }) => {
           description: ''
         })
       })
-      .catch((e: ErrorResponse) => {
+      .catch(({ response }: ErrorResponse) => {
         toast({
           variant: 'destructive',
-          title: e.response?.data?.error,
+          title: response?.data?.error,
           description: 'repita o processo.'
         })
       })

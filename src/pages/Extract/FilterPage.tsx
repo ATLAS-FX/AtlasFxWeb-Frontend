@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import { useExtractInfo } from '@/services/ExtractApi'
+import { ErrorResponse } from '@/types/ErrorResponse'
 import { Dispatch, SetStateAction, useEffect } from 'react'
 
 interface FilterPageProps {
@@ -72,10 +73,11 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
             stepPage: 0
           }))
         },
-        onError: (e: any) => {
+        onError: (error: unknown) => {
+          const { response } = error as ErrorResponse
           toast({
             variant: 'destructive',
-            title: e.response?.data?.error,
+            title: response.data.error,
             description: 'repita o processo.'
           })
         }

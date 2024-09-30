@@ -1,7 +1,7 @@
 import { ButtonNext } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { MoveLeft } from 'lucide-react'
+import { ChevronLeft } from 'lucide-react'
 import { ChangeEvent } from 'react'
 
 interface ModalConfirmProps {
@@ -29,7 +29,7 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
           variant="ghost"
           onClick={back}
         >
-          <MoveLeft size={18} />
+          <ChevronLeft size={18} />
         </Button>
         <h4 className="text-sm font-semibold text-primary-default">{title}</h4>
       </div>

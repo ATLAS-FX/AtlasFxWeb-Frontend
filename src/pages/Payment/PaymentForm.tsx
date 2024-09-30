@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import { useConsultPayment, useSendPayment } from '@/services/PaymentApi'
+import { ErrorResponse } from '@/types/ErrorResponse'
 import { PaymentType } from '@/types/PaymentType'
 import md5 from 'md5'
 import { ChangeEvent, Dispatch, SetStateAction } from 'react'
@@ -70,10 +71,11 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
           setFlow((prev) => ({ ...prev, stateModal: true }))
           setData(res)
         },
-        onError: (e: any) => {
+        onError: (error: unknown) => {
+          const { response } = error as ErrorResponse
           toast({
             variant: 'destructive',
-            title: e?.message || '',
+            title: response.data.error,
             description: 'repita o processo.'
           })
         }
@@ -93,10 +95,11 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
           console.log(res)
           setFlow({ ...flow, step: 2, stateModal: true })
         },
-        onError: (e: any) => {
+        onError: (error: unknown) => {
+          const { response } = error as ErrorResponse
           toast({
             variant: 'destructive',
-            title: e?.message || '',
+            title: response.data.error,
             description: 'repita o processo.'
           })
         }

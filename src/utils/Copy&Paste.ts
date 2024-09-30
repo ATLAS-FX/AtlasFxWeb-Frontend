@@ -1,5 +1,5 @@
 import { toast } from '@/components/ui/use-toast'
-import { ErrorResponse } from './ErrorResponse'
+import { ErrorResponse } from '@/types/ErrorResponse'
 
 export const handleCopyClick = (
   value: string,
@@ -15,11 +15,11 @@ export const handleCopyClick = (
         description: ''
       })
     })
-    .catch((e: ErrorResponse) => {
+    .catch(({ response }: ErrorResponse) => {
       toast({
         variant: 'destructive',
         title: textError,
-        description: e.response?.data?.error
+        description: response?.data?.error
       })
     })
 }

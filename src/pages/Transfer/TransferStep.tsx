@@ -11,6 +11,7 @@ import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
 import { useTransferApi } from '@/services/TransferApi'
+import { ErrorResponse } from '@/types/ErrorResponse'
 import { formattedDoc, formattedPrice } from '@/utils/GenerateFormatted'
 import React, {
   ChangeEvent,
@@ -75,10 +76,11 @@ const TransferStep: React.FC<TransferStepProps> = ({ step, setStep }) => {
           console.log(res)
           setOpenModalPwd(false)
         },
-        onError: (e: any) => {
+        onError: (error: unknown) => {
+          const { response } = error as ErrorResponse
           toast({
             variant: 'destructive',
-            title: e.response?.data?.error,
+            title: response.data.error,
             description: 'repita o processo.'
           })
         }

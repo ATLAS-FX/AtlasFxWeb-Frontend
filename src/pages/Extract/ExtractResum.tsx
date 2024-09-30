@@ -8,6 +8,7 @@ import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
 import { useTransactionInfo } from '@/services/ExtractApi'
+import { ErrorResponse } from '@/types/ErrorResponse'
 import { TransactionType } from '@/types/Extract'
 import { RegisterPixType } from '@/types/userType'
 import {
@@ -107,10 +108,11 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, data }) => {
         onSuccess: (res) => {
           setDetailsTransaction(res)
         },
-        onError: (e: any) => {
+        onError: (error: unknown) => {
+          const { response } = error as ErrorResponse
           toast({
             variant: 'destructive',
-            title: e.response?.data?.error,
+            title: response.data.error,
             description: 'repita o processo.'
           })
         }

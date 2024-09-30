@@ -6,6 +6,7 @@ import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
 import { useCheckHash, useGetCode, useGetKey } from '@/services/AuthApi'
+import { ErrorResponse } from '@/types/ErrorResponse'
 import { CheckCircle2, RotateCw } from 'lucide-react'
 import QRCode from 'qrcode.react'
 import { ChangeEvent, useEffect, useState } from 'react'
@@ -37,12 +38,13 @@ const Login: React.FC = () => {
             navigate('/')
           }
         },
-        onError: (e: any) => {
+        onError: (error: unknown) => {
+          const { response } = error as ErrorResponse
           setCheckValidade(true)
           toast({
             variant: 'destructive',
-            title: e.response?.data?.error,
-            description: 'Falha ao acessar sua conta PJ.'
+            title: response.data.error,
+            description: 'repita o processo.'
           })
         }
       }
@@ -73,8 +75,9 @@ const Login: React.FC = () => {
                 navigate('/')
               }
             },
-            onError: () => {
-              // Optionally handle error here
+            onError: (error: unknown) => {
+              const { response } = error as ErrorResponse
+              console.log(response)
             }
           }
         )

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { updateAddress } from '@/services/UserApi'
+import { ErrorResponse } from '@/types/ErrorResponse'
 import { UserType } from '@/types/userType'
 import md5 from 'md5'
 import { useState } from 'react'
@@ -62,10 +63,11 @@ const Registration: React.FC<RegistrationProps> = ({ data, refreshData }) => {
             refreshData()
           }
         },
-        onError: (e: any) => {
+        onError: (error: unknown) => {
+          const { response } = error as ErrorResponse
           toast({
             variant: 'destructive',
-            title: e?.message || '',
+            title: response.data.error,
             description: 'repita o processo.'
           })
         }

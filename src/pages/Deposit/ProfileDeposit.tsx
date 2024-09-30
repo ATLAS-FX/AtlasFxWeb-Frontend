@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { useCreateBarCode, useCreateQrCode } from '@/services/DepositApi'
+import { ErrorResponse } from '@/types/ErrorResponse'
 import { handleCopyClick } from '@/utils/Copy&Paste'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import QRCode from 'qrcode.react'
@@ -106,10 +107,11 @@ const ProfileDeposit: React.FC<ProfileDepositProps> = ({
             title: 'Seu boleto foi gerado com sucesso!'
           })
         },
-        onError: (e: any) => {
+        onError: (error: unknown) => {
+          const { response } = error as ErrorResponse
           toast({
             variant: 'destructive',
-            title: e.response?.data?.error,
+            title: response.data.error,
             description: 'repita o processo.'
           })
         }
@@ -133,10 +135,11 @@ const ProfileDeposit: React.FC<ProfileDepositProps> = ({
             title: 'Seu QrCode foi gerado com sucesso!'
           })
         },
-        onError: (e: any) => {
+        onError: (error: unknown) => {
+          const { response } = error as ErrorResponse
           toast({
             variant: 'destructive',
-            title: e.response?.data?.error,
+            title: response.data.error,
             description: 'repita o processo.'
           })
         }

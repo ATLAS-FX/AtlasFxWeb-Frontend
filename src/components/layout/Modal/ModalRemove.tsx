@@ -4,7 +4,9 @@ import { ChevronLeft } from 'lucide-react'
 
 interface ModalConfirmProps {
   title: string
-  contain: React.ReactNode
+  question: string
+  contain?: React.ReactNode
+  cancelFunc?: () => void
   handleFunc?: () => void
   back: () => void
   loading?: boolean
@@ -12,7 +14,9 @@ interface ModalConfirmProps {
 
 const ModalConfirm: React.FC<ModalConfirmProps> = ({
   title,
+  question,
   contain,
+  cancelFunc,
   handleFunc,
   back,
   loading = false
@@ -29,10 +33,21 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
         </Button>
         <h4 className="text-base font-semibold text-primary-default">{title}</h4>
       </div>
+      {question && (
+        <h4 className="text-center text-base font-medium text-system-cinza">
+          {question}
+        </h4>
+      )}
       {contain}
       {handleFunc && (
-        <div className="mt-4 flex items-center justify-end">
-          <ButtonNext title="Prosseguir" func={handleFunc} loading={loading} />
+        <div className="mt-4 flex items-center justify-around">
+          {cancelFunc && <ButtonNext title="Cancelar" func={cancelFunc} />}
+          <ButtonNext
+            title="Excluir"
+            func={handleFunc}
+            loading={loading}
+            classPlus="bg-[#EF4444] hover:bg-[#aa2727]"
+          />
         </div>
       )}
     </section>

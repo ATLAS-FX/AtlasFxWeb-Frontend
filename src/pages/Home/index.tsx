@@ -7,6 +7,7 @@ import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { useDashboard } from '@/services/DashApi'
 import { DashBoardType } from '@/types/DashType'
+import { ErrorResponse } from '@/types/ErrorResponse'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import { format, subDays } from 'date-fns'
 import { useEffect, useState } from 'react'
@@ -49,10 +50,11 @@ const Home: React.FC = () => {
         onSuccess: (res: any) => {
           setDash(res)
         },
-        onError: (e: any) => {
+        onError: (error: unknown) => {
+          const { response } = error as ErrorResponse
           toast({
             variant: 'destructive',
-            title: e?.message || '',
+            title: response.data.error,
             description: 'repita o processo.'
           })
         }

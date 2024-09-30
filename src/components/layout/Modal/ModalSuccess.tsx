@@ -1,7 +1,7 @@
 import RoboSuccess from '@/assets/robo.png'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { MoveLeft } from 'lucide-react'
+import { ChevronLeft } from 'lucide-react'
 
 interface ModalConfirmProps {
   title: string
@@ -18,7 +18,7 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({ title, amount, back }) => {
           variant="ghost"
           onClick={back}
         >
-          <MoveLeft size={18} />
+          <ChevronLeft size={18} />
         </Button>
         <h4 className="text-sm font-semibold text-primary-default">{title}</h4>
       </div>
