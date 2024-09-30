@@ -3,7 +3,7 @@ import { api } from './api'
 
 const useGetCode = () => {
   return useQuery(['get-code'], async () => {
-    const { data } = await api.get('/actions/gen_code')
+    const { data } = await api.get<{ hash: string }>('/actions/gen_code')
     return data
   })
 }

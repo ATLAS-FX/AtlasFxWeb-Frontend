@@ -60,9 +60,10 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     const checkHashInterval = setInterval(() => {
+      const hash = genCode ? genCode.hash : ''
       if (checkValidate) {
         checkHash(
-          { hash: genCode.hash },
+          { hash: hash },
           {
             onSuccess: (res) => {
               setCheckValidade(false)
@@ -80,7 +81,7 @@ const Login: React.FC = () => {
       }
     }, 1250)
     return () => clearInterval(checkHashInterval)
-  }, [checkValidate])
+  }, [checkValidate, genCode])
 
   return (
     <>

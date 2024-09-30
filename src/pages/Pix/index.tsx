@@ -25,6 +25,7 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import { LoaderCircle } from 'lucide-react'
+import { handleCopyClick } from '@/utils/Copy&Paste'
 
 const Pix: React.FC = () => {
   const { setPixCopyPaste } = useAtlas()
@@ -170,17 +171,25 @@ const Pix: React.FC = () => {
                   <LoaderCircle className="size-5 animate-spin text-primary-default transition-transform" />
                 )}
               </AccordionTrigger>
-              {myKeys &&
+              {myKeys?.length ? (
                 myKeys.map(({ id, code, type }, number) => (
                   <AccordionContent
                     key={`pixkey-${number}+${id}`}
-                    className="flex justify-between"
+                    className="flex justify-between text-primary-default"
                   >
                     <span>
                       {type}: {code}
                     </span>
                     <div className="flex items-center gap-2 fill-primary-default">
-                      <button>
+                      <button
+                        onClick={() =>
+                          handleCopyClick(
+                            code,
+                            'Chave pix copiada com sucesso!',
+                            'Erro ao copiar chave pix'
+                          )
+                        }
+                      >
                         <IconCopyPaste className="size-4" />
                       </button>
                       <button>
@@ -188,7 +197,12 @@ const Pix: React.FC = () => {
                       </button>
                     </div>
                   </AccordionContent>
-                ))}
+                ))
+              ) : (
+                <AccordionContent className="flex">
+                  <span>Nenhuma chave cadastrada</span>
+                </AccordionContent>
+              )}
             </AccordionItem>
           </Accordion>
           <Separator className="my-4 h-0.5 w-full bg-system-cinza/25" />
