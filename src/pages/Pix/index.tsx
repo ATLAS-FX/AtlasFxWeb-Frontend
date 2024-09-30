@@ -1,5 +1,11 @@
 import { IconCopyPaste, IconKey, IconStar, IconTrash } from '@/components/icons'
 import { ButtonNext, Container, Title } from '@/components/layout'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
@@ -14,18 +20,13 @@ import {
   useSendPix
 } from '@/services/PixApi'
 import { PixType } from '@/types/PixType'
+import { handleCopyClick } from '@/utils/Copy&Paste'
 import { formattedPrice } from '@/utils/GenerateFormatted'
+import { LoaderCircle } from 'lucide-react'
+import md5 from 'md5'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ModalPix from './ModalPix'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion'
-import { LoaderCircle } from 'lucide-react'
-import { handleCopyClick } from '@/utils/Copy&Paste'
 
 const Pix: React.FC = () => {
   const { setPixCopyPaste } = useAtlas()
@@ -84,7 +85,7 @@ const Pix: React.FC = () => {
         desc: flow.desc || '',
         key: flow.keyPix,
         save: flow.save,
-        pwd: flow.pwd
+        pwd: md5(flow.pwd)
       },
       {
         onSuccess: (res) => {
@@ -164,7 +165,7 @@ const Pix: React.FC = () => {
           </div>
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="keypix-1">
-              <AccordionTrigger className="flex items-center justify-start gap-2">
+              <AccordionTrigger className="flex items-center justify-start gap-2 font-semibold text-system-cinza">
                 <IconKey className="size-5 fill-system-cinza" />
                 Minhas Chaves
                 {loadKeys && (

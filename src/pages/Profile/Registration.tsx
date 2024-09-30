@@ -5,6 +5,7 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { updateAddress } from '@/services/UserApi'
 import { UserType } from '@/types/userType'
+import md5 from 'md5'
 import { useState } from 'react'
 import ModalProfile from './ModalProfile'
 
@@ -52,7 +53,7 @@ const Registration: React.FC<RegistrationProps> = ({ data, refreshData }) => {
         district: profile.district,
         city: profile.city,
         uf: profile.state,
-        pwd: profile.pwd
+        pwd: md5(profile.pwd)
       },
       {
         onSuccess: (res: any) => {
