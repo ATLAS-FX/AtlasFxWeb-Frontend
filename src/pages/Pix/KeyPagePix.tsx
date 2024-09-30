@@ -6,11 +6,11 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion'
+import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { useCreatedKeyPix, useDeletePixKey, useListKeys } from '@/services/PixApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
 import { handleCopyClick } from '@/utils/Copy&Paste'
-import { LoaderCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import ModalKey from './ModalKey'
 
@@ -107,6 +107,7 @@ const KeyPagePix: React.FC<KeyPagePixProps> = () => {
 
   return (
     <article>
+      {isLoading && <Skeleton className="h-12 w-full rounded-lg" />}
       <Accordion
         type="single"
         collapsible
@@ -117,11 +118,8 @@ const KeyPagePix: React.FC<KeyPagePixProps> = () => {
             <div className="flex w-8/12 items-center gap-2">
               <IconKey className="size-5 fill-system-cinza" />
               Minhas Chaves
-              {isLoading && (
-                <LoaderCircle className="size-5 animate-spin text-primary-default transition-transform" />
-              )}
             </div>
-            <button
+            <div
               className="font-medium text-primary-default underline"
               onClick={() =>
                 setStateKey({
@@ -132,7 +130,7 @@ const KeyPagePix: React.FC<KeyPagePixProps> = () => {
               }
             >
               + Adicionar chave
-            </button>
+            </div>
           </AccordionTrigger>
           {myKeys?.length ? (
             myKeys.map(({ id, code, type }, number) => (

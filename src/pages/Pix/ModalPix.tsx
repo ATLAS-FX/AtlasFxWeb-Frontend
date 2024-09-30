@@ -8,22 +8,26 @@ import { Dispatch, SetStateAction } from 'react'
 interface ModalPix {
   state: {
     step: number
-    keyPix: string
-    amount: string
+    select: string
     desc: string
+    keyPix: string
     save: number
+    amount: string
     pwd: string
-    stateModal: boolean
+    modalPix: boolean
+    modalKey: boolean
   }
   setState: Dispatch<
     SetStateAction<{
       step: number
-      keyPix: string
-      amount: string
+      select: string
       desc: string
+      keyPix: string
       save: number
+      amount: string
       pwd: string
-      stateModal: boolean
+      modalPix: boolean
+      modalKey: boolean
     }>
   >
   data: PixType | null
@@ -40,14 +44,28 @@ const ModalPix: React.FC<ModalPix> = ({
 }) => {
   return (
     <Dialog
-      open={state.stateModal}
-      onOpenChange={() => setState({ ...state, stateModal: false })}
+      open={state.modalPix}
+      onOpenChange={() => setState({ ...state, modalPix: false })}
     >
       <DialogContent className={cn('min-w-fit gap-4 rounded-xl bg-white')}>
-        {state.step === 1 && (
+        {state.step === 2 && (
           <ModalConfirm
             key="confirm-modal"
-            back={() => setState({ ...state, stateModal: false })}
+            back={() =>
+              state.step === 2
+                ? setState({
+                    ...state,
+                    modalPix: false,
+                    step: 0,
+                    pwd: '',
+                    amount: '',
+                    keyPix: '',
+                    save: 0,
+                    select: '',
+                    desc: ''
+                  })
+                : setState({ ...state, step: state.step - 1 })
+            }
             title={'Confira as informações do pagamento'}
             contain={
               <div className="flex flex-col gap-4 text-sm font-normal text-system-cinza">
@@ -97,13 +115,13 @@ const ModalPix: React.FC<ModalPix> = ({
                 </div>
               </div>
             }
-            handleFunc={() => setState({ ...state, step: 2 })}
+            handleFunc={() => setState({ ...state, step: 3 })}
           />
         )}
-        {state.step === 2 && (
+        {state.step === 3 && (
           <ModalPwd
             key="pwd-modal"
-            back={() => setState({ ...state, step: 1 })}
+            back={() => setState({ ...state, step: 2 })}
             title={'Insira sua senha'}
             subtitle={'Sua senha é a mesma da sua conta'}
             token={(e) => setState({ ...state, pwd: e })}
@@ -111,12 +129,12 @@ const ModalPix: React.FC<ModalPix> = ({
             loading={loadPix}
           />
         )}
-        {state.step === 3 && (
+        {state.step === 4 && (
           <ModalSuccess
             key="success-modal"
             title={'Sucesso!'}
+            back={() => setState({ ...state, step: 3 })}
             amount={`R$ ${formattedPrice(state?.amount) || ''}`}
-            back={() => setState({ ...state, step: 2 })}
           />
         )}
       </DialogContent>

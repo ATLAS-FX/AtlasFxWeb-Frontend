@@ -10,43 +10,51 @@ import { ErrorResponse } from '@/types/ErrorResponse'
 import { PixType } from '@/types/PixType'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import md5 from 'md5'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ModalPix from './ModalPix'
 
-interface FlowPagePixProps {}
+interface FlowPagePixProps {
+  flow: {
+    step: number
+    select: string
+    desc: string
+    keyPix: string
+    save: number
+    amount: string
+    pwd: string
+    modalPix: boolean
+    modalKey: boolean
+  }
 
-const FlowPagePix: React.FC<FlowPagePixProps> = () => {
+  setFlow: Dispatch<
+    SetStateAction<{
+      step: number
+      select: string
+      desc: string
+      keyPix: string
+      save: number
+      amount: string
+      pwd: string
+      modalPix: boolean
+      modalKey: boolean
+    }>
+  >
+}
+
+const FlowPagePix: React.FC<FlowPagePixProps> = ({ flow, setFlow }) => {
   const navigate = useNavigate()
   const { setPixCopyPaste } = useAtlas()
   const { mutate: getKeyInfo, isLoading: loadGetKeyInfo } = useGetKeyInfo()
   const { mutate: sendPix, isLoading: loadSendPix } = useSendPix()
   const [pixData, setPixData] = useState<PixType | null>(null)
-  const [stateFlow, setStateFlow] = useState<{
-    step: number
-    keyPix: string
-    amount: string
-    desc: string
-    save: number
-    pwd: string
-    stateModal: boolean
-  }>({
-    step: 0,
-    keyPix: '',
-    amount: '',
-    desc: '',
-    save: 0,
-    pwd: '',
-    stateModal: false
-  })
-
   const handleConsultPix = async () => {
     getKeyInfo(
-      { key: stateFlow.keyPix },
+      { key: flow.keyPix },
       {
         onSuccess: (res: PixType) => {
           setPixData(res)
-          setStateFlow({ ...stateFlow, step: 1 })
+          setFlow({ ...flow, step: 1, select: 'flowPage' })
         },
         onError: (error: unknown) => {
           const { response } = error as ErrorResponse
@@ -63,15 +71,15 @@ const FlowPagePix: React.FC<FlowPagePixProps> = () => {
   const handleSendPix = async () => {
     sendPix(
       {
-        amount: Number(stateFlow.amount.replace(',', '').replace('.', '')),
-        desc: stateFlow.desc || '',
-        key: stateFlow.keyPix,
-        save: stateFlow.save,
-        pwd: md5(stateFlow.pwd)
+        amount: Number(flow.amount.replace(',', '').replace('.', '')),
+        desc: flow.desc || '',
+        key: flow.keyPix,
+        save: flow.save,
+        pwd: md5(flow.pwd)
       },
       {
         onSuccess: (res) => {
-          setStateFlow({ ...stateFlow, step: 3 })
+          setFlow({ ...flow, step: 4 })
           toast({
             variant: 'success',
             title: 'Seu código foi confirmado com sucesso!',
@@ -92,18 +100,18 @@ const FlowPagePix: React.FC<FlowPagePixProps> = () => {
 
   return (
     <article className="flex flex-col gap-4">
-      {stateFlow.step >= 0 && (
+      {flow.step === 0 && (
         <>
           <h4 className="text-sm text-system-cinza">Insira a chave pix:</h4>
           <Input
             type="text"
-            value={stateFlow.keyPix}
-            onChange={(e) => setStateFlow({ ...stateFlow, keyPix: e.target.value })}
+            value={flow.keyPix}
+            onChange={(e) => setFlow({ ...flow, keyPix: e.target.value })}
             placeholder="Digite a chave pix"
             className="w-full rounded-md border-[1px] border-system-cinza/25 px-4 py-6 text-base"
           />
           <div className="flex justify-end">
-            {stateFlow.keyPix.length > 0 ? (
+            {flow.keyPix.length > 0 ? (
               <ButtonNext
                 title="Prosseguir"
                 func={handleConsultPix}
@@ -124,23 +132,20 @@ const FlowPagePix: React.FC<FlowPagePixProps> = () => {
           </div>
         </>
       )}
-      {stateFlow.step >= 1 && (
+      {flow.step >= 1 && (
         <>
           <div className="relative flex flex-col gap-4 rounded-xl border-[1px] border-system-cinza/25 p-4 text-system-cinza">
             <Button
               className="absolute right-2 top-2 flex h-fit w-fit items-center gap-2 border-[1px] border-primary-hover bg-transparent p-2 text-xs text-primary-hover shadow-none transition-all duration-300 ease-in-out hover:fill-white hover:text-white"
-              onClick={() =>
-                setStateFlow({ ...stateFlow, save: stateFlow.save === 0 ? 1 : 0 })
-              }
+              onClick={() => setFlow({ ...flow, save: flow.save === 0 ? 1 : 0 })}
             >
-              {stateFlow?.save === 0 ? 'Salvar Contato' : 'Não Salvar'}
+              {flow?.save === 0 ? 'Salvar Contato' : 'Não Salvar'}
             </Button>
             <div className="flex items-center gap-2">
               <IconStar
                 className={cn(
                   'size-5 fill-transparent stroke-system-cinza',
-                  stateFlow.save === 1 &&
-                    'fill-primary-default stroke-primary-default'
+                  flow.save === 1 && 'fill-primary-default stroke-primary-default'
                 )}
               />
               <h4 className="font-semibold text-primary-default">Destinatário</h4>
@@ -175,11 +180,11 @@ const FlowPagePix: React.FC<FlowPagePixProps> = () => {
               <h4 className="text-base text-system-cinza">Insira o valor:</h4>
               <Input
                 type="text"
-                value={stateFlow.amount}
+                value={flow.amount.length >= 1 ? `R$ ${flow.amount}` : ''}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   const format = formattedPrice(e.target.value) || ''
-                  setStateFlow({
-                    ...stateFlow,
+                  setFlow({
+                    ...flow,
                     amount: format
                   })
                 }}
@@ -193,17 +198,15 @@ const FlowPagePix: React.FC<FlowPagePixProps> = () => {
                 className="w-full rounded-md border-[1px] border-system-cinza/25 bg-transparent p-4 text-base"
                 placeholder=""
                 rows={3}
-                value={stateFlow.desc}
-                onChange={(e) =>
-                  setStateFlow({ ...stateFlow, desc: e.target.value })
-                }
+                value={flow.desc}
+                onChange={(e) => setFlow({ ...flow, desc: e.target.value })}
               />
             </div>
             <div className="flex justify-end">
               <ButtonNext
                 title="Prosseguir"
-                disabled={stateFlow.amount.length < 1}
-                func={() => setStateFlow({ ...stateFlow, stateModal: true })}
+                disabled={flow.amount.length < 1}
+                func={() => setFlow({ ...flow, step: 2, modalPix: true })}
               />
             </div>
           </div>
@@ -211,8 +214,8 @@ const FlowPagePix: React.FC<FlowPagePixProps> = () => {
       )}
       <ModalPix
         key={'modalpix'}
-        state={stateFlow}
-        setState={setStateFlow}
+        state={flow}
+        setState={setFlow}
         data={pixData}
         SendPixFunc={handleSendPix}
         loadPix={loadSendPix}

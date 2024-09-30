@@ -22,12 +22,13 @@ const ContactsPagePix: React.FC<ContactsPagePixProps> = ({}) => {
   return (
     <article>
       {isLoading ? (
-        <Skeleton className="h-[calc(100vh-164px)] w-full rounded-lg" />
+        <Skeleton className="h-12 w-full rounded-lg" />
       ) : (
         <>
           {(myContatcs ?? []).length < 1 ? (
             <h4 className="flex items-center gap-3 rounded-md border-[1px] border-system-cinza/25 p-2 text-lg text-system-cinza">
-              Sem Contatos
+              <IconStar className="size-5 fill-transparent stroke-system-cinza/50" />
+              Não há contatos salvos!
             </h4>
           ) : (
             <h4 className="flex items-center gap-3 rounded-md border-[1px] border-system-cinza/25 p-2 text-lg text-system-cinza">
