@@ -11,16 +11,17 @@ export type TransactionType = {
   category: string
   type: string
   transactionData: {
-    agency: string
-    accountNumber: string
-    accountType: string
-    clientType: string
-    clientDocument: string
-    ispbDestinyBank: string
-    clientName: string | null
-    clientCompanyName: string
-    clientFantasyName: string
-    history: string
+    operationNumber: string
+    clientNamePayer: string
+    agencyPayer: string
+    accountTypePayer: string
+    accountPayer: string
+    bankIspbPayer: string
+    documentPayer: string
+    receiptKey: string
+    documentReceiver: string
+    accountReceiver: string
+    txId: string
     bankName: string
     bankCode: string
     fee: {
@@ -46,7 +47,6 @@ export type TransactionType = {
     type: string
     bankId: string
     number: string
-    nameOwner: string
     companyName: string
     documentNumber: string
     fantasyName: string
@@ -54,6 +54,6 @@ export type TransactionType = {
   }
   balanceAfterTransaction: string
   bank_id: string
-  idempotencyKey: string | null
+  idempotencyKey: string
   origin: string
 }

@@ -254,7 +254,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, data }) => {
                             Nome:
                           </label>
                           <span>
-                            {detailsTransaction?.transactionData.clientName}
+                            {detailsTransaction?.transactionData.clientNamePayer}
                           </span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
@@ -262,23 +262,21 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, data }) => {
                             CPF/CNPJ:
                           </label>
                           <span>
-                            {detailsTransaction?.transactionData.clientDocument}
+                            {detailsTransaction?.transactionData.documentPayer}
                           </span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
                           <label className="font-medium text-primary-default">
                             Instituição:
                           </label>
-                          <span>
-                            {detailsTransaction?.transactionData.clientCompanyName}
-                          </span>
+                          <span>{detailsTransaction?.transactionData.bankName}</span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
                           <label className="font-medium text-primary-default">
                             Tipo de conta:
                           </label>
                           <span>
-                            {detailsTransaction?.transactionData.clientType}
+                            {detailsTransaction?.transactionData.accountTypePayer}
                           </span>
                         </div>
                         <div className="grid w-full grid-cols-[auto,75%] items-center gap-4 text-sm text-system-cinza">
@@ -290,7 +288,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, data }) => {
                             Nome:
                           </label>
                           <span>
-                            {detailsTransaction?.transactionData.clientName}
+                            {detailsTransaction?.transactionData.fee.feeName}
                           </span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
@@ -298,7 +296,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, data }) => {
                             CPF/CNPJ:
                           </label>
                           <span>
-                            {detailsTransaction?.transactionData.clientDocument}
+                            {detailsTransaction?.transactionData.documentReceiver}
                           </span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
@@ -311,14 +309,16 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, data }) => {
                           <label className="font-medium text-primary-default">
                             Agência:
                           </label>
-                          <span>{detailsTransaction?.transactionData.agency}</span>
+                          <span>
+                            {detailsTransaction?.transactionData.accountReceiver}
+                          </span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
                           <label className="font-medium text-primary-default">
                             Conta:
                           </label>
                           <span>
-                            {detailsTransaction?.transactionData.accountNumber}
+                            {detailsTransaction?.transactionData.accountPayer}
                           </span>
                         </div>
                         <div className="flex items-center justify-around pt-6 text-sm">
