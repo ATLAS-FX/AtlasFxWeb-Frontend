@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 
-interface ChartProps {
+interface ChartPageDashBoardProps {
   classes?: string
   data: any[]
   options: ChartConfig
@@ -19,7 +19,7 @@ interface ChartProps {
   colorTwo?: string
 }
 
-const Chart: React.FC<ChartProps> = ({
+const ChartPageDashBoard: React.FC<ChartPageDashBoardProps> = ({
   classes,
   data,
   options,
@@ -56,4 +56,4 @@ const Chart: React.FC<ChartProps> = ({
   )
 }
 
-export default Chart
+export default ChartPageDashBoard

@@ -1,6 +1,7 @@
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle
@@ -35,6 +36,7 @@ const ModalDefault: React.FC<ModalDeleteProps> = ({
             <DialogTitle className="text-start text-base text-primary-default">
               {title}
             </DialogTitle>
+            <DialogDescription>{''}</DialogDescription>
           </DialogHeader>
         )}
         {body}

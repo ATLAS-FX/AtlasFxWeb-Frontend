@@ -1,54 +1,64 @@
 import { ModalConfirm, ModalPwd, ModalSuccess } from '@/components/layout'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
-import { PixType } from '@/types/PixType'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import { Dispatch, SetStateAction } from 'react'
 
-interface ModalPix {
+interface ModalTransfer {
   state: {
     step: number
-    select: string
-    desc: string
-    keyPix: string
     save: number
-    amount: string
     pwd: string
-    modalPix: boolean
-    modalKey: boolean
+    bank: string
+    agency: string
+    account: string
+    amount: string
+    typeAccount: string
+    name: string
+    docType: string
+    doc: string
+    desc: string
+    modalTransfer: boolean
   }
   setState: Dispatch<
     SetStateAction<{
       step: number
-      select: string
-      desc: string
-      keyPix: string
       save: number
-      amount: string
       pwd: string
-      modalPix: boolean
-      modalKey: boolean
+      bank: string
+      agency: string
+      account: string
+      amount: string
+      typeAccount: string
+      name: string
+      docType: string
+      doc: string
+      desc: string
+      modalTransfer: boolean
     }>
   >
-  data: PixType | null
-  SendPixFunc: () => void
-  loadPix: boolean
+  transferFunc: () => void
+  loadTransfer: boolean
 }
 
-const ModalPix: React.FC<ModalPix> = ({
+const ModalTransfer: React.FC<ModalTransfer> = ({
   state,
   setState,
-  data,
-  SendPixFunc,
-  loadPix
+  transferFunc,
+  loadTransfer
 }) => {
   return (
     <Dialog
-      open={state.modalPix}
-      onOpenChange={() => setState({ ...state, modalPix: false })}
+      open={state.modalTransfer}
+      onOpenChange={() => setState({ ...state, modalTransfer: false })}
     >
       <DialogContent
-        className={cn('min-h-[442px] w-[348px] gap-4 rounded-xl bg-white')}
+        className={cn(
+          'w-fit gap-4 rounded-xl bg-white',
+          state.step >= 4 && 'min-w-[762px]',
+          state.step <= 2 && 'min-h-[442px] ',
+          state.step === 3 && 'h-fit w-[348px]'
+        )}
       >
         {state.step === 2 && (
           <ModalConfirm
@@ -57,14 +67,12 @@ const ModalPix: React.FC<ModalPix> = ({
               state.step === 2
                 ? setState({
                     ...state,
-                    modalPix: false,
                     step: 0,
                     pwd: '',
                     amount: '',
-                    keyPix: '',
                     save: 0,
-                    select: '',
-                    desc: ''
+                    desc: '',
+                    modalTransfer: false
                   })
                 : setState({ ...state, step: state.step - 1 })
             }
@@ -76,36 +84,36 @@ const ModalPix: React.FC<ModalPix> = ({
                     {`R$ ${formattedPrice(state?.amount || '0,00')?.toString()}`}
                   </h4>
                   <label className="font-bold text-primary-default">
-                    {data?.name || ''}
+                    {state?.name || ''}
                   </label>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">
                     Nome do destinatário:
                   </label>
-                  <span>{data?.name || ''}</span>
+                  <span>{state?.name || ''}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">CPF:</label>
-                  <span>{data?.doc || ''}</span>
+                  <span>{state?.doc || ''}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">
                     Instituição:
                   </label>
-                  <span>{data?.bank || ''}</span>
+                  <span>{state?.bank || ''}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">Conta:</label>
-                  <span>{data?.account || ''}</span>
+                  <span>{state?.account || ''}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">
                     Agência:
                   </label>
-                  <span>{data?.agency || ''}</span>
+                  <span>{state?.agency || ''}</span>
                 </div>
-                <div className="flex items-center justify-between text-sm">
+                {/* <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">
                     Chave Pix:
                   </label>
@@ -114,7 +122,7 @@ const ModalPix: React.FC<ModalPix> = ({
                       ? `${state?.keyPix.substring(0, 28)}...`
                       : state?.keyPix}
                   </span>
-                </div>
+                </div> */}
               </div>
             }
             handleFunc={() => setState({ ...state, step: 3 })}
@@ -127,8 +135,8 @@ const ModalPix: React.FC<ModalPix> = ({
             title={'Insira sua senha'}
             subtitle={'Sua senha é a mesma da sua conta'}
             token={(e) => setState({ ...state, pwd: e })}
-            handleFunc={SendPixFunc}
-            loading={loadPix}
+            handleFunc={transferFunc}
+            loading={loadTransfer}
           />
         )}
         {state.step === 4 && (
@@ -144,4 +152,4 @@ const ModalPix: React.FC<ModalPix> = ({
   )
 }
 
-export default ModalPix
+export default ModalTransfer

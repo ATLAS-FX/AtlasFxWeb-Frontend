@@ -96,8 +96,7 @@ const FormPagePayment: React.FC<IPaymentForm> = ({
         pwd: md5(flow.pwdCode)
       },
       {
-        onSuccess: (res: any) => {
-          console.log(res)
+        onSuccess: () => {
           setFlow({ ...flow, step: 2, stateModal: true })
         },
         onError: (error: unknown) => {

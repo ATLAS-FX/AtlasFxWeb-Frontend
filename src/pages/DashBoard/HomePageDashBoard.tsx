@@ -11,9 +11,9 @@ import { ErrorResponse } from '@/types/ErrorResponse'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import { format, subDays } from 'date-fns'
 import { useEffect, useState } from 'react'
-import Chart from './Chart'
+import ChartPageDashBoard from './ChartPageDashBoard'
 
-const Home: React.FC = () => {
+const HomePageDashBoard: React.FC = () => {
   const { user } = useAtlas()
   const { mutate: dashboard, isLoading: loadDash } = useDashboard()
   const [dash, setDash] = useState<DashBoardType | null>(null)
@@ -150,7 +150,7 @@ const Home: React.FC = () => {
                 </h3>
                 {dash && dash?.dashboard.length >= 1 ? (
                   <div className="flex items-center justify-center">
-                    <Chart
+                    <ChartPageDashBoard
                       classes="h-56 w-full p-2"
                       data={dash.dashboard}
                       options={chartConfig}
@@ -177,4 +177,4 @@ const Home: React.FC = () => {
   )
 }
 
-export default Home
+export default HomePageDashBoard

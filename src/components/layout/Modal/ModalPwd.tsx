@@ -1,5 +1,6 @@
 import { ButtonNext } from '@/components/layout'
 import { Button } from '@/components/ui/button'
+import { DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { ChevronLeft } from 'lucide-react'
 import { ChangeEvent } from 'react'
@@ -31,13 +32,16 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
         >
           <ChevronLeft size={18} />
         </Button>
-        <h4 className="text-sm font-semibold text-primary-default">{title}</h4>
+        <DialogTitle className="text-base font-semibold text-primary-default">
+          {title}
+        </DialogTitle>
+        <DialogDescription>{''}</DialogDescription>
       </div>
       <h5 className="text-sm">{subtitle}</h5>
       <div className="flex flex-col gap-2">
         <label className="w-fit text-sm text-system-cinza">Senha:</label>
         <Input
-          className="text-sm"
+          className="text-base"
           placeholder="Digite o código de 6 dígitos"
           type="password"
           maxLength={6}

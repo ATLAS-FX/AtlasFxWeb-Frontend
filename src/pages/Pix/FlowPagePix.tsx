@@ -134,7 +134,7 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({ flow, setFlow }) => {
       )}
       {flow.step >= 1 && (
         <>
-          <div className="relative flex flex-col gap-4 rounded-xl border-[1px] border-system-cinza/25 p-4 text-system-cinza">
+          <article className="relative flex flex-col gap-4 rounded-xl border-[1px] border-system-cinza/25 p-4 text-system-cinza">
             <Button
               className="absolute right-2 top-2 flex h-fit w-fit items-center gap-2 border-[1px] border-primary-hover bg-transparent p-2 text-xs text-primary-hover shadow-none transition-all duration-300 ease-in-out hover:fill-white hover:text-white"
               onClick={() => setFlow({ ...flow, save: flow.save === 0 ? 1 : 0 })}
@@ -174,8 +174,8 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({ flow, setFlow }) => {
                 <p className="text-base text-primary-default">{pixData?.account}</p>
               </div>
             </div>
-          </div>
-          <div className="flex flex-col gap-4">
+          </article>
+          <aside className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <h4 className="text-base text-system-cinza">Insira o valor:</h4>
               <Input
@@ -209,7 +209,7 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({ flow, setFlow }) => {
                 func={() => setFlow({ ...flow, step: 2, modalPix: true })}
               />
             </div>
-          </div>
+          </aside>
         </>
       )}
       <ModalPix

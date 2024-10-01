@@ -1,5 +1,6 @@
 import { ButtonNext } from '@/components/layout'
 import { Button } from '@/components/ui/button'
+import { DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { ChevronLeft } from 'lucide-react'
 
 interface ModalConfirmProps {
@@ -31,7 +32,10 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
         >
           <ChevronLeft size={18} />
         </Button>
-        <h4 className="text-base font-semibold text-primary-default">{title}</h4>
+        <DialogTitle className="text-base font-semibold text-primary-default">
+          {title}
+        </DialogTitle>
+        <DialogDescription>{''}</DialogDescription>
       </div>
       {question && (
         <h4 className="text-center text-base font-medium text-system-cinza">

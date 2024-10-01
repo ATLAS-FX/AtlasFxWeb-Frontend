@@ -4,9 +4,9 @@ import { toast } from '@/components/ui/use-toast'
 import { useDepositInfo } from '@/services/DepositApi'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import ProfileDeposit from './ProfileDeposit'
+import ProfilePageDeposit from './ProfilePageDeposit'
 
-const Deposit: React.FC = () => {
+const HomePageDeposit: React.FC = () => {
   const navigate = useNavigate()
   const { data: deposit, isLoading, isError } = useDepositInfo()
   const [stepDeposit, setStepDeposit] = useState<{
@@ -74,7 +74,7 @@ const Deposit: React.FC = () => {
             }
           />
           {stepDeposit.stepPage === 0 && (
-            <ProfileDeposit
+            <ProfilePageDeposit
               key={deposit?.id}
               state={stepDeposit}
               setState={setStepDeposit}
@@ -91,4 +91,4 @@ const Deposit: React.FC = () => {
   )
 }
 
-export default Deposit
+export default HomePageDeposit

@@ -66,7 +66,9 @@ const ModalPix: React.FC<ModalPix> = ({
       open={state.stateModalKey}
       onOpenChange={() => setState({ ...state, stateModalKey: false })}
     >
-      <DialogContent className={cn('w-[348px] gap-4 rounded-xl bg-white')}>
+      <DialogContent
+        className={cn('min-h-[442px] w-[348px] gap-4 rounded-xl bg-white')}
+      >
         {state.typeKeyPix === 'delete' ? (
           <section className="flex flex-col gap-2 text-system-cinza">
             <div className="flex items-center gap-2">

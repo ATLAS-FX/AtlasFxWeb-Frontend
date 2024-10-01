@@ -1,8 +1,9 @@
 import { IconEditPen } from '@/components/icons'
-import { ModalDefault } from '@/components/layout'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
+import { cn } from '@/lib/utils'
 import { updateAddress } from '@/services/UserApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
 import { UserType } from '@/types/userType'
@@ -113,21 +114,22 @@ const RegistrationPageProfile: React.FC<RegistrationProps> = ({
           </Button>
         </div>
       </section>
-      <ModalDefault
-        openModal={profile.modal}
-        setOpenModal={() => setProfile({ ...profile, modal: false })}
-        body={
-          <>
-            <ModalProfile
-              profile={profile}
-              setProfile={setProfile}
-              updateLoad={loadUpdate}
-              update={handleUpade}
-            />
-          </>
-        }
-        ArrayButton={null}
-      />
+
+      <Dialog
+        open={profile.modal}
+        onOpenChange={() => setProfile({ ...profile, modal: false })}
+      >
+        <DialogContent
+          className={cn('min-h-[442px] w-[348px] gap-4 rounded-xl bg-white')}
+        >
+          <ModalProfile
+            profile={profile}
+            setProfile={setProfile}
+            updateLoad={loadUpdate}
+            update={handleUpade}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   )
 }

@@ -1,5 +1,6 @@
 import RoboSuccess from '@/assets/robo.png'
 import { Button } from '@/components/ui/button'
+import { DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import { ChevronLeft } from 'lucide-react'
 
@@ -20,10 +21,13 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({ title, amount, back }) => {
         >
           <ChevronLeft size={18} />
         </Button>
-        <h4 className="text-sm font-semibold text-primary-default">{title}</h4>
+        <DialogTitle className="text-base font-semibold text-primary-default">
+          {title}
+        </DialogTitle>
+        <DialogDescription>{''}</DialogDescription>
       </div>
       <section className="flex gap-2">
-        <div className="flex w-[262px] flex-col items-center gap-8 rounded-xl bg-primary-default p-6">
+        <div className="flex w-4/12 flex-col items-center gap-8 rounded-xl bg-primary-default p-6">
           <h4 className="w-full text-center text-xl font-semibold text-secondary-default">
             Sucesso!
           </h4>
@@ -32,11 +36,11 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({ title, amount, back }) => {
             src={RoboSuccess}
             alt="Sucesso ao alterar o endereço"
           />
-          <h4 className="text-center text-2xl text-system-neutro">
+          <h4 className="text-center text-xl text-system-neutro">
             Sua transferência foi realizada com sucesso!
           </h4>
         </div>
-        <div className="flex w-[362px] flex-col gap-2 p-4 text-sm font-medium text-system-cinza">
+        <div className="flex w-8/12 flex-col gap-2 p-4 text-sm font-medium text-system-cinza">
           <div className="flex items-center justify-between">
             <label className="text-primary-default">Valor:</label>
             <h4>R$ {amount}</h4>

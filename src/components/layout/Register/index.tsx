@@ -1,4 +1,4 @@
-import { IconDoubleArrow, IconPDFDownload } from '@/components/icons'
+import { IconDoubleArrow, IconDownload } from '@/components/icons'
 import {
   Tooltip,
   TooltipContent,
@@ -68,7 +68,7 @@ const Registers: React.FC<RegistersProps> = ({
           <TooltipTrigger
           // onClick={() => setOpenModalPrint(!openModalPrint)}
           >
-            <IconPDFDownload size={32} className="fill-primary-default" />
+            <IconDownload size={32} className="fill-primary-default" />
           </TooltipTrigger>
           <TooltipContent className="rounded-md bg-primary-default p-2 text-sm font-normal text-white">
             Baixar extrato em PDF

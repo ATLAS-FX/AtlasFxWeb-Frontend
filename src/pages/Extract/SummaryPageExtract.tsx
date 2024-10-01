@@ -1,14 +1,17 @@
 import { IconDoubleArrow, IconFilter } from '@/components/icons'
 import { ModalPrint } from '@/components/layout'
 import { PDFExtract } from '@/components/pdfs'
+import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
+import { cn } from '@/lib/utils'
 import { useTransactionInfo } from '@/services/ExtractApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
 import { TransactionType } from '@/types/Extract'
 import { RegisterPixType } from '@/types/userType'
 import {
+  formattedDate,
   formattedDateSample,
   formattedPrice,
   invertDate
@@ -17,7 +20,6 @@ import { PDFViewer } from '@react-pdf/renderer'
 import { ChevronRight, Loader2 } from 'lucide-react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import ModalExtract from './ModalExtract'
-import { Button } from '@/components/ui/button'
 
 interface SummaryPageExtractProps {
   action: {
@@ -145,134 +147,158 @@ const SummaryPageExtract: React.FC<SummaryPageExtractProps> = ({ action, data })
         <IconFilter className="size-5" />
         Filtro
       </button>
-      {/* <div className="flex justify-end gap-8">
-        {ButtonsOptions.map((buton, number) => (
-          <button
-            key={number}
-            className="text-base font-semibold uppercase text-shadow-3x"
-            onClick={buton.func}
-          >
-            {buton.title}
-          </button>
-        ))}
-      </div> */}
-
-      {sortedEntries.map(([date, extracts], index) => (
-        <div className="flex flex-col items-center" key={index}>
-          <div className="grid w-full grid-cols-[auto,75%] items-center gap-4 text-sm text-system-cinza">
-            {new Date(invertDate(date)).toLocaleDateString('pt-BR', {
-              weekday: 'long',
-              day: '2-digit',
-              month: '2-digit'
-            })}
-            <Separator className="bg-system-cinza" />
-          </div>
-          {extracts.slice(0, visibleItems(date)).map((extract, i) => (
-            <div
-              key={i}
-              className="flex w-[95%] cursor-pointer items-center justify-between border-b-[2px] border-slate-300 py-3 font-medium text-primary-default last:border-b-0 hover:bg-system-cinza/10"
-              onClick={() => {
-                setOpenModalDetails(true)
-                handleTransactionInfo(extract?.id.toString())
-              }}
-            >
-              <div className="flex w-10/12 flex-col items-start justify-center gap-1 text-xs">
-                {extract?.send > 0 ? (
-                  <h2 className="flex items-center justify-start gap-4 font-semibold capitalize">
-                    <IconDoubleArrow
-                      size={12}
-                      className="scale-x-[-1] transform fill-[#EF4444]"
-                    />
-                    {extract?.method === 'TAX'
-                      ? 'Tarifa'
-                      : `${extract?.method} Enviado`}
-                  </h2>
-                ) : (
-                  <h2 className="flex items-center justify-start gap-4 font-semibold capitalize">
-                    <IconDoubleArrow className="fill-secondary-default" size={12} />
-                    {extract?.method === 'TAX'
-                      ? 'Tarifa'
-                      : `${extract?.method} Recebido`}
-                  </h2>
-                )}
-                <h4 className="ml-7 flex items-center justify-start gap-1 text-slate-500">
-                  {extract?.method === 'TAX' ? '-' : extract?.name}
-                </h4>
-              </div>
-              <div className="flex flex-col gap-1 text-end text-xs font-light">
-                <p>{formattedDateSample(extract?.created)}</p>
-                <label className="font-semibold">
-                  R$ {extract?.send > 0 ? '-' : ''}{' '}
-                  {formattedPrice(extract?.amount.toString())}
-                </label>
-              </div>
-              <ChevronRight
-                size={18}
-                className="transform text-slate-400 transition-all duration-200 ease-in-out"
-              />
+      <article className="overflow-y-auto overflow-x-hidden">
+        {sortedEntries.map(([date, extracts], index) => (
+          <div className="flex flex-col items-center" key={index}>
+            <div className="grid w-full grid-cols-[auto,75%] items-center gap-4 text-sm text-system-cinza">
+              {new Date(invertDate(date)).toLocaleDateString('pt-BR', {
+                weekday: 'long',
+                day: '2-digit',
+                month: '2-digit'
+              })}
+              <Separator className="bg-system-cinza" />
             </div>
-          ))}
+            {extracts.slice(0, visibleItems(date)).map((extract, i) => (
+              <div
+                key={i}
+                className={cn(
+                  'flex w-[95%] items-center justify-between border-b-[2px] border-slate-300 py-3 font-medium text-primary-default last:border-b-0 ',
+                  extract?.method !== 'TAX'
+                    ? 'cursor-pointer hover:bg-system-cinza/10'
+                    : 'cursor-default'
+                )}
+                onClick={() => {
+                  console.log(extract?.method)
+                  extract?.method !== 'TAX' && setOpenModalDetails(true)
+                  handleTransactionInfo(extract?.id.toString())
+                }}
+              >
+                <div className="flex w-10/12 flex-col items-start justify-center gap-1 text-xs">
+                  {extract?.send > 0 ? (
+                    <h2 className="flex items-center justify-start gap-4 font-semibold capitalize">
+                      <IconDoubleArrow
+                        size={12}
+                        className="scale-x-[-1] transform fill-[#EF4444]"
+                      />
+                      {extract?.method === 'TAX'
+                        ? 'Tarifa'
+                        : `${extract?.method} Enviado`}
+                    </h2>
+                  ) : (
+                    <h2 className="flex items-center justify-start gap-4 font-semibold capitalize">
+                      <IconDoubleArrow
+                        className="fill-secondary-default"
+                        size={12}
+                      />
+                      {extract?.method === 'TAX'
+                        ? 'Tarifa'
+                        : `${extract?.method} Recebido`}
+                    </h2>
+                  )}
+                  <h4 className="ml-7 flex items-center justify-start gap-1 text-slate-500">
+                    {extract?.method === 'TAX' ? '-' : extract?.name}
+                  </h4>
+                </div>
+                <div className="flex flex-col gap-1 text-end text-xs font-light">
+                  <p>{formattedDateSample(extract?.created)}</p>
+                  <label className="font-semibold">
+                    R$ {extract?.send > 0 ? '-' : ''}{' '}
+                    {formattedPrice(extract?.amount.toString())}
+                  </label>
+                </div>
+                {extract?.method !== 'TAX' ? (
+                  <ChevronRight
+                    size={18}
+                    className="transform text-slate-400 transition-all duration-200 ease-in-out"
+                  />
+                ) : (
+                  <ChevronRight
+                    size={18}
+                    className="transform text-slate-400/25 transition-all duration-200 ease-in-out"
+                  />
+                )}
+              </div>
+            ))}
 
-          {visibleItems(date) < extracts.length && (
-            <Button
-              className="mt-4 flex items-center gap-2 px-2 text-xs"
-              onClick={() => {
-                loadMoreItems(date)
-                const loader = document.getElementById(`loader-${date}`)
-                if (loader) {
-                  loader.style.display = 'inline-block'
-                  setTimeout(() => {
-                    loader.style.display = 'none'
-                  }, 3000)
-                }
-              }}
-            >
-              Exibir mais registros...
-              <Loader2
-                id={`loader-${date}`}
-                className="size-6 animate-spin text-gray-500"
-                style={{ display: 'none' }}
-              />
-            </Button>
-          )}
-
-          <ModalExtract
-            openModalDetails={openModalDetails}
-            setOpenModalDetails={setOpenModalDetails}
-            isLoading={isLoading}
-            detailsTransaction={detailsTransaction}
-          />
-
-          <ModalPrint
-            openModal={openModalPrint}
-            setOpenModal={setOpenModalPrint}
-            ArrayButton={<></>}
-            body={
-              <PDFViewer width="100%" height="700px">
-                <PDFExtract
-                  document={user.doc}
-                  bankBalance={formattedPrice(user.amount) || '0.00'}
-                  agency={user.agency}
-                  account={user.account}
-                  extrato={sortedEntries}
-                  controlIn={formattedPrice(action.controlIn.toString()) || '1'}
-                  controlOut={formattedPrice(action.controlOut.toString()) || ''}
-                  startDate={
-                    action?.start
-                      ? new Date(action?.start).toLocaleDateString()
-                      : new Date(action?.firstDate).toLocaleDateString()
+            {visibleItems(date) < extracts.length && (
+              <Button
+                className="mt-4 flex items-center gap-2 px-2 text-xs"
+                onClick={() => {
+                  loadMoreItems(date)
+                  const loader = document.getElementById(`loader-${date}`)
+                  if (loader) {
+                    loader.style.display = 'inline-block'
+                    setTimeout(() => {
+                      loader.style.display = 'none'
+                    }, 3000)
                   }
-                  endDate={
-                    action?.end
-                      ? new Date(action?.end).toLocaleDateString()
-                      : new Date(action?.lastDate).toLocaleDateString()
-                  }
+                }}
+              >
+                Exibir mais registros...
+                <Loader2
+                  id={`loader-${date}`}
+                  className="size-6 animate-spin text-gray-500"
+                  style={{ display: 'none' }}
                 />
-              </PDFViewer>
-            }
-          />
-        </div>
-      ))}
+              </Button>
+            )}
+          </div>
+        ))}
+      </article>
+      <ModalExtract
+        openModalDetails={openModalDetails}
+        setOpenModalDetails={setOpenModalDetails}
+        isLoading={isLoading}
+        // detailsTransaction={detailsTransaction}
+        dataTransaction={formattedDate(detailsTransaction?.createdAt ?? '-')}
+        amountTransaction={
+          formattedPrice(detailsTransaction?.amount.toString()) ?? '-'
+        }
+        typeTransaction={detailsTransaction?.type ?? '-'}
+        idTransaction={detailsTransaction?.transactionId ?? '-'}
+        nameOrigin={detailsTransaction?.transactionData?.clientNamePayer ?? '-'}
+        documentOrigin={detailsTransaction?.transactionData?.documentPayer ?? '-'}
+        bankOrigin={detailsTransaction?.transactionData?.bankName ?? '-'}
+        typeAccountOrigin={
+          detailsTransaction?.transactionData?.accountTypePayer ?? '-'
+        }
+        nameDestiny={detailsTransaction?.transactionData?.nameReceiver ?? '-'}
+        documentDestiny={
+          detailsTransaction?.transactionData?.documentReceiver ?? '-'
+        }
+        bankDestiny={detailsTransaction?.transactionData?.bankReceiver ?? '-'}
+        agencyDestiny={detailsTransaction?.transactionData?.agencyReceiver ?? '-'}
+        accountDestiny={detailsTransaction?.transactionData?.accountReceiver ?? '-'}
+      />
+
+      <ModalPrint
+        openModal={openModalPrint}
+        setOpenModal={setOpenModalPrint}
+        ArrayButton={<></>}
+        body={
+          <PDFViewer width="100%" height="700px">
+            <PDFExtract
+              document={user.doc}
+              bankBalance={formattedPrice(user.amount) || '0.00'}
+              agency={user.agency}
+              account={user.account}
+              extrato={sortedEntries}
+              controlIn={formattedPrice(action.controlIn.toString()) || '1'}
+              controlOut={formattedPrice(action.controlOut.toString()) || ''}
+              startDate={
+                action?.start
+                  ? new Date(action?.start).toLocaleDateString()
+                  : new Date(action?.firstDate).toLocaleDateString()
+              }
+              endDate={
+                action?.end
+                  ? new Date(action?.end).toLocaleDateString()
+                  : new Date(action?.lastDate).toLocaleDateString()
+              }
+            />
+          </PDFViewer>
+        }
+      />
     </>
   )
 }

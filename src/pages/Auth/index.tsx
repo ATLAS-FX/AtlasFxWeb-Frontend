@@ -77,7 +77,7 @@ const Login: React.FC = () => {
             },
             onError: (error: unknown) => {
               const { response } = error as ErrorResponse
-              console.log(response)
+              console.error(response)
             }
           }
         )
