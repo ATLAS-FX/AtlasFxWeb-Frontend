@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { MoveLeft } from 'lucide-react'
+import { ChevronLeft } from 'lucide-react'
 
 interface ITitle {
   title: string
@@ -17,7 +17,7 @@ const Title: React.FC<ITitle> = ({ title, subtitle, back }) => {
           variant="ghost"
           onClick={back}
         >
-          <MoveLeft size={18} />
+          <ChevronLeft size={18} />
         </Button>
         <h2 className="text-xl text-primary-default">{title}</h2>
       </div>

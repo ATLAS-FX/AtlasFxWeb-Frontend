@@ -1,7 +1,7 @@
 import Robo_Triste from '@/assets/robo_triste.png'
 import { CardHome } from '@/components/layout'
 
-const CloseAccount: React.FC = () => {
+const ClosePageProfile: React.FC = () => {
   const StyleBot = {
     backgroundImage: `url('${Robo_Triste}')`,
     backgroundRepeat: 'no-repeat',
@@ -66,4 +66,4 @@ const CloseAccount: React.FC = () => {
   )
 }
 
-export default CloseAccount
+export default ClosePageProfile

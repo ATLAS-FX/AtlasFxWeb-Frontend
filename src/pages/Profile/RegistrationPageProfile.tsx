@@ -15,7 +15,10 @@ interface RegistrationProps {
   refreshData: () => void
 }
 
-const Registration: React.FC<RegistrationProps> = ({ data, refreshData }) => {
+const RegistrationPageProfile: React.FC<RegistrationProps> = ({
+  data,
+  refreshData
+}) => {
   const [profile, setProfile] = useState<{
     step: number
     modal: boolean
@@ -129,4 +132,4 @@ const Registration: React.FC<RegistrationProps> = ({ data, refreshData }) => {
   )
 }
 
-export default Registration
+export default RegistrationPageProfile

@@ -30,7 +30,12 @@ interface IPaymentForm {
   setData: Dispatch<SetStateAction<PaymentType | undefined>>
 }
 
-const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) => {
+const FormPagePayment: React.FC<IPaymentForm> = ({
+  flow,
+  setFlow,
+  data,
+  setData
+}) => {
   const { mutate: consultPayment, isLoading: sendConsult } = useConsultPayment()
   const { mutate: sendPayment } = useSendPayment()
 
@@ -126,13 +131,13 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
           />
         ) : (
           <Input
-            className={cn(
-              'w-full rounded-md border-2 border-system-cinza bg-transparent p-2 text-xl font-medium shadow-none'
-            )}
+            type="text"
             value={flow.textValue}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setFlow((prev) => ({ ...prev, textValue: e.target.value }))
             }
+            placeholder="Insira o Pix copiado"
+            className="w-full rounded-md border-[1px] border-system-cinza/25 px-4 py-6 text-base"
           />
         )}
       </div>
@@ -170,4 +175,4 @@ const PaymentForm: React.FC<IPaymentForm> = ({ flow, setFlow, data, setData }) =
   )
 }
 
-export default PaymentForm
+export default FormPagePayment

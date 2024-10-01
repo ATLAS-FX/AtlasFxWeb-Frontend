@@ -13,10 +13,10 @@ import { getProfile } from '@/services/UserApi'
 import { handleCopyClick } from '@/utils/Copy&Paste'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import CloseAccount from './Closed'
-import FrequentQuestions from './FrequentQuestions'
-import Password from './Password'
-import Registration from './Registration'
+import ClosedPageProfile from './ClosedPageProfile'
+import PasswordPageProfile from './PasswordPageProfile'
+import QuestionsPageProfile from './QuestionsPageProfile'
+import RegistrationPageProfile from './RegistrationPageProfile'
 
 const listLinks = [
   {
@@ -41,7 +41,7 @@ const listLinks = [
   }
 ]
 
-const Profile: React.FC = () => {
+const HomePageProfile: React.FC = () => {
   const navigate = useNavigate()
   const { setUser } = useAtlas()
   const { data: profile, isLoading, refetch } = getProfile()
@@ -108,11 +108,14 @@ const Profile: React.FC = () => {
             </>
           )}
           {step === 1 && (
-            <Registration refreshData={refetch} data={profile ? profile : null} />
+            <RegistrationPageProfile
+              refreshData={refetch}
+              data={profile ? profile : null}
+            />
           )}
-          {step === 2 && <Password />}
-          {step === 3 && <FrequentQuestions />}
-          {step === 4 && <CloseAccount />}
+          {step === 2 && <PasswordPageProfile />}
+          {step === 3 && <QuestionsPageProfile />}
+          {step === 4 && <ClosedPageProfile />}
         </>
       )}
       {step === 0 && (
@@ -135,4 +138,4 @@ const Profile: React.FC = () => {
   )
 }
 
-export default Profile
+export default HomePageProfile

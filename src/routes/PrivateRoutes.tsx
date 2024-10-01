@@ -2,9 +2,9 @@ import { Aside, Sidebar } from '@/components/layout'
 import Deposit from '@/pages/Deposit'
 import Extract from '@/pages/Extract'
 import Home from '@/pages/Home'
-import Payments from '@/pages/Payment'
-import Pix from '@/pages/Pix/HomePagePix'
-import Profile from '@/pages/Profile'
+import HomePagePayment from '@/pages/Payment/HomePagePayment'
+import HomePagePix from '@/pages/Pix/HomePagePix'
+import HomePageProfile from '@/pages/Profile/HomePageProfile'
 import Transfer from '@/pages/Transfer'
 import React from 'react'
 import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
@@ -22,13 +22,13 @@ export const PrivateRoutes: React.FC = () => {
         {/* extrato */}
         <Route path="extract" Component={Extract} />
         {/* pagamentos */}
-        <Route path="payments" Component={Payments} />
+        <Route path="payments" Component={HomePagePayment} />
         {/* transferencia */}
         <Route path="transfer" Component={Transfer} />
         {/* profile */}
-        <Route path="profile" Component={Profile} />
+        <Route path="profile" Component={HomePageProfile} />
         {/* pix */}
-        <Route path="pix" Component={Pix} />
+        <Route path="pix" Component={HomePagePix} />
       </ReactRoutes>
       <Aside />
     </div>

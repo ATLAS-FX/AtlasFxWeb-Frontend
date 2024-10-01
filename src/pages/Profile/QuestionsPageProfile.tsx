@@ -1,4 +1,4 @@
-const FrequentQuestions: React.FC = () => {
+const QuestionsPageProfile: React.FC = () => {
   return (
     <article className="flex flex-col gap-4 text-system-cinza">
       <h3 className="text-base font-semibold text-primary-default">
@@ -36,4 +36,4 @@ const FrequentQuestions: React.FC = () => {
   )
 }
 
-export default FrequentQuestions
+export default QuestionsPageProfile

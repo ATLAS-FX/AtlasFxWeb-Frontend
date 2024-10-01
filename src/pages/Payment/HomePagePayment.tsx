@@ -4,9 +4,9 @@ import { useAtlas } from '@/contexts/AtlasContext'
 import { PaymentType } from '@/types/PaymentType'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import PaymentForm from './PaymentForm'
+import FormPagePayment from './FormPagePayment'
 
-const Payments: React.FC = () => {
+const HomePagePayment: React.FC = () => {
   const { pixCopyPaste, setPixCopyPaste } = useAtlas()
   const navigate = useNavigate()
   const [stepPayment, setStepPayment] = useState<{
@@ -74,7 +74,7 @@ const Payments: React.FC = () => {
         </>
       )}
       {stepPayment.step === 1 && (
-        <PaymentForm
+        <FormPagePayment
           flow={stepPayment}
           setFlow={setStepPayment}
           data={dataPayment}
@@ -82,7 +82,7 @@ const Payments: React.FC = () => {
         />
       )}
       {pixCopyPaste && (
-        <PaymentForm
+        <FormPagePayment
           flow={stepPayment}
           setFlow={setStepPayment}
           data={dataPayment}
@@ -93,4 +93,4 @@ const Payments: React.FC = () => {
   )
 }
 
-export default Payments
+export default HomePagePayment
