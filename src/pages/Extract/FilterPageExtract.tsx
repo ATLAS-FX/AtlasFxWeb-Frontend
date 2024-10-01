@@ -10,7 +10,7 @@ import { useExtractInfo } from '@/services/ExtractApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
 import { Dispatch, SetStateAction, useEffect } from 'react'
 
-interface FilterPageProps {
+interface FilterPageExtractProps {
   state: {
     stepPage: number
     period: number
@@ -35,7 +35,10 @@ interface FilterPageProps {
   >
 }
 
-const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
+const FilterPageExtract: React.FC<FilterPageExtractProps> = ({
+  state,
+  setState
+}) => {
   const { mutate: getExtractInfo, isLoading, isError } = useExtractInfo()
 
   const periodDays: Array<number> = [7, 15, 30, 60, 90]
@@ -221,4 +224,4 @@ const FilterPage: React.FC<FilterPageProps> = ({ state, setState }) => {
   )
 }
 
-export default FilterPage
+export default FilterPageExtract

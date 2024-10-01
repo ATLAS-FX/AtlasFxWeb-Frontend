@@ -3,10 +3,10 @@ import { useAtlas } from '@/contexts/AtlasContext'
 import { RegisterPixType } from '@/types/userType'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import ExtractResum from './ExtractResum'
-import FilterPage from './FilterPage'
+import SummaryPageExtract from './SummaryPageExtract'
+import FilterPageExtract from './FilterPageExtract'
 
-const Extract: React.FC = () => {
+const HomePageExtract: React.FC = () => {
   const navigate = useNavigate()
   const { user } = useAtlas()
 
@@ -97,17 +97,17 @@ const Extract: React.FC = () => {
         }}
       />
       {filterOptions.stepPage === 0 && (
-        <ExtractResum
+        <SummaryPageExtract
           data={groupedByDate}
           action={filterOptions}
           setAction={setFilterOptions}
         />
       )}
       {filterOptions.stepPage === 1 && (
-        <FilterPage state={filterOptions} setState={setFilterOptions} />
+        <FilterPageExtract state={filterOptions} setState={setFilterOptions} />
       )}
     </Container>
   )
 }
 
-export default Extract
+export default HomePageExtract

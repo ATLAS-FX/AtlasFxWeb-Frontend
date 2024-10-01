@@ -1,6 +1,6 @@
 import { Aside, Sidebar } from '@/components/layout'
 import Deposit from '@/pages/Deposit'
-import Extract from '@/pages/Extract'
+import HomePageExtract from '@/pages/Extract/HomePageExtract'
 import Home from '@/pages/Home'
 import HomePagePayment from '@/pages/Payment/HomePagePayment'
 import HomePagePix from '@/pages/Pix/HomePagePix'
@@ -20,7 +20,7 @@ export const PrivateRoutes: React.FC = () => {
         {/* deposito */}
         <Route path="deposits" Component={Deposit} />
         {/* extrato */}
-        <Route path="extract" Component={Extract} />
+        <Route path="extract" Component={HomePageExtract} />
         {/* pagamentos */}
         <Route path="payments" Component={HomePagePayment} />
         {/* transferencia */}

@@ -1,12 +1,9 @@
 import { IconDoubleArrow, IconFilter } from '@/components/icons'
-import { ModalConfirm, ModalPrint } from '@/components/layout'
+import { ModalPrint } from '@/components/layout'
 import { PDFExtract } from '@/components/pdfs'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
-import { cn } from '@/lib/utils'
 import { useTransactionInfo } from '@/services/ExtractApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
 import { TransactionType } from '@/types/Extract'
@@ -17,10 +14,12 @@ import {
   invertDate
 } from '@/utils/GenerateFormatted'
 import { PDFViewer } from '@react-pdf/renderer'
-import { ChevronRight, LoaderCircle } from 'lucide-react'
+import { ChevronRight, Loader2 } from 'lucide-react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import ModalExtract from './ModalExtract'
+import { Button } from '@/components/ui/button'
 
-interface ExtractResumProps {
+interface SummaryPageExtractProps {
   action: {
     stepPage: number
     period: number
@@ -48,12 +47,13 @@ interface ExtractResumProps {
   data: Record<string, RegisterPixType[]>
 }
 
-const ExtractResum: React.FC<ExtractResumProps> = ({ action, data }) => {
+const SummaryPageExtract: React.FC<SummaryPageExtractProps> = ({ action, data }) => {
   const { user } = useAtlas()
   const { mutate: transaction, isLoading, isError } = useTransactionInfo()
   const [detailsTransaction, setDetailsTransaction] = useState<TransactionType>()
   const [openModalDetails, setOpenModalDetails] = useState<boolean>(false)
   const [openModalPrint, setOpenModalPrint] = useState<boolean>(false)
+  const [itemsToShow, setItemsToShow] = useState<Record<string, number>>({})
 
   // const ButtonsOptions = [
   //   {
@@ -69,10 +69,6 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, data }) => {
   //       }))
   //   }
   // ]
-
-  const sortedEntries = Object.entries(data).sort(
-    ([dateA], [dateB]) => Date.parse(dateB) - Date.parse(dateA)
-  )
 
   // const handleDownloadPDF = () => {
   //   const doc = (
@@ -98,6 +94,17 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, data }) => {
   //   )
   //   downloadPDF(doc)
   // }
+
+  const sortedEntries = Object.entries(data).sort(
+    ([dateA], [dateB]) => Date.parse(dateB) - Date.parse(dateA)
+  )
+
+  const loadMoreItems = (date: string) => {
+    setItemsToShow((prevState) => ({
+      ...prevState,
+      [date]: (prevState[date] || 20) + 20
+    }))
+  }
 
   const handleTransactionInfo = async (id: string) => {
     transaction(
@@ -130,6 +137,8 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, data }) => {
     }
   }, [isError])
 
+  const visibleItems = (date: string) => itemsToShow[date] || 10
+
   return (
     <>
       <button className="flex items-center gap-2 fill-system-cinza text-system-cinza">
@@ -158,7 +167,7 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, data }) => {
             })}
             <Separator className="bg-system-cinza" />
           </div>
-          {extracts.map((extract, i) => (
+          {extracts.slice(0, visibleItems(date)).map((extract, i) => (
             <div
               key={i}
               className="flex w-[95%] cursor-pointer items-center justify-between border-b-[2px] border-slate-300 py-3 font-medium text-primary-default last:border-b-0 hover:bg-system-cinza/10"
@@ -204,138 +213,35 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, data }) => {
             </div>
           ))}
 
-          <Dialog
-            open={openModalDetails}
-            onOpenChange={() => setOpenModalDetails(false)}
-          >
-            <DialogContent className={cn('max-w-[512px] gap-4 rounded-xl bg-white')}>
-              <>
-                {isLoading ? (
-                  <div className="flex items-center justify-center">
-                    <LoaderCircle className="h-48 w-48 animate-spin text-primary-default transition-transform" />
-                  </div>
-                ) : (
-                  <ModalConfirm
-                    title={'Detalhes'}
-                    back={() => {}}
-                    contain={
-                      <section className="flex flex-col gap-2">
-                        <div className="py-2">
-                          <label className="text-sm text-system-cinza">
-                            {`Transação realizada em: ${new Date(detailsTransaction?.createdAt || '').toLocaleDateString()}`}
-                          </label>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <label className="font-medium text-primary-default">
-                            Valor:
-                          </label>
-                          <span>
-                            R$ {formattedPrice(detailsTransaction?.amount || '')}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <label className="font-medium text-primary-default">
-                            Tipo de transferência:
-                          </label>
-                          <span>{detailsTransaction?.category}</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <label className="font-medium text-primary-default">
-                            ID da transferência:
-                          </label>
-                          <span>{detailsTransaction?.transactionId}</span>
-                        </div>
-                        <div className="grid w-full grid-cols-[auto,75%] items-center gap-4 text-sm text-system-cinza">
-                          <label htmlFor="">Origem: </label>
-                          <Separator className="bg-system-cinza/50" />
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <label className="font-medium text-primary-default">
-                            Nome:
-                          </label>
-                          <span>
-                            {detailsTransaction?.transactionData.clientNamePayer}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <label className="font-medium text-primary-default">
-                            CPF/CNPJ:
-                          </label>
-                          <span>
-                            {detailsTransaction?.transactionData.documentPayer}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <label className="font-medium text-primary-default">
-                            Instituição:
-                          </label>
-                          <span>{detailsTransaction?.transactionData.bankName}</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <label className="font-medium text-primary-default">
-                            Tipo de conta:
-                          </label>
-                          <span>
-                            {detailsTransaction?.transactionData.accountTypePayer}
-                          </span>
-                        </div>
-                        <div className="grid w-full grid-cols-[auto,75%] items-center gap-4 text-sm text-system-cinza">
-                          <label>Destinatário: </label>
-                          <Separator className="bg-system-cinza/50" />
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <label className="font-medium text-primary-default">
-                            Nome:
-                          </label>
-                          <span>
-                            {detailsTransaction?.transactionData.fee.feeName}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <label className="font-medium text-primary-default">
-                            CPF/CNPJ:
-                          </label>
-                          <span>
-                            {detailsTransaction?.transactionData.documentReceiver}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <label className="font-medium text-primary-default">
-                            Instituição:
-                          </label>
-                          <span>{detailsTransaction?.transactionData.bankName}</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <label className="font-medium text-primary-default">
-                            Agência:
-                          </label>
-                          <span>
-                            {detailsTransaction?.transactionData.accountReceiver}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <label className="font-medium text-primary-default">
-                            Conta:
-                          </label>
-                          <span>
-                            {detailsTransaction?.transactionData.accountPayer}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-around pt-6 text-sm">
-                          <Button className="border-2 border-primary-default bg-transparent text-primary-default shadow-none transition-all duration-300 ease-in-out hover:text-white">
-                            Realizar novo pagamento
-                          </Button>
-                          <Button className="bg-primary-default transition-all duration-300 ease-in-out">
-                            Download PDF
-                          </Button>
-                        </div>
-                      </section>
-                    }
-                  />
-                )}
-              </>
-            </DialogContent>
-          </Dialog>
+          {visibleItems(date) < extracts.length && (
+            <Button
+              className="mt-4 flex items-center gap-2 px-2 text-xs"
+              onClick={() => {
+                loadMoreItems(date)
+                const loader = document.getElementById(`loader-${date}`)
+                if (loader) {
+                  loader.style.display = 'inline-block'
+                  setTimeout(() => {
+                    loader.style.display = 'none'
+                  }, 3000)
+                }
+              }}
+            >
+              Exibir mais registros...
+              <Loader2
+                id={`loader-${date}`}
+                className="size-6 animate-spin text-gray-500"
+                style={{ display: 'none' }}
+              />
+            </Button>
+          )}
+
+          <ModalExtract
+            openModalDetails={openModalDetails}
+            setOpenModalDetails={setOpenModalDetails}
+            isLoading={isLoading}
+            detailsTransaction={detailsTransaction}
+          />
 
           <ModalPrint
             openModal={openModalPrint}
@@ -371,4 +277,4 @@ const ExtractResum: React.FC<ExtractResumProps> = ({ action, data }) => {
   )
 }
 
-export default ExtractResum
+export default SummaryPageExtract
