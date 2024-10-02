@@ -110,7 +110,7 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({ flow, setFlow }) => {
           <h4 className="text-sm text-system-cinza">Insira a chave pix:</h4>
           <Input
             type="text"
-            value={flow.keyPix}
+            value={flow.formatKeyPix}
             onChange={(e) => {
               const { formattedKey, type } = formatKeyPix(e.target.value)
               setFlow({

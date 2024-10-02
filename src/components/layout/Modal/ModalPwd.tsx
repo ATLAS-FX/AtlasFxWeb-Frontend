@@ -1,14 +1,16 @@
+import { IconEyeReveal } from '@/components/icons'
 import { ButtonNext } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { ChevronLeft } from 'lucide-react'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 interface ModalConfirmProps {
   title: string
   subtitle: string
-  token: (value: string) => void
+  token: string
+  setToken: (value: string) => void
   handleFunc: () => void
   loading?: boolean
   back: () => void
@@ -18,10 +20,12 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
   title,
   subtitle,
   token,
+  setToken,
   handleFunc,
   loading,
   back
 }) => {
+  const [hidePassword, setHidePassword] = useState<boolean>(true)
   return (
     <section className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
@@ -40,19 +44,36 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
       <h5 className="text-sm">{subtitle}</h5>
       <div className="flex flex-col gap-2">
         <label className="w-fit text-sm text-system-cinza">Senha:</label>
-        <Input
-          className="text-base"
-          placeholder="Digite o código de 6 dígitos"
-          type="password"
-          maxLength={6}
-          pattern="\d*"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            token(e.target.value)
-          }}
-        />
+        <div className="relative">
+          <Input
+            className="text-base"
+            placeholder="Digite o código"
+            type={hidePassword ? 'password' : 'text'}
+            pattern="\d*"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setToken(e.target.value)
+            }}
+          />
+          <button
+            className="absolute right-0 top-0 flex h-fit w-fit items-center gap-2 bg-transparent p-2 transition-all duration-300 ease-in-out"
+            onClick={() => {
+              setHidePassword(!hidePassword)
+            }}
+          >
+            <IconEyeReveal
+              size={24}
+              className="mr-2 fill-primary-default/50 transition-all duration-300 ease-in-out hover:fill-primary-hover/75"
+            />
+          </button>
+        </div>
       </div>
       <div className="flex justify-end">
-        <ButtonNext title="Prosseguir" loading={loading} func={() => handleFunc()} />
+        <ButtonNext
+          title="Prosseguir"
+          disabled={token.length < 6}
+          loading={loading}
+          func={() => handleFunc()}
+        />
       </div>
     </section>
   )

@@ -134,7 +134,8 @@ const ModalTransfer: React.FC<ModalTransfer> = ({
             back={() => setState({ ...state, step: 2 })}
             title={'Insira sua senha'}
             subtitle={'Sua senha é a mesma da sua conta'}
-            token={(e) => setState({ ...state, pwd: e })}
+            token={state.pwd}
+            setToken={(e) => setState({ ...state, pwd: e })}
             handleFunc={transferFunc}
             loading={loadTransfer}
           />

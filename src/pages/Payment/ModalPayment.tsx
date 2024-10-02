@@ -141,7 +141,8 @@ const ModalPayment: React.FC<ModalPaymentProps> = ({
             back={() => setState({ ...state, step: 2 })}
             title={'Insira sua senha'}
             subtitle={'Sua senha é a mesma da sua conta'}
-            token={() => setState({ ...state, type: 'token' })}
+            token={state.pwdCode}
+            setToken={() => setState({ ...state, type: 'token' })}
             handleFunc={SendPaymentFunc}
           />
         )}
