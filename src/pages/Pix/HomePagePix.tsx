@@ -1,6 +1,6 @@
 import { Container, Title } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ContactsPagePix from './ContactsPagePix'
 import FlowPagePix from './FlowPagePix'
@@ -13,6 +13,8 @@ const HomePagePix: React.FC = () => {
     select: string
     desc: string
     keyPix: string
+    formatKeyPix: string
+    typekeyPix: string
     save: number
     amount: string
     pwd: string
@@ -24,6 +26,8 @@ const HomePagePix: React.FC = () => {
     amount: '',
     pwd: '',
     keyPix: '',
+    formatKeyPix: '',
+    typekeyPix: '',
     desc: '',
     save: 0,
     modalPix: false,
@@ -45,6 +49,8 @@ const HomePagePix: React.FC = () => {
                   amount: '',
                   pwd: '',
                   keyPix: '',
+                  formatKeyPix: '',
+                  typekeyPix: '',
                   desc: '',
                   save: 0,
                   modalPix: false,

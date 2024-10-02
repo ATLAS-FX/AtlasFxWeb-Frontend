@@ -11,6 +11,8 @@ interface ModalPix {
     select: string
     desc: string
     keyPix: string
+    formatKeyPix: string
+    typekeyPix: string
     save: number
     amount: string
     pwd: string
@@ -23,6 +25,8 @@ interface ModalPix {
       select: string
       desc: string
       keyPix: string
+      formatKeyPix: string
+      typekeyPix: string
       save: number
       amount: string
       pwd: string
@@ -48,8 +52,14 @@ const ModalPix: React.FC<ModalPix> = ({
       onOpenChange={() => setState({ ...state, modalPix: false })}
     >
       <DialogContent
-        className={cn('min-h-[442px] w-[348px] gap-4 rounded-xl bg-white')}
+        className={cn(
+          'w-fit gap-4 rounded-xl bg-white',
+          state.step >= 4 && 'min-w-[762px]',
+          state.step <= 2 && 'min-h-[442px] ',
+          state.step === 3 && 'h-fit w-[348px]'
+        )}
       >
+        {/* <DialogContent className={cn('min-h-[442px] w-[372px] gap-4 rounded-xl bg-white')} > */}
         {state.step === 2 && (
           <ModalConfirm
             key="confirm-modal"
@@ -83,36 +93,36 @@ const ModalPix: React.FC<ModalPix> = ({
                   <label className="font-medium text-primary-default">
                     Nome do destinatário:
                   </label>
-                  <span>{data?.name || ''}</span>
+                  <span className="text-end">{data?.name || ''}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">CPF:</label>
-                  <span>{data?.doc || ''}</span>
+                  <span className="text-end">{data?.doc || ''}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">
                     Instituição:
                   </label>
-                  <span>{data?.bank || ''}</span>
+                  <span className="text-end">{data?.bank || ''}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">Conta:</label>
-                  <span>{data?.account || ''}</span>
+                  <span className="text-end">{data?.account || ''}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">
                     Agência:
                   </label>
-                  <span>{data?.agency || ''}</span>
+                  <span className="text-end">{data?.agency || ''}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">
                     Chave Pix:
                   </label>
-                  <span>
-                    {state?.keyPix.length > 28
-                      ? `${state?.keyPix.substring(0, 28)}...`
-                      : state?.keyPix}
+                  <span className="text-end">
+                    {state?.formatKeyPix.length > 28
+                      ? `${state?.formatKeyPix.substring(0, 28)}...`
+                      : state?.formatKeyPix}
                   </span>
                 </div>
               </div>

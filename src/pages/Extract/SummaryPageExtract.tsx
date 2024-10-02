@@ -168,7 +168,6 @@ const SummaryPageExtract: React.FC<SummaryPageExtractProps> = ({ action, data })
                     : 'cursor-default'
                 )}
                 onClick={() => {
-                  console.log(extract?.method)
                   extract?.method !== 'TAX' && setOpenModalDetails(true)
                   handleTransactionInfo(extract?.id.toString())
                 }}

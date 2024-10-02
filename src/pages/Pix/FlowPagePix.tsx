@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { useGetKeyInfo, useSendPix } from '@/services/PixApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
 import { PixType } from '@/types/PixType'
+import { formatKeyPix } from '@/utils/FormattedKeyPix'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import md5 from 'md5'
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
@@ -20,6 +21,8 @@ interface FlowPagePixProps {
     select: string
     desc: string
     keyPix: string
+    formatKeyPix: string
+    typekeyPix: string
     save: number
     amount: string
     pwd: string
@@ -33,6 +36,8 @@ interface FlowPagePixProps {
       select: string
       desc: string
       keyPix: string
+      formatKeyPix: string
+      typekeyPix: string
       save: number
       amount: string
       pwd: string
@@ -106,7 +111,15 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({ flow, setFlow }) => {
           <Input
             type="text"
             value={flow.keyPix}
-            onChange={(e) => setFlow({ ...flow, keyPix: e.target.value })}
+            onChange={(e) => {
+              const { formattedKey, type } = formatKeyPix(e.target.value)
+              setFlow({
+                ...flow,
+                keyPix: type === 'phone' ? `+55${e.target.value}` : e.target.value,
+                formatKeyPix: formattedKey,
+                typekeyPix: type
+              })
+            }}
             placeholder="Digite a chave pix"
             className="w-full rounded-md border-[1px] border-system-cinza/25 px-4 py-6 text-base"
           />
