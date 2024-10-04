@@ -1,7 +1,7 @@
 import { ModalConfirm, ModalPwd, ModalSuccess } from '@/components/layout'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
-import { PixType } from '@/types/PixType'
+import { PixType, SendPixType } from '@/types/PixType'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import { Dispatch, SetStateAction } from 'react'
 
@@ -35,6 +35,7 @@ interface ModalPix {
     }>
   >
   data: PixType | null
+  dataSendPix: SendPixType | undefined
   SendPixFunc: () => void
   loadPix: boolean
 }
@@ -43,6 +44,7 @@ const ModalPix: React.FC<ModalPix> = ({
   state,
   setState,
   data,
+  dataSendPix,
   SendPixFunc,
   loadPix
 }) => {
@@ -147,7 +149,19 @@ const ModalPix: React.FC<ModalPix> = ({
             key="success-modal"
             title={'Sucesso!'}
             back={() => setState({ ...state, step: 3 })}
-            amount={`R$ ${formattedPrice(state?.amount) || ''}`}
+            amount={`R$ ${formattedPrice(state?.amount) || 'R$ 0,00'}`}
+            typeTransfer={'Pix'}
+            idTransfer={dataSendPix?.id_transaction || '-'}
+            namePayer={'-'}
+            docPayer={''}
+            bankPayer={''}
+            typeAccountPayer={'-'}
+            keyPixPayer={state?.keyPix || '-'}
+            nameRecipient={dataSendPix?.name || '-'}
+            docRecipient={dataSendPix?.document || '-'}
+            bankRecipient={dataSendPix?.bank || '-'}
+            agencyRecipient={dataSendPix?.agency || '-'}
+            accountRecipient={dataSendPix?.account || '-'}
           />
         )}
       </DialogContent>

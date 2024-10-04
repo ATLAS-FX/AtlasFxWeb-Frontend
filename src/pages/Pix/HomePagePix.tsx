@@ -5,9 +5,11 @@ import { useNavigate } from 'react-router-dom'
 import ContactsPagePix from './ContactsPagePix'
 import FlowPagePix from './FlowPagePix'
 import KeyPagePix from './KeyPagePix'
+import { SendPixType } from '@/types/PixType'
 
 const HomePagePix: React.FC = () => {
   const navigate = useNavigate()
+  const [dataSendPix, setDataSendPix] = useState<SendPixType | undefined>()
   const [control, setControl] = useState<{
     step: number
     select: string
@@ -59,7 +61,12 @@ const HomePagePix: React.FC = () => {
               : setControl({ ...control, step: control.step - 1 })
         }
       />
-      <FlowPagePix flow={control} setFlow={setControl} />
+      <FlowPagePix
+        flow={control}
+        setFlow={setControl}
+        sendData={dataSendPix}
+        setSendData={setDataSendPix}
+      />
       {control.select !== 'flowPage' && (
         <>
           <Separator

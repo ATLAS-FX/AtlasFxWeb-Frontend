@@ -4,7 +4,7 @@ import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import { useConsultPayment, useSendPayment } from '@/services/PaymentApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
-import { PaymentType } from '@/types/PaymentType'
+import { ConsultPaymentType } from '@/types/PaymentType'
 import md5 from 'md5'
 import { ChangeEvent, Dispatch, SetStateAction } from 'react'
 import ModalPayment from './ModalPayment'
@@ -26,8 +26,8 @@ interface IPaymentForm {
       stateModal: boolean
     }>
   >
-  data: PaymentType | undefined
-  setData: Dispatch<SetStateAction<PaymentType | undefined>>
+  data: ConsultPaymentType | undefined
+  setData: Dispatch<SetStateAction<ConsultPaymentType | undefined>>
 }
 
 const FormPagePayment: React.FC<IPaymentForm> = ({

@@ -1,9 +1,13 @@
+import { ConsultPaymentType } from '@/types/PaymentType'
 import { useMutation } from 'react-query'
 import { api } from './api'
 
 const useConsultPayment = () => {
   return useMutation(async (params: { number: string; type: string }) => {
-    const { data } = await api.post('/portal/payment/consult', params)
+    const { data } = await api.post<ConsultPaymentType>(
+      '/portal/payment/consult',
+      params
+    )
     return data
   })
 }

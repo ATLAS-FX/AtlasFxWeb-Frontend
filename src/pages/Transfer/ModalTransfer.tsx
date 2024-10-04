@@ -1,6 +1,7 @@
 import { ModalConfirm, ModalPwd, ModalSuccess } from '@/components/layout'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
+import { SendPixType } from '@/types/PixType'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import { Dispatch, SetStateAction } from 'react'
 
@@ -37,6 +38,7 @@ interface ModalTransfer {
       modalTransfer: boolean
     }>
   >
+  sendTransfer: SendPixType | undefined
   transferFunc: () => void
   loadTransfer: boolean
 }
@@ -44,6 +46,7 @@ interface ModalTransfer {
 const ModalTransfer: React.FC<ModalTransfer> = ({
   state,
   setState,
+  sendTransfer,
   transferFunc,
   loadTransfer
 }) => {
@@ -146,6 +149,18 @@ const ModalTransfer: React.FC<ModalTransfer> = ({
             title={'Sucesso!'}
             back={() => setState({ ...state, step: 3 })}
             amount={`R$ ${formattedPrice(state?.amount) || ''}`}
+            typeTransfer={'TED/DOC'}
+            idTransfer={sendTransfer?.id_transaction || '-'}
+            namePayer={'-'}
+            docPayer={''}
+            bankPayer={''}
+            typeAccountPayer={'-'}
+            keyPixPayer={'-'}
+            nameRecipient={sendTransfer?.name || '-'}
+            docRecipient={sendTransfer?.document || '-'}
+            bankRecipient={sendTransfer?.bank || '-'}
+            agencyRecipient={sendTransfer?.agency || '-'}
+            accountRecipient={sendTransfer?.account || '-'}
           />
         )}
       </DialogContent>

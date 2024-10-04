@@ -5,9 +5,11 @@ import { useNavigate } from 'react-router-dom'
 import ListingPageTransfer from './ListingPageTransfer'
 import FormPageTransfer from './FormPageTransfer'
 import CheckPageTransfer from './CheckPageTransfer'
+import { SendPixType } from '@/types/PixType'
 
 const HomePageTransfer: React.FC = () => {
   const navigate = useNavigate()
+  const [dataSendTransfer, setDataSendTransfer] = useState<SendPixType | undefined>()
   const [flowTransfer, setFlowTransfer] = useState<{
     step: number
     save: number
@@ -80,7 +82,12 @@ const HomePageTransfer: React.FC = () => {
         <FormPageTransfer form={flowTransfer} setForm={setFlowTransfer} />
       )}
       {flowTransfer.step >= 2 && (
-        <CheckPageTransfer flow={flowTransfer} setFlow={setFlowTransfer} />
+        <CheckPageTransfer
+          flow={flowTransfer}
+          setFlow={setFlowTransfer}
+          sendTransfer={dataSendTransfer}
+          setSendTransfer={setDataSendTransfer}
+        />
       )}
     </Container>
   )

@@ -9,6 +9,7 @@ import { ErrorResponse } from '@/types/ErrorResponse'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import { ChangeEvent, Dispatch, SetStateAction } from 'react'
 import ModalTransfer from './ModalTransfer'
+import { SendPixType } from '@/types/PixType'
 
 interface CheckPageTransferProps {
   flow: {
@@ -43,9 +44,16 @@ interface CheckPageTransferProps {
       modalTransfer: boolean
     }>
   >
+  sendTransfer: SendPixType | undefined
+  setSendTransfer: Dispatch<SetStateAction<SendPixType | undefined>>
 }
 
-const CheckPageTransfer: React.FC<CheckPageTransferProps> = ({ flow, setFlow }) => {
+const CheckPageTransfer: React.FC<CheckPageTransferProps> = ({
+  flow,
+  setFlow,
+  sendTransfer,
+  setSendTransfer
+}) => {
   const { mutate: transfer, isLoading } = useTransferApi()
 
   const handleTransfer = async () => {
@@ -64,6 +72,7 @@ const CheckPageTransfer: React.FC<CheckPageTransferProps> = ({ flow, setFlow }) 
       },
       {
         onSuccess: (res) => {
+          setSendTransfer(res)
           setFlow({ ...flow, step: 4 })
           toast({
             variant: 'success',
@@ -165,6 +174,7 @@ const CheckPageTransfer: React.FC<CheckPageTransferProps> = ({ flow, setFlow }) 
         key={'modaltransfer'}
         state={flow}
         setState={setFlow}
+        sendTransfer={sendTransfer}
         transferFunc={handleTransfer}
         loadTransfer={isLoading}
       />

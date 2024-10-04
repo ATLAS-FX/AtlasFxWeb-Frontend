@@ -7,7 +7,7 @@ import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
 import { useGetKeyInfo, useSendPix } from '@/services/PixApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
-import { PixType } from '@/types/PixType'
+import { PixType, SendPixType } from '@/types/PixType'
 import { formatKeyPix } from '@/utils/FormattedKeyPix'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import md5 from 'md5'
@@ -29,7 +29,6 @@ interface FlowPagePixProps {
     modalPix: boolean
     modalKey: boolean
   }
-
   setFlow: Dispatch<
     SetStateAction<{
       step: number
@@ -45,9 +44,16 @@ interface FlowPagePixProps {
       modalKey: boolean
     }>
   >
+  sendData: SendPixType | undefined
+  setSendData: Dispatch<SetStateAction<SendPixType | undefined>>
 }
 
-const FlowPagePix: React.FC<FlowPagePixProps> = ({ flow, setFlow }) => {
+const FlowPagePix: React.FC<FlowPagePixProps> = ({
+  flow,
+  setFlow,
+  sendData,
+  setSendData
+}) => {
   const navigate = useNavigate()
   const { setPixCopyPaste } = useAtlas()
   const { mutate: getKeyInfo, isLoading: loadGetKeyInfo } = useGetKeyInfo()
@@ -84,6 +90,7 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({ flow, setFlow }) => {
       },
       {
         onSuccess: (res) => {
+          setSendData(res)
           setFlow({ ...flow, step: 4 })
           toast({
             variant: 'success',
@@ -230,6 +237,7 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({ flow, setFlow }) => {
         state={flow}
         setState={setFlow}
         data={pixData}
+        dataSendPix={sendData}
         SendPixFunc={handleSendPix}
         loadPix={loadSendPix}
       />

@@ -11,3 +11,14 @@ export type PaymentType = {
   price: number
   receviePrice: number
 }
+
+export type ConsultPaymentType = {
+  type: string
+  name: string
+  bank: string
+  agency: string
+  account: string
+  document: string
+  code: string
+  price: number
+}

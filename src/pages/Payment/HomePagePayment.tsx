@@ -1,7 +1,7 @@
 import { IconBarCode, IconCopyPaste } from '@/components/icons'
 import { ButtonAtlas, Container, Title } from '@/components/layout'
 import { useAtlas } from '@/contexts/AtlasContext'
-import { PaymentType } from '@/types/PaymentType'
+import { ConsultPaymentType } from '@/types/PaymentType'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import FormPagePayment from './FormPagePayment'
@@ -22,7 +22,7 @@ const HomePagePayment: React.FC = () => {
     pwdCode: '',
     stateModal: false
   })
-  const [dataPayment, setDataPayment] = useState<PaymentType | undefined>()
+  const [dataPayment, setDataPayment] = useState<ConsultPaymentType | undefined>()
 
   const listPaymentsActions = [
     {

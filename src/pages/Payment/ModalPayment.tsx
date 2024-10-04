@@ -2,7 +2,8 @@ import { ModalConfirm, ModalPwd, ModalSuccess } from '@/components/layout'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
-import { PaymentType } from '@/types/PaymentType'
+import { ConsultPaymentType } from '@/types/PaymentType'
+import { formatKeyPix } from '@/utils/FormattedKeyPix'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import { Dispatch, SetStateAction } from 'react'
 
@@ -23,7 +24,7 @@ interface ModalPaymentProps {
       stateModal: boolean
     }>
   >
-  data: PaymentType | undefined
+  data: ConsultPaymentType | undefined
   ConsultPaymentFunc: () => void
   SendPaymentFunc: () => void
 }
@@ -91,34 +92,36 @@ const ModalPayment: React.FC<ModalPaymentProps> = ({
                     {`R$ ${formattedPrice(user?.amount || '0,00')?.toString()}`}
                   </h4>
                   <label className="font-bold text-primary-default">
-                    {data?.owner || ''}
+                    {data?.name || ''}
                   </label>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">
                     Nome do destinatário:
                   </label>
-                  <span>{data?.owner || ''}</span>
+                  <span>{data?.name || '-'}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">CPF:</label>
-                  <span>{data?.document || ''}</span>
+                  <span>
+                    {formatKeyPix(data?.document ?? '').formattedKey || '-'}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">
                     Instituição:
                   </label>
-                  <span>{data?.bank || ''}</span>
+                  <span>{data?.bank || '-'}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">Conta:</label>
-                  <span>{data?.account || ''}</span>
+                  <span>{data?.account || '-'}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">
                     Agência:
                   </label>
-                  <span>{data?.agency || ''}</span>
+                  <span>{data?.agency || '-'}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <label className="font-medium text-primary-default">
@@ -152,6 +155,18 @@ const ModalPayment: React.FC<ModalPaymentProps> = ({
             title={'Sucesso!'}
             amount={''}
             back={() => setState({ ...state, step: 3 })}
+            typeTransfer={''}
+            idTransfer={''}
+            namePayer={''}
+            docPayer={''}
+            bankPayer={''}
+            typeAccountPayer={''}
+            keyPixPayer={''}
+            nameRecipient={''}
+            docRecipient={''}
+            bankRecipient={''}
+            agencyRecipient={''}
+            accountRecipient={''}
           />
         )}
       </DialogContent>

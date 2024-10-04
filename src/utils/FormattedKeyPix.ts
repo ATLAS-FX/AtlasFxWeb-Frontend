@@ -1,5 +1,6 @@
 // Função para validar CPF baseado nos dígitos verificadores
 const validateCPF = (cpf: string): boolean => {
+  console.log('entrou cpf', cpf)
   if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false // Verifica se todos os dígitos são iguais
 
   let sum = 0
@@ -27,13 +28,47 @@ const validateCPF = (cpf: string): boolean => {
   return true
 }
 
+const validateCNPJ = (cnpj: string): boolean => {
+  console.log('entrou cnpj', cnpj)
+  if (cnpj.length !== 14 || /^(\d)\1{13}$/.test(cnpj)) return false // Verifica se todos os dígitos são iguais
+
+  let length = cnpj.length - 2
+  let numbers = cnpj.substring(0, length)
+  let digits = cnpj.substring(length)
+  let sum = 0
+  let pos = length - 7
+
+  for (let i = length; i >= 1; i--) {
+    sum += parseInt(numbers.charAt(length - i)) * pos--
+    if (pos < 2) pos = 9
+  }
+
+  let result = sum % 11 < 2 ? 0 : 11 - (sum % 11)
+  if (result !== parseInt(digits.charAt(0))) return false
+
+  length = length + 1
+  numbers = cnpj.substring(0, length)
+  sum = 0
+  pos = length - 7
+
+  for (let i = length; i >= 1; i--) {
+    sum += parseInt(numbers.charAt(length - i)) * pos--
+    if (pos < 2) pos = 9
+  }
+
+  result = sum % 11 < 2 ? 0 : 11 - (sum % 11)
+  if (result !== parseInt(digits.charAt(1))) return false
+
+  return true
+}
+
 export const formatKeyPix = (
   keyPix: string
 ): { formattedKey: string; type: string } => {
   let formattedKey = keyPix
   let type = ''
 
-  // Verifica se é um CPF válido primeiro
+  // Verifica se é um CPF válido
   if (/^\d{11}$/.test(keyPix) && validateCPF(keyPix)) {
     formattedKey = `${keyPix.slice(0, 3)}.${keyPix.slice(3, 6)}.${keyPix.slice(
       6,
@@ -41,13 +76,13 @@ export const formatKeyPix = (
     )}-${keyPix.slice(9)}`
     type = 'cpf'
   }
-  // Se não for CPF, verifica se é um número de telefone
+  // Se não for CPF válido, verifica se é um número de telefone
   else if (/^\d{11}$/.test(keyPix)) {
     formattedKey = `(${keyPix.slice(0, 2)})${keyPix.slice(2, 7)}-${keyPix.slice(7)}`
     type = 'phone'
   }
-  // Verifica se é um CNPJ
-  else if (/^\d{14}$/.test(keyPix)) {
+  // Se não for CPF nem telefone, verifica se é um CNPJ
+  else if (/^\d{14}$/.test(keyPix) && validateCNPJ(keyPix)) {
     formattedKey = `${keyPix.slice(0, 2)}.${keyPix.slice(2, 5)}.${keyPix.slice(
       5,
       8
@@ -65,6 +100,6 @@ export const formatKeyPix = (
   else {
     type = 'key-random'
   }
-
+  console.log(formattedKey, type)
   return { formattedKey, type }
 }

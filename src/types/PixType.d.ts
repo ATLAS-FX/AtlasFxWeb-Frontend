@@ -20,3 +20,14 @@ export type ContactsPixType = {
   key: string
   created: string
 }
+
+export type SendPixType = {
+  id_transaction: string
+  success: string
+  name: string
+  document: string
+  bank: string
+  pay_date: string
+  agency: string
+  account: string
+}

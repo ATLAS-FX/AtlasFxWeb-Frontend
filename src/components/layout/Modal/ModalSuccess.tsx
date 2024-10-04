@@ -2,15 +2,44 @@ import RoboSuccess from '@/assets/robo.png'
 import { Button } from '@/components/ui/button'
 import { DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
+import { formatKeyPix } from '@/utils/FormattedKeyPix'
 import { ChevronLeft } from 'lucide-react'
 
 interface ModalConfirmProps {
   title: string
   amount: string
+  typeTransfer: string
+  idTransfer: string
+  namePayer: string
+  docPayer: string
+  bankPayer: string
+  typeAccountPayer: string
+  keyPixPayer: string
+  nameRecipient: string
+  docRecipient: string
+  bankRecipient: string
+  agencyRecipient: string
+  accountRecipient: string
   back: () => void
 }
 
-const ModalConfirm: React.FC<ModalConfirmProps> = ({ title, amount, back }) => {
+const ModalConfirm: React.FC<ModalConfirmProps> = ({
+  title,
+  amount,
+  typeTransfer,
+  idTransfer,
+  namePayer,
+  docPayer,
+  bankPayer,
+  typeAccountPayer,
+  keyPixPayer,
+  nameRecipient,
+  docRecipient,
+  bankRecipient,
+  agencyRecipient,
+  accountRecipient,
+  back
+}) => {
   return (
     <>
       <div className="flex items-center gap-2">
@@ -43,15 +72,15 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({ title, amount, back }) => {
         <div className="flex w-8/12 flex-col gap-2 p-4 text-sm font-medium text-system-cinza">
           <div className="flex items-center justify-between">
             <label className="text-primary-default">Valor:</label>
-            <h4>R$ {amount}</h4>
+            <h4>{amount}</h4>
           </div>
           <div className="flex items-center justify-between">
             <label className="text-primary-default">Tipo de transferência:</label>
-            <h4>Copia e cola</h4>
+            <h4>{typeTransfer}</h4>
           </div>
           <div className="flex items-center justify-between">
             <label className="text-primary-default">ID da transferência:</label>
-            <h4>XXXXXXXXXXXX</h4>
+            <h4>{idTransfer}</h4>
           </div>
           <div className="flex items-center gap-2">
             <h4 className="w-[64px]">Origem:</h4>
@@ -59,23 +88,23 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({ title, amount, back }) => {
           </div>
           <div className="flex items-center justify-between">
             <label className="text-primary-default">Nome:</label>
-            <h4>Nome do pagante</h4>
+            <h4>{namePayer}</h4>
           </div>
           <div className="flex items-center justify-between">
             <label className="text-primary-default">CPF/CNPJ:</label>
-            <h4>***.XXX.XXX-**</h4>
+            <h4>{formatKeyPix(docPayer).formattedKey}</h4>
           </div>
           <div className="flex items-center justify-between">
             <label className="text-primary-default">Instituição:</label>
-            <h4>Inter</h4>
+            <h4>{bankPayer}</h4>
           </div>
           <div className="flex items-center justify-between">
             <label className="text-primary-default">Tipo de conta:</label>
-            <h4>Conta corrente</h4>
+            <h4>{typeAccountPayer}</h4>
           </div>
           <div className="flex items-center justify-between">
             <label className="text-primary-default">Chave pix:</label>
-            <h4>***.XXX.XXX-**</h4>
+            <h4>{keyPixPayer}</h4>
           </div>
           <div className="flex items-center gap-2">
             <h4 className="w-[92px]">Destinatário:</h4>
@@ -83,23 +112,23 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({ title, amount, back }) => {
           </div>
           <div className="flex items-center justify-between">
             <label className="text-primary-default">Nome:</label>
-            <h4>Nome do destinatário</h4>
+            <h4>{nameRecipient}</h4>
           </div>
           <div className="flex items-center justify-between">
-            <label className="text-primary-default">CPF:</label>
-            <h4>***.XXX.XXX-**</h4>
+            <label className="text-primary-default">CPF/CNPJ:</label>
+            <h4>{formatKeyPix(docRecipient).formattedKey}</h4>
           </div>
           <div className="flex items-center justify-between">
             <label className="text-primary-default">Instituição:</label>
-            <h4>Inter</h4>
+            <h4>{bankRecipient}</h4>
           </div>
           <div className="flex items-center justify-between">
             <label className="text-primary-default">Agência:</label>
-            <h4>0001</h4>
+            <h4>{agencyRecipient}</h4>
           </div>
           <div className="flex items-center justify-between">
             <label className="text-primary-default">Conta:</label>
-            <h4>079*****9-1 </h4>
+            <h4>{accountRecipient}</h4>
           </div>
         </div>
       </section>

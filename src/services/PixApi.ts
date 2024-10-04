@@ -1,4 +1,4 @@
-import { ContactsPixType, KeyPixType, PixType } from '@/types/PixType'
+import { ContactsPixType, KeyPixType, PixType, SendPixType } from '@/types/PixType'
 import { useMutation, useQuery } from 'react-query'
 import { api } from './api'
 
@@ -46,7 +46,7 @@ const useSendPix = () => {
       save: number
       pwd: string
     }) => {
-      const { data } = await api.post('/portal/pix/send', params)
+      const { data } = await api.post<SendPixType>('/portal/pix/send', params)
       return data
     }
   )
