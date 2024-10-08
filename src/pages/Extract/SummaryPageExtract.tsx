@@ -10,12 +10,7 @@ import { useTransactionInfo } from '@/services/ExtractApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
 import { TransactionType } from '@/types/Extract'
 import { RegisterPixType } from '@/types/userType'
-import {
-  formattedDate,
-  formattedDateSample,
-  formattedPrice,
-  invertDate
-} from '@/utils/GenerateFormatted'
+import { formattedDate, formattedPrice, invertDate } from '@/utils/GenerateFormatted'
 import { PDFViewer } from '@react-pdf/renderer'
 import { ChevronRight, Loader2 } from 'lucide-react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
@@ -172,7 +167,7 @@ const SummaryPageExtract: React.FC<SummaryPageExtractProps> = ({ action, data })
                   handleTransactionInfo(extract?.id.toString())
                 }}
               >
-                <div className="flex w-10/12 flex-col items-start justify-center gap-1 text-xs">
+                <div className="flex w-9/12 flex-col items-start justify-center gap-1 text-xs">
                   {extract?.send > 0 ? (
                     <h2 className="flex items-center justify-start gap-4 font-semibold capitalize">
                       <IconDoubleArrow
@@ -199,7 +194,7 @@ const SummaryPageExtract: React.FC<SummaryPageExtractProps> = ({ action, data })
                   </h4>
                 </div>
                 <div className="flex flex-col gap-1 text-end text-xs font-light">
-                  <p>{formattedDateSample(extract?.created)}</p>
+                  <p className="font-medium">{formattedDate(extract?.created)}</p>
                   <label className="font-semibold">
                     R$ {extract?.send > 0 ? '-' : ''}{' '}
                     {formattedPrice(extract?.amount.toString())}

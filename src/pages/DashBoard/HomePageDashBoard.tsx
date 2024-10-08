@@ -19,7 +19,7 @@ const HomePageDashBoard: React.FC = () => {
   const [dash, setDash] = useState<DashBoardType | null>(null)
   const [date, _] = useState<{ start: Date; end: Date }>({
     end: new Date(),
-    start: subDays(new Date(), 30)
+    start: subDays(new Date(), 7)
   })
 
   const StyleBot = {
