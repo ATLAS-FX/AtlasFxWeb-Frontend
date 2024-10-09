@@ -1,10 +1,10 @@
 const PasswordPageProfile: React.FC = () => {
   return (
-    <article className="flex flex-col gap-4 text-system-cinza">
-      <h3 className="text-base font-semibold text-primary-default">
-        Aviso de segurança
-      </h3>
+    <article className="flex flex-col gap-6 text-system-cinza">
       <div className="flex flex-col gap-2 rounded-xl border-[1px] border-[#7F828C33] p-3 text-xs">
+        <h3 className="text-base font-semibold text-primary-default">
+          Aviso de segurança
+        </h3>
         <p>
           Para garantir a máxima segurança de sua conta e proteger suas informações
           financeiras, informamos que a alteração de senha de acesso à sua conta
@@ -12,10 +12,10 @@ const PasswordPageProfile: React.FC = () => {
           móvel.
         </p>
       </div>
-      <h3 className="text-base font-semibold text-primary-default">
-        Por que via app?
-      </h3>
       <div className="flex flex-col gap-2 rounded-xl border-[1px] border-[#7F828C33] p-3 text-xs">
+        <h3 className="text-base font-semibold text-primary-default">
+          Por que via app?
+        </h3>
         <p>
           <label className="font-semibold">Segurança Reforçada: </label>O aplicativo
           móvel oferece camadas adicionais de segurança, como autenticação
@@ -34,10 +34,10 @@ const PasswordPageProfile: React.FC = () => {
           conta, garantindo uma resposta rápida e eficiente.
         </p>
       </div>
-      <h3 className="text-base font-semibold text-primary-default">
-        Como alterar sua senha:
-      </h3>
       <div className="flex flex-col gap-2 rounded-xl border-[1px] border-[#7F828C33] p-3 text-xs">
+        <h3 className="text-base font-semibold text-primary-default">
+          Como alterar sua senha:
+        </h3>
         <p>
           <label className="font-semibold">1. Acesse Sua Conta Via APP:</label> Abra
           o aplicativo móvel de nosso banco e faça login em sua conta utilizando suas

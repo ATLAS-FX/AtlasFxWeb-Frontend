@@ -102,7 +102,7 @@ const RegistrationPageProfile: React.FC<RegistrationProps> = ({
         <Separator className="h-0.5 w-full bg-system-cinza/25" />
         <div className="flex flex-col gap-1">
           <p className="text-primary-default">Endereço</p>
-          <p>{`${data?.street} ${data?.st_number ? ',' : ''} ${data?.st_number} - ${data?.district}, ${data?.city} - ${data?.zip}`}</p>
+          <p>{`${data?.street} ${data?.st_number ? ',' : ''} ${data?.st_number ?? ''} - ${data?.district}, ${data?.city} - ${data?.zip}`}</p>
         </div>
         <div className="flex justify-end">
           <Button
@@ -120,7 +120,10 @@ const RegistrationPageProfile: React.FC<RegistrationProps> = ({
         onOpenChange={() => setProfile({ ...profile, modal: false })}
       >
         <DialogContent
-          className={cn('min-h-[442px] w-[348px] gap-4 rounded-xl bg-white')}
+          className={cn(
+            'h-[622px] w-[672px] gap-4 overflow-y-scroll rounded-xl bg-white',
+            profile.step >= 1 && 'h-[268px]'
+          )}
         >
           <ModalProfile
             profile={profile}

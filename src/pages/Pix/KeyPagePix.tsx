@@ -111,7 +111,7 @@ const KeyPagePix: React.FC<KeyPagePixProps> = () => {
       <Accordion
         type="single"
         collapsible
-        className="w-full rounded-md border-[1px] border-system-cinza/25 px-2"
+        className="w-full rounded-md border-[1px] border-system-cinza/25 p-2 px-6"
       >
         <AccordionItem value="keypix-1">
           <AccordionTrigger className="flex items-center font-semibold text-system-cinza first:[&[data-state=open]>svg]:rotate-0">
@@ -141,7 +141,7 @@ const KeyPagePix: React.FC<KeyPagePixProps> = () => {
                 <span>
                   {keyMapList[type as keyof typeof keyMapList]}: {code}
                 </span>
-                <div className="flex items-center gap-2 fill-primary-default">
+                <div className="flex items-center gap-4 fill-primary-default">
                   <Tooltip
                     children={
                       <div

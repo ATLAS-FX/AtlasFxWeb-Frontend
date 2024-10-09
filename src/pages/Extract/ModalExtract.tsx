@@ -67,101 +67,111 @@ const ModalExtract: React.FC<ModalExtractProps> = ({
                       {`Transação realizada em: ${dataTransaction}`}
                     </label>
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <label className="font-medium text-primary-default">
-                      Valor:
-                    </label>
-                    <span>R$ {amountTransaction}</span>
+                  <div className="flex flex-col gap-2 py-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <label className="font-medium text-primary-default">
+                        Valor:
+                      </label>
+                      <span>R$ {amountTransaction}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <label className="font-medium text-primary-default">
+                        Tipo de transferência:
+                      </label>
+                      <span>{typeTransaction}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <label className="font-medium text-primary-default">
+                        ID da transferência:
+                      </label>
+                      <span>{idTransaction}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <label className="font-medium text-primary-default">
-                      Tipo de transferência:
-                    </label>
-                    <span>{typeTransaction}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <label className="font-medium text-primary-default">
-                      ID da transferência:
-                    </label>
-                    <span>{idTransaction}</span>
-                  </div>
-                  <div className="grid w-full grid-cols-[auto,75%] items-center gap-4 text-sm text-system-cinza">
+                  <div className="mt-2 grid w-full grid-cols-[auto,75%] items-center gap-4 text-sm text-system-cinza">
                     <label htmlFor="">Origem: </label>
                     <Separator className="bg-system-cinza/50" />
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <label className="font-medium text-primary-default">Nome:</label>
-                    <span>{nameOrigin}</span>
+                  <div className="flex flex-col gap-2 py-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <label className="font-medium text-primary-default">
+                        Nome:
+                      </label>
+                      <span>{nameOrigin}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <label className="font-medium text-primary-default">
+                        CPF/CNPJ:
+                      </label>
+                      <span>{documentOrigin}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <label className="font-medium text-primary-default">
+                        Instituição:
+                      </label>
+                      <Tooltip
+                        children={
+                          <span>
+                            {(bankOrigin.length ?? 0 > 32)
+                              ? `${bankOrigin.substring(0, 32)}...`
+                              : bankOrigin}
+                          </span>
+                        }
+                        content={bankOrigin}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <label className="font-medium text-primary-default">
+                        Tipo de conta:
+                      </label>
+                      <span>{typeAccountOrigin}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <label className="font-medium text-primary-default">
-                      CPF/CNPJ:
-                    </label>
-                    <span>{documentOrigin}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <label className="font-medium text-primary-default">
-                      Instituição:
-                    </label>
-                    <Tooltip
-                      children={
-                        <span>
-                          {(bankOrigin.length ?? 0 > 32)
-                            ? `${bankOrigin.substring(0, 32)}...`
-                            : bankOrigin}
-                        </span>
-                      }
-                      content={bankOrigin}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <label className="font-medium text-primary-default">
-                      Tipo de conta:
-                    </label>
-                    <span>{typeAccountOrigin}</span>
-                  </div>
-                  <div className="grid w-full grid-cols-[auto,75%] items-center gap-4 text-sm text-system-cinza">
+                  <div className="mt-2 grid w-full grid-cols-[auto,75%] items-center gap-4 text-sm text-system-cinza">
                     <label>Destinatário: </label>
                     <Separator className="bg-system-cinza/50" />
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <label className="font-medium text-primary-default">Nome:</label>
-                    <span>{nameDestiny}</span>
+                  <div className="flex flex-col gap-2 py-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <label className="font-medium text-primary-default">
+                        Nome:
+                      </label>
+                      <span>{nameDestiny}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <label className="font-medium text-primary-default">
+                        CPF/CNPJ:
+                      </label>
+                      <span>{documentDestiny}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <label className="font-medium text-primary-default">
+                        Instituição:
+                      </label>
+                      <Tooltip
+                        children={
+                          <span>
+                            {(bankDestiny?.length ?? 0) > 32
+                              ? `${bankDestiny.substring(0, 32)}...`
+                              : bankDestiny}
+                          </span>
+                        }
+                        content={bankDestiny}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <label className="font-medium text-primary-default">
+                        Agência:
+                      </label>
+                      <span>{agencyDestiny}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <label className="font-medium text-primary-default">
+                        Conta:
+                      </label>
+                      <span>{accountDestiny}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <label className="font-medium text-primary-default">
-                      CPF/CNPJ:
-                    </label>
-                    <span>{documentDestiny}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <label className="font-medium text-primary-default">
-                      Instituição:
-                    </label>
-                    <Tooltip
-                      children={
-                        <span>
-                          {(bankDestiny?.length ?? 0) > 32
-                            ? `${bankDestiny.substring(0, 32)}...`
-                            : bankDestiny}
-                        </span>
-                      }
-                      content={bankDestiny}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <label className="font-medium text-primary-default">
-                      Agência:
-                    </label>
-                    <span>{agencyDestiny}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <label className="font-medium text-primary-default">
-                      Conta:
-                    </label>
-                    <span>{accountDestiny}</span>
-                  </div>
-                  <div className="flex items-center justify-around pt-6 text-sm">
+                  <div className="flex items-center justify-between pt-6 text-sm">
                     <Button className="border-2 border-primary-default bg-transparent text-primary-default shadow-none transition-all duration-300 ease-in-out hover:text-white">
                       Realizar novo pagamento
                     </Button>

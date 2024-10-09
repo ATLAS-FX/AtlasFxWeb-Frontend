@@ -5,7 +5,7 @@ import Atlas_Logo from '../assets/atlas_logo.svg'
 
 export const PublicRoutes: React.FC = () => {
   const StyleAuth = {
-    background: 'linear-gradient(358deg, #242F5F 0%, #425EA8 100%)',
+    background: '#243060',
     backgroundPosition: 'top',
     backgroundRepeat: 'repeat'
   }

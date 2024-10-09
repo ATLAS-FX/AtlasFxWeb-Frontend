@@ -18,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { api } from '@/services/api'
 import { ListBank } from '@/utils/ListBank'
@@ -163,11 +162,11 @@ const FormPageTransfer: React.FC<FormPageTransferProps> = ({ form, setForm }) =>
                 <CommandInput placeholder="Pesquise pelo banco..." />
                 <CommandList>
                   <CommandEmpty>Nenhum banco listado.</CommandEmpty>
-                  <CommandGroup className="py-2">
+                  <CommandGroup className="p-0">
                     {listBanks.map(({ name }, number: number) => (
                       <CommandItem
                         key={`${name ? name + number : number}`}
-                        className="w-full rounded-none border-b-2 border-secondary-default py-2"
+                        className="w-full rounded-none border-b-[1px] border-system-cinza/10 py-3"
                         value={name}
                         onSelect={(e) => {
                           setForm((prev) => ({
@@ -243,18 +242,17 @@ const FormPageTransfer: React.FC<FormPageTransferProps> = ({ form, setForm }) =>
               //  placeholder="Tipo de conta"
               />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="w-[95%] px-4 py-2">
               <SelectGroup>
                 {listForm.typeAccount.map((item, number) => (
                   <>
                     <SelectItem
                       key={`${item.value + number}`}
                       value={item.value}
-                      className="py-2 text-base font-medium"
+                      className="rounded-none border-b-[1px] border-system-cinza/25 py-3 text-base font-medium"
                     >
                       {item.title}
                     </SelectItem>
-                    <Separator className="bg-secondary-default" />
                   </>
                 ))}
               </SelectGroup>

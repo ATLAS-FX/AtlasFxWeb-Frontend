@@ -1,4 +1,5 @@
 import RoboSuccess from '@/assets/robo.png'
+import { IconDownload } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
@@ -70,65 +71,80 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
           </h4>
         </div>
         <div className="flex w-8/12 flex-col gap-2 p-4 text-sm font-medium text-system-cinza">
-          <div className="flex items-center justify-between">
-            <label className="text-primary-default">Valor:</label>
-            <h4>{amount}</h4>
-          </div>
-          <div className="flex items-center justify-between">
-            <label className="text-primary-default">Tipo de transferência:</label>
-            <h4>{typeTransfer}</h4>
-          </div>
-          <div className="flex items-center justify-between">
-            <label className="text-primary-default">ID da transferência:</label>
-            <h4>{idTransfer}</h4>
+          <div className="flex flex-col gap-2 py-2">
+            <div className="flex items-center justify-between">
+              <label className="text-primary-default">Valor:</label>
+              <h4>{amount}</h4>
+            </div>
+            <div className="flex items-center justify-between">
+              <label className="text-primary-default">Tipo de transferência:</label>
+              <h4>{typeTransfer}</h4>
+            </div>
+            <div className="flex items-center justify-between">
+              <label className="text-primary-default">ID da transferência:</label>
+              <h4>{idTransfer}</h4>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <h4 className="w-[64px]">Origem:</h4>
             <Separator className="w-[calc(100%-72px)] bg-system-cinza" />
           </div>
-          <div className="flex items-center justify-between">
-            <label className="text-primary-default">Nome:</label>
-            <h4>{namePayer}</h4>
-          </div>
-          <div className="flex items-center justify-between">
-            <label className="text-primary-default">CPF/CNPJ:</label>
-            <h4>{formatKeyPix(docPayer).formattedKey}</h4>
-          </div>
-          <div className="flex items-center justify-between">
-            <label className="text-primary-default">Instituição:</label>
-            <h4>{bankPayer}</h4>
-          </div>
-          <div className="flex items-center justify-between">
-            <label className="text-primary-default">Tipo de conta:</label>
-            <h4>{typeAccountPayer}</h4>
-          </div>
-          <div className="flex items-center justify-between">
-            <label className="text-primary-default">Chave pix:</label>
-            <h4>{keyPixPayer}</h4>
+          <div className="flex flex-col gap-2 py-2">
+            <div className="flex items-center justify-between">
+              <label className="text-primary-default">Nome:</label>
+              <h4>{namePayer}</h4>
+            </div>
+            <div className="flex items-center justify-between">
+              <label className="text-primary-default">CPF/CNPJ:</label>
+              <h4>{formatKeyPix(docPayer).formattedKey}</h4>
+            </div>
+            <div className="flex items-center justify-between">
+              <label className="text-primary-default">Instituição:</label>
+              <h4>{bankPayer}</h4>
+            </div>
+            <div className="flex items-center justify-between">
+              <label className="text-primary-default">Tipo de conta:</label>
+              <h4>{typeAccountPayer}</h4>
+            </div>
+            <div className="flex items-center justify-between">
+              <label className="text-primary-default">Chave pix:</label>
+              <h4>{keyPixPayer}</h4>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <h4 className="w-[92px]">Destinatário:</h4>
             <Separator className="w-[calc(100%-102px)] bg-system-cinza" />
           </div>
-          <div className="flex items-center justify-between">
-            <label className="text-primary-default">Nome:</label>
-            <h4>{nameRecipient}</h4>
+          <div className="flex flex-col gap-2 py-2">
+            <div className="flex items-center justify-between">
+              <label className="text-primary-default">Nome:</label>
+              <h4>{nameRecipient}</h4>
+            </div>
+            <div className="flex items-center justify-between">
+              <label className="text-primary-default">CPF/CNPJ:</label>
+              <h4>{formatKeyPix(docRecipient).formattedKey}</h4>
+            </div>
+            <div className="flex items-center justify-between">
+              <label className="text-primary-default">Instituição:</label>
+              <h4>{bankRecipient}</h4>
+            </div>
+            <div className="flex items-center justify-between">
+              <label className="text-primary-default">Agência:</label>
+              <h4>{agencyRecipient}</h4>
+            </div>
+            <div className="flex items-center justify-between">
+              <label className="text-primary-default">Conta:</label>
+              <h4>{accountRecipient}</h4>
+            </div>
           </div>
-          <div className="flex items-center justify-between">
-            <label className="text-primary-default">CPF/CNPJ:</label>
-            <h4>{formatKeyPix(docRecipient).formattedKey}</h4>
-          </div>
-          <div className="flex items-center justify-between">
-            <label className="text-primary-default">Instituição:</label>
-            <h4>{bankRecipient}</h4>
-          </div>
-          <div className="flex items-center justify-between">
-            <label className="text-primary-default">Agência:</label>
-            <h4>{agencyRecipient}</h4>
-          </div>
-          <div className="flex items-center justify-between">
-            <label className="text-primary-default">Conta:</label>
-            <h4>{accountRecipient}</h4>
+          <div className="flex items-center justify-between pt-6 text-sm">
+            <Button className="border-2 border-primary-default bg-transparent text-primary-default shadow-none transition-all duration-300 ease-in-out hover:text-white">
+              Realizar novo pagamento
+            </Button>
+            <Button className="items-center gap-2 bg-primary-default transition-all duration-300 ease-in-out">
+              <IconDownload className="size-4 fill-white" />
+              Download PDF
+            </Button>
           </div>
         </div>
       </section>

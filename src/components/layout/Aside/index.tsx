@@ -1,4 +1,4 @@
-import { IconEyeReveal, IconPoint } from '@/components/icons'
+import { IconEyeHide, IconEyeReveal, IconPoint } from '@/components/icons'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { getInfoUser } from '@/services/UserApi'
@@ -50,10 +50,17 @@ const Aside: React.FC = () => {
                     </h3>
                   </div>
                   <button onClick={() => setHideValue(!hideValue)}>
-                    <IconEyeReveal
-                      size={24}
-                      className="mr-2 fill-system-neutro transition-all duration-300 ease-in-out hover:fill-white/50"
-                    />
+                    {hideValue ? (
+                      <IconEyeHide
+                        size={24}
+                        className="mr-2 fill-system-neutro transition-all duration-300 ease-in-out hover:fill-white/50"
+                      />
+                    ) : (
+                      <IconEyeReveal
+                        size={24}
+                        className="mr-2 fill-system-neutro transition-all duration-300 ease-in-out hover:fill-white/50"
+                      />
+                    )}
                   </button>
                 </div>
               }

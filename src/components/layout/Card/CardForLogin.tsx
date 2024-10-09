@@ -15,8 +15,8 @@ interface ICardForLogin {
 const CardForLogin: React.FC<ICardForLogin> = ({ title, content, footer }) => {
   return (
     <Card className="flex max-w-[824px] flex-col items-center rounded-2xl bg-white px-4 py-2 shadow-md transition-all">
-      <CardHeader>
-        <CardTitle className="flex justify-between text-lg text-primary-default">
+      <CardHeader className="flex w-full justify-start">
+        <CardTitle className="flex w-full justify-start text-lg text-primary-default">
           {title}
         </CardTitle>
       </CardHeader>

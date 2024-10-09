@@ -1,4 +1,5 @@
 import { Aside, Sidebar } from '@/components/layout'
+import { cn } from '@/lib/utils'
 import HomePageDashBoard from '@/pages/DashBoard/HomePageDashBoard'
 import HomePageDeposit from '@/pages/Deposit/HomePageDeposit'
 import HomePageExtract from '@/pages/Extract/HomePageExtract'
@@ -7,11 +8,24 @@ import HomePagePix from '@/pages/Pix/HomePagePix'
 import HomePageProfile from '@/pages/Profile/HomePageProfile'
 import HomePageTransfer from '@/pages/Transfer/HomePageTransfer'
 import React from 'react'
-import { Navigate, Routes as ReactRoutes, Route } from 'react-router-dom'
+import {
+  Navigate,
+  Routes as ReactRoutes,
+  Route,
+  useLocation
+} from 'react-router-dom'
 
 export const PrivateRoutes: React.FC = () => {
+  const { pathname } = useLocation()
   return (
-    <div className="grid h-screen w-screen grid-cols-[15%,50%,30%] items-start justify-between gap-4 overflow-hidden bg-[#EFEFEF] p-10">
+    <div
+      className={cn(
+        'grid h-screen w-screen grid-cols-[15%,50%,30%] items-start overflow-hidden bg-[#EFEFEF] p-10',
+        pathname !== '/profile'
+          ? 'grid-cols-[15%,50%,30%] justify-between gap-4'
+          : 'grid-cols-[15%,calc(80%+32px)] gap-8'
+      )}
+    >
       <Sidebar />
       <ReactRoutes>
         {/* welcome */}
@@ -30,7 +44,7 @@ export const PrivateRoutes: React.FC = () => {
         {/* pix */}
         <Route path="pix" Component={HomePagePix} />
       </ReactRoutes>
-      <Aside />
+      {pathname !== '/profile' && <Aside />}
     </div>
   )
 }
