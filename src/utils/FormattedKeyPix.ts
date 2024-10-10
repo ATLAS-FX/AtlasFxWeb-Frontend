@@ -1,6 +1,5 @@
 // Função para validar CPF baseado nos dígitos verificadores
 const validateCPF = (cpf: string): boolean => {
-  console.log('entrou cpf', cpf)
   if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false // Verifica se todos os dígitos são iguais
 
   let sum = 0
@@ -29,7 +28,6 @@ const validateCPF = (cpf: string): boolean => {
 }
 
 const validateCNPJ = (cnpj: string): boolean => {
-  console.log('entrou cnpj', cnpj)
   if (cnpj.length !== 14 || /^(\d)\1{13}$/.test(cnpj)) return false // Verifica se todos os dígitos são iguais
 
   let length = cnpj.length - 2
@@ -100,6 +98,5 @@ export const formatKeyPix = (
   else {
     type = 'key-random'
   }
-  console.log(formattedKey, type)
   return { formattedKey, type }
 }

@@ -106,10 +106,6 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
               <label className="text-primary-default">Tipo de conta:</label>
               <h4>{typeAccountPayer}</h4>
             </div>
-            <div className="flex items-center justify-between">
-              <label className="text-primary-default">Chave pix:</label>
-              <h4>{keyPixPayer}</h4>
-            </div>
           </div>
           <div className="flex items-center gap-2">
             <h4 className="w-[92px]">Destinatário:</h4>
@@ -135,6 +131,10 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
             <div className="flex items-center justify-between">
               <label className="text-primary-default">Conta:</label>
               <h4>{accountRecipient}</h4>
+            </div>
+            <div className="flex items-center justify-between">
+              <label className="text-primary-default">Chave pix:</label>
+              <h4>{keyPixPayer}</h4>
             </div>
           </div>
           <div className="flex items-center justify-between pt-6 text-sm">
