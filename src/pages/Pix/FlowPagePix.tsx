@@ -1,7 +1,6 @@
 import { IconCopyPaste, IconStar } from '@/components/icons'
-import { ButtonNext } from '@/components/layout'
+import { ButtonNext, InputFx, TextAreaFX } from '@/components/layout'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
@@ -11,39 +10,14 @@ import { PixType, SendPixType } from '@/types/PixType'
 import { formatKeyPix } from '@/utils/FormattedKeyPix'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import md5 from 'md5'
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ModalPix from './ModalPix'
+import { PixStateType } from '@/types/StatesType'
 
 interface FlowPagePixProps {
-  flow: {
-    step: number
-    select: string
-    desc: string
-    keyPix: string
-    formatKeyPix: string
-    typekeyPix: string
-    save: number
-    amount: string
-    pwd: string
-    modalPix: boolean
-    modalKey: boolean
-  }
-  setFlow: Dispatch<
-    SetStateAction<{
-      step: number
-      select: string
-      desc: string
-      keyPix: string
-      formatKeyPix: string
-      typekeyPix: string
-      save: number
-      amount: string
-      pwd: string
-      modalPix: boolean
-      modalKey: boolean
-    }>
-  >
+  flow: PixStateType
+  setFlow: Dispatch<SetStateAction<PixStateType>>
   sendData: SendPixType | undefined
   setSendData: Dispatch<SetStateAction<SendPixType | undefined>>
 }
@@ -114,21 +88,19 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({
     <article className="flex flex-col gap-4">
       {flow.step === 0 && (
         <>
-          <h4 className="text-sm text-system-cinza">Insira a chave pix:</h4>
-          <Input
-            type="text"
+          <InputFx
+            name={'flowpix'}
+            label={'Digite a chave pix'}
             value={flow.formatKeyPix}
-            onChange={(e) => {
-              const { formattedKey, type } = formatKeyPix(e.target.value)
+            change={(e) => {
+              const { formattedKey, type } = formatKeyPix(e)
               setFlow({
                 ...flow,
-                keyPix: type === 'phone' ? `+55${e.target.value}` : e.target.value,
+                keyPix: type === 'phone' ? `+55${e}` : e,
                 formatKeyPix: formattedKey,
                 typekeyPix: type
               })
             }}
-            placeholder="Digite a chave pix"
-            className="w-full rounded-md border-[1px] border-system-cinza/25 px-4 py-6 text-base"
           />
           <div className="flex justify-end">
             {flow.keyPix.length > 0 ? (
@@ -154,7 +126,7 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({
       )}
       {flow.step >= 1 && (
         <>
-          <article className="relative flex flex-col gap-4 rounded-xl border-[1px] border-system-cinza/25 p-4 text-system-cinza">
+          <article className="relative flex flex-col gap-4 rounded-xl border-2 border-system-cinza/25 p-4 text-system-cinza">
             <Button
               className="absolute right-2 top-2 flex h-fit w-fit items-center gap-2 border-[1px] border-primary-hover bg-transparent p-2 text-xs text-primary-hover shadow-none transition-all duration-300 ease-in-out hover:fill-white hover:text-white"
               onClick={() => setFlow({ ...flow, save: flow.save === 0 ? 1 : 0 })}
@@ -195,33 +167,25 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({
               </div>
             </div>
           </article>
-          <aside className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <h4 className="text-base text-system-cinza">Insira o valor:</h4>
-              <Input
-                type="text"
-                value={flow.amount.length >= 1 ? `R$ ${flow.amount}` : ''}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  const format = formattedPrice(e.target.value) || ''
-                  setFlow({
-                    ...flow,
-                    amount: format
-                  })
-                }}
-                placeholder="R$ 0,00"
-                className="w-full rounded-md border-[1px] border-system-cinza/25 px-4 py-6 text-base"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <h4 className="text-base text-system-cinza">{`Observação (opcional):`}</h4>
-              <textarea
-                className="w-full rounded-md border-[1px] border-system-cinza/25 bg-transparent p-4 text-base"
-                placeholder=""
-                rows={3}
-                value={flow.desc}
-                onChange={(e) => setFlow({ ...flow, desc: e.target.value })}
-              />
-            </div>
+          <aside className="mt-4 flex flex-col gap-6">
+            <InputFx
+              name={'value-pix'}
+              label={'Insira o valor'}
+              value={flow.amount.length >= 1 ? `R$ ${flow.amount}` : ''}
+              change={(e) => {
+                const format = formattedPrice(e) || ''
+                setFlow({
+                  ...flow,
+                  amount: format
+                })
+              }}
+            />
+            <TextAreaFX
+              name={'text-pix'}
+              label={'Observação (opcional)'}
+              value={flow.desc}
+              change={(e) => setFlow({ ...flow, desc: e })}
+            />
             <div className="flex justify-end">
               <ButtonNext
                 title="Prosseguir"

@@ -6,25 +6,12 @@ import ListingPageTransfer from './ListingPageTransfer'
 import FormPageTransfer from './FormPageTransfer'
 import CheckPageTransfer from './CheckPageTransfer'
 import { SendPixType } from '@/types/PixType'
+import { TransferStateType } from '@/types/StatesType'
 
 const HomePageTransfer: React.FC = () => {
   const navigate = useNavigate()
   const [dataSendTransfer, setDataSendTransfer] = useState<SendPixType | undefined>()
-  const [flowTransfer, setFlowTransfer] = useState<{
-    step: number
-    save: number
-    bank: string
-    pwd: string
-    agency: string
-    account: string
-    amount: string
-    typeAccount: string
-    name: string
-    docType: string
-    doc: string
-    desc: string
-    modalTransfer: boolean
-  }>({
+  const [flowTransfer, setFlowTransfer] = useState<TransferStateType>({
     step: 0,
     save: 0,
     bank: '',

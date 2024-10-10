@@ -6,23 +6,12 @@ import ContactsPagePix from './ContactsPagePix'
 import FlowPagePix from './FlowPagePix'
 import KeyPagePix from './KeyPagePix'
 import { SendPixType } from '@/types/PixType'
+import { PixStateType } from '@/types/StatesType'
 
 const HomePagePix: React.FC = () => {
   const navigate = useNavigate()
   const [dataSendPix, setDataSendPix] = useState<SendPixType | undefined>()
-  const [control, setControl] = useState<{
-    step: number
-    select: string
-    desc: string
-    keyPix: string
-    formatKeyPix: string
-    typekeyPix: string
-    save: number
-    amount: string
-    pwd: string
-    modalPix: boolean
-    modalKey: boolean
-  }>({
+  const [control, setControl] = useState<PixStateType>({
     step: 0,
     select: '',
     amount: '',
@@ -76,15 +65,7 @@ const HomePagePix: React.FC = () => {
           <KeyPagePix />
         </>
       )}
-      {control.select !== 'flowPage' && (
-        <>
-          <Separator
-            key="divisor-2"
-            className="my-1 h-0.5 w-full bg-system-cinza/25"
-          />
-          <ContactsPagePix />
-        </>
-      )}
+      {control.select !== 'flowPage' && <ContactsPagePix />}
     </Container>
   )
 }

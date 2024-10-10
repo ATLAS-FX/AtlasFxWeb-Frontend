@@ -8,31 +8,12 @@ import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import { useExtractInfo } from '@/services/ExtractApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
+import { ExtractStateType } from '@/types/StatesType'
 import { Dispatch, SetStateAction, useEffect } from 'react'
 
 interface FilterPageExtractProps {
-  state: {
-    stepPage: number
-    period: number
-    type: string
-    start: string
-    end: string
-    controlIn: number
-    controlOut: number
-  }
-  setState: Dispatch<
-    SetStateAction<{
-      stepPage: number
-      period: number
-      type: string
-      start: string
-      end: string
-      controlIn: number
-      controlOut: number
-      firstDate: string
-      lastDate: string
-    }>
-  >
+  state: ExtractStateType
+  setState: Dispatch<SetStateAction<ExtractStateType>>
 }
 
 const FilterPageExtract: React.FC<FilterPageExtractProps> = ({

@@ -3,27 +3,14 @@ import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
 import { ConsultPaymentType } from '@/types/PaymentType'
+import { PaymentStateType } from '@/types/StatesType'
 import { formatKeyPix } from '@/utils/FormattedKeyPix'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import { Dispatch, SetStateAction } from 'react'
 
 interface ModalPaymentProps {
-  state: {
-    step: number
-    type: string
-    textValue: string
-    pwdCode: string
-    stateModal: boolean
-  }
-  setState: Dispatch<
-    SetStateAction<{
-      step: number
-      type: string
-      textValue: string
-      pwdCode: string
-      stateModal: boolean
-    }>
-  >
+  state: PaymentStateType
+  setState: Dispatch<SetStateAction<PaymentStateType>>
   data: ConsultPaymentType | undefined
   ConsultPaymentFunc: () => void
   SendPaymentFunc: () => void

@@ -1,11 +1,10 @@
-import { ButtonNext } from '@/components/layout'
+import Robo from '@/assets/robo.png'
+import { ButtonNext, InputFx } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { ChevronLeft, ChevronRightIcon } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
-import Robo from '@/assets/robo.png'
 
 const keyOptionsList = [
   {
@@ -67,13 +66,16 @@ const ModalPix: React.FC<ModalPix> = ({
       onOpenChange={() => setState({ ...state, stateModalKey: false })}
     >
       <DialogContent
-        className={cn('min-h-[442px] w-[348px] gap-4 rounded-xl bg-white')}
+        className={cn(
+          'h-fit gap-4 rounded-xl bg-white py-4',
+          state.step >= 1 ? 'w-[372px]' : 'w-[348px]'
+        )}
       >
         {state.typeKeyPix === 'delete' ? (
           <section className="flex flex-col gap-2 text-system-cinza">
             <div className="flex items-center gap-2">
               <Button
-                className="m-0 w-fit p-0 text-system-cinza transition-all duration-200 ease-in-out hover:scale-125 hover:bg-transparent hover:text-primary-hover"
+                className="m-0 w-fit p-0 text-system-cinza transition-all duration-200 ease-in-out hover:bg-transparent hover:text-primary-hover"
                 variant="ghost"
                 onClick={() =>
                   setState({ ...state, step: state.step >= 1 ? state.step - 1 : 0 })
@@ -105,7 +107,7 @@ const ModalPix: React.FC<ModalPix> = ({
           <section className="flex flex-col gap-4 text-system-cinza">
             <div className="flex items-center gap-2">
               <Button
-                className="m-0 w-fit p-0 text-system-cinza transition-all duration-200 ease-in-out hover:scale-125 hover:bg-transparent hover:text-primary-hover"
+                className="m-0 w-fit p-0 text-system-cinza transition-all duration-200 ease-in-out hover:bg-transparent hover:text-primary-hover"
                 variant="ghost"
                 onClick={() =>
                   setState({ ...state, step: state.step >= 1 ? state.step - 1 : 0 })
@@ -163,14 +165,13 @@ const ModalPix: React.FC<ModalPix> = ({
                     </>
                   ) : (
                     <>
-                      <Input
+                      <InputFx
+                        name={'inputKeyPix'}
                         type="text"
-                        placeholder="Digite a chave pix"
-                        className="h-11 border-[1px] border-system-cinza/25 p-2 text-base font-medium text-primary-default"
+                        bgLabel="bg-white"
+                        label="Digite a chave pix"
                         value={state.codeKeyPix}
-                        onChange={(e) =>
-                          setState({ ...state, codeKeyPix: e.target.value })
-                        }
+                        change={(e) => setState({ ...state, codeKeyPix: e })}
                       />
                       <ButtonNext
                         title="Prosseguir"

@@ -1,8 +1,7 @@
 import { IconCopyDatabase, IconDownload } from '@/components/icons'
-import { ModalConfirm } from '@/components/layout'
+import { InputFx, ModalConfirm } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import { useCreateBarCode, useCreateQrCode } from '@/services/DepositApi'
@@ -10,7 +9,7 @@ import { ErrorResponse } from '@/types/ErrorResponse'
 import { handleCopyClick } from '@/utils/Copy&Paste'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import QRCode from 'qrcode.react'
-import { ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 
 interface ModalDepositProps {
   state: {
@@ -120,7 +119,10 @@ const ModalDeposit: React.FC<ModalDepositProps> = ({ state, setState }) => {
       onOpenChange={() => setState({ ...state, modal: false })}
     >
       <DialogContent
-        className={cn('min-h-[192px] w-[624px] gap-4 rounded-xl bg-white')}
+        className={cn(
+          'h-fit gap-4 rounded-xl bg-white py-4',
+          state.selectPayment === 2 ? 'w-[464px]' : 'w-[464px]'
+        )}
       >
         <>
           {state.selectPayment === 1 && (
@@ -135,15 +137,14 @@ const ModalDeposit: React.FC<ModalDepositProps> = ({ state, setState }) => {
                 setState((prev) => ({ ...prev, modal: false, amount: '' }))
               }
               contain={
-                <section className="flex flex-col gap-2">
-                  <h4 className="text-base text-system-cinza">
-                    Qual valor deseja depositar?
-                  </h4>
-                  <Input
-                    placeholder="R$ 0,00"
+                <section className="flex flex-col gap-2 pt-6">
+                  <InputFx
+                    name={'input-amount'}
+                    label={'Qual valor deseja depositar'}
+                    bgLabel="bg-white"
                     value={state.amount.length >= 1 ? `R$ ${state.amount}` : ''}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      const format = formattedPrice(e.target.value) || ''
+                    change={(e: string) => {
+                      const format = formattedPrice(e) || ''
                       setState({ ...state, amount: format })
                     }}
                   />
@@ -185,9 +186,9 @@ const ModalDeposit: React.FC<ModalDepositProps> = ({ state, setState }) => {
                             Após o pagamento, o saldo é liberado em até 3 dias úteis.
                           </li>
                         </ul>
-                        <div className="flex justify-center gap-2 py-2">
+                        <div className="flex justify-between gap-2 py-2">
                           <Button
-                            className="min-w-32 items-center gap-2 rounded-md bg-primary-default fill-white p-2 text-base transition-all duration-300 ease-in-out hover:scale-110 hover:bg-primary-hover hover:text-system-neutro"
+                            className="min-w-32 items-center gap-2 rounded-md bg-primary-default fill-white p-2 text-base transition-all duration-300 ease-in-out hover:bg-primary-hover hover:text-system-neutro"
                             onClick={() => {
                               handleCopyClick(
                                 state.barcode,
@@ -199,7 +200,7 @@ const ModalDeposit: React.FC<ModalDepositProps> = ({ state, setState }) => {
                             <IconCopyDatabase className="size-5" />
                             Copiar código de barras
                           </Button>
-                          <Button className="min-w-32 items-center gap-2 rounded-md bg-primary-default fill-white p-2 text-base transition-all duration-300 ease-in-out hover:scale-110 hover:bg-primary-hover hover:text-system-neutro">
+                          <Button className="min-w-32 items-center gap-2 rounded-md bg-primary-default fill-white p-2 text-base transition-all duration-300 ease-in-out hover:bg-primary-hover hover:text-system-neutro">
                             <IconDownload className="size-5" />
                             Exportar como PDF
                           </Button>
@@ -212,9 +213,9 @@ const ModalDeposit: React.FC<ModalDepositProps> = ({ state, setState }) => {
                           className="m-auto my-0 object-contain py-2"
                           size={250}
                         />
-                        <div className="flex gap-2 py-2">
+                        <div className="flex justify-between gap-2 py-2">
                           <Button
-                            className="min-w-32 items-center gap-2 rounded-md bg-primary-default fill-white p-2 text-base transition-all duration-300 ease-in-out hover:scale-110 hover:bg-primary-hover hover:text-system-neutro"
+                            className="min-w-32 items-center gap-2 rounded-md border-2 border-primary-default bg-white fill-primary-default p-2 text-base text-primary-default transition-all duration-300 ease-in-out hover:bg-primary-hover hover:fill-white hover:text-system-neutro"
                             onClick={() => {
                               handleCopyClick(
                                 state.qrcode,
@@ -226,7 +227,7 @@ const ModalDeposit: React.FC<ModalDepositProps> = ({ state, setState }) => {
                             <IconCopyDatabase className="size-5" />
                             Copiar QR Code
                           </Button>
-                          <Button className="min-w-32 items-center gap-2 rounded-md bg-primary-default fill-white p-2 text-base transition-all duration-300 ease-in-out hover:scale-110 hover:bg-primary-hover hover:text-system-neutro">
+                          <Button className="min-w-32 items-center gap-2 rounded-md bg-primary-default fill-white p-2 text-base transition-all duration-300 ease-in-out hover:bg-primary-hover hover:text-system-neutro">
                             <IconDownload className="size-5" />
                             Exportar como PDF
                           </Button>

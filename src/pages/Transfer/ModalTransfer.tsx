@@ -2,42 +2,13 @@ import { ModalConfirm, ModalPwd, ModalSuccess } from '@/components/layout'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { SendPixType } from '@/types/PixType'
+import { TransferStateType } from '@/types/StatesType'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import { Dispatch, SetStateAction } from 'react'
 
 interface ModalTransfer {
-  state: {
-    step: number
-    save: number
-    pwd: string
-    bank: string
-    agency: string
-    account: string
-    amount: string
-    typeAccount: string
-    name: string
-    docType: string
-    doc: string
-    desc: string
-    modalTransfer: boolean
-  }
-  setState: Dispatch<
-    SetStateAction<{
-      step: number
-      save: number
-      pwd: string
-      bank: string
-      agency: string
-      account: string
-      amount: string
-      typeAccount: string
-      name: string
-      docType: string
-      doc: string
-      desc: string
-      modalTransfer: boolean
-    }>
-  >
+  state: TransferStateType
+  setState: Dispatch<SetStateAction<TransferStateType>>
   sendTransfer: SendPixType | undefined
   transferFunc: () => void
   loadTransfer: boolean
@@ -149,7 +120,7 @@ const ModalTransfer: React.FC<ModalTransfer> = ({
             title={'Sucesso!'}
             back={() => setState({ ...state, step: 3 })}
             amount={`R$ ${formattedPrice(state?.amount) || ''}`}
-            typeTransfer={'TED/DOC'}
+            typeTransfer={'TED'}
             idTransfer={sendTransfer?.id_transaction || '-'}
             namePayer={'-'}
             docPayer={''}

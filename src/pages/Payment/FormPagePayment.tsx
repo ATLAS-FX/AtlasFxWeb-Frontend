@@ -1,31 +1,16 @@
-import { ButtonNext } from '@/components/layout'
-import { Input } from '@/components/ui/input'
+import { ButtonNext, InputFx, TextAreaFX } from '@/components/layout'
 import { toast } from '@/components/ui/use-toast'
-import { cn } from '@/lib/utils'
 import { useConsultPayment, useSendPayment } from '@/services/PaymentApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
 import { ConsultPaymentType } from '@/types/PaymentType'
+import { PaymentStateType } from '@/types/StatesType'
 import md5 from 'md5'
-import { ChangeEvent, Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import ModalPayment from './ModalPayment'
 
 interface IPaymentForm {
-  flow: {
-    step: number
-    type: string
-    textValue: string
-    pwdCode: string
-    stateModal: boolean
-  }
-  setFlow: Dispatch<
-    SetStateAction<{
-      step: number
-      type: string
-      textValue: string
-      pwdCode: string
-      stateModal: boolean
-    }>
-  >
+  flow: PaymentStateType
+  setFlow: Dispatch<SetStateAction<PaymentStateType>>
   data: ConsultPaymentType | undefined
   setData: Dispatch<SetStateAction<ConsultPaymentType | undefined>>
 }
@@ -57,8 +42,8 @@ const FormPagePayment: React.FC<IPaymentForm> = ({
     return value
   }
 
-  const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    let value = e.target.value
+  const handleTextChange = (e: string) => {
+    let value = e
     if (flow.type === 'boleto') {
       value = formatLineDigit(value)
     }
@@ -113,33 +98,24 @@ const FormPagePayment: React.FC<IPaymentForm> = ({
 
   return (
     <>
-      <h4 className="text-base font-medium text-system-cinza">
-        {flow.type === 'boleto' ? 'Digite o código de barras' : 'Cole o Pix'}
-      </h4>
-      <div className="flex flex-col gap-2">
-        {flow.type === 'boleto' ? (
-          <textarea
-            className={cn(
-              'w-full rounded-md border-2 border-system-cinza bg-transparent p-2 text-2xl font-medium shadow-none'
-            )}
-            maxLength={flow.type === 'boleto' ? 51 : 2000}
-            style={{ resize: 'none' }}
-            rows={5}
-            value={flow.textValue}
-            onChange={handleTextChange}
-          />
-        ) : (
-          <Input
-            type="text"
-            value={flow.textValue}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFlow((prev) => ({ ...prev, textValue: e.target.value }))
-            }
-            placeholder="Insira o Pix copiado"
-            className="w-full rounded-md border-[1px] border-system-cinza/25 px-4 py-6 text-base"
-          />
-        )}
-      </div>
+      {flow.type === 'boleto' ? (
+        <TextAreaFX
+          name={'text-boleto'}
+          label={'Digite o código de barras'}
+          maxLength={flow.type === 'boleto' ? 51 : 2000}
+          value={flow.textValue}
+          change={(e) => handleTextChange(e)}
+        />
+      ) : (
+        <InputFx
+          name={'input-copypaste'}
+          label={'Cole o Pix'}
+          value={flow.textValue}
+          change={(e: string) => {
+            setFlow((prev) => ({ ...prev, textValue: e }))
+          }}
+        />
+      )}
       <div className="mt-1 flex justify-end">
         <ButtonNext
           title="Prosseguir"

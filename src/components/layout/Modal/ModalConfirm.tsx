@@ -22,7 +22,7 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
     <section className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <Button
-          className="m-0 w-fit p-0 text-system-cinza transition-all duration-200 ease-in-out hover:scale-125 hover:bg-transparent hover:text-primary-hover"
+          className="m-0 w-fit p-0 text-system-cinza transition-all duration-200 ease-in-out hover:bg-transparent hover:text-primary-hover"
           variant="ghost"
           onClick={back}
         >

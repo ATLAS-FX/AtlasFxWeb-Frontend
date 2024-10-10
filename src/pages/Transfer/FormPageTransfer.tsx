@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import { api } from '@/services/api'
+import { TransferStateType } from '@/types/StatesType'
 import { ListBank } from '@/utils/ListBank'
 import { ListMask } from '@/utils/ListMask'
 import { Check, Loader2 } from 'lucide-react'
@@ -27,38 +28,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 
 interface FormPageTransferProps {
-  form: {
-    step: number
-    save: number
-    bank: string
-    pwd: string
-    agency: string
-    account: string
-    amount: string
-    typeAccount: string
-    name: string
-    docType: string
-    doc: string
-    desc: string
-    modalTransfer: boolean
-  }
-  setForm: Dispatch<
-    SetStateAction<{
-      step: number
-      save: number
-      pwd: string
-      bank: string
-      agency: string
-      account: string
-      amount: string
-      typeAccount: string
-      name: string
-      docType: string
-      doc: string
-      desc: string
-      modalTransfer: boolean
-    }>
-  >
+  form: TransferStateType
+  setForm: Dispatch<SetStateAction<TransferStateType>>
 }
 
 interface Bank {

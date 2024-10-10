@@ -1,11 +1,5 @@
 import { IconCopyPaste, IconKey, IconTrash } from '@/components/icons'
 import { Tooltip } from '@/components/layout'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { useCreatedKeyPix, useDeletePixKey, useListKeys } from '@/services/PixApi'
@@ -48,7 +42,13 @@ const KeyPagePix: React.FC<KeyPagePixProps> = () => {
       },
       {
         onSuccess: (res) => {
-          setStateKey({ ...stateKey, step: 2, stateModalKey: false })
+          setStateKey({
+            ...stateKey,
+            step: 2,
+            idKeyPix: '',
+            typeKeyPix: '',
+            codeKeyPix: ''
+          })
           refetch()
           toast({
             variant: 'success',
@@ -76,7 +76,14 @@ const KeyPagePix: React.FC<KeyPagePixProps> = () => {
       },
       {
         onSuccess: (res) => {
-          setStateKey({ ...stateKey, step: 2 })
+          setStateKey({
+            ...stateKey,
+            step: 2,
+            idKeyPix: '',
+            typeKeyPix: '',
+            codeKeyPix: ''
+          })
+          refetch()
           toast({
             variant: 'success',
             title: 'Seu nova chave pix foi criada sucesso!',
@@ -108,83 +115,87 @@ const KeyPagePix: React.FC<KeyPagePixProps> = () => {
   return (
     <article>
       {isLoading && <Skeleton className="h-12 w-full rounded-lg" />}
-      <Accordion
+      <div className="flex flex-col gap-2 rounded-md border-2 border-system-cinza/25 px-4 py-6 text-sm text-system-cinza">
+        <div className="flex items-center justify-between pb-4">
+          <h4 className="flex w-8/12 items-center gap-2 text-sm font-normal text-system-cinza">
+            <IconKey className="size-5 fill-system-cinza" />
+            Minhas Chaves
+          </h4>
+          <div
+            className="cursor-pointer font-medium text-primary-default underline transition-all duration-300 ease-in-out hover:text-primary-hover/50"
+            onClick={() =>
+              setStateKey({
+                ...stateKey,
+                stateModalKey: true,
+                typeKeyPix: 'create'
+              })
+            }
+          >
+            + Adicionar chave
+          </div>
+        </div>
+
+        {myKeys?.length ? (
+          myKeys.map(({ id, code, type }, number) => (
+            <div
+              key={`pixkey-${number}+${id}`}
+              className="flex justify-between text-primary-default"
+            >
+              <span>
+                {keyMapList[type as keyof typeof keyMapList]}: {code}
+              </span>
+              <div className="flex items-center gap-4 fill-primary-default">
+                <Tooltip
+                  children={
+                    <div
+                      onClick={() =>
+                        handleCopyClick(
+                          code,
+                          'Chave pix copiada com sucesso!',
+                          'Erro ao copiar chave pix'
+                        )
+                      }
+                    >
+                      <IconCopyPaste className="size-4 hover:fill-primary-hover" />
+                    </div>
+                  }
+                  content="Copiar chave pix"
+                />
+                <Tooltip
+                  children={
+                    <div
+                      onClick={() =>
+                        setStateKey({
+                          ...stateKey,
+                          stateModalKey: true,
+                          typeKeyPix: 'delete',
+                          idKeyPix: id
+                        })
+                      }
+                    >
+                      <IconTrash className="size-4 hover:fill-primary-hover" />
+                    </div>
+                  }
+                  content="Deletar chave pix"
+                />
+              </div>
+            </div>
+          ))
+        ) : (
+          <h4 className="text-sm font-normal text-system-cinza">
+            Nenhuma chave cadastrada
+          </h4>
+        )}
+      </div>
+      {/* <Accordion
         type="single"
         collapsible
-        className="w-full rounded-md border-[1px] border-system-cinza/25 p-2 px-6"
+        className="w-full rounded-md border-2 border-system-cinza/25 p-2 px-6"
       >
         <AccordionItem value="keypix-1">
-          <AccordionTrigger className="flex items-center font-semibold text-system-cinza first:[&[data-state=open]>svg]:rotate-0">
-            <div className="flex w-8/12 items-center gap-2">
-              <IconKey className="size-5 fill-system-cinza" />
-              Minhas Chaves
-            </div>
-            <div
-              className="font-medium text-primary-default underline"
-              onClick={() =>
-                setStateKey({
-                  ...stateKey,
-                  stateModalKey: true,
-                  typeKeyPix: 'create'
-                })
-              }
-            >
-              + Adicionar chave
-            </div>
-          </AccordionTrigger>
-          {myKeys?.length ? (
-            myKeys.map(({ id, code, type }, number) => (
-              <AccordionContent
-                key={`pixkey-${number}+${id}`}
-                className="flex justify-between text-primary-default"
-              >
-                <span>
-                  {keyMapList[type as keyof typeof keyMapList]}: {code}
-                </span>
-                <div className="flex items-center gap-4 fill-primary-default">
-                  <Tooltip
-                    children={
-                      <div
-                        onClick={() =>
-                          handleCopyClick(
-                            code,
-                            'Chave pix copiada com sucesso!',
-                            'Erro ao copiar chave pix'
-                          )
-                        }
-                      >
-                        <IconCopyPaste className="size-4 hover:fill-primary-hover" />
-                      </div>
-                    }
-                    content="Copiar chave pix"
-                  />
-                  <Tooltip
-                    children={
-                      <div
-                        onClick={() =>
-                          setStateKey({
-                            ...stateKey,
-                            stateModalKey: true,
-                            typeKeyPix: 'delete',
-                            idKeyPix: id
-                          })
-                        }
-                      >
-                        <IconTrash className="size-4 hover:fill-primary-hover" />
-                      </div>
-                    }
-                    content="Deletar chave pix"
-                  />
-                </div>
-              </AccordionContent>
-            ))
-          ) : (
-            <AccordionContent className="flex">
-              <span>Nenhuma chave cadastrada</span>
-            </AccordionContent>
-          )}
+          <AccordionTrigger className="flex items-center first:[&[data-state=open]>svg]:rotate-0"></AccordionTrigger>
         </AccordionItem>
-      </Accordion>
+      </Accordion> */}
       <ModalKey
         key={'modalpixkey'}
         state={stateKey}

@@ -14,6 +14,7 @@ const useTransferApi = () => {
       doc_type: string
       amount: number
       desc: string
+      finality: string
     }) => {
       const { data } = await api.post('/portal/ted/send', params)
       return data

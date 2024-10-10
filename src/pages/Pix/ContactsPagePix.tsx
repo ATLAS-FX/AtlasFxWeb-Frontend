@@ -26,7 +26,7 @@ const ContactsPagePix: React.FC<ContactsPagePixProps> = ({}) => {
       ) : (
         <>
           {(myContatcs ?? []).length < 1 ? (
-            <h4 className="flex items-center gap-3 rounded-md border-[1px] border-system-cinza/25 p-2 text-sm text-system-cinza">
+            <h4 className="flex items-center gap-3 rounded-md border-2 border-system-cinza/25 px-4 py-6 text-sm text-system-cinza">
               <IconStar className="size-5 fill-transparent stroke-system-cinza/50" />
               Não há contatos salvos!
             </h4>

@@ -10,40 +10,11 @@ import { formattedPrice } from '@/utils/GenerateFormatted'
 import { ChangeEvent, Dispatch, SetStateAction } from 'react'
 import ModalTransfer from './ModalTransfer'
 import { SendPixType } from '@/types/PixType'
+import { TransferStateType } from '@/types/StatesType'
 
 interface CheckPageTransferProps {
-  flow: {
-    step: number
-    save: number
-    pwd: string
-    bank: string
-    agency: string
-    account: string
-    amount: string
-    typeAccount: string
-    name: string
-    docType: string
-    doc: string
-    desc: string
-    modalTransfer: boolean
-  }
-  setFlow: Dispatch<
-    SetStateAction<{
-      step: number
-      save: number
-      pwd: string
-      bank: string
-      agency: string
-      account: string
-      amount: string
-      typeAccount: string
-      name: string
-      docType: string
-      doc: string
-      desc: string
-      modalTransfer: boolean
-    }>
-  >
+  flow: TransferStateType
+  setFlow: Dispatch<SetStateAction<TransferStateType>>
   sendTransfer: SendPixType | undefined
   setSendTransfer: Dispatch<SetStateAction<SendPixType | undefined>>
 }
@@ -68,7 +39,8 @@ const CheckPageTransfer: React.FC<CheckPageTransferProps> = ({
         doc: flow.doc,
         category: 'TED',
         name: flow.name,
-        doc_type: flow.docType
+        doc_type: flow.docType,
+        finality: '123'
       },
       {
         onSuccess: (res) => {

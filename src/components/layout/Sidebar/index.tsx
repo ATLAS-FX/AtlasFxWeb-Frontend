@@ -42,7 +42,7 @@ const Sidebar: React.FC = () => {
         <TooltipProvider key={'logout'}>
           <Tooltip>
             <TooltipTrigger
-              className="flex size-5 items-center fill-[#EF4444] transition-all duration-200 ease-in-out hover:scale-125 hover:opacity-90"
+              className="flex size-5 items-center fill-[#EF4444] transition-all duration-200 ease-in-out hover:opacity-90"
               onClick={signOut}
             >
               <IconLogout />
@@ -55,7 +55,7 @@ const Sidebar: React.FC = () => {
         <TooltipProvider key={'perfil'}>
           <Tooltip>
             <TooltipTrigger
-              className="flex size-5 items-center rounded-full fill-[#EFEFEF80] transition-all duration-200 ease-in-out hover:scale-125"
+              className="flex size-5 items-center rounded-full fill-[#EFEFEF80] transition-all duration-200 ease-in-out"
               onClick={() => navigate('profile')}
             >
               <IconUser />

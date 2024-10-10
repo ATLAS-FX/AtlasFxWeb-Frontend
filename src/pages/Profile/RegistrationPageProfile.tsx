@@ -106,7 +106,7 @@ const RegistrationPageProfile: React.FC<RegistrationProps> = ({
         </div>
         <div className="flex justify-end">
           <Button
-            className="flex items-center gap-3 border-none bg-transparent fill-primary-default text-primary-default shadow-none transition-all duration-300 ease-in-out hover:scale-110 hover:fill-white hover:text-white"
+            className="flex items-center gap-3 border-none bg-transparent fill-primary-default text-primary-default shadow-none transition-all duration-300 ease-in-out hover:fill-white hover:text-white"
             onClick={() => setProfile({ ...profile, modal: true })}
           >
             Editar

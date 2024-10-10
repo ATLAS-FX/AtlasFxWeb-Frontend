@@ -9,42 +9,26 @@ import { cn } from '@/lib/utils'
 import { useTransactionInfo } from '@/services/ExtractApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
 import { TransactionType } from '@/types/Extract'
+import { ExtractStateType } from '@/types/StatesType'
 import { RegisterPixType } from '@/types/userType'
 import { formattedDate, formattedPrice, invertDate } from '@/utils/GenerateFormatted'
 import { PDFViewer } from '@react-pdf/renderer'
 import { ChevronRight, Loader2 } from 'lucide-react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import ModalExtract from './ModalExtract'
+import ModalFilter from './ModalFilter'
 
 interface SummaryPageExtractProps {
-  action: {
-    stepPage: number
-    period: number
-    type: string
-    start: string
-    end: string
-    controlIn: number
-    controlOut: number
-    firstDate: string
-    lastDate: string
-  }
-  setAction: Dispatch<
-    SetStateAction<{
-      stepPage: number
-      period: number
-      type: string
-      start: string
-      end: string
-      controlIn: number
-      controlOut: number
-      firstDate: string
-      lastDate: string
-    }>
-  >
+  action: ExtractStateType
+  setAction: Dispatch<SetStateAction<ExtractStateType>>
   data: Record<string, RegisterPixType[]>
 }
 
-const SummaryPageExtract: React.FC<SummaryPageExtractProps> = ({ action, data }) => {
+const SummaryPageExtract: React.FC<SummaryPageExtractProps> = ({
+  action,
+  setAction,
+  data
+}) => {
   const { user } = useAtlas()
   const { mutate: transaction, isLoading, isError } = useTransactionInfo()
   const [detailsTransaction, setDetailsTransaction] = useState<TransactionType>()
@@ -138,7 +122,10 @@ const SummaryPageExtract: React.FC<SummaryPageExtractProps> = ({ action, data })
 
   return (
     <>
-      <button className="flex items-center gap-2 fill-system-cinza text-system-cinza">
+      <button
+        className="flex items-center gap-2 fill-system-cinza text-system-cinza"
+        onClick={() => setAction({ ...action, filterModal: true })}
+      >
         <IconFilter className="size-5" />
         Filtro
       </button>
@@ -239,6 +226,7 @@ const SummaryPageExtract: React.FC<SummaryPageExtractProps> = ({ action, data })
           </div>
         ))}
       </article>
+      <ModalFilter state={action} setState={setAction} />
       <ModalExtract
         openModalDetails={openModalDetails}
         setOpenModalDetails={setOpenModalDetails}

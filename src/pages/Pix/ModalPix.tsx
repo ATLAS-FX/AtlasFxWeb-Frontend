@@ -2,38 +2,13 @@ import { ModalConfirm, ModalPwd, ModalSuccess } from '@/components/layout'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { PixType, SendPixType } from '@/types/PixType'
+import { PixStateType } from '@/types/StatesType'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import { Dispatch, SetStateAction } from 'react'
 
 interface ModalPix {
-  state: {
-    step: number
-    select: string
-    desc: string
-    keyPix: string
-    formatKeyPix: string
-    typekeyPix: string
-    save: number
-    amount: string
-    pwd: string
-    modalPix: boolean
-    modalKey: boolean
-  }
-  setState: Dispatch<
-    SetStateAction<{
-      step: number
-      select: string
-      desc: string
-      keyPix: string
-      formatKeyPix: string
-      typekeyPix: string
-      save: number
-      amount: string
-      pwd: string
-      modalPix: boolean
-      modalKey: boolean
-    }>
-  >
+  state: PixStateType
+  setState: Dispatch<SetStateAction<PixStateType>>
   data: PixType | null
   dataSendPix: SendPixType | undefined
   SendPixFunc: () => void

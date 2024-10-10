@@ -1,26 +1,17 @@
 import { Container, Title } from '@/components/layout'
 import { useAtlas } from '@/contexts/AtlasContext'
+import { ExtractStateType } from '@/types/StatesType'
 import { RegisterPixType } from '@/types/userType'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import SummaryPageExtract from './SummaryPageExtract'
 import FilterPageExtract from './FilterPageExtract'
+import SummaryPageExtract from './SummaryPageExtract'
 
 const HomePageExtract: React.FC = () => {
   const navigate = useNavigate()
   const { user } = useAtlas()
 
-  const [filterOptions, setFilterOptions] = useState<{
-    stepPage: number
-    period: number
-    type: string
-    start: string
-    end: string
-    controlIn: number
-    controlOut: number
-    firstDate: string
-    lastDate: string
-  }>({
+  const [filterOptions, setFilterOptions] = useState<ExtractStateType>({
     stepPage: 0,
     period: 0,
     type: '',
@@ -29,7 +20,8 @@ const HomePageExtract: React.FC = () => {
     controlIn: 0,
     controlOut: 0,
     firstDate: '',
-    lastDate: ''
+    lastDate: '',
+    filterModal: false
   })
   type GroupedTransactions = Record<string, RegisterPixType[]>
 
@@ -75,6 +67,10 @@ const HomePageExtract: React.FC = () => {
     setFilterOptions((prev) => ({ ...prev, ...result }))
   }, [])
 
+  useEffect(() => {
+    console.log(filterOptions)
+  }, [filterOptions])
+
   return (
     <Container>
       <Title
@@ -92,7 +88,8 @@ const HomePageExtract: React.FC = () => {
                 controlIn: 0,
                 controlOut: 0,
                 firstDate: '',
-                lastDate: ''
+                lastDate: '',
+                filterModal: false
               })
         }}
       />

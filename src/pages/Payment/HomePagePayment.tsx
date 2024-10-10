@@ -2,6 +2,7 @@ import { IconBarCode, IconCopyPaste } from '@/components/icons'
 import { ButtonAtlas, Container, Title } from '@/components/layout'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { ConsultPaymentType } from '@/types/PaymentType'
+import { PaymentStateType } from '@/types/StatesType'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import FormPagePayment from './FormPagePayment'
@@ -9,13 +10,7 @@ import FormPagePayment from './FormPagePayment'
 const HomePagePayment: React.FC = () => {
   const { pixCopyPaste, setPixCopyPaste } = useAtlas()
   const navigate = useNavigate()
-  const [stepPayment, setStepPayment] = useState<{
-    step: number
-    type: string
-    textValue: string
-    pwdCode: string
-    stateModal: boolean
-  }>({
+  const [stepPayment, setStepPayment] = useState<PaymentStateType>({
     step: 0,
     type: pixCopyPaste ? 'pix' : '',
     textValue: '',
