@@ -40,8 +40,10 @@ export type ExtractStateType = {
   stepPage: number
   period: number
   type: string
-  start: string
-  end: string
+  startDate: string
+  endDate: string
+  startHour: string
+  endHour: string
   controlIn: number
   controlOut: number
   firstDate: string

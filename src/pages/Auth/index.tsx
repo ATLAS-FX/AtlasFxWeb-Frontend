@@ -1,13 +1,21 @@
+import { IconPadLock, IconUser } from '@/components/icons'
 import { ButtonNext, CardForLogin, ToastLogin } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { cn } from '@/lib/utils'
-import { useCheckHash, useGetCode, useGetKey } from '@/services/AuthApi'
+import {
+  useCheckHash,
+  useCredentials,
+  useGetCode,
+  useGetKey
+} from '@/services/AuthApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
 import { CheckCircle2, RotateCw } from 'lucide-react'
+import md5 from 'md5'
 import QRCode from 'qrcode.react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -17,8 +25,12 @@ const Login: React.FC = () => {
   const { currentStepEmail, signIn } = useAtlas()
   const [inputPassword, setInputPassword] = useState<string>('')
   const [inputRef, setInputRef] = useState<string>('')
+  const [docRef, setDocRef] = useState<string>('')
+  const [pwdRef, setPwdRef] = useState<string>('')
+  const [flowLogin, setFlowLogin] = useState<boolean>(false)
   const [genQRCode, setGenQRCode] = useState<boolean>(false)
   const [checkValidate, setCheckValidade] = useState<boolean>(true)
+  const { mutate: login, isLoading: loadLogin } = useCredentials()
   const { mutate: getKey, isLoading } = useGetKey()
   const {
     data: genCode,
@@ -26,6 +38,29 @@ const Login: React.FC = () => {
     refetch: GetCodeRefetch
   } = useGetCode()
   const { mutate: checkHash } = useCheckHash()
+
+  const handleLogin = () => {
+    login(
+      { doc: docRef, pwd: md5(pwdRef) },
+      {
+        onSuccess: (res) => {
+          if (res.key) {
+            signIn(res.key)
+            navigate('/')
+          }
+        },
+        onError: (error: unknown) => {
+          const { response } = error as ErrorResponse
+          setCheckValidade(true)
+          toast({
+            variant: 'destructive',
+            title: response.data.error,
+            description: 'repita o processo.'
+          })
+        }
+      }
+    )
+  }
 
   const handleGetKey = () => {
     const id_key = Number(inputRef)
@@ -90,80 +125,139 @@ const Login: React.FC = () => {
     <>
       <div>
         {currentStepEmail < 1 ? (
-          <CardForLogin
-            title="Para acessar sua conta, siga os passos abaixo:"
-            content={
-              <div className="flex items-center justify-between gap-8">
-                <div className="text-justify text-xs leading-5 text-system-cinza">
-                  <p className="mb-4 mr-1">
-                    <strong>
-                      1. Acesse a conta da sua empresa através do celular
-                    </strong>
-                    : Abra o aplicativo no seu celular e faça login na sua conta
-                    empresarial.
-                  </p>
-                  <p className="mb-4 py-1">
-                    <strong>2. Toque em Meu Perfil</strong>: Dentro do aplicativo,
-                    localize a seção "Meu Perfil" no menu principal e toque nela.
-                  </p>
-                  <p className="mb-4 py-1">
-                    <strong>3. Toque em Acessar Portal PJ</strong>: Dentro da página
-                    do seu perfil, você encontrará a opção "Acessar Portal PJ". Toque
-                    nesta opção para prosseguir.
-                  </p>
-                  <p className="mb-4 py-1">
-                    <strong>
-                      4. Aponte seu celular para esta tela para escanear o QR Code
-                    </strong>
-                    : Agora, segure seu celular na frente da tela do seu computador
-                    ou dispositivo onde você está visualizando esta mensagem. O
-                    aplicativo do banco abrirá automaticamente a câmera para escanear
-                    o QR Code exibido na tela.
-                  </p>
-                  <p className="py-1">
-                    <strong>
-                      5. Digite o token com 8 dígitos que aparecerá em seu celular
-                    </strong>
-                    : Após escanear o QR Code, seu celular exibirá uma chave de
-                    segurança de 8 dígitos. Digite este token no local indicado na
-                    tela do seu computador ou dispositivo para concluir o acesso ao
-                    Portal PJ.
-                  </p>
-                </div>
-                <div
-                  className={cn(
-                    'relative flex h-fit justify-start rounded-md bg-white p-6 shadow-md transition-all'
-                  )}
-                >
-                  {genQRCode && (
-                    <div className="absolute bottom-0 left-0 right-0 top-0 z-10 bg-background/80 backdrop-blur-[3px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div>
-                  )}
-                  {loadGetCode ? (
-                    <Skeleton className="h-[180px] w-[180px] rounded-md bg-primary/20" />
-                  ) : (
-                    <>
-                      {genQRCode && (
-                        <button
-                          className="absolute bottom-auto left-auto right-auto top-auto z-20 flex h-48 w-48 flex-col items-center justify-center gap-4 rounded-[50%] bg-primary-default text-white"
-                          onClick={() => {
-                            GetCodeRefetch()
-                            setGenQRCode(false)
-                          }}
-                        >
-                          <RotateCw size={42} />
-                          <span className="w-10/12 text-center">
-                            Clique para recarregar o QRCode
-                          </span>
-                        </button>
+          <>
+            {flowLogin ? (
+              <CardForLogin
+                title={<h2 className="mt-4 text-3xl">Login</h2>}
+                back={() => setFlowLogin(!flowLogin)}
+                content={
+                  <section className="flex h-full flex-col gap-8">
+                    <div className="flex items-center gap-2 rounded-md border-2 border-system-cinza/25 p-2">
+                      <IconUser className="z-10 size-5 fill-primary-default" />
+                      <Separator className="m-auto h-6 w-[1px] bg-system-cinza/25" />
+                      <input
+                        className="w-full"
+                        placeholder="CNPJ"
+                        value={docRef}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                          setDocRef(e.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="flex items-center justify-start gap-2 rounded-md border-2 border-system-cinza/25 p-2">
+                      <IconPadLock className="z-10 size-5 fill-primary-default" />
+                      <Separator className="m-auto h-6 w-[1px] bg-system-cinza/25" />
+                      <input
+                        className="w-full"
+                        placeholder="Senha do app"
+                        value={pwdRef}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                          setPwdRef(e.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="flex justify-center">
+                      <label className="text-primary-default underline">
+                        Esqueci minha senha
+                      </label>
+                    </div>
+                    <ButtonNext
+                      // classPlus="mt-2 rounded-lg bg-primary-default py-6"
+                      disabled={docRef.length <= 4 || pwdRef.length <= 5}
+                      loading={loadLogin}
+                      func={handleLogin}
+                      title="Acessar"
+                    />
+                  </section>
+                }
+              />
+            ) : (
+              <CardForLogin
+                title="Para acessar sua conta, siga os passos abaixo:"
+                content={
+                  <div className="flex items-start justify-between gap-8">
+                    <div className="flex w-7/12 flex-col gap-2 text-justify text-xs leading-4 text-system-cinza">
+                      <p>
+                        <span className="font-semibold">
+                          1. Acesse a conta da sua empresa através do celular
+                        </span>
+                        : Abra o aplicativo no seu celular e faça login na sua conta
+                        empresarial.
+                      </p>
+                      <p>
+                        <span className="font-semibold">2. Toque em Meu Perfil</span>
+                        : Dentro do aplicativo, localize a seção "Meu Perfil" no menu
+                        principal e toque nela.
+                      </p>
+                      <p>
+                        <span className="font-semibold">
+                          3. Toque em Acessar Portal PJ
+                        </span>
+                        : Dentro da página do seu perfil, você encontrará a opção
+                        "Acessar Portal PJ". Toque nesta opção para prosseguir.
+                      </p>
+                      <p>
+                        <span className="font-semibold">
+                          4. Aponte seu celular para esta tela para escanear o QR
+                          Code
+                        </span>
+                        : Agora, segure seu celular na frente da tela do seu
+                        computador ou dispositivo onde você está visualizando esta
+                        mensagem. O aplicativo do banco abrirá automaticamente a
+                        câmera para escanear o QR Code exibido na tela.
+                      </p>
+                      <p>
+                        <span className="font-semibold">
+                          5. Digite o token com 8 dígitos que aparecerá em seu
+                          celular
+                        </span>
+                        : Após escanear o QR Code, seu celular exibirá uma chave de
+                        segurança de 8 dígitos. Digite este token no local indicado
+                        na tela do seu computador ou dispositivo para concluir o
+                        acesso ao Portal PJ.
+                      </p>
+                      <Button
+                        className="mt-4 w-40 bg-primary-default py-5"
+                        onClick={() => setFlowLogin(!flowLogin)}
+                      >
+                        Entrar com CNPJ
+                      </Button>
+                    </div>
+                    <div
+                      className={cn(
+                        'relative flex h-fit justify-start rounded-md bg-white p-6 shadow-md transition-all'
                       )}
-                      <QRCode value={genCode ? genCode?.hash : ''} size={180} />
-                    </>
-                  )}
-                </div>
-              </div>
-            }
-            footer={<></>}
-          />
+                    >
+                      {genQRCode && (
+                        <div className="absolute bottom-0 left-0 right-0 top-0 z-10 bg-background/80 backdrop-blur-[3px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div>
+                      )}
+                      {loadGetCode ? (
+                        <Skeleton className="h-[180px] w-[180px] rounded-md bg-primary/20" />
+                      ) : (
+                        <>
+                          {genQRCode && (
+                            <button
+                              className="absolute bottom-auto left-auto right-auto top-auto z-20 flex h-48 w-48 flex-col items-center justify-center gap-4 rounded-[50%] bg-primary-default text-white"
+                              onClick={() => {
+                                GetCodeRefetch()
+                                setGenQRCode(false)
+                              }}
+                            >
+                              <RotateCw size={42} />
+                              <span className="w-10/12 text-center">
+                                Clique para recarregar o QRCode
+                              </span>
+                            </button>
+                          )}
+                          <QRCode value={genCode ? genCode?.hash : ''} size={180} />
+                        </>
+                      )}
+                    </div>
+                  </div>
+                }
+              />
+            )}
+          </>
         ) : (
           <CardForLogin
             title="Acesse"
@@ -197,7 +291,6 @@ const Login: React.FC = () => {
                 </div>
               </div>
             }
-            footer={<></>}
           />
         )}
         {import.meta.env.VITE_NODE_ENV === 'development' && (
@@ -213,9 +306,6 @@ const Login: React.FC = () => {
                   setInputRef(e.target.value)
                 }}
               />
-              <span className="text-xs italic text-primary-default">
-                clique para validar:
-              </span>
               <Button
                 variant="ghost"
                 className="w-fit p-0 hover:text-primary-default"

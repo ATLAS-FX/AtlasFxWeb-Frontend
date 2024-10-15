@@ -2,6 +2,8 @@ import { Container, Title } from '@/components/layout'
 import { useAtlas } from '@/contexts/AtlasContext'
 import { ExtractStateType } from '@/types/StatesType'
 import { RegisterPixType } from '@/types/userType'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import FilterPageExtract from './FilterPageExtract'
@@ -14,14 +16,20 @@ const HomePageExtract: React.FC = () => {
   const [filterOptions, setFilterOptions] = useState<ExtractStateType>({
     stepPage: 0,
     period: 0,
-    type: '',
-    start: '',
-    end: '',
+    type: 'in',
+    startDate: format(new Date().setDate(new Date().getDate() - 15), 'dd-MM-yyyy', {
+      locale: ptBR
+    }),
+    endDate: format(new Date(), 'dd-MM-yyyy', { locale: ptBR }),
+    startHour: format(new Date().setHours(0, 0, 0, 0), 'HH:mm:ss', { locale: ptBR }),
+    endHour: format(new Date().setHours(23, 59, 59, 999), 'HH:mm:ss', {
+      locale: ptBR
+    }),
     controlIn: 0,
     controlOut: 0,
+    filterModal: false,
     firstDate: '',
-    lastDate: '',
-    filterModal: false
+    lastDate: ''
   })
   type GroupedTransactions = Record<string, RegisterPixType[]>
 
@@ -82,9 +90,21 @@ const HomePageExtract: React.FC = () => {
             : setFilterOptions({
                 stepPage: 0,
                 period: 0,
-                start: '',
-                end: '',
-                type: '',
+                type: 'in',
+                startDate: format(
+                  new Date().setDate(new Date().getDate() - 15),
+                  'dd/MM/yyyy',
+                  {
+                    locale: ptBR
+                  }
+                ),
+                endDate: format(new Date(), 'dd/MM/yyyy', { locale: ptBR }),
+                startHour: format(new Date().setHours(0, 0, 0, 0), 'HH:mm:ss', {
+                  locale: ptBR
+                }),
+                endHour: format(new Date().setHours(23, 59, 59, 999), 'HH:mm:ss', {
+                  locale: ptBR
+                }),
                 controlIn: 0,
                 controlOut: 0,
                 firstDate: '',

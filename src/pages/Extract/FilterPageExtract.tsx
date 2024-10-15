@@ -46,8 +46,8 @@ const FilterPageExtract: React.FC<FilterPageExtractProps> = ({
   const handleFilterPage = async () => {
     getExtractInfo(
       {
-        start: state?.start || '',
-        end: state?.end || '',
+        start: `${state?.startDate + '' + state?.startHour}` || '',
+        end: `${state?.endDate + '' + state?.endHour}` || '',
         type: state?.type || ''
       },
       {
@@ -113,7 +113,7 @@ const FilterPageExtract: React.FC<FilterPageExtractProps> = ({
                 'w-[280px] items-center justify-between rounded-none border-0 border-b-2 border-primary-default bg-transparent fill-primary-default py-6 text-base font-normal text-primary-default'
               )}
             >
-              {state.start ? `${state.start}` : <span>De</span>}
+              {state.startDate ? `${state.startDate}` : <span>De</span>}
               <IconCalendar className="h-8 w-8" />
             </Button>
           </PopoverTrigger>
@@ -121,9 +121,11 @@ const FilterPageExtract: React.FC<FilterPageExtractProps> = ({
             <Calendar
               mode="single"
               disabled={(date) =>
-                isDateValid(state.end) && date > new Date(state.end)
+                isDateValid(state.endDate) && date > new Date(state.endDate)
               }
-              selected={state?.start.length >= 1 ? new Date(state.start) : undefined}
+              selected={
+                state?.startDate.length >= 1 ? new Date(state.startDate) : undefined
+              }
               onSelect={(e) =>
                 setState((prev) => ({
                   ...prev,
@@ -142,7 +144,7 @@ const FilterPageExtract: React.FC<FilterPageExtractProps> = ({
                 'w-[280px] items-center justify-between rounded-none border-0 border-b-2 border-primary-default bg-transparent fill-primary-default py-6 text-base font-normal text-primary-default'
               )}
             >
-              {state.end ? `${state.end}` : <span>Até</span>}
+              {state.endDate ? `${state.endDate}` : <span>Até</span>}
               <IconCalendar className="h-8 w-8" />
             </Button>
           </PopoverTrigger>
@@ -150,9 +152,11 @@ const FilterPageExtract: React.FC<FilterPageExtractProps> = ({
             <Calendar
               mode="single"
               disabled={(date) =>
-                isDateValid(state.start) && date < new Date(state.start)
+                isDateValid(state.startDate) && date < new Date(state.startDate)
               }
-              selected={state?.end.length >= 1 ? new Date(state.end) : undefined}
+              selected={
+                state?.endDate.length >= 1 ? new Date(state.endDate) : undefined
+              }
               onSelect={(e) =>
                 setState((prev) => ({
                   ...prev,

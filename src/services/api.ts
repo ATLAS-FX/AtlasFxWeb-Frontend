@@ -10,7 +10,8 @@ api.interceptors.request.use(
     const accessToken = sessionStorage.getItem('atlas_token')
 
     if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`
+      // config.headers.Authorization = `Bearer ${accessToken}`
+      config.headers['key'] = accessToken
     }
 
     return config

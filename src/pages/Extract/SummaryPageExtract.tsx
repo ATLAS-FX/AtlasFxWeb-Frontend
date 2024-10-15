@@ -268,13 +268,13 @@ const SummaryPageExtract: React.FC<SummaryPageExtractProps> = ({
               controlIn={formattedPrice(action.controlIn.toString()) || '1'}
               controlOut={formattedPrice(action.controlOut.toString()) || ''}
               startDate={
-                action?.start
-                  ? new Date(action?.start).toLocaleDateString()
+                action?.startDate
+                  ? new Date(action?.startDate).toLocaleDateString()
                   : new Date(action?.firstDate).toLocaleDateString()
               }
               endDate={
-                action?.end
-                  ? new Date(action?.end).toLocaleDateString()
+                action?.endDate
+                  ? new Date(action?.endDate).toLocaleDateString()
                   : new Date(action?.lastDate).toLocaleDateString()
               }
             />

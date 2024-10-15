@@ -8,6 +8,13 @@ const useGetCode = () => {
   })
 }
 
+const useCredentials = () => {
+  return useMutation(async (params: { doc: string; pwd: string }) => {
+    const { data } = await api.post('/action/login_company', params)
+    return data
+  })
+}
+
 const useGetKey = () => {
   return useMutation(async (params: { id: number }) => {
     const { data } = await api.post('/portal/get_key', params)
@@ -22,4 +29,4 @@ const useCheckHash = () => {
   })
 }
 
-export { useCheckHash, useGetCode, useGetKey }
+export { useCredentials, useCheckHash, useGetCode, useGetKey }
