@@ -1,4 +1,9 @@
-import { IconPadLock, IconUser } from '@/components/icons'
+import {
+  IconEyeHide,
+  IconEyeReveal,
+  IconPadLock,
+  IconUser
+} from '@/components/icons'
 import { ButtonNext, CardForLogin, ToastLogin } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -25,6 +30,7 @@ const Login: React.FC = () => {
   const { currentStepEmail, signIn } = useAtlas()
   const [inputPassword, setInputPassword] = useState<string>('')
   const [inputRef, setInputRef] = useState<string>('')
+  const [hidePassword, setHidePassword] = useState<boolean>(false)
   const [docRef, setDocRef] = useState<string>('')
   const [pwdRef, setPwdRef] = useState<string>('')
   const [flowLogin, setFlowLogin] = useState<boolean>(false)
@@ -147,14 +153,44 @@ const Login: React.FC = () => {
                     <div className="flex items-center justify-start gap-2 rounded-md border-2 border-system-cinza/25 p-2">
                       <IconPadLock className="z-10 size-5 fill-primary-default" />
                       <Separator className="m-auto h-6 w-[1px] bg-system-cinza/25" />
-                      <input
+                      {/* <input
                         className="w-full"
                         placeholder="Senha do app"
                         value={pwdRef}
                         onChange={(e: ChangeEvent<HTMLInputElement>) =>
                           setPwdRef(e.target.value)
-                        }
-                      />
+                          }
+                          /> */}
+                      <div className="relative w-full">
+                        <Input
+                          className="w-full border-none text-base"
+                          placeholder="Senha do App"
+                          type={hidePassword ? 'password' : 'text'}
+                          value={pwdRef}
+                          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            setPwdRef(e.target.value)
+                          }}
+                          pattern="\d*"
+                        />
+                        <button
+                          className="absolute right-0 top-0 flex h-fit w-fit items-center gap-2 bg-transparent p-2 transition-all duration-300 ease-in-out"
+                          onClick={() => {
+                            setHidePassword(!hidePassword)
+                          }}
+                        >
+                          {hidePassword ? (
+                            <IconEyeHide
+                              size={24}
+                              className="mr-2 fill-primary-default transition-all duration-300 ease-in-out hover:fill-primary-default/50"
+                            />
+                          ) : (
+                            <IconEyeReveal
+                              size={24}
+                              className="mr-2 fill-primary-default transition-all duration-300 ease-in-out hover:fill-primary-default/50"
+                            />
+                          )}
+                        </button>
+                      </div>
                     </div>
                     <div className="flex justify-center">
                       <label className="text-primary-default underline">

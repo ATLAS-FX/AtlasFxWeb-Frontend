@@ -10,8 +10,6 @@ import { cn } from '@/lib/utils'
 import { useExtractInfo } from '@/services/ExtractApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
 import { ExtractStateType } from '@/types/StatesType'
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
 import { ChevronLeft } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
 
@@ -57,31 +55,9 @@ const ModalFilter: React.FC<ModalFilterProps> = ({ state, setState }) => {
   const handleFilterPage = async () => {
     getExtractInfo(
       {
-        start:
-          `${
-            format(
-              new Date(state.startDate).setDate(new Date().getDate() - 15),
-              'dd-MM-yyyy',
-              {
-                locale: ptBR
-              }
-            ) +
-            '' +
-            state?.startHour
-          }` || '',
-        end:
-          `${
-            format(
-              new Date(state?.endDate).setDate(new Date().getDate() - 15),
-              'dd-MM-yyyy',
-              {
-                locale: ptBR
-              }
-            ) +
-            '' +
-            state?.endHour
-          }` || '',
-        type: state?.type || ''
+        start: `${state.startDate + ' ' + state?.startHour}`,
+        end: `${state?.endDate + ' ' + state?.endHour}`,
+        type: state?.type
       },
       {
         onSuccess: () => {
@@ -108,7 +84,6 @@ const ModalFilter: React.FC<ModalFilterProps> = ({ state, setState }) => {
       open={state.filterModal}
       onOpenChange={() => setState({ ...state, filterModal: false })}
     >
-      {/* h-[536px] */}
       <DialogContent className={cn('h-fit w-[412px] gap-4 rounded-xl bg-white')}>
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-2">
@@ -183,19 +158,21 @@ const ModalFilter: React.FC<ModalFilterProps> = ({ state, setState }) => {
                     >
                       De:
                     </label>
-                    <Button
-                      variant={'outline'}
+                    <button
+                      // variant={'outline'}
                       id="start-date"
                       className={cn(
-                        'w-36 rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default px-4 py-6 text-sm hover:bg-transparent',
+                        'flex w-36 rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-2 text-sm hover:bg-transparent',
                         state.startDate
                           ? 'items-center justify-between gap-2'
                           : 'justify-end'
                       )}
                     >
-                      {state.startDate ? `${state.startDate}` : ''}
+                      {state.startDate
+                        ? `${state.startDate.replace(/-/g, '/')}`
+                        : ''}
                       <IconCalendar className="h-8 w-8" />
-                    </Button>
+                    </button>
                   </div>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
@@ -250,18 +227,17 @@ const ModalFilter: React.FC<ModalFilterProps> = ({ state, setState }) => {
                     >
                       Até:
                     </label>
-                    <Button
-                      variant={'outline'}
+                    <button
                       className={cn(
-                        'w-36 rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default px-4 py-6 text-sm hover:bg-transparent',
+                        'flex w-36 rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-2 text-sm hover:bg-transparent',
                         state.endDate
                           ? 'items-center justify-between gap-2'
                           : 'justify-end'
                       )}
                     >
-                      {state.endDate ? `${state.endDate}` : ''}
+                      {state.endDate ? `${state.endDate.replace(/-/g, '/')}` : ''}
                       <IconCalendar className="h-8 w-8" />
-                    </Button>
+                    </button>
                   </div>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" aria-disabled="true">

@@ -10,7 +10,7 @@ const useGetCode = () => {
 
 const useCredentials = () => {
   return useMutation(async (params: { doc: string; pwd: string }) => {
-    const { data } = await api.post('/action/login_company', params)
+    const { data } = await api.post('/actions/login_company', params)
     return data
   })
 }
