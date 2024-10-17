@@ -1,6 +1,7 @@
 import { Container, Title } from '@/components/layout'
 import { toast } from '@/components/ui/use-toast'
 import { useExtractInfo } from '@/services/ExtractApi'
+import { ErrorResponse } from '@/types/ErrorResponse'
 import { ExtractStateType } from '@/types/StatesType'
 import { RegisterPixType } from '@/types/userType'
 import { formattedDateMachine } from '@/utils/GenerateFormatted'
@@ -14,12 +15,16 @@ const HomePageExtract: React.FC = () => {
   const navigate = useNavigate()
   type GroupedTransactions = Record<string, RegisterPixType[]>
 
+  const [transactions, setTransactions] = useState<RegisterPixType[]>([])
+  const [groupedByDate, setGroupedByDate] = useState<
+    Record<string, RegisterPixType[]>
+  >(Object.create(null))
   const [filterOptions, setFilterOptions] = useState<ExtractStateType>({
     stepPage: 0,
     period: 0,
-    type: '',
+    type: null,
     startDate: new Date(
-      new Date().setDate(new Date().getDate() - 15)
+      new Date().setDate(new Date().getDate() - 2)
     ).toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
     endDate: new Date().toLocaleDateString('pt-BR', {
       timeZone: 'America/Sao_Paulo'
@@ -31,46 +36,61 @@ const HomePageExtract: React.FC = () => {
     filterModal: false
   })
 
-  const {
-    data: extractInfo,
-    isLoading,
-    isError,
-    refetch
-  } = useExtractInfo({
-    start: `${formattedDateMachine(filterOptions.startDate) + ' ' + filterOptions?.startHour}`,
-    end: `${formattedDateMachine(filterOptions.endDate) + ' ' + filterOptions?.endHour}`,
-    type: filterOptions?.type
-  })
+  const { mutate: extractInfo, isLoading, isError } = useExtractInfo()
 
-  const groupedByDate = extractInfo?.reduce((acc, transaction) => {
-    const dateA = new Date(transaction.created)
-      .toLocaleDateString('pt-BR', {
-        timeZone: 'America/Sao_Paulo'
-      })
-      .split(' ')[0]
-    if (!acc[dateA]) {
-      acc[dateA] = []
-    }
-    acc[dateA].push(transaction)
-    return acc
-  }, {} as GroupedTransactions)
+  const handleFilterExtract = () => {
+    extractInfo(
+      {
+        start: `${formattedDateMachine(filterOptions.startDate)} ${filterOptions?.startHour}`,
+        end: `${formattedDateMachine(filterOptions.endDate)} ${filterOptions?.endHour}`,
+        ...(filterOptions.type && { type: filterOptions.type })
+      },
+      {
+        onSuccess: (data: RegisterPixType[]) => setTransactions(data),
+        onError: (error: unknown) => {
+          const { response } = error as ErrorResponse
+          toast({
+            variant: 'destructive',
+            title: response.data.error,
+            description: 'Repita o processo.'
+          })
+        }
+      }
+    )
+  }
 
-  const sumBySend = (data: Record<string, RegisterPixType[]>) => {
-    return Object.values(data).reduce(
+  const groupTransactionsByDate = (transactions: RegisterPixType[]) => {
+    return transactions.reduce((acc, transaction) => {
+      const dateA = new Date(transaction.created)
+        .toLocaleDateString('pt-BR', {
+          timeZone: 'America/Sao_Paulo'
+        })
+        .split(' ')[0]
+
+      if (!acc[dateA]) {
+        acc[dateA] = []
+      }
+      acc[dateA].push(transaction)
+      return acc
+    }, {} as GroupedTransactions)
+  }
+
+  const calculateTotals = (groupedData: Record<string, RegisterPixType[]>) => {
+    return Object.values(groupedData).reduce(
       (acc, group) => {
-        group.forEach((release) => {
-          if (release.send === 1) {
-            acc.controlOut += release.amount
-          } else if (release.send === 0) {
-            acc.controlIn += release.amount
+        group.forEach((transaction) => {
+          if (transaction.send === 1) {
+            acc.controlOut += transaction.amount
+          } else if (transaction.send === 0) {
+            acc.controlIn += transaction.amount
           }
 
-          const createdDate = new Date(release.created)
+          const createdDate = new Date(transaction.created)
           if (!acc.firstDate || createdDate < new Date(acc.firstDate)) {
-            acc.firstDate = release.created
+            acc.firstDate = transaction.created
           }
           if (!acc.lastDate || createdDate > new Date(acc.lastDate)) {
-            acc.lastDate = release.created
+            acc.lastDate = transaction.created
           }
         })
         return acc
@@ -80,10 +100,23 @@ const HomePageExtract: React.FC = () => {
   }
 
   useEffect(() => {
-    const result = groupedByDate
-      ? sumBySend(groupedByDate)
-      : { controlIn: 0, controlOut: 0, firstDate: '', lastDate: '' }
-    setFilterOptions((prev) => ({ ...prev, ...result }))
+    if (transactions.length > 0) {
+      const groupedByDate = groupTransactionsByDate(transactions)
+      setGroupedByDate(groupedByDate)
+      const totals = calculateTotals(groupedByDate)
+      setFilterOptions((prev) => ({ ...prev, ...totals }))
+    }
+  }, [transactions])
+
+  useEffect(() => {
+    handleFilterExtract()
+  }, [])
+
+  useEffect(() => {
+    console.log('filter', filterOptions)
+  }, [filterOptions])
+
+  useEffect(() => {
     if (isError) {
       toast({
         variant: 'destructive',
@@ -131,7 +164,7 @@ const HomePageExtract: React.FC = () => {
           action={filterOptions}
           setAction={setFilterOptions}
           extractLoading={isLoading}
-          extractFunction={refetch}
+          extractFunction={handleFilterExtract}
         />
       )}
     </Container>

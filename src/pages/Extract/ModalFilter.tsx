@@ -1,4 +1,4 @@
-import { IconCalendar, IconDoubleArrow } from '@/components/icons'
+import { IconCalendar, IconDoubleArrow, IconTrash } from '@/components/icons'
 import { ButtonNext, SelectFx } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -64,24 +64,48 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
         className={cn('h-fit w-[412px] gap-4 rounded-xl bg-white')}
         aria-describedby=""
       >
-        <DialogHeader className="hidden">
+        <DialogHeader className="">
           <DialogTitle>{null}</DialogTitle>
         </DialogHeader>
         <section className="flex flex-col gap-6">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Button
+                className="m-0 w-fit p-0 text-system-cinza transition-all duration-200 ease-in-out hover:bg-transparent hover:text-primary-hover"
+                variant="ghost"
+                onClick={() =>
+                  setState({
+                    ...state,
+                    stepPage: state.stepPage >= 1 ? state.stepPage - 1 : 0
+                  })
+                }
+              >
+                <ChevronLeft size={18} />
+              </Button>
+              <h4 className="text-base font-semibold text-primary-default">
+                Filtrar
+              </h4>
+            </div>
             <Button
-              className="m-0 w-fit p-0 text-system-cinza transition-all duration-200 ease-in-out hover:bg-transparent hover:text-primary-hover"
-              variant="ghost"
-              onClick={() =>
+              onClick={() => {
                 setState({
                   ...state,
-                  stepPage: state.stepPage >= 1 ? state.stepPage - 1 : 0
+                  type: null,
+                  startDate: new Date(
+                    new Date().setDate(new Date().getDate() - 2)
+                  ).toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
+                  endDate: new Date().toLocaleDateString('pt-BR', {
+                    timeZone: 'America/Sao_Paulo'
+                  }),
+                  startHour: '00:00:00',
+                  endHour: '23:59:59'
                 })
-              }
+              }}
+              className="flex items-center gap-1 border-2 border-primary-default bg-transparent fill-primary-default p-0 px-2 text-primary-default shadow-none hover:bg-primary-default hover:fill-white hover:text-white"
             >
-              <ChevronLeft size={18} />
+              Limpar filtros
+              <IconTrash size={18} />
             </Button>
-            <h4 className="text-base font-semibold text-primary-default">Filtrar</h4>
           </div>
           <div className="flex justify-between">
             {chooseMovee.map(({ title, value }, number) => (
@@ -141,7 +165,6 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
                       De:
                     </label>
                     <button
-                      // variant={'outline'}
                       id="start-date"
                       className={cn(
                         'flex w-36 rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-2 text-sm hover:bg-transparent',
@@ -150,9 +173,7 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
                           : 'justify-end'
                       )}
                     >
-                      {state.startDate
-                        ? `${state.startDate.replace(/-/g, '/')}`
-                        : ''}
+                      {state.startDate}
                       <IconCalendar className="h-8 w-8" />
                     </button>
                   </div>
@@ -217,7 +238,7 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
                           : 'justify-end'
                       )}
                     >
-                      {state.endDate ? `${state.endDate.replace(/-/g, '/')}` : ''}
+                      {state.endDate}
                       <IconCalendar className="h-8 w-8" />
                     </button>
                   </div>
@@ -270,7 +291,7 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
               title="Prosseguir"
               loading={loading}
               func={() => {
-                filter
+                filter()
                 setState({ ...state, filterModal: false })
               }}
             />

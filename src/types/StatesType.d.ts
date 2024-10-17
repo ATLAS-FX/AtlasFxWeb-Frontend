@@ -39,7 +39,7 @@ export type PaymentStateType = {
 export type ExtractStateType = {
   stepPage: number
   period: number
-  type: string
+  type: string | null
   startDate: string
   endDate: string
   startHour: string

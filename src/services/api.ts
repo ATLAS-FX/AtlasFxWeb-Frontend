@@ -11,7 +11,6 @@ api.interceptors.request.use(
 
     if (accessToken) {
       config.headers.Authorization = `${accessToken}`
-      // config.headers['key'] = accessToken
     }
 
     return config
