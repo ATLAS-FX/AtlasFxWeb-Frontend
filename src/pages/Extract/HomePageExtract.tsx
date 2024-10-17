@@ -1,39 +1,48 @@
 import { Container, Title } from '@/components/layout'
-import { useAtlas } from '@/contexts/AtlasContext'
+import { toast } from '@/components/ui/use-toast'
+import { useExtractInfo } from '@/services/ExtractApi'
 import { ExtractStateType } from '@/types/StatesType'
 import { RegisterPixType } from '@/types/userType'
+import { formattedDateMachine } from '@/utils/GenerateFormatted'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import FilterPageExtract from './FilterPageExtract'
 import SummaryPageExtract from './SummaryPageExtract'
 
 const HomePageExtract: React.FC = () => {
   const navigate = useNavigate()
-  const { user } = useAtlas()
+  type GroupedTransactions = Record<string, RegisterPixType[]>
 
   const [filterOptions, setFilterOptions] = useState<ExtractStateType>({
     stepPage: 0,
     period: 0,
-    type: 'in',
-    startDate: format(new Date().setDate(new Date().getDate() - 15), 'dd-MM-yyyy', {
-      locale: ptBR
+    type: '',
+    startDate: new Date(
+      new Date().setDate(new Date().getDate() - 15)
+    ).toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
+    endDate: new Date().toLocaleDateString('pt-BR', {
+      timeZone: 'America/Sao_Paulo'
     }),
-    endDate: format(new Date(), 'dd-MM-yyyy', { locale: ptBR }),
-    startHour: format(new Date().setHours(0, 0, 0, 0), 'HH:mm:ss', { locale: ptBR }),
-    endHour: format(new Date().setHours(23, 59, 59, 999), 'HH:mm:ss', {
-      locale: ptBR
-    }),
+    startHour: '00:00:00',
+    endHour: '23:59:59',
     controlIn: 0,
     controlOut: 0,
-    filterModal: false,
-    firstDate: '',
-    lastDate: ''
+    filterModal: false
   })
-  type GroupedTransactions = Record<string, RegisterPixType[]>
 
-  const groupedByDate = user.releases.reduce((acc, transaction) => {
+  const {
+    data: extractInfo,
+    isLoading,
+    isError,
+    refetch
+  } = useExtractInfo({
+    start: `${formattedDateMachine(filterOptions.startDate) + ' ' + filterOptions?.startHour}`,
+    end: `${formattedDateMachine(filterOptions.endDate) + ' ' + filterOptions?.endHour}`,
+    type: filterOptions?.type
+  })
+
+  const groupedByDate = extractInfo?.reduce((acc, transaction) => {
     const dateA = new Date(transaction.created)
       .toLocaleDateString('pt-BR', {
         timeZone: 'America/Sao_Paulo'
@@ -71,13 +80,18 @@ const HomePageExtract: React.FC = () => {
   }
 
   useEffect(() => {
-    const result = sumBySend(groupedByDate)
+    const result = groupedByDate
+      ? sumBySend(groupedByDate)
+      : { controlIn: 0, controlOut: 0, firstDate: '', lastDate: '' }
     setFilterOptions((prev) => ({ ...prev, ...result }))
-  }, [])
-
-  useEffect(() => {
-    console.log(filterOptions)
-  }, [filterOptions])
+    if (isError) {
+      toast({
+        variant: 'destructive',
+        title: 'Falha ao carregar dados de extratos.',
+        description: 'Por favor tente mais tarde!'
+      })
+    }
+  }, [isError])
 
   return (
     <Container>
@@ -90,7 +104,7 @@ const HomePageExtract: React.FC = () => {
             : setFilterOptions({
                 stepPage: 0,
                 period: 0,
-                type: 'in',
+                type: '',
                 startDate: format(
                   new Date().setDate(new Date().getDate() - 15),
                   'dd/MM/yyyy',
@@ -107,21 +121,18 @@ const HomePageExtract: React.FC = () => {
                 }),
                 controlIn: 0,
                 controlOut: 0,
-                firstDate: '',
-                lastDate: '',
                 filterModal: false
               })
         }}
       />
       {filterOptions.stepPage === 0 && (
         <SummaryPageExtract
-          data={groupedByDate}
+          data={groupedByDate || {}}
           action={filterOptions}
           setAction={setFilterOptions}
+          extractLoading={isLoading}
+          extractFunction={refetch}
         />
-      )}
-      {filterOptions.stepPage === 1 && (
-        <FilterPageExtract state={filterOptions} setState={setFilterOptions} />
       )}
     </Container>
   )

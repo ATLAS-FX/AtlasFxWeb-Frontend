@@ -2,25 +2,28 @@ import { IconCalendar, IconDoubleArrow } from '@/components/icons'
 import { ButtonNext, SelectFx } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
-import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
-import { useExtractInfo } from '@/services/ExtractApi'
-import { ErrorResponse } from '@/types/ErrorResponse'
 import { ExtractStateType } from '@/types/StatesType'
+import { DialogTitle } from '@radix-ui/react-dialog'
 import { ChevronLeft } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
 
 interface ModalFilterProps {
   state: ExtractStateType
   setState: Dispatch<SetStateAction<ExtractStateType>>
+  loading: boolean
+  filter: () => void
 }
 
-const ModalFilter: React.FC<ModalFilterProps> = ({ state, setState }) => {
-  const { mutate: getExtractInfo, isLoading } = useExtractInfo()
-
+const ModalFilter: React.FC<ModalFilterProps> = ({
+  state,
+  setState,
+  loading,
+  filter
+}) => {
   const chooseMovee: Array<{ title: string; value: string }> = [
     { title: 'Entrada', value: 'in' },
     { title: 'Saída', value: 'out' }
@@ -52,39 +55,18 @@ const ModalFilter: React.FC<ModalFilterProps> = ({ state, setState }) => {
     }))
   }
 
-  const handleFilterPage = async () => {
-    getExtractInfo(
-      {
-        start: `${state.startDate + ' ' + state?.startHour}`,
-        end: `${state?.endDate + ' ' + state?.endHour}`,
-        type: state?.type
-      },
-      {
-        onSuccess: () => {
-          setState((prev) => ({
-            ...prev,
-            stepPage: 0,
-            filterModal: false
-          }))
-        },
-        onError: (error: unknown) => {
-          const { response } = error as ErrorResponse
-          toast({
-            variant: 'destructive',
-            title: response.data.error,
-            description: 'repita o processo.'
-          })
-        }
-      }
-    )
-  }
-
   return (
     <Dialog
       open={state.filterModal}
       onOpenChange={() => setState({ ...state, filterModal: false })}
     >
-      <DialogContent className={cn('h-fit w-[412px] gap-4 rounded-xl bg-white')}>
+      <DialogContent
+        className={cn('h-fit w-[412px] gap-4 rounded-xl bg-white')}
+        aria-describedby=""
+      >
+        <DialogHeader className="hidden">
+          <DialogTitle>{null}</DialogTitle>
+        </DialogHeader>
         <section className="flex flex-col gap-6">
           <div className="flex items-center gap-2">
             <Button
@@ -286,8 +268,11 @@ const ModalFilter: React.FC<ModalFilterProps> = ({ state, setState }) => {
           <div className="mt-4 flex justify-end">
             <ButtonNext
               title="Prosseguir"
-              loading={isLoading}
-              func={handleFilterPage}
+              loading={loading}
+              func={() => {
+                filter
+                setState({ ...state, filterModal: false })
+              }}
             />
           </div>
         </section>

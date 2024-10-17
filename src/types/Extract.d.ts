@@ -1,9 +1,3 @@
-export type ExtractType = {
-  start: string
-  end: string
-  type: string
-}
-
 export type TransactionTaxaType = {
   transactionId: string
   accountId: string

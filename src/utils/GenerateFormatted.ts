@@ -62,6 +62,21 @@ const invertDate = (date: string): string => {
   return `${month}/${day}/${year}`
 }
 
+const formattedDateMachine = (dateString?: string) => {
+  if (dateString) {
+    const [day, month, year] = dateString.split('/').map(Number)
+    if (isNaN(day) || isNaN(month) || isNaN(year) || month > 12 || day > 31) {
+      return '-'
+    }
+    const date = new Date(year, month - 1, day)
+    const formattedYear = date.getFullYear()
+    const formattedMonth = String(date.getMonth() + 1).padStart(2, '0')
+    const formattedDay = String(date.getDate()).padStart(2, '0')
+    return `${formattedYear}-${formattedMonth}-${formattedDay}`
+  }
+  return ''
+}
+
 const formattedDoc = (value: string, type: string) => {
   if (type === 'cnpj') {
     if (!value) return 'xx.xxx.xxx/xxxx-xx'
@@ -152,6 +167,7 @@ function formattedPriceAbbreviate(value: string | undefined) {
 
 export {
   formattedDate,
+  formattedDateMachine,
   formattedDateSample,
   formattedDoc,
   formattedHideValue,
