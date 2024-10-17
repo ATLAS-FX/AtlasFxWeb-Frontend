@@ -4,7 +4,6 @@ import { useExtractInfo } from '@/services/ExtractApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
 import { ExtractStateType } from '@/types/StatesType'
 import { RegisterPixType } from '@/types/userType'
-import { formattedDateMachine } from '@/utils/GenerateFormatted'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { useEffect, useState } from 'react'
@@ -29,7 +28,7 @@ const HomePageExtract: React.FC = () => {
     endDate: new Date().toLocaleDateString('pt-BR', {
       timeZone: 'America/Sao_Paulo'
     }),
-    startHour: '00:00:00',
+    startHour: '00:00:01',
     endHour: '23:59:59',
     controlIn: 0,
     controlOut: 0,
@@ -41,8 +40,8 @@ const HomePageExtract: React.FC = () => {
   const handleFilterExtract = () => {
     extractInfo(
       {
-        start: `${formattedDateMachine(filterOptions.startDate)} ${filterOptions?.startHour}`,
-        end: `${formattedDateMachine(filterOptions.endDate)} ${filterOptions?.endHour}`,
+        start: `${filterOptions.startDate} ${filterOptions?.startHour}`,
+        end: `${filterOptions.endDate} ${filterOptions?.endHour}`,
         ...(filterOptions.type && { type: filterOptions.type })
       },
       {
@@ -86,16 +85,16 @@ const HomePageExtract: React.FC = () => {
           }
 
           const createdDate = new Date(transaction.created)
-          if (!acc.firstDate || createdDate < new Date(acc.firstDate)) {
-            acc.firstDate = transaction.created
+          if (!acc.startDate || createdDate < new Date(acc.startDate)) {
+            acc.startDate = transaction.created
           }
-          if (!acc.lastDate || createdDate > new Date(acc.lastDate)) {
-            acc.lastDate = transaction.created
+          if (!acc.endDate || createdDate > new Date(acc.endDate)) {
+            acc.endDate = transaction.created
           }
         })
         return acc
       },
-      { controlIn: 0, controlOut: 0, firstDate: '', lastDate: '' }
+      { controlIn: 0, controlOut: 0, startDate: '', endDate: '' }
     )
   }
 

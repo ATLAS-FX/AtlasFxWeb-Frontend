@@ -1,9 +1,7 @@
-import { IconCalendar, IconDoubleArrow, IconTrash } from '@/components/icons'
+import { IconDoubleArrow, IconTrash } from '@/components/icons'
 import { ButtonNext, SelectFx } from '@/components/layout'
 import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { ExtractStateType } from '@/types/StatesType'
@@ -37,9 +35,9 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
     { text: '90', value: '90' }
   ]
 
-  const isDateValid = (dateString: Date) => {
-    return !isNaN(new Date(dateString).getTime())
-  }
+  // const isDateValid = (dateString: Date) => {
+  //   return !isNaN(new Date(dateString).getTime())
+  // }
 
   const handleDateRangeChange = (days: number) => {
     const startDate = new Date()
@@ -48,10 +46,10 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
     setState((prev) => ({
       ...prev,
       period: days,
-      start: startDate.toLocaleDateString('pt-BR', {
+      startDate: startDate.toLocaleDateString('pt-BR', {
         timeZone: 'America/Sao_Paulo'
       }),
-      end: endDate.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+      endDate: endDate.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' })
     }))
   }
 
@@ -153,137 +151,86 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
             </h4>
             <Separator className="w-full bg-system-cinza/25" />
           </div>
-          <div className="mb-2 flex justify-between">
-            <div className="flex flex-col gap-4">
-              <Popover key="start">
-                <PopoverTrigger asChild disabled={true}>
-                  <div className="relative flex">
-                    <label
-                      htmlFor={'start-date'}
-                      className="absolute -top-3 left-4 z-10 bg-white px-4 py-1 text-sm font-medium text-system-cinza/75"
-                    >
-                      De:
-                    </label>
-                    <button
-                      id="start-date"
-                      className={cn(
-                        'flex w-36 rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-2 text-sm hover:bg-transparent',
-                        state.startDate
-                          ? 'items-center justify-between gap-2'
-                          : 'justify-end'
-                      )}
-                    >
-                      {state.startDate}
-                      <IconCalendar className="h-8 w-8" />
-                    </button>
-                  </div>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    disabled={(date) =>
-                      (isDateValid(date) && date > new Date()) ||
-                      date > new Date(state.startDate)
-                    }
-                    selected={
-                      state?.startDate.length >= 1
-                        ? new Date(state.startDate)
-                        : undefined
-                    }
-                    onSelect={(e) =>
-                      setState((prev) => ({
-                        ...prev,
-                        start: e?.toLocaleDateString() || ''
-                      }))
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <div className="relative flex">
-                <label
-                  htmlFor={'start-date'}
-                  className="absolute -top-3 left-4 z-10 bg-white px-4 py-1 text-sm font-medium text-system-cinza/75"
-                >
-                  Hora inicio:
-                </label>
-                <input
-                  className={cn(
-                    'w-36 rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-3 text-sm hover:bg-transparent',
-                    state.startHour
-                      ? 'items-center justify-between gap-2'
-                      : 'justify-end'
-                  )}
-                  type="time"
-                  value={state.startHour}
-                  onChange={(e) => setState({ ...state, startHour: e.target.value })}
-                />
-              </div>
+          <div className="grid w-fit grid-cols-[50%,50%] gap-4">
+            <div className="relative flex">
+              <label
+                htmlFor="start-date"
+                className="absolute -top-3 left-4 z-10 bg-white px-4 py-1 text-sm font-medium text-system-cinza/75"
+              >
+                Data inicio:
+              </label>
+              <input
+                className={cn(
+                  'w-full rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-3 text-sm hover:bg-transparent',
+                  state.startDate
+                    ? 'items-center justify-between gap-2'
+                    : 'justify-end'
+                )}
+                type="date"
+                id="start-date"
+                value={state.startDate}
+                onChange={(e) => setState({ ...state, startDate: e.target.value })}
+              />
             </div>
-            <div className="flex flex-col gap-4">
-              <Popover key="end">
-                <PopoverTrigger asChild disabled={true}>
-                  <div className="relative flex">
-                    <label
-                      htmlFor={'start-date'}
-                      className="absolute -top-3 left-4 z-10 bg-white px-4 py-1 text-sm font-medium text-system-cinza/75"
-                    >
-                      Até:
-                    </label>
-                    <button
-                      className={cn(
-                        'flex w-36 rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-2 text-sm hover:bg-transparent',
-                        state.endDate
-                          ? 'items-center justify-between gap-2'
-                          : 'justify-end'
-                      )}
-                    >
-                      {state.endDate}
-                      <IconCalendar className="h-8 w-8" />
-                    </button>
-                  </div>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" aria-disabled="true">
-                  <Calendar
-                    mode="single"
-                    disabled={(date) =>
-                      (isDateValid(date) && date > new Date()) ||
-                      date < new Date(state.endDate)
-                    }
-                    selected={
-                      state?.endDate.length >= 1
-                        ? new Date(state.endDate)
-                        : undefined
-                    }
-                    onSelect={(e) =>
-                      setState((prev) => ({
-                        ...prev,
-                        end: e?.toLocaleDateString() || ''
-                      }))
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <div className="relative flex">
-                <label
-                  htmlFor={'start-date'}
-                  className="absolute -top-3 left-4 z-10 bg-white px-4 py-1 text-sm font-medium text-system-cinza/75"
-                >
-                  Hora final:
-                </label>
-                <input
-                  className={cn(
-                    'w-36 rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-3 text-sm hover:bg-transparent',
-                    state.endHour
-                      ? 'items-center justify-between gap-2'
-                      : 'justify-end'
-                  )}
-                  type="time"
-                  value={state.endHour}
-                  onChange={(e) => setState({ ...state, endHour: e.target.value })}
-                />
-              </div>
+            <div className="relative flex">
+              <label
+                htmlFor="end-date"
+                className="absolute -top-3 left-4 z-10 bg-white px-4 py-1 text-sm font-medium text-system-cinza/75"
+              >
+                Data Fim:
+              </label>
+              <input
+                className={cn(
+                  'w-full rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-3 text-sm hover:bg-transparent',
+                  state.endDate
+                    ? 'items-center justify-between gap-2'
+                    : 'justify-end'
+                )}
+                type="date"
+                id="end-date"
+                value={state.endDate}
+                onChange={(e) => setState({ ...state, endDate: e.target.value })}
+              />
+            </div>
+            <div className="relative flex">
+              <label
+                htmlFor="start-time"
+                className="absolute -top-3 left-4 z-10 bg-white px-4 py-1 text-sm font-medium text-system-cinza/75"
+              >
+                Hora inicio:
+              </label>
+              <input
+                className={cn(
+                  'w-full rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-3 text-sm hover:bg-transparent',
+                  state.startHour
+                    ? 'items-center justify-between gap-2'
+                    : 'justify-end'
+                )}
+                type="time"
+                id="start-time"
+                value={state.startHour}
+                onChange={(e) => setState({ ...state, startHour: e.target.value })}
+              />
+            </div>
+            <div className="relative flex">
+              <label
+                htmlFor="end-time"
+                className="absolute -top-3 left-4 z-10 bg-white px-4 py-1 text-sm font-medium text-system-cinza/75"
+              >
+                Hora final:
+              </label>
+              <input
+                className={cn(
+                  'w-full rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-3 text-sm hover:bg-transparent',
+                  state.endHour
+                    ? 'items-center justify-between gap-2'
+                    : 'justify-end'
+                )}
+                type="time"
+                id="end-time"
+                value={state.endHour}
+                onChange={(e) => setState({ ...state, endHour: e.target.value })}
+              />
             </div>
           </div>
           <div className="mt-4 flex justify-end">
