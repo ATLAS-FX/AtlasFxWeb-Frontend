@@ -6,11 +6,11 @@ import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import { useTransferApi } from '@/services/TransferApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
+import { SendPixType } from '@/types/PixType'
+import { TransferStateType } from '@/types/StatesType'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import { ChangeEvent, Dispatch, SetStateAction } from 'react'
 import ModalTransfer from './ModalTransfer'
-import { SendPixType } from '@/types/PixType'
-import { TransferStateType } from '@/types/StatesType'
 
 interface CheckPageTransferProps {
   flow: TransferStateType
@@ -40,7 +40,7 @@ const CheckPageTransfer: React.FC<CheckPageTransferProps> = ({
         category: 'TED',
         name: flow.name,
         doc_type: flow.docType,
-        finality: '123'
+        finality: flow.typeTED
       },
       {
         onSuccess: (res) => {

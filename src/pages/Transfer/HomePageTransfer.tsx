@@ -22,6 +22,7 @@ const HomePageTransfer: React.FC = () => {
     typeAccount: '',
     name: '',
     docType: '',
+    typeTED: '',
     doc: '',
     desc: '',
     modalTransfer: false
@@ -46,6 +47,7 @@ const HomePageTransfer: React.FC = () => {
                 typeAccount: '',
                 name: '',
                 docType: '',
+                typeTED: '',
                 doc: '',
                 desc: '',
                 modalTransfer: false

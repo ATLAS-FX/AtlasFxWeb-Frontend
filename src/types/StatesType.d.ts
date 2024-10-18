@@ -22,6 +22,7 @@ export type TransferStateType = {
   amount: string
   typeAccount: string
   name: string
+  typeTED: string
   docType: string
   doc: string
   desc: string

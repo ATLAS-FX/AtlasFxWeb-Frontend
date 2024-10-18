@@ -21,7 +21,7 @@ import {
 import { cn } from '@/lib/utils'
 import { api } from '@/services/api'
 import { TransferStateType } from '@/types/StatesType'
-import { ListBank } from '@/utils/ListBank'
+import { ListBank, typeAccount, typeDoc, typeTed } from '@/utils/FormTransfer'
 import { ListMask } from '@/utils/ListMask'
 import { Check, Loader2 } from 'lucide-react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
@@ -42,38 +42,9 @@ interface Bank {
 const FormPageTransfer: React.FC<FormPageTransferProps> = ({ form, setForm }) => {
   const listForm = {
     bank: ListBank,
-    typeAccount: [
-      {
-        title: 'Corrente',
-        value: 'corrente'
-      },
-      {
-        title: 'Poupança',
-        value: 'poupanca'
-      },
-      {
-        title: 'Depósito',
-        value: 'deposito'
-      },
-      {
-        title: 'Pagamento',
-        value: 'pagamento'
-      },
-      {
-        title: 'Garantida',
-        value: 'garantida'
-      }
-    ],
-    doc: [
-      {
-        title: 'CPF',
-        value: 'cpf'
-      },
-      {
-        title: 'CNPJ',
-        value: 'cnpj'
-      }
-    ]
+    typeAccount: typeAccount,
+    doc: typeDoc,
+    typeTed: typeTed
   }
 
   const [listBanks, setListBanks] = useState<Bank[]>([])
@@ -106,16 +77,25 @@ const FormPageTransfer: React.FC<FormPageTransferProps> = ({ form, setForm }) =>
 
   return (
     <>
-      <section className="flex flex-col items-center gap-4">
-        <div className="flex w-full flex-col gap-1">
-          <label htmlFor="" className="text-system-cinza">
+      <section className="flex flex-col items-center gap-8">
+        <div className="relative flex w-full flex-col gap-1">
+          <label
+            htmlFor="bank_button"
+            className={cn(
+              'absolute -top-3 left-4 bg-system-neutro px-4 py-1 text-sm font-medium text-system-cinza/75'
+            )}
+          >
             Banco:
           </label>
           <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild className="flex">
+            <PopoverTrigger
+              asChild
+              className="focus-visible: flex hover:bg-system-neutro focus:outline-none focus:ring-2 focus:ring-system-cinza/50 focus-visible:ring-2 focus-visible:ring-system-cinza/50"
+            >
               <Button
                 variant="outline"
                 role="combobox"
+                id="bank_button"
                 aria-expanded={open}
                 className="h-11 w-full rounded-md border-[1px] border-system-cinza/25 bg-transparent p-2 text-base font-medium shadow-none"
               >
@@ -140,10 +120,10 @@ const FormPageTransfer: React.FC<FormPageTransferProps> = ({ form, setForm }) =>
                         className="w-full rounded-none border-b-[1px] border-system-cinza/10 py-3"
                         value={name}
                         onSelect={(e) => {
-                          setForm((prev) => ({
-                            ...prev,
+                          setForm({
+                            ...form,
                             bank: e
-                          }))
+                          })
                           setOpen(false)
                         }}
                       >
@@ -163,105 +143,177 @@ const FormPageTransfer: React.FC<FormPageTransferProps> = ({ form, setForm }) =>
           </Popover>
         </div>
         <div className="flex w-full items-center justify-between gap-4">
-          <div className="flex w-4/12 flex-col gap-1">
-            <label htmlFor="" className="text-system-cinza">
+          <div className="relative flex w-4/12 flex-col gap-1">
+            <label
+              htmlFor="agency_maks"
+              className={cn(
+                'absolute -top-3 left-4 bg-system-neutro px-4 py-1 text-sm font-medium text-system-cinza/75'
+              )}
+            >
               Agência:
             </label>
             <MaskedInput
               mask={'999999'}
+              id="agency_maks"
               // placeholder='Agência'
               value={form.agency}
               onChange={(e) =>
-                setForm((prev) => ({
-                  ...prev,
+                setForm({
+                  ...form,
                   agency: e.target.value.replace(/\D/g, '')
-                }))
+                })
               }
             />
           </div>
-          <div className="flex w-8/12 flex-col gap-1">
-            <label htmlFor="" className="text-system-cinza">
+          <div className="relative flex w-8/12 flex-col gap-1">
+            <label
+              htmlFor="account_mask"
+              className={cn(
+                'absolute -top-3 left-4 bg-system-neutro px-4 py-1 text-sm font-medium text-system-cinza/75'
+              )}
+            >
               Conta:
             </label>
             <MaskedInput
               mask={'9999999-9'}
               // placeholder="Conta"
+              id="account_mask"
               value={form.account}
               onChange={(e) =>
-                setForm((prev) => ({
-                  ...prev,
+                setForm({
+                  ...form,
                   account: e.target.value.replace(/\D/g, '')
-                }))
+                })
               }
             />
           </div>
         </div>
-        <div className="flex w-full flex-col gap-1">
-          <label htmlFor="" className="text-system-cinza">
-            Tipo de Conta:
-          </label>
-          <Select
-            onValueChange={(e) =>
-              setForm((prev) => ({
-                ...prev,
-                typeAccount: e
-              }))
-            }
-          >
-            <SelectTrigger className="h-11 rounded-md border-system-cinza/25 bg-transparent p-4 text-base font-medium shadow-none">
-              <SelectValue
-              //  placeholder="Tipo de conta"
-              />
-            </SelectTrigger>
-            <SelectContent className="w-[95%] px-4 py-2">
-              <SelectGroup>
-                {listForm.typeAccount.map((item, number) => (
-                  <>
-                    <SelectItem
-                      key={`${item.value + number}`}
-                      value={item.value}
-                      className="rounded-none border-b-[1px] border-system-cinza/25 py-3 text-base font-medium"
-                    >
-                      {item.title}
+        <div className="flex w-full items-center justify-between gap-4">
+          <div className="relative flex w-6/12 flex-col gap-1">
+            <label
+              htmlFor="type_account"
+              className={cn(
+                'absolute -top-3 left-4 bg-system-neutro px-4 py-1 text-sm font-medium text-system-cinza/75'
+              )}
+            >
+              Tipo de Conta:
+            </label>
+            <Select
+              onValueChange={(e) =>
+                setForm({
+                  ...form,
+                  typeAccount: e
+                })
+              }
+            >
+              <SelectTrigger
+                className="h-11 rounded-md border-system-cinza/25 bg-transparent p-4 text-base font-medium shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-system-cinza/50"
+                id="type_account"
+              >
+                <SelectValue
+                //  placeholder="Tipo de conta"
+                />
+              </SelectTrigger>
+              <SelectContent className="w-[95%] px-4 py-2">
+                <SelectGroup>
+                  {listForm.typeAccount.map((item, number) => (
+                    <>
+                      <SelectItem
+                        key={`${item.value + number}`}
+                        value={item.value}
+                        className="rounded-none border-b-[1px] border-system-cinza/25 py-3 text-base font-medium"
+                      >
+                        {item.title}
+                      </SelectItem>
+                    </>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="relative flex w-6/12 flex-col gap-1">
+            <label
+              htmlFor="type_ted"
+              className={cn(
+                'absolute -top-3 left-4 bg-system-neutro px-4 py-1 text-sm font-medium text-system-cinza/75'
+              )}
+            >
+              Tipo de TED:
+            </label>
+            <Select
+              onValueChange={(e) =>
+                setForm({
+                  ...form,
+                  typeTED: e
+                })
+              }
+            >
+              <SelectTrigger
+                className="h-11 rounded-md border-system-cinza/25 bg-transparent p-4 px-4 text-base font-medium shadow-none"
+                id="type_ted"
+              >
+                <SelectValue
+                //  placeholder="Documento"
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {listForm.typeTed.map((item, number) => (
+                    <SelectItem key={`${item.value + number}`} value={item.value}>
+                      {truncateString(item.title, 72)}
                     </SelectItem>
-                  </>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
-        <div className="flex w-full flex-col gap-1">
-          <label htmlFor="" className="text-system-cinza">
+        <div className="relative flex w-full flex-col gap-1">
+          <label
+            htmlFor="input_name"
+            className={cn(
+              'absolute -top-3 left-4 bg-system-neutro px-4 py-1 text-sm font-medium text-system-cinza/75'
+            )}
+          >
             Nome completo ou razão social do titular:
           </label>
           <Input
-            className="border-system-cinza/25"
+            className="border-system-cinza/25 focus:outline-none focus:ring-2 focus:ring-system-cinza/50"
             // placeholder="Nome completo ou razão social do titular"
             type="text"
+            id="input_name"
             min={0}
             value={form.name}
             onChange={(e) =>
-              setForm((prev) => ({
-                ...prev,
+              setForm({
+                ...form,
                 name: e.target.value
-              }))
+              })
             }
           />
         </div>
         <div className="flex w-full items-center justify-between gap-4">
-          <div className="flex w-4/12 flex-col gap-1">
-            <label htmlFor="" className="text-system-cinza">
+          <div className="relative flex w-4/12 flex-col gap-1">
+            <label
+              htmlFor="doc_type"
+              className={cn(
+                'absolute -top-3 left-4 bg-system-neutro px-4 py-1 text-sm font-medium text-system-cinza/75'
+              )}
+            >
               Documento:
             </label>
             <Select
               onValueChange={(e) =>
-                setForm((prev) => ({
-                  ...prev,
+                setForm({
+                  ...form,
                   docType: e
-                }))
+                })
               }
             >
-              <SelectTrigger className="h-11 rounded-md border-system-cinza/25 bg-transparent p-4 px-4 text-base font-medium shadow-none">
+              <SelectTrigger
+                className="h-11 rounded-md border-system-cinza/25 bg-transparent p-4 px-4 text-base font-medium shadow-none"
+                id="doc_type"
+              >
                 <SelectValue
                 //  placeholder="Documento"
                 />
@@ -277,20 +329,26 @@ const FormPageTransfer: React.FC<FormPageTransferProps> = ({ form, setForm }) =>
               </SelectContent>
             </Select>
           </div>
-          <div className=" flex w-8/12 flex-col gap-1">
-            <label htmlFor="" className="text-system-cinza">
+          <div className=" relative flex w-8/12 flex-col gap-1">
+            <label
+              htmlFor="number_doc"
+              className={cn(
+                'absolute -top-3 left-4 bg-system-neutro px-4 py-1 text-sm font-medium text-system-cinza/75'
+              )}
+            >
               Número do documento:
             </label>
             <MaskedInput
-              className="h-11 rounded-md border-[1px] border-system-cinza/25 bg-transparent p-4 px-4 text-base font-medium shadow-none"
+              className="h-11 rounded-md border-[1px] border-system-cinza/25 bg-transparent p-4 px-4 text-base font-medium shadow-none focus:outline-none focus:ring-2 focus:ring-system-cinza/50"
               mask={ListMask.find((e) => e.key === form.docType)?.mask || ''}
+              id="number_doc"
               // placeholder="Número do documento"
               value={form.doc}
               onChange={(e) =>
-                setForm((prev) => ({
-                  ...prev,
+                setForm({
+                  ...form,
                   doc: e.target.value.replace(/\D/g, '')
-                }))
+                })
               }
             />
           </div>
@@ -300,7 +358,7 @@ const FormPageTransfer: React.FC<FormPageTransferProps> = ({ form, setForm }) =>
         <ButtonNext
           title="Prosseguir"
           disabled={!isFormValid}
-          func={() => setForm((prev) => ({ ...prev, step: 2 }))}
+          func={() => setForm({ ...form, step: 2 })}
         />
       </div>
     </>

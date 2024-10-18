@@ -14,7 +14,7 @@ const MaskedInput: React.FC<MaskedInputProps> = ({
   ...props
 }) => (
   <InputMask
-    className="h-11 rounded-md border-[1px] border-system-cinza/25 bg-transparent px-4 text-base font-medium"
+    className="h-11 rounded-md border-[1px] border-system-cinza/25 bg-transparent px-4 text-base font-medium focus:outline-none focus:ring-2 focus:ring-system-cinza/50"
     mask={mask}
     value={value}
     onChange={onChange}
