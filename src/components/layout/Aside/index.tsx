@@ -99,7 +99,7 @@ const Aside: React.FC = () => {
                       </li>
                     </ul>
                   ) : (
-                    <h2 className="py-1 text-center font-semibold text-system-cinza">
+                    <h2 className="py-1 text-center font-normal text-system-cinza">
                       Não há lançamentos
                     </h2>
                   )}

@@ -19,6 +19,7 @@ import {
   useGetKey
 } from '@/services/AuthApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
+import { formattedDoc } from '@/utils/GenerateFormatted'
 import { CheckCircle2, RotateCw } from 'lucide-react'
 import md5 from 'md5'
 import QRCode from 'qrcode.react'
@@ -28,11 +29,19 @@ import { useNavigate } from 'react-router-dom'
 const Login: React.FC = () => {
   const navigate = useNavigate()
   const { currentStepEmail, signIn } = useAtlas()
-  const [inputPassword, setInputPassword] = useState<string>('')
-  const [inputRef, setInputRef] = useState<string>('')
-  const [hidePassword, setHidePassword] = useState<boolean>(false)
-  const [docRef, setDocRef] = useState<string>('')
-  const [pwdRef, setPwdRef] = useState<string>('')
+  const [authFlow, setAuthFlow] = useState<{
+    inputKey: string
+    doc: string
+    maskDoc: string
+    pwd: string
+    hidePwd: boolean
+  }>({
+    inputKey: '',
+    doc: '',
+    maskDoc: '',
+    pwd: '',
+    hidePwd: true
+  })
   const [flowLogin, setFlowLogin] = useState<boolean>(false)
   const [genQRCode, setGenQRCode] = useState<boolean>(false)
   const [checkValidate, setCheckValidade] = useState<boolean>(true)
@@ -47,7 +56,7 @@ const Login: React.FC = () => {
 
   const handleLogin = () => {
     login(
-      { doc: docRef, pwd: md5(pwdRef) },
+      { doc: authFlow.doc, pwd: md5(authFlow.pwd) },
       {
         onSuccess: (res) => {
           if (res.key) {
@@ -69,7 +78,7 @@ const Login: React.FC = () => {
   }
 
   const handleGetKey = () => {
-    const id_key = Number(inputRef)
+    const id_key = Number(authFlow.inputKey)
     getKey(
       { id: id_key },
       {
@@ -134,23 +143,29 @@ const Login: React.FC = () => {
           <>
             {flowLogin ? (
               <CardForLogin
-                title={<h2 className="mt-4 text-3xl">Login</h2>}
+                title={<h2 className="mt-3 text-3xl">Login</h2>}
                 back={() => setFlowLogin(!flowLogin)}
                 content={
-                  <section className="flex h-full flex-col gap-8">
-                    <div className="flex items-center gap-2 rounded-md border-2 border-system-cinza/25 p-2">
+                  <section className="flex h-full flex-col gap-6">
+                    <div className="flex items-center gap-2 rounded-lg border-2 border-system-cinza/25 px-2 py-4">
                       <IconUser className="z-10 size-5 fill-primary-default" />
                       <Separator className="m-auto h-6 w-[1px] bg-system-cinza/25" />
                       <input
                         className="w-full"
                         placeholder="CNPJ"
-                        value={docRef}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                          setDocRef(e.target.value)
-                        }
+                        type="text"
+                        value={authFlow.maskDoc}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                          const format = formattedDoc(e.target.value, 'cnpj')
+                          setAuthFlow({
+                            ...authFlow,
+                            doc: e.target.value,
+                            maskDoc: format ?? e.target.value
+                          })
+                        }}
                       />
                     </div>
-                    <div className="flex items-center justify-start gap-2 rounded-md border-2 border-system-cinza/25 p-2">
+                    <div className="flex items-center justify-start gap-2 rounded-lg border-2 border-system-cinza/25 p-2">
                       <IconPadLock className="z-10 size-5 fill-primary-default" />
                       <Separator className="m-auto h-6 w-[1px] bg-system-cinza/25" />
                       {/* <input
@@ -163,22 +178,22 @@ const Login: React.FC = () => {
                           /> */}
                       <div className="relative w-full">
                         <Input
-                          className="w-full border-none text-base"
+                          className="h-fit w-full border-none p-2 text-base"
                           placeholder="Senha do App"
-                          type={hidePassword ? 'password' : 'text'}
-                          value={pwdRef}
+                          type={authFlow.hidePwd ? 'password' : 'text'}
+                          value={authFlow.pwd}
                           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            setPwdRef(e.target.value)
+                            setAuthFlow({ ...authFlow, pwd: e.target.value })
                           }}
                           pattern="\d*"
                         />
                         <button
                           className="absolute right-0 top-0 flex h-fit w-fit items-center gap-2 bg-transparent p-2 transition-all duration-300 ease-in-out"
                           onClick={() => {
-                            setHidePassword(!hidePassword)
+                            setAuthFlow({ ...authFlow, hidePwd: !authFlow.hidePwd })
                           }}
                         >
-                          {hidePassword ? (
+                          {authFlow.hidePwd ? (
                             <IconEyeHide
                               size={24}
                               className="mr-2 fill-primary-default transition-all duration-300 ease-in-out hover:fill-primary-default/50"
@@ -199,7 +214,7 @@ const Login: React.FC = () => {
                     </div>
                     <ButtonNext
                       // classPlus="mt-2 rounded-lg bg-primary-default py-6"
-                      disabled={docRef.length <= 4 || pwdRef.length <= 5}
+                      disabled={authFlow.doc.length <= 4 || authFlow.pwd.length <= 5}
                       loading={loadLogin}
                       func={handleLogin}
                       title="Acessar"
@@ -305,13 +320,13 @@ const Login: React.FC = () => {
                 <Input
                   className={cn(
                     'flex h-16 w-full justify-center rounded-lg border-2 pt-[2.5%] text-center align-baseline text-5xl font-bold text-primary-default',
-                    inputPassword.length < 8
+                    authFlow.pwd.length < 8
                       ? 'border-prtext-primary-default'
                       : 'border-system-green'
                   )}
-                  value={inputPassword.replace(/./g, '*')}
+                  value={authFlow.inputKey.replace(/./g, '*')}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setInputPassword(e.target.value)
+                    setAuthFlow({ ...authFlow, inputKey: e.target.value })
                   }
                   maxLength={8}
                   type="text"
@@ -320,9 +335,9 @@ const Login: React.FC = () => {
                   <ButtonNext
                     title="Enviar agora"
                     func={() => {}}
-                    disabled={inputPassword.length < 8}
+                    disabled={authFlow.inputKey.length < 8}
                     classPlus={`h-12 w-5/12 rounded-lg bg-se text-base font-bold text-primary-default',
-                      ${inputPassword.length < 8 && 'bg-[#BEBEBE] text-[#7E7E7E]'}`}
+                      ${authFlow.inputKey.length < 8 && 'bg-[#BEBEBE] text-[#7E7E7E]'}`}
                   />
                 </div>
               </div>
@@ -337,15 +352,15 @@ const Login: React.FC = () => {
               </span>
               <Input
                 className="w-12"
-                value={inputRef}
+                value={authFlow.inputKey}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  setInputRef(e.target.value)
+                  setAuthFlow({ ...authFlow, inputKey: e.target.value })
                 }}
               />
               <Button
                 variant="ghost"
                 className="w-fit p-0 hover:text-primary-default"
-                disabled={inputRef.length < 1}
+                disabled={authFlow.inputKey.length < 1}
                 onClick={handleGetKey}
               >
                 <CheckCircle2 size={32} />
