@@ -28,3 +28,13 @@ export type RegisterPixType = {
   amount: number
   created: string
 }
+
+export type ThemeType = {
+  primary: string
+  secondary: string
+  thirdy: string
+  background: string
+  text_primary: string
+  text_secondary: string
+  systemName: string
+}

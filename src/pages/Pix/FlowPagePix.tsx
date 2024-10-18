@@ -7,13 +7,13 @@ import { cn } from '@/lib/utils'
 import { useGetKeyInfo, useSendPix } from '@/services/PixApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
 import { PixType, SendPixType } from '@/types/PixType'
+import { PixStateType } from '@/types/StatesType'
 import { formatKeyPix } from '@/utils/FormattedKeyPix'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import md5 from 'md5'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ModalPix from './ModalPix'
-import { PixStateType } from '@/types/StatesType'
 
 interface FlowPagePixProps {
   flow: PixStateType
@@ -111,13 +111,13 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({
               />
             ) : (
               <Button
-                className="flex items-center gap-2 bg-primary-default fill-system-neutro px-4 py-6 text-system-neutro"
+                className="flex items-center gap-2 bg-primary-default fill-system-neutro p-2 text-sm text-system-neutro"
                 onClick={() => {
                   setPixCopyPaste(true)
                   navigate('/payments')
                 }}
               >
-                <IconCopyPaste className="size-5" />
+                <IconCopyPaste className="size-4" />
                 Copia e cola
               </Button>
             )}

@@ -38,7 +38,6 @@ const InputFX: React.FC<InputFXProps> = ({
         value={value}
         placeholder={placeholder}
         onKeyDown={(e: any) => {
-          console.log(e)
           e.key === '13' && change(e.target.value)
         }}
         onChange={(e: ChangeEvent<HTMLInputElement>) => change(e.target.value)}

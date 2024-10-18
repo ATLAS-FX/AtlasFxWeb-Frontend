@@ -2,7 +2,7 @@ import { toast } from '@/components/ui/use-toast'
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL
+  baseURL: `${import.meta.env[`VITE_API_BASE_${import.meta.env.VITE_CLIENT_NAME}`]}`
 })
 
 api.interceptors.request.use(

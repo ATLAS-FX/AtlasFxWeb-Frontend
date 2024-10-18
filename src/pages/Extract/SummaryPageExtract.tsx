@@ -15,7 +15,7 @@ import { RegisterPixType } from '@/types/userType'
 import { formattedDate, formattedPrice, invertDate } from '@/utils/GenerateFormatted'
 import { PDFViewer } from '@react-pdf/renderer'
 import { ChevronRight, Loader2 } from 'lucide-react'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import ModalExtract from './ModalExtract'
 import ModalFilter from './ModalFilter'
 
@@ -136,12 +136,12 @@ const SummaryPageExtract: React.FC<SummaryPageExtractProps> = ({
       </button>
       {extractLoading ? (
         <div className="-mt-1 flex flex-col gap-2">
-          <Skeleton className="h-4 w-full rounded-lg" />
-          <Skeleton className="h-28 w-full rounded-lg" />
-          <Skeleton className="h-4 w-full rounded-lg" />
-          <Skeleton className="h-28 w-full rounded-lg" />
-          <Skeleton className="h-4 w-full rounded-lg" />
-          <Skeleton className="h-28 w-full rounded-lg" />
+          {Array.from({ length: 4 }).map((_, index) => (
+            <React.Fragment key={index}>
+              <Skeleton className="h-4 w-full rounded-lg" />
+              <Skeleton className="h-28 w-full rounded-lg" />
+            </React.Fragment>
+          ))}
         </div>
       ) : (
         <>

@@ -4,6 +4,7 @@ import { useExtractInfo } from '@/services/ExtractApi'
 import { ErrorResponse } from '@/types/ErrorResponse'
 import { ExtractStateType } from '@/types/StatesType'
 import { RegisterPixType } from '@/types/userType'
+import { formattedDateMachine } from '@/utils/GenerateFormatted'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { useEffect, useState } from 'react'
@@ -40,8 +41,8 @@ const HomePageExtract: React.FC = () => {
   const handleFilterExtract = () => {
     extractInfo(
       {
-        start: `${filterOptions.startDate} ${filterOptions?.startHour}`,
-        end: `${filterOptions.endDate} ${filterOptions?.endHour}`,
+        start: `${formattedDateMachine(filterOptions.startDate)} ${filterOptions?.startHour}`,
+        end: `${formattedDateMachine(filterOptions.endDate)} ${filterOptions?.endHour}`,
         ...(filterOptions.type && { type: filterOptions.type })
       },
       {
@@ -110,10 +111,6 @@ const HomePageExtract: React.FC = () => {
   useEffect(() => {
     handleFilterExtract()
   }, [])
-
-  useEffect(() => {
-    console.log('filter', filterOptions)
-  }, [filterOptions])
 
   useEffect(() => {
     if (isError) {

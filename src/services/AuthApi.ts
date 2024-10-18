@@ -1,6 +1,13 @@
 import { useMutation, useQuery } from 'react-query'
 import { api } from './api'
 
+const useTheme = () => {
+  return useQuery(['get-theme'], async () => {
+    const { data } = await api.get('/actions/theme')
+    return data
+  })
+}
+
 const useGetCode = () => {
   return useQuery(['get-code'], async () => {
     const { data } = await api.get<{ hash: string }>('/actions/gen_code')
@@ -29,4 +36,4 @@ const useCheckHash = () => {
   })
 }
 
-export { useCredentials, useCheckHash, useGetCode, useGetKey }
+export { useCheckHash, useCredentials, useGetCode, useGetKey, useTheme }

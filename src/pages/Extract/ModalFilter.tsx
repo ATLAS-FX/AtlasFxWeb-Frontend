@@ -46,10 +46,12 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
     setState((prev) => ({
       ...prev,
       period: days,
-      startDate: startDate.toLocaleDateString('pt-BR', {
+      endDate: startDate.toLocaleDateString('pt-BR', {
         timeZone: 'America/Sao_Paulo'
       }),
-      endDate: endDate.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+      startDate: endDate.toLocaleDateString('pt-BR', {
+        timeZone: 'America/Sao_Paulo'
+      })
     }))
   }
 

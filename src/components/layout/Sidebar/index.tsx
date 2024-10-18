@@ -1,4 +1,5 @@
-import Atlas_Logo from '@/assets/atlas_logo.svg'
+import Atlas_Logo from '@/assets/logos/AtlasFX_Logo2.svg'
+import CarteiraX_Logo from '@/assets/logos/Carteira_X _Logo2.svg'
 import { IconLogout, IconUser } from '@/components/icons'
 import {
   Tooltip,
@@ -14,13 +15,16 @@ import { checkoutItems } from './checkoutItems'
 
 const Sidebar: React.FC = () => {
   const { pathname } = useLocation()
-  const { signOut } = useAtlas()
+  const { signOut, themeSystem } = useAtlas()
   const navigate = useNavigate()
-
   return (
-    <nav className="flex h-[calc(100dvh-80px)] flex-col justify-between gap-2 rounded-2xl bg-[#243060] px-2 py-6">
+    <nav className="flex h-[calc(100dvh-80px)] flex-col justify-between gap-2 rounded-2xl bg-primary-default px-2 py-6">
       <div className="flex w-full items-center justify-center">
-        <img className="w-28" src={Atlas_Logo} alt="logo atlas_fx" />
+        <img
+          className="w-28"
+          src={themeSystem.systemName === 'Atlas FX' ? Atlas_Logo : CarteiraX_Logo}
+          alt={`logo ${themeSystem.systemName}`}
+        />
       </div>
       <div className="flex flex-col gap-2">
         {checkoutItems.map(({ path, title }, number) => (
