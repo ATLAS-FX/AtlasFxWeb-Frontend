@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { ExtractStateType } from '@/types/StatesType'
+import { formattedDateMachine } from '@/utils/GenerateFormatted'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { ChevronLeft } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
@@ -35,23 +36,37 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
     { text: '90', value: '90' }
   ]
 
-  // const isDateValid = (dateString: Date) => {
-  //   return !isNaN(new Date(dateString).getTime())
-  // }
-
   const handleDateRangeChange = (days: number) => {
-    const startDate = new Date()
-    const endDate = new Date()
-    endDate.setDate(startDate.getDate() - days)
     setState((prev) => ({
       ...prev,
       period: days,
-      endDate: startDate.toLocaleDateString('pt-BR', {
-        timeZone: 'America/Sao_Paulo'
-      }),
-      startDate: endDate.toLocaleDateString('pt-BR', {
-        timeZone: 'America/Sao_Paulo'
-      })
+      startDate: formattedDateMachine(
+        new Date(new Date().setDate(new Date().getDate() - days)).toLocaleDateString(
+          'pt-BR',
+          {
+            timeZone: 'America/Sao_Paulo',
+            hour12: false,
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          }
+        )
+      ),
+      endDate: formattedDateMachine(
+        new Date().toLocaleDateString('pt-BR', {
+          timeZone: 'America/Sao_Paulo',
+          hour12: false,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        })
+      )
     }))
   }
 
@@ -93,12 +108,26 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
                   type: null,
                   startDate: new Date(
                     new Date().setDate(new Date().getDate() - 2)
-                  ).toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
-                  endDate: new Date().toLocaleDateString('pt-BR', {
-                    timeZone: 'America/Sao_Paulo'
+                  ).toLocaleDateString('pt-BR', {
+                    timeZone: 'America/Sao_Paulo',
+                    hour12: false,
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
                   }),
-                  startHour: '00:00:00',
-                  endHour: '23:59:59'
+                  endDate: new Date().toLocaleDateString('pt-BR', {
+                    timeZone: 'America/Sao_Paulo',
+                    hour12: false,
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                  })
                 })
               }}
               className="flex items-center gap-1 border-2 border-primary-default bg-transparent fill-primary-default p-0 px-2 text-primary-default shadow-none hover:bg-primary-default hover:fill-white hover:text-white"
@@ -153,8 +182,8 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
             </h4>
             <Separator className="w-full bg-system-cinza/25" />
           </div>
-          <div className="grid w-fit grid-cols-[50%,50%] gap-4">
-            <div className="relative flex">
+          <div className="flex max-w-[372px] items-center gap-2">
+            <div className="relative flex w-6/12">
               <label
                 htmlFor="start-date"
                 className="absolute -top-3 left-4 z-10 bg-white px-4 py-1 text-sm font-medium text-system-cinza/75"
@@ -163,75 +192,35 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
               </label>
               <input
                 className={cn(
-                  'w-full rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-3 text-sm hover:bg-transparent',
+                  'w-11/12 rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-3 text-sm hover:bg-transparent',
                   state.startDate
                     ? 'items-center justify-between gap-2'
                     : 'justify-end'
                 )}
-                type="date"
+                type="datetime-local"
                 id="start-date"
                 value={state.startDate}
                 onChange={(e) => setState({ ...state, startDate: e.target.value })}
               />
             </div>
-            <div className="relative flex">
+            <div className="relative flex w-6/12">
               <label
                 htmlFor="end-date"
                 className="absolute -top-3 left-4 z-10 bg-white px-4 py-1 text-sm font-medium text-system-cinza/75"
               >
-                Data Fim:
+                Data Final:
               </label>
               <input
                 className={cn(
-                  'w-full rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-3 text-sm hover:bg-transparent',
+                  'w-11/12 rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-3 text-sm hover:bg-transparent',
                   state.endDate
                     ? 'items-center justify-between gap-2'
                     : 'justify-end'
                 )}
-                type="date"
+                type="datetime-local"
                 id="end-date"
                 value={state.endDate}
                 onChange={(e) => setState({ ...state, endDate: e.target.value })}
-              />
-            </div>
-            <div className="relative flex">
-              <label
-                htmlFor="start-time"
-                className="absolute -top-3 left-4 z-10 bg-white px-4 py-1 text-sm font-medium text-system-cinza/75"
-              >
-                Hora inicio:
-              </label>
-              <input
-                className={cn(
-                  'w-full rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-3 text-sm hover:bg-transparent',
-                  state.startHour
-                    ? 'items-center justify-between gap-2'
-                    : 'justify-end'
-                )}
-                type="time"
-                id="start-time"
-                value={state.startHour}
-                onChange={(e) => setState({ ...state, startHour: e.target.value })}
-              />
-            </div>
-            <div className="relative flex">
-              <label
-                htmlFor="end-time"
-                className="absolute -top-3 left-4 z-10 bg-white px-4 py-1 text-sm font-medium text-system-cinza/75"
-              >
-                Hora final:
-              </label>
-              <input
-                className={cn(
-                  'w-full rounded-md border-2 border-system-cinza/25 bg-transparent fill-primary-default p-3 text-sm hover:bg-transparent',
-                  state.endHour
-                    ? 'items-center justify-between gap-2'
-                    : 'justify-end'
-                )}
-                type="time"
-                id="end-time"
-                value={state.endHour}
-                onChange={(e) => setState({ ...state, endHour: e.target.value })}
               />
             </div>
           </div>

@@ -64,16 +64,37 @@ const invertDate = (date: string): string => {
 
 const formattedDateMachine = (dateString?: string) => {
   if (dateString) {
-    const [day, month, year] = dateString.split('/').map(Number)
+    const [datePart, timePart] = dateString.split(', ')
+    const [day, month, year] = datePart.split('/').map(Number)
+
     if (isNaN(day) || isNaN(month) || isNaN(year) || month > 12 || day > 31) {
       return '-'
     }
+
     const date = new Date(year, month - 1, day)
     const formattedYear = date.getFullYear()
     const formattedMonth = String(date.getMonth() + 1).padStart(2, '0')
     const formattedDay = String(date.getDate()).padStart(2, '0')
+
+    if (timePart) {
+      const [hours, minutes, seconds] = timePart.split(':').map(Number)
+
+      if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+        return '-'
+      }
+
+      date.setHours(hours, minutes, seconds)
+
+      const formattedHours = String(date.getHours()).padStart(2, '0')
+      const formattedMinutes = String(date.getMinutes()).padStart(2, '0')
+      const formattedSeconds = String(date.getSeconds()).padStart(2, '0')
+
+      return `${formattedYear}-${formattedMonth}-${formattedDay}T${formattedHours}:${formattedMinutes}:${formattedSeconds}`
+    }
+
     return `${formattedYear}-${formattedMonth}-${formattedDay}`
   }
+
   return ''
 }
 

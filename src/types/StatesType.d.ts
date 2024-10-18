@@ -42,11 +42,7 @@ export type ExtractStateType = {
   type: string | null
   startDate: string
   endDate: string
-  startHour: string
-  endHour: string
   controlIn: number
   controlOut: number
-  // firstDate: string
-  // lastDate: string
   filterModal: boolean
 }
