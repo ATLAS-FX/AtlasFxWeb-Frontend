@@ -3,10 +3,8 @@ import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
-import {
-  default as Atlas_Favicon,
-  default as CarteiraX_Favicon
-} from './assets/logos/fx_verde_claro.svg'
+import CarteiraX_Favicon from './assets/logos/cx_branca.svg'
+import Atlas_Favicon from './assets/logos/fx_verde_claro.svg'
 import { Toaster } from './components/ui/toaster.tsx'
 import { useAtlas, UserProvider } from './contexts/AtlasContext.tsx'
 import { setColorVariables } from './contexts/setColors.tsx'
