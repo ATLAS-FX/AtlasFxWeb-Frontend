@@ -111,7 +111,7 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({
               />
             ) : (
               <Button
-                className="flex items-center gap-2 bg-primary-default fill-system-neutro p-2 text-sm text-system-neutro"
+                className="focus:bg-primary-default/25 flex items-center gap-2 bg-primary-default fill-system-neutro p-2 text-sm text-system-neutro focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-800"
                 onClick={() => {
                   setPixCopyPaste(true)
                   navigate('/payments')
@@ -128,7 +128,7 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({
         <>
           <article className="relative flex flex-col gap-4 rounded-xl border-2 border-system-cinza/25 p-4 text-system-cinza">
             <Button
-              className="absolute right-2 top-2 flex h-fit w-fit items-center gap-2 border-[1px] border-primary-hover bg-transparent p-2 text-xs text-primary-hover shadow-none transition-all duration-300 ease-in-out hover:fill-white hover:text-white"
+              className="absolute right-2 top-2 flex h-fit w-fit items-center gap-2 border-[1px] border-primary-hover bg-transparent p-2 text-xs text-primary-hover shadow-none transition-all duration-300 ease-in-out hover:fill-white hover:text-white focus:ring-2 focus:ring-system-cinza/50 focus-visible:outline-none"
               onClick={() => setFlow({ ...flow, save: flow.save === 0 ? 1 : 0 })}
             >
               {flow?.save === 0 ? 'Salvar Contato' : 'Não Salvar'}

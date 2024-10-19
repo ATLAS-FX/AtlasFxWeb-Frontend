@@ -98,10 +98,19 @@ const formattedDateMachine = (dateString?: string) => {
   return ''
 }
 
-const formattedDoc = (value: string, type: string) => {
-  if (type === 'cnpj') {
-    if (!value) return 'xx.xxx.xxx/xxxx-xx'
-    value = value.replace(/\D/g, '')
+const formattedDoc = (value: string): string => {
+  if (!value) return 'xxx.xxx.xxx-xx'
+
+  value = value.replace(/\D/g, '')
+
+  if (value.length === 11) {
+    // CPF format
+    value = value.replace(/^(\d{3})(\d)/, '$1.$2')
+    value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
+    value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4')
+    return value
+  } else if (value.length === 14) {
+    // CNPJ format
     value = value.replace(/^(\d{2})(\d)/, '$1.$2')
     value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
     value = value.replace(/^(\d{2})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3/$4')
@@ -109,17 +118,10 @@ const formattedDoc = (value: string, type: string) => {
       /^(\d{2})\.(\d{3})\.(\d{3})\/(\d{4})(\d)/,
       '$1.$2.$3/$4-$5'
     )
-
-    return value
-  } else if (type === 'cpf') {
-    if (!value) return 'xxx.xxx.xxx-xx'
-    value = value.replace(/\D/g, '')
-    value = value.replace(/^(\d{3})(\d)/, '$1.$2')
-    value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
-    value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4')
-
     return value
   }
+
+  return value
 }
 
 function formattedPrice(value: string | undefined) {

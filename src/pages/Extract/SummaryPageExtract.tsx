@@ -12,7 +12,12 @@ import { ErrorResponse } from '@/types/ErrorResponse'
 import { TransactionType } from '@/types/Extract'
 import { ExtractStateType } from '@/types/StatesType'
 import { RegisterPixType } from '@/types/userType'
-import { formattedDate, formattedPrice, invertDate } from '@/utils/GenerateFormatted'
+import {
+  formattedDate,
+  formattedDoc,
+  formattedPrice,
+  invertDate
+} from '@/utils/GenerateFormatted'
 import { PDFViewer } from '@react-pdf/renderer'
 import { ChevronRight, Loader2 } from 'lucide-react'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
@@ -254,31 +259,64 @@ const SummaryPageExtract: React.FC<SummaryPageExtractProps> = ({
         loading={extractLoading}
         filter={extractFunction}
       />
-      <ModalExtract
-        openModalDetails={openModalDetails}
-        setOpenModalDetails={setOpenModalDetails}
-        isLoading={isLoading}
-        // detailsTransaction={detailsTransaction}
-        dataTransaction={formattedDate(detailsTransaction?.createdAt ?? '-')}
-        amountTransaction={
-          formattedPrice(detailsTransaction?.amount.toString()) ?? '-'
-        }
-        typeTransaction={detailsTransaction?.type ?? '-'}
-        idTransaction={detailsTransaction?.transactionId ?? '-'}
-        nameOrigin={detailsTransaction?.transactionData?.clientNamePayer ?? '-'}
-        documentOrigin={detailsTransaction?.transactionData?.documentPayer ?? '-'}
-        bankOrigin={detailsTransaction?.transactionData?.bankName ?? '-'}
-        typeAccountOrigin={
-          detailsTransaction?.transactionData?.accountTypePayer ?? '-'
-        }
-        nameDestiny={detailsTransaction?.transactionData?.nameReceiver ?? '-'}
-        documentDestiny={
-          detailsTransaction?.transactionData?.documentReceiver ?? '-'
-        }
-        bankDestiny={detailsTransaction?.transactionData?.bankReceiver ?? '-'}
-        agencyDestiny={detailsTransaction?.transactionData?.agencyReceiver ?? '-'}
-        accountDestiny={detailsTransaction?.transactionData?.accountReceiver ?? '-'}
-      />
+      {Number(detailsTransaction?.amount) > 0 ? (
+        <ModalExtract
+          // detailsTransaction={detailsTransaction}
+          openModalDetails={openModalDetails}
+          setOpenModalDetails={setOpenModalDetails}
+          isLoading={isLoading}
+          dataTransaction={formattedDate(detailsTransaction?.createdAt ?? '-')}
+          amountTransaction={formattedPrice(detailsTransaction?.amount) ?? '-'}
+          typeTransaction={detailsTransaction?.category ?? '-'}
+          idTransaction={detailsTransaction?.transactionId ?? '-'}
+          nameOrigin={detailsTransaction?.transactionData?.clientNamePayer ?? '-'}
+          documentOrigin={
+            formattedDoc(
+              detailsTransaction?.transactionData?.documentPayer ?? '-'
+            ) ?? '-'
+          }
+          bankOrigin={detailsTransaction?.account?.bankId ?? '-'}
+          typeAccountOrigin={detailsTransaction?.account?.type ?? '-'}
+          nameDestiny={detailsTransaction?.account?.companyName ?? '-'}
+          documentDestiny={
+            formattedDoc(detailsTransaction?.account?.documentNumber ?? '-') ?? '-'
+          }
+          bankDestiny={detailsTransaction?.account?.bankId ?? '-'}
+          agencyDestiny={detailsTransaction?.account?.agency ?? '-'}
+          accountDestiny={detailsTransaction?.account?.number ?? '-'}
+        />
+      ) : (
+        <ModalExtract
+          // detailsTransaction={detailsTransaction}
+          openModalDetails={openModalDetails}
+          setOpenModalDetails={setOpenModalDetails}
+          isLoading={isLoading}
+          dataTransaction={formattedDate(detailsTransaction?.createdAt ?? '-')}
+          amountTransaction={formattedPrice(detailsTransaction?.amount) ?? '-'}
+          typeTransaction={detailsTransaction?.category ?? '-'}
+          idTransaction={detailsTransaction?.transactionId ?? '-'}
+          nameOrigin={
+            detailsTransaction?.transactionData?.pixResponse?.owner?.name ?? '-'
+          }
+          documentOrigin={
+            formattedDoc(
+              detailsTransaction?.transactionData?.pixResponse?.owner?.document ??
+                '-'
+            ) ?? '-'
+          }
+          bankOrigin={detailsTransaction?.transactionData?.bankName ?? '-'}
+          typeAccountOrigin={
+            detailsTransaction?.transactionData?.pixResponse?.account?.type ?? '-'
+          }
+          nameDestiny={detailsTransaction?.account?.nameOwner ?? '-'}
+          documentDestiny={
+            formattedDoc(detailsTransaction?.account?.documentNumber ?? '-') ?? '-'
+          }
+          bankDestiny={detailsTransaction?.account?.bankId ?? '-'}
+          agencyDestiny={detailsTransaction?.account?.agency ?? '-'}
+          accountDestiny={detailsTransaction?.account?.number ?? '-'}
+        />
+      )}
 
       <ModalPrint
         openModal={openModalPrint}

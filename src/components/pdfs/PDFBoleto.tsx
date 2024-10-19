@@ -159,7 +159,7 @@ const PDFBoleto: React.FC<PdfBoletoProps> = ({
               <Text style={styles.label}>Nome:</Text>
               <Text style={styles.value}>{name}</Text>
               <Text style={styles.label}>CPF/CNPJ:</Text>
-              <Text style={styles.value}>{formattedDoc(document, 'cnpj')}</Text>
+              <Text style={styles.value}>{formattedDoc(document)}</Text>
               <Text style={styles.label}>Linha de Código de barras:</Text>
               <Text style={styles.value}>{barcode}</Text>
             </View>

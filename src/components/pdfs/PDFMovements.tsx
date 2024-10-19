@@ -134,7 +134,7 @@ const PDFMovements: React.FC<PdfMovementsProps> = ({
               </View>
               <View style={styles.flex}>
                 <Text style={styles.label}>CNPJ:</Text>
-                <Text style={styles.value}>{formattedDoc(document, 'cnpj')}</Text>
+                <Text style={styles.value}>{formattedDoc(document)}</Text>
               </View>
               <View style={styles.flex}>
                 <Text style={styles.label}>Agência:</Text>

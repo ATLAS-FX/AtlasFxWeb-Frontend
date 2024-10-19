@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { PixType, SendPixType } from '@/types/PixType'
 import { PixStateType } from '@/types/StatesType'
-import { formattedPrice } from '@/utils/GenerateFormatted'
+import { formattedDoc, formattedPrice } from '@/utils/GenerateFormatted'
 import { Dispatch, SetStateAction } from 'react'
 
 interface ModalPix {
@@ -66,10 +66,9 @@ const ModalPix: React.FC<ModalPix> = ({
                     {data?.name || ''}
                   </label>
                 </div>
+                <h4 className="font-medium text-system-cinza">Destinatário</h4>
                 <div className="flex items-center justify-between text-sm">
-                  <label className="font-medium text-primary-default">
-                    Nome do destinatário:
-                  </label>
+                  <label className="font-medium text-primary-default">Nome:</label>
                   <span className="text-end">{data?.name || ''}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
@@ -122,21 +121,44 @@ const ModalPix: React.FC<ModalPix> = ({
         {state.step === 4 && (
           <ModalSuccess
             key="success-modal"
-            title={'Sucesso!'}
+            title={dataSendPix?.success ?? ''}
             back={() => setState({ ...state, step: 3 })}
-            amount={`R$ ${formattedPrice(state?.amount) || 'R$ 0,00'}`}
-            typeTransfer={'Pix'}
-            idTransfer={dataSendPix?.id_transaction || '-'}
-            namePayer={'-'}
-            docPayer={'-'}
-            bankPayer={'-'}
-            typeAccountPayer={'-'}
-            keyPixPayer={state?.keyPix || '-'}
-            nameRecipient={dataSendPix?.name || '-'}
-            docRecipient={dataSendPix?.document || '-'}
-            bankRecipient={dataSendPix?.bank || '-'}
-            agencyRecipient={dataSendPix?.agency || '-'}
-            accountRecipient={dataSendPix?.account || '-'}
+            amount={`R$ ${formattedPrice(state?.amount) ?? 'R$ 0,00'}`}
+            typeTransfer={dataSendPix?.response?.category ?? '-'}
+            idTransfer={dataSendPix?.response?.transactionId ?? '-'}
+            namePayer={
+              dataSendPix?.response?.transactionData?.clientFantasyName ?? '-'
+            }
+            docPayer={
+              formattedDoc(dataSendPix?.response?.account?.documentNumber ?? '-') ??
+              '-'
+            }
+            bankPayer={
+              dataSendPix?.response?.transactionData?.recept_ispb_bank ?? '-'
+            }
+            typeAccountPayer={
+              dataSendPix?.response?.transactionData?.accountType ?? '-'
+            }
+            nameRecipient={
+              dataSendPix?.response?.transactionData?.recept_name ?? '-'
+            }
+            docRecipient={
+              formattedDoc(
+                dataSendPix?.response?.transactionData?.recept_cpf_cnpj ?? '-'
+              ) ?? '-'
+            }
+            bankRecipient={dataSendPix?.response?.transactionData?.bankName ?? '-'}
+            agencyRecipient={
+              dataSendPix?.response?.transactionData?.pixResponse?.account?.agency ??
+              '-'
+            }
+            accountRecipient={
+              dataSendPix?.response?.transactionData?.pixResponse?.account?.number ??
+              '-'
+            }
+            keyPixPayer={
+              dataSendPix?.response?.transactionData?.pixResponse?.key ?? '-'
+            }
           />
         )}
       </DialogContent>

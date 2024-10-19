@@ -34,7 +34,7 @@ const ButtonAtlas: React.FC<ButtonAtlasProps> = ({
   return (
     <div
       className={cn(
-        'flex w-fit cursor-pointer items-center gap-2 rounded-md bg-primary-default fill-system-neutro px-3 py-2 text-sm text-system-neutro transition-transform duration-300 hover:bg-primary-hover',
+        'flex w-fit cursor-pointer items-center gap-2 rounded-md bg-primary-default fill-system-neutro px-3 py-2 text-sm text-system-neutro transition-transform duration-300 hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-system-cinza/50',
         classButton,
         listAction ? 'justify-between' : ''
       )}

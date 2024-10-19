@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { SendPixType } from '@/types/PixType'
 import { TransferStateType } from '@/types/StatesType'
-import { formattedPrice } from '@/utils/GenerateFormatted'
+import { formattedDoc, formattedPrice } from '@/utils/GenerateFormatted'
 import { Dispatch, SetStateAction } from 'react'
 
 interface ModalTransfer {
@@ -61,10 +61,9 @@ const ModalTransfer: React.FC<ModalTransfer> = ({
                     {state?.name || ''}
                   </label>
                 </div>
+                <h4 className="font-medium text-system-cinza">Destinatário</h4>
                 <div className="flex items-center justify-between text-sm">
-                  <label className="font-medium text-primary-default">
-                    Nome do destinatário:
-                  </label>
+                  <label className="font-medium text-primary-default">Nome:</label>
                   <span>{state?.name || ''}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
@@ -117,21 +116,44 @@ const ModalTransfer: React.FC<ModalTransfer> = ({
         {state.step === 4 && (
           <ModalSuccess
             key="success-modal"
-            title={'Sucesso!'}
+            title={sendTransfer?.success ?? ''}
             back={() => setState({ ...state, step: 3 })}
-            amount={`R$ ${formattedPrice(state?.amount) || ''}`}
-            typeTransfer={'TED'}
-            idTransfer={sendTransfer?.id_transaction || '-'}
-            namePayer={'-'}
-            docPayer={''}
-            bankPayer={''}
-            typeAccountPayer={'-'}
-            keyPixPayer={'-'}
-            nameRecipient={sendTransfer?.name || '-'}
-            docRecipient={sendTransfer?.document || '-'}
-            bankRecipient={sendTransfer?.bank || '-'}
-            agencyRecipient={sendTransfer?.agency || '-'}
-            accountRecipient={sendTransfer?.account || '-'}
+            amount={`R$ ${formattedPrice(state?.amount) ?? 'R$ 0,00'}`}
+            typeTransfer={sendTransfer?.response?.category ?? '-'}
+            idTransfer={sendTransfer?.response?.transactionId ?? '-'}
+            namePayer={
+              sendTransfer?.response?.transactionData?.clientFantasyName ?? '-'
+            }
+            docPayer={
+              formattedDoc(sendTransfer?.response?.account?.documentNumber ?? '-') ??
+              '-'
+            }
+            bankPayer={
+              sendTransfer?.response?.transactionData?.recept_ispb_bank ?? '-'
+            }
+            typeAccountPayer={
+              sendTransfer?.response?.transactionData?.accountType ?? '-'
+            }
+            nameRecipient={
+              sendTransfer?.response?.transactionData?.recept_name ?? '-'
+            }
+            docRecipient={
+              formattedDoc(
+                sendTransfer?.response?.transactionData?.recept_cpf_cnpj ?? '-'
+              ) ?? '-'
+            }
+            bankRecipient={sendTransfer?.response?.transactionData?.bankName ?? '-'}
+            agencyRecipient={
+              sendTransfer?.response?.transactionData?.pixResponse?.account
+                ?.agency ?? '-'
+            }
+            accountRecipient={
+              sendTransfer?.response?.transactionData?.pixResponse?.account
+                ?.number ?? '-'
+            }
+            keyPixPayer={
+              sendTransfer?.response?.transactionData?.pixResponse?.key ?? '-'
+            }
           />
         )}
       </DialogContent>

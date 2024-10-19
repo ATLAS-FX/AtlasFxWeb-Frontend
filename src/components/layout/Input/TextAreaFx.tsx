@@ -41,7 +41,7 @@ const TextAreaFX: React.FC<TextAreaFXProps> = ({
         placeholder={placeholder}
         style={{ resize: 'none' }}
         onChange={(e: ChangeEvent<HTMLTextAreaElement>) => change(e.target.value)}
-        className="w-full rounded-md border-2 border-system-cinza/25 bg-transparent px-4 py-6 text-lg hover:border-system-cinza/25"
+        className="w-full rounded-md border-2 border-system-cinza/25 bg-transparent px-4 py-6 text-lg hover:border-system-cinza/25 focus:ring-2 focus:ring-system-cinza/50 focus-visible:border-none focus-visible:outline-none"
       />
     </div>
   )

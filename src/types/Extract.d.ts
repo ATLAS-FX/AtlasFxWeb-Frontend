@@ -58,21 +58,44 @@ export type TransactionType = {
   category: string
   type: string
   transactionData: {
-    operationNumber: string
+    keySource: string
+    keyTarget: string
+    status: string
+    clientFantasyName: string
+    recept_cpf_cnpj: string
+    recept_name: string
+    recept_account: string
+    recept_agency: string
+    recept_ispb_bank: string
     clientNamePayer: string
-    accountTypePayer: string
-    agency: string
-    accountPayer: string
-    bankIspbPayer: string
     documentPayer: string
-    accountNumber: string
-    receiptKey: string
-    nameReceiver: string
-    documentReceiver: string
-    accountReceiver: string
-    agencyReceiver: string
-    bankReceiver: string
-    txId: string
+    pixResponse: {
+      key: string
+      type: string
+      account: {
+        agency: string
+        number: string
+        openingDate: string
+        type: string
+        branch: string
+        participant: string
+      }
+      owner: {
+        cpf_cnpj: string
+        name: string
+        type: string
+        document: string
+      }
+      extra: {
+        createdEntryCid: string
+        creationDate: string
+        deletedEntryCid: string
+        endToEndId: string
+        keyOwnershipDate: string
+        piPayerId: string
+      }
+    }
+    description: string
     bankName: string
     bankCode: string
     fee: {
@@ -82,6 +105,13 @@ export type TransactionType = {
       isOwner: boolean
       planId: number
     }
+    operationNumber: string
+    bank: string
+    agency: string
+    accountType: string
+    account: string
+    cnpj: boolean
+    cpf: boolean
   }
   createdAt: string
   updatedAt: string
@@ -98,13 +128,15 @@ export type TransactionType = {
     type: string
     bankId: string
     number: string
+    nameOwner: string
     companyName: string
     documentNumber: string
     fantasyName: string
     isIndirectPix: boolean
+    companyName: string
   }
   balanceAfterTransaction: string
   bank_id: string
-  idempotencyKey: string
+  idempotencyKey: string | null
   origin: string
 }

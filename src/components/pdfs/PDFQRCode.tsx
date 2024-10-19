@@ -162,7 +162,7 @@ const PDFQRCode: React.FC<PdfQRCodeProps> = ({
               <Text style={styles.label}>Nome:</Text>
               <Text style={styles.value}>{name}</Text>
               <Text style={styles.label}>CPF/CNPJ:</Text>
-              <Text style={styles.value}>{formattedDoc(document, 'cnpj')}</Text>
+              <Text style={styles.value}>{formattedDoc(document)}</Text>
               <Text style={styles.label}>Chave Pix:</Text>
               <Text style={styles.value}>{pix}</Text>
             </View>

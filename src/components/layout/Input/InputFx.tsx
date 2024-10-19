@@ -1,4 +1,3 @@
-import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { ChangeEvent } from 'react'
 
@@ -32,7 +31,7 @@ const InputFX: React.FC<InputFXProps> = ({
       >
         {label}
       </label>
-      <Input
+      <input
         id={name}
         type={type}
         value={value}
@@ -41,7 +40,7 @@ const InputFX: React.FC<InputFXProps> = ({
           e.key === '13' && change(e.target.value)
         }}
         onChange={(e: ChangeEvent<HTMLInputElement>) => change(e.target.value)}
-        className="w-full rounded-md border-2 border-system-cinza/25 px-4 py-6 text-base"
+        className="h-14 w-full rounded-md border-2 border-system-cinza/25 bg-transparent px-4 py-6 text-base focus:ring-2 focus:ring-system-cinza/50 focus-visible:border-none focus-visible:outline-none"
       />
     </div>
   )

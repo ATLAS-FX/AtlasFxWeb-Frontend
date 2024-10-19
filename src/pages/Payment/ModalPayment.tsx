@@ -82,10 +82,9 @@ const ModalPayment: React.FC<ModalPaymentProps> = ({
                     {data?.name || ''}
                   </label>
                 </div>
+                <h4 className="font-medium text-system-cinza">Destinatário</h4>
                 <div className="flex items-center justify-between text-sm">
-                  <label className="font-medium text-primary-default">
-                    Nome do destinatário:
-                  </label>
+                  <label className="font-medium text-primary-default">Nome:</label>
                   <span>{data?.name || '-'}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">

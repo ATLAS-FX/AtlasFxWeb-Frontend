@@ -156,7 +156,7 @@ const Login: React.FC = () => {
                         type="text"
                         value={authFlow.maskDoc}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                          const format = formattedDoc(e.target.value, 'cnpj')
+                          const format = formattedDoc(e.target.value)
                           setAuthFlow({
                             ...authFlow,
                             doc: e.target.value,
@@ -196,12 +196,12 @@ const Login: React.FC = () => {
                           {authFlow.hidePwd ? (
                             <IconEyeHide
                               size={24}
-                              className="mr-2 fill-primary-default transition-all duration-300 ease-in-out hover:fill-primary-default/50"
+                              className="hover:fill-primary-default/50 mr-2 fill-primary-default transition-all duration-300 ease-in-out"
                             />
                           ) : (
                             <IconEyeReveal
                               size={24}
-                              className="mr-2 fill-primary-default transition-all duration-300 ease-in-out hover:fill-primary-default/50"
+                              className="hover:fill-primary-default/50 mr-2 fill-primary-default transition-all duration-300 ease-in-out"
                             />
                           )}
                         </button>

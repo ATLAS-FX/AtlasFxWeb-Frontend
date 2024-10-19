@@ -55,7 +55,7 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
             }}
           />
           <button
-            className="absolute right-0 top-1 flex h-fit w-fit items-center gap-2 bg-transparent p-2 transition-all duration-300 ease-in-out"
+            className="absolute right-0 top-2 flex h-fit w-fit items-center gap-2 bg-transparent p-2 transition-all duration-300 ease-in-out"
             onClick={() => {
               setHidePassword(!hidePassword)
             }}
@@ -63,12 +63,12 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
             {hidePassword ? (
               <IconEyeHide
                 size={24}
-                className="mr-2 fill-primary-default transition-all duration-300 ease-in-out hover:fill-primary-default/50"
+                className="hover:fill-primary-default/50 mr-2 fill-primary-default transition-all duration-300 ease-in-out"
               />
             ) : (
               <IconEyeReveal
                 size={24}
-                className="mr-2 fill-primary-default transition-all duration-300 ease-in-out hover:fill-primary-default/50"
+                className="hover:fill-primary-default/50 mr-2 fill-primary-default transition-all duration-300 ease-in-out"
               />
             )}
           </button>
