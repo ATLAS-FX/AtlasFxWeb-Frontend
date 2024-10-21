@@ -141,6 +141,7 @@ const ModalPayment: React.FC<ModalPaymentProps> = ({
             title={'Sucesso!'}
             amount={''}
             back={() => setState({ ...state, step: 3 })}
+            downloadPDF={() => {}}
             typeTransfer={''}
             idTransfer={''}
             namePayer={''}

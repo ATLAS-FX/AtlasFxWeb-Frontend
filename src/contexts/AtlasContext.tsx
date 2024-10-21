@@ -63,7 +63,8 @@ const initialThemeState: ThemeType = {
   background: '#EFEFEF',
   text_primary: '#243060',
   text_secondary: '#C8D753',
-  systemName: ''
+  systemName:
+    import.meta.env.VITE_CLIENT_NAME === 'ATLAS' ? 'Atlas FX' : 'Carteira X'
 }
 
 export const UserProvider = ({ children }: UserProviderProps) => {
@@ -95,7 +96,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     const theme = sessionStorage.getItem('theme_org')
     if (theme) {
       const themeOrg = JSON.parse(theme)
-      setThemeSystem(themeOrg)
+      setThemeSystem((prev) => ({ ...prev, themeOrg }))
     }
     if (sessionToken !== null) {
       setToken(sessionToken)

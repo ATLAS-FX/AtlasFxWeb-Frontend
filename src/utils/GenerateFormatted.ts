@@ -89,7 +89,7 @@ const formattedDateMachine = (dateString?: string) => {
       const formattedMinutes = String(date.getMinutes()).padStart(2, '0')
       const formattedSeconds = String(date.getSeconds()).padStart(2, '0')
 
-      return `${formattedYear}-${formattedMonth}-${formattedDay}T${formattedHours}:${formattedMinutes}:${formattedSeconds}`
+      return `${formattedYear}-${formattedMonth}-${formattedDay} ${formattedHours}:${formattedMinutes}:${formattedSeconds}`
     }
 
     return `${formattedYear}-${formattedMonth}-${formattedDay}`

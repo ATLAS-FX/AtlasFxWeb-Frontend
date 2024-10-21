@@ -1,12 +1,12 @@
 import { Container, Title } from '@/components/layout'
 import { Separator } from '@/components/ui/separator'
+import { SendPixType } from '@/types/PixType'
+import { PixStateType } from '@/types/StatesType'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ContactsPagePix from './ContactsPagePix'
 import FlowPagePix from './FlowPagePix'
 import KeyPagePix from './KeyPagePix'
-import { SendPixType } from '@/types/PixType'
-import { PixStateType } from '@/types/StatesType'
 
 const HomePagePix: React.FC = () => {
   const navigate = useNavigate()

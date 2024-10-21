@@ -59,9 +59,17 @@ const useDeletePixKey = () => {
   })
 }
 
+const useDeleteContact = () => {
+  return useMutation(async (params: { id: string }) => {
+    const { data } = await api.post('/portal/contacts/list', params)
+    return data
+  })
+}
+
 export {
   useConfirmCreatedKeyPix,
   useCreatedKeyPix,
+  useDeleteContact,
   useDeletePixKey,
   useGetKeyInfo,
   useListContacts,

@@ -15,7 +15,7 @@ const queryClient = new QueryClient({
 })
 
 const CheckTheme = () => {
-  const { themeSystem, setThemeSystem } = useAtlas()
+  const { themeSystem } = useAtlas()
   setColorVariables(themeSystem)
 
   if (import.meta.env.VITE_CLIENT_NAME === 'ATLAS') {
@@ -26,9 +26,6 @@ const CheckTheme = () => {
       favicon.href = Atlas_Favicon
     }
     document.title = 'Atlas FX'
-    if (!themeSystem.systemName) {
-      setThemeSystem({ ...themeSystem, systemName: 'Atlas FX' })
-    }
   }
 
   if (import.meta.env.VITE_CLIENT_NAME === 'CARTEIRAX') {
@@ -39,9 +36,6 @@ const CheckTheme = () => {
       favicon.href = CarteiraX_Favicon
     }
     document.title = 'Carteira X'
-    if (!themeSystem.systemName) {
-      setThemeSystem({ ...themeSystem, systemName: 'Carteira X' })
-    }
   }
 
   return (

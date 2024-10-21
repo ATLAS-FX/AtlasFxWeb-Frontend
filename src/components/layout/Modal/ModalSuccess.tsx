@@ -5,6 +5,7 @@ import { DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import { formatKeyPix } from '@/utils/FormattedKeyPix'
 import { ChevronLeft } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 interface ModalConfirmProps {
   title: string
@@ -22,6 +23,7 @@ interface ModalConfirmProps {
   agencyRecipient: string
   accountRecipient: string
   back: () => void
+  downloadPDF: () => void
 }
 
 const ModalConfirm: React.FC<ModalConfirmProps> = ({
@@ -39,7 +41,8 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
   bankRecipient,
   agencyRecipient,
   accountRecipient,
-  back
+  back,
+  downloadPDF
 }) => {
   return (
     <>
@@ -138,10 +141,16 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
             </div>
           </div>
           <div className="flex items-center justify-between pt-6 text-sm">
-            <Button className="border-2 border-primary-default bg-transparent text-primary-default shadow-none transition-all duration-300 ease-in-out hover:text-white">
+            <Link
+              className="rounded-md border-2 border-primary-default bg-transparent p-1.5 text-primary-default shadow-none transition-all duration-300 ease-in-out hover:bg-primary-default hover:text-white"
+              to={'/payments'}
+            >
               Realizar novo pagamento
-            </Button>
-            <Button className="items-center gap-2 bg-primary-default transition-all duration-300 ease-in-out">
+            </Link>
+            <Button
+              className="items-center gap-2 bg-primary-default transition-all duration-300 ease-in-out"
+              onClick={() => downloadPDF()}
+            >
               <IconDownload className="size-4 fill-white" />
               Download PDF
             </Button>

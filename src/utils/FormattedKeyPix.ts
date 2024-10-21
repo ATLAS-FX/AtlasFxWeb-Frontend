@@ -63,28 +63,30 @@ const validateCNPJ = (cnpj: string): boolean => {
 export const formatKeyPix = (
   keyPix: string
 ): { formattedKey: string; type: string } => {
+  // Remove caracteres especiais (pontos, traços, barras, parênteses, etc.)
+  let cleanedKey = keyPix.replace(/[^\d]/g, '')
   let formattedKey = keyPix
   let type = ''
 
   // Verifica se é um CPF válido
-  if (/^\d{11}$/.test(keyPix) && validateCPF(keyPix)) {
-    formattedKey = `${keyPix.slice(0, 3)}.${keyPix.slice(3, 6)}.${keyPix.slice(
+  if (/^\d{11}$/.test(cleanedKey) && validateCPF(cleanedKey)) {
+    formattedKey = `${cleanedKey.slice(0, 3)}.${cleanedKey.slice(3, 6)}.${cleanedKey.slice(
       6,
       9
-    )}-${keyPix.slice(9)}`
+    )}-${cleanedKey.slice(9)}`
     type = 'cpf'
   }
   // Se não for CPF válido, verifica se é um número de telefone
-  else if (/^\d{11}$/.test(keyPix)) {
-    formattedKey = `(${keyPix.slice(0, 2)})${keyPix.slice(2, 7)}-${keyPix.slice(7)}`
+  else if (/^\d{11}$/.test(cleanedKey)) {
+    formattedKey = `(${cleanedKey.slice(0, 2)})${cleanedKey.slice(2, 7)}-${cleanedKey.slice(7)}`
     type = 'phone'
   }
   // Se não for CPF nem telefone, verifica se é um CNPJ
-  else if (/^\d{14}$/.test(keyPix) && validateCNPJ(keyPix)) {
-    formattedKey = `${keyPix.slice(0, 2)}.${keyPix.slice(2, 5)}.${keyPix.slice(
+  else if (/^\d{14}$/.test(cleanedKey) && validateCNPJ(cleanedKey)) {
+    formattedKey = `${cleanedKey.slice(0, 2)}.${cleanedKey.slice(2, 5)}.${cleanedKey.slice(
       5,
       8
-    )}/${keyPix.slice(8, 12)}-${keyPix.slice(12)}`
+    )}/${cleanedKey.slice(8, 12)}-${cleanedKey.slice(12)}`
     type = 'cnpj'
   }
   // Verifica se é um email
@@ -98,5 +100,6 @@ export const formatKeyPix = (
   else {
     type = 'key-random'
   }
+
   return { formattedKey, type }
 }

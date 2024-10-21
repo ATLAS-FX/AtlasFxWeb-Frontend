@@ -262,6 +262,7 @@ const SummaryPageExtract: React.FC<SummaryPageExtractProps> = ({
       {Number(detailsTransaction?.amount) > 0 ? (
         <ModalExtract
           // detailsTransaction={detailsTransaction}
+          downloadPDF={() => setOpenModalPrint(true)}
           openModalDetails={openModalDetails}
           setOpenModalDetails={setOpenModalDetails}
           isLoading={isLoading}
@@ -288,6 +289,7 @@ const SummaryPageExtract: React.FC<SummaryPageExtractProps> = ({
       ) : (
         <ModalExtract
           // detailsTransaction={detailsTransaction}
+          downloadPDF={() => setOpenModalPrint(true)}
           openModalDetails={openModalDetails}
           setOpenModalDetails={setOpenModalDetails}
           isLoading={isLoading}

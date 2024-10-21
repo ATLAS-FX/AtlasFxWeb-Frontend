@@ -125,10 +125,6 @@ const HomePageExtract: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    console.log(filterOptions)
-  }, [filterOptions])
-
-  useEffect(() => {
     if (isError) {
       toast({
         variant: 'destructive',

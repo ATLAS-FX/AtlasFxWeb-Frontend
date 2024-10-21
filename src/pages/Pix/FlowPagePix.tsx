@@ -11,7 +11,7 @@ import { PixStateType } from '@/types/StatesType'
 import { formatKeyPix } from '@/utils/FormattedKeyPix'
 import { formattedPrice } from '@/utils/GenerateFormatted'
 import md5 from 'md5'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ModalPix from './ModalPix'
 
@@ -84,6 +84,10 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({
     )
   }
 
+  useEffect(() => {
+    console.log('flow', flow)
+  }, [flow])
+
   return (
     <article className="flex flex-col gap-4">
       {flow.step === 0 && (
@@ -94,9 +98,15 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({
             value={flow.formatKeyPix}
             change={(e) => {
               const { formattedKey, type } = formatKeyPix(e)
+              console.log(type)
               setFlow({
                 ...flow,
-                keyPix: type === 'phone' ? `+55${e}` : e,
+                keyPix:
+                  type === 'phone'
+                    ? `+55${e}`
+                    : type === 'cpf' || type === 'cnpj'
+                      ? e.replace(/[.\-\/]/g, '')
+                      : e,
                 formatKeyPix: formattedKey,
                 typekeyPix: type
               })

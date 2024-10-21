@@ -5,11 +5,13 @@ import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { LoaderCircle } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 interface ModalExtractProps {
   openModalDetails: boolean
   setOpenModalDetails: (value: boolean) => void
   isLoading: boolean
+  downloadPDF: () => void
   // detailsTransaction: TransactionType | undefined
   dataTransaction: string
   amountTransaction: string
@@ -32,6 +34,7 @@ const ModalExtract: React.FC<ModalExtractProps> = ({
   openModalDetails,
   setOpenModalDetails,
   isLoading,
+  downloadPDF,
   dataTransaction,
   amountTransaction,
   typeTransaction,
@@ -172,10 +175,16 @@ const ModalExtract: React.FC<ModalExtractProps> = ({
                     </div>
                   </div>
                   <div className="flex items-center justify-between pt-6 text-sm">
-                    <Button className="border-2 border-primary-default bg-transparent text-primary-default shadow-none transition-all duration-300 ease-in-out hover:text-white">
+                    <Link
+                      className="rounded-md border-2 border-primary-default bg-transparent p-1.5 text-primary-default shadow-none transition-all duration-300 ease-in-out hover:bg-primary-default hover:text-white"
+                      to={'/payments'}
+                    >
                       Realizar novo pagamento
-                    </Button>
-                    <Button className="items-center gap-2 bg-primary-default transition-all duration-300 ease-in-out">
+                    </Link>
+                    <Button
+                      className="items-center gap-2 bg-primary-default transition-all duration-300 ease-in-out"
+                      onClick={() => downloadPDF()}
+                    >
                       <IconDownload className="size-4 fill-white" />
                       Download PDF
                     </Button>

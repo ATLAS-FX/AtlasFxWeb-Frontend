@@ -124,6 +124,7 @@ const ModalPix: React.FC<ModalPix> = ({
             title={dataSendPix?.success ?? ''}
             back={() => setState({ ...state, step: 3 })}
             amount={`R$ ${formattedPrice(state?.amount) ?? 'R$ 0,00'}`}
+            downloadPDF={() => console.log('download')}
             typeTransfer={dataSendPix?.response?.category ?? '-'}
             idTransfer={dataSendPix?.response?.transactionId ?? '-'}
             namePayer={

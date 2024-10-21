@@ -5,7 +5,6 @@ import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { ExtractStateType } from '@/types/StatesType'
-import { formattedDateMachine } from '@/utils/GenerateFormatted'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { ChevronLeft } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
@@ -40,33 +39,28 @@ const ModalFilter: React.FC<ModalFilterProps> = ({
     setState((prev) => ({
       ...prev,
       period: days,
-      startDate: formattedDateMachine(
-        new Date(new Date().setDate(new Date().getDate() - days)).toLocaleDateString(
-          'pt-BR',
-          {
-            timeZone: 'America/Sao_Paulo',
-            hour12: false,
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-          }
-        )
-      ),
-      endDate: formattedDateMachine(
-        new Date().toLocaleDateString('pt-BR', {
-          timeZone: 'America/Sao_Paulo',
-          hour12: false,
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit'
-        })
-      )
+      startDate: new Date(
+        new Date().setDate(new Date().getDate() - days)
+      ).toLocaleDateString('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+        hour12: false,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      }),
+      endDate: new Date().toLocaleDateString('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+        hour12: false,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      })
     }))
   }
 
