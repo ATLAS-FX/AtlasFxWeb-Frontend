@@ -114,15 +114,15 @@ const FormPageTransfer: React.FC<FormPageTransferProps> = ({ form, setForm }) =>
                 <CommandList>
                   <CommandEmpty>Nenhum banco listado.</CommandEmpty>
                   <CommandGroup className="p-0">
-                    {listBanks.map(({ name }, number: number) => (
+                    {listBanks.map(({ name, code }, number: number) => (
                       <CommandItem
                         key={`${name ? name + number : number}`}
                         className="w-full rounded-none border-b-[1px] border-system-cinza/10 py-3"
                         value={name}
-                        onSelect={(e) => {
+                        onSelect={() => {
                           setForm({
                             ...form,
-                            bank: e
+                            bank: code ? code.toString() : name
                           })
                           setOpen(false)
                         }}
