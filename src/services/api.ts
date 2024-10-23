@@ -25,13 +25,14 @@ api.interceptors.response.use(
     return response
   },
   (error) => {
-    if (error.response.data.error === 'access denied') {
-      localStorage.removeItem('atlas_token')
+    if (error.response.status && error.response.data.error === 'access denied') {
+      sessionStorage.removeItem('atlas_token')
       toast({
         variant: 'destructive',
         title: 'Você foi desconectado.',
         description: 'Faça login novamente.'
       })
+      window.location.href = 'login'
     }
     return Promise.reject(error)
   }

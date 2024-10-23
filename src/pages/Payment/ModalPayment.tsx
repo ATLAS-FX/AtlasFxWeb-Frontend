@@ -142,6 +142,7 @@ const ModalPayment: React.FC<ModalPaymentProps> = ({
             amount={''}
             back={() => setState({ ...state, step: 3 })}
             downloadPDF={() => {}}
+            redirect="/payments"
             typeTransfer={''}
             idTransfer={''}
             namePayer={''}

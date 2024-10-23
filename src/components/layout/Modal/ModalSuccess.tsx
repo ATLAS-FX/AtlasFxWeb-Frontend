@@ -22,6 +22,7 @@ interface ModalConfirmProps {
   bankRecipient: string
   agencyRecipient: string
   accountRecipient: string
+  redirect: string
   back: () => void
   downloadPDF: () => void
 }
@@ -41,6 +42,7 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
   bankRecipient,
   agencyRecipient,
   accountRecipient,
+  redirect,
   back,
   downloadPDF
 }) => {
@@ -143,7 +145,7 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
           <div className="flex items-center justify-between pt-6 text-sm">
             <Link
               className="rounded-md border-2 border-primary-default bg-transparent p-1.5 text-primary-default shadow-none transition-all duration-300 ease-in-out hover:bg-primary-default hover:text-white"
-              to={'/payments'}
+              to={redirect}
             >
               Realizar novo pagamento
             </Link>

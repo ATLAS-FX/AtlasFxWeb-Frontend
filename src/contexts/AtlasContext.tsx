@@ -14,12 +14,20 @@ interface UserContextData {
   setUser: Dispatch<SetStateAction<UserType>>
   themeSystem: ThemeType
   setThemeSystem: Dispatch<SetStateAction<ThemeType>>
-  pixCopyPaste: boolean
-  setPixCopyPaste: Dispatch<SetStateAction<boolean>>
-  currentStepEmail: number
-  setCurrentStepEmail: Dispatch<SetStateAction<number>>
-  currentStepProfile: number
-  setCurrentStepProfile: Dispatch<SetStateAction<number>>
+  controlAtlas: {
+    currentStepEmail: number
+    refetchBalance: boolean
+    currentStepProfile: number
+    pixCopyPaste: boolean
+  }
+  setControlAtlas: Dispatch<
+    SetStateAction<{
+      currentStepEmail: number
+      refetchBalance: boolean
+      currentStepProfile: number
+      pixCopyPaste: boolean
+    }>
+  >
   token: string
   isAuthenticated: boolean | undefined
   signIn: (token: string) => void
@@ -69,11 +77,19 @@ const initialThemeState: ThemeType = {
 
 export const UserProvider = ({ children }: UserProviderProps) => {
   const navigate = useNavigate()
-  const [currentStepEmail, setCurrentStepEmail] = useState<number>(0)
-  const [currentStepProfile, setCurrentStepProfile] = useState<number>(0)
+  const [controlAtlas, setControlAtlas] = useState<{
+    currentStepEmail: number
+    refetchBalance: boolean
+    currentStepProfile: number
+    pixCopyPaste: boolean
+  }>({
+    refetchBalance: false,
+    pixCopyPaste: false,
+    currentStepEmail: 0,
+    currentStepProfile: 0
+  })
   const [themeSystem, setThemeSystem] = useState<ThemeType>(initialThemeState)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>()
-  const [pixCopyPaste, setPixCopyPaste] = useState<boolean>(false)
   const [token, setToken] = useState<string>('')
   const [user, setUser] = useState<UserType>(initialUserState)
 
@@ -118,12 +134,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         setUser,
         themeSystem,
         setThemeSystem,
-        currentStepEmail,
-        setCurrentStepEmail,
-        pixCopyPaste,
-        setPixCopyPaste,
-        currentStepProfile,
-        setCurrentStepProfile,
+        controlAtlas,
+        setControlAtlas,
         isAuthenticated,
         signIn,
         signOut,

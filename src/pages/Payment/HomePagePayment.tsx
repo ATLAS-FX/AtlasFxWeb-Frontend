@@ -8,11 +8,11 @@ import { useNavigate } from 'react-router-dom'
 import FormPagePayment from './FormPagePayment'
 
 const HomePagePayment: React.FC = () => {
-  const { pixCopyPaste, setPixCopyPaste } = useAtlas()
+  const { controlAtlas, setControlAtlas } = useAtlas()
   const navigate = useNavigate()
   const [stepPayment, setStepPayment] = useState<PaymentStateType>({
     step: 0,
-    type: pixCopyPaste ? 'pix' : '',
+    type: controlAtlas.pixCopyPaste ? 'pix' : '',
     textValue: '',
     pwdCode: '',
     stateModal: false
@@ -47,8 +47,8 @@ const HomePagePayment: React.FC = () => {
         title="Pagamentos"
         subtitle="Pagamento 100% descomplicado."
         back={() =>
-          pixCopyPaste
-            ? setPixCopyPaste(false)
+          controlAtlas.pixCopyPaste
+            ? setControlAtlas((prev) => ({ ...prev, pixCopyPaste: false }))
             : stepPayment.step <= 0
               ? navigate(-1)
               : setStepPayment((prev) => ({
@@ -58,7 +58,7 @@ const HomePagePayment: React.FC = () => {
                 }))
         }
       />
-      {stepPayment.step === 0 && !pixCopyPaste && (
+      {stepPayment.step === 0 && !controlAtlas.pixCopyPaste && (
         <>
           <h4 className="text-sm text-system-cinza">Escolha como pagar</h4>
           <div className="flex justify-evenly p-2">
@@ -76,7 +76,7 @@ const HomePagePayment: React.FC = () => {
           setData={setDataPayment}
         />
       )}
-      {pixCopyPaste && (
+      {controlAtlas.pixCopyPaste && (
         <FormPagePayment
           flow={stepPayment}
           setFlow={setStepPayment}

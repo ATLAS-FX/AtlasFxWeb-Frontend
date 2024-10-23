@@ -120,6 +120,7 @@ const ModalTransfer: React.FC<ModalTransfer> = ({
             back={() => setState({ ...state, step: 3 })}
             amount={`R$ ${formattedPrice(state?.amount) ?? 'R$ 0,00'}`}
             downloadPDF={() => console.log('download')}
+            redirect="/transfer"
             typeTransfer={sendTransfer?.response?.category ?? '-'}
             idTransfer={sendTransfer?.response?.transactionId ?? '-'}
             namePayer={

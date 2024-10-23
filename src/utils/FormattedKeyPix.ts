@@ -64,7 +64,7 @@ export const formatKeyPix = (
   keyPix: string
 ): { formattedKey: string; type: string } => {
   // Remove caracteres especiais (pontos, traços, barras, parênteses, etc.)
-  let cleanedKey = keyPix.replace(/[^\d]/g, '')
+  let cleanedKey = keyPix.replace(/[^\d]/g, '') // Remove tudo que não for número
   let formattedKey = keyPix
   let type = ''
 

@@ -29,10 +29,11 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({
   setSendData
 }) => {
   const navigate = useNavigate()
-  const { setPixCopyPaste } = useAtlas()
+  const { setControlAtlas } = useAtlas()
   const { mutate: getKeyInfo, isLoading: loadGetKeyInfo } = useGetKeyInfo()
   const { mutate: sendPix, isLoading: loadSendPix } = useSendPix()
   const [pixData, setPixData] = useState<PixType | null>(null)
+
   const handleConsultPix = async () => {
     getKeyInfo(
       { key: flow.keyPix },
@@ -65,6 +66,7 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({
       {
         onSuccess: (res) => {
           setSendData(res)
+          setControlAtlas((prev) => ({ ...prev, refetchBalance: true }))
           setFlow({ ...flow, step: 4 })
           toast({
             variant: 'success',
@@ -103,9 +105,9 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({
                 ...flow,
                 keyPix:
                   type === 'phone'
-                    ? `+55${e}`
+                    ? `+55${e.replace(/[^\d]/g, '')}`
                     : type === 'cpf' || type === 'cnpj'
-                      ? e.replace(/[.\-\/]/g, '')
+                      ? e.replace(/[^\d]/g, '')
                       : e,
                 formatKeyPix: formattedKey,
                 typekeyPix: type
@@ -123,7 +125,7 @@ const FlowPagePix: React.FC<FlowPagePixProps> = ({
               <Button
                 className="focus:bg-primary-default/25 flex items-center gap-2 bg-primary-default fill-system-neutro p-2 text-sm text-system-neutro focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-800"
                 onClick={() => {
-                  setPixCopyPaste(true)
+                  setControlAtlas((prev) => ({ ...prev, pixCopyPaste: true }))
                   navigate('/payments')
                 }}
               >

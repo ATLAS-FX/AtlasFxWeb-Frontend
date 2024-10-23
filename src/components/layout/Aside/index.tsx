@@ -8,11 +8,11 @@ import { BlockPad } from './BlockPad'
 import { Movements } from './Movements'
 
 const Aside: React.FC = () => {
-  const { user, setUser } = useAtlas()
+  const { user, setUser, controlAtlas } = useAtlas()
   const [hideValue, setHideValue] = useState<boolean>(
     localStorage.getItem('hideValue') === 'hide' ? true : false
   )
-  const { data: infoUser, isLoading } = getInfoUser()
+  const { data: infoUser, isLoading, refetch } = getInfoUser()
 
   useEffect(() => {
     localStorage.setItem('hideValue', hideValue ? 'hide' : 'visible')
@@ -22,7 +22,10 @@ const Aside: React.FC = () => {
     if (infoUser) {
       setUser((prev) => ({ ...prev, ...infoUser }))
     }
-  }, [infoUser])
+    if (controlAtlas.refetchBalance) {
+      refetch()
+    }
+  }, [infoUser, controlAtlas.refetchBalance])
 
   return (
     <>

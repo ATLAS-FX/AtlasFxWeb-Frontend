@@ -28,7 +28,7 @@ import { useNavigate } from 'react-router-dom'
 
 const Login: React.FC = () => {
   const navigate = useNavigate()
-  const { currentStepEmail, signIn } = useAtlas()
+  const { controlAtlas, signIn } = useAtlas()
   const [authFlow, setAuthFlow] = useState<{
     inputKey: string
     doc: string
@@ -139,7 +139,7 @@ const Login: React.FC = () => {
   return (
     <>
       <div>
-        {currentStepEmail < 1 ? (
+        {controlAtlas.currentStepEmail < 1 ? (
           <>
             {flowLogin ? (
               <CardForLogin

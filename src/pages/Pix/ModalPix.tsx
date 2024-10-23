@@ -1,9 +1,15 @@
 import { ModalConfirm, ModalPwd, ModalSuccess } from '@/components/layout'
+import { PDFPix } from '@/components/pdfs'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { PixType, SendPixType } from '@/types/PixType'
 import { PixStateType } from '@/types/StatesType'
-import { formattedDoc, formattedPrice } from '@/utils/GenerateFormatted'
+import { downloadPDF } from '@/utils/DownloadPdf'
+import {
+  formattedDate,
+  formattedDoc,
+  formattedPrice
+} from '@/utils/GenerateFormatted'
 import { Dispatch, SetStateAction } from 'react'
 
 interface ModalPix {
@@ -23,6 +29,30 @@ const ModalPix: React.FC<ModalPix> = ({
   SendPixFunc,
   loadPix
 }) => {
+  const handleDownloadPDF = () => {
+    const doc = (
+      <PDFPix
+        documentSent={
+          formattedDoc(dataSendPix?.response?.account?.documentNumber ?? '-') ?? '-'
+        }
+        amount={`R$ ${formattedPrice(state?.amount || '0,00')?.toString()}`}
+        nameSent={dataSendPix?.response?.transactionData?.clientFantasyName ?? '-'}
+        bankSent={dataSendPix?.response?.transactionData?.recept_ispb_bank ?? '-'}
+        agencySent={'-'}
+        accountSent={'-'}
+        nameReceiver={'-'}
+        documentReceiver={'-'}
+        bankReceiver={'-'}
+        agencyReceiver={'-'}
+        accountReceiver={'-'}
+        idTransaction={'-'}
+        date={formattedDate(new Date().toString())}
+      />
+    )
+
+    downloadPDF(doc)
+  }
+
   return (
     <Dialog
       open={state.modalPix}
@@ -124,7 +154,8 @@ const ModalPix: React.FC<ModalPix> = ({
             title={dataSendPix?.success ?? ''}
             back={() => setState({ ...state, step: 3 })}
             amount={`R$ ${formattedPrice(state?.amount) ?? 'R$ 0,00'}`}
-            downloadPDF={() => console.log('download')}
+            downloadPDF={handleDownloadPDF}
+            redirect="/pix"
             typeTransfer={dataSendPix?.response?.category ?? '-'}
             idTransfer={dataSendPix?.response?.transactionId ?? '-'}
             namePayer={

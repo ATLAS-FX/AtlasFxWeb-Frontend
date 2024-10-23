@@ -91,10 +91,10 @@ const ContactsPagePix: React.FC<ContactsPagePixProps> = () => {
                     <div className="flex items-center gap-2">
                       <Avatar>
                         <AvatarImage
-                          src="https://github.com/shadcn.png"
                           alt="@shadcn"
+                          className="bg-purple-500 opacity-10"
                         />
-                        <AvatarFallback className="capitalize">
+                        <AvatarFallback className="bg-secondary-default uppercase text-primary-default">
                           {name.slice(0, 2)}
                         </AvatarFallback>
                       </Avatar>
